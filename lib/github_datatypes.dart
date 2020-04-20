@@ -9,13 +9,28 @@ class Label {
   static Label fromGraphQL(dynamic node) {
     return Label(node['name']);
   }
+  String toString() {
+    return _label;
+  }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is Label &&
+    runtimeType == other.runtimeType &&
+    _label == other._label;
+
+  @override 
+  int get hashCode => _label.hashCode;
 }
 
 class Labels {
   Set<Label> _labels;
   get labels => _labels;
+  get length => _labels.length;
   void append(l) => _labels.add(l);
-  void contains(l) => _labels.contains(l);
+  bool contains(l) => _labels.contains(l);
+  bool containsString(s) => labels.contains(Label(s));
   bool intersect(List<Label> list) {
     for(var l in list)
       if (_labels.contains(l)) return true;
@@ -30,12 +45,14 @@ class Labels {
     markdown = markdown + ')';
     return markdown;
   }
-
+  String toString() {
+    return summary();
+  }
   Labels(this._labels);
   static Labels fromGraphQL(dynamic node) {
     var result = Labels(Set<Label>());
     for (dynamic n in node['edges']) {
-      result.append(Label(n['node']));
+      result.append(Label(n['node']['name']));
     }
     return result;
   }
@@ -59,6 +76,17 @@ class Repository {
   static Repository fromGraphQL(dynamic node) {
     return Repository(node['nameWithOwner']);
   }
+
+    @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is Repository &&
+    runtimeType == other.runtimeType &&
+    _organization == other._organization &&
+    _repository == other._repository;
+
+  @override 
+  int get hashCode => '${_organization}/${_repository}'.hashCode;
 }
 
 class Actor {
@@ -69,9 +97,19 @@ class Actor {
 
   Actor(this._login, this._url);
   static Actor fromGraphQL(dynamic node) {
-    return Actor(node['login'],
-    node['url']);
+    return Actor(node['login'], node['url']);
   }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is Actor &&
+    runtimeType == other.runtimeType &&
+    _login == other._login;
+
+  @override 
+  int get hashCode => _login.hashCode;
+
 }
 
 class Issue {
@@ -126,11 +164,11 @@ class Issue {
       node['body'],
       Labels.fromGraphQL(node['labels']),
       node['url'],
-      DateTime.parse(node['createdAt']),
-      DateTime.parse(node['closedAt']),
-      DateTime.parse(node['lastEditAt']),
-      DateTime.parse(node['updatedAt']),
-      Repository(node['repository']),
+      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+      node['closedAt'] == null ? null : DateTime.parse(node['closedAt']),
+      node['lastEditedAt'] == null ? null : DateTime.parse(node['lastEditedAt']),
+      node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']),
+      Repository.fromGraphQL(node['repository']),
       null);
   }
 
@@ -148,5 +186,15 @@ class Issue {
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
   }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is Issue &&
+    runtimeType == other.runtimeType &&
+    _id == other._id;
+
+  @override 
+  int get hashCode => _id.hashCode;
 
 }
