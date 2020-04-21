@@ -189,6 +189,60 @@ void main() {
     }
     ''';
 
+    var json_Issue_TimelineWithLabels = 
+    '''
+    {
+      "title": "[flutter_tools] roll_dev.dart",
+      "id": "MDU6SXNzdWU1OTk4MjMyMDU=",
+      "number": 54774,
+      "author": {
+        "login": "christopherfujino",
+        "resourcePath": "/christopherfujino",
+        "url": "https://github.com/christopherfujino"
+      },
+      "body": "The `roll_dev.dart` script is still publishing tags with the `x.y.z-dev.m.n` format, whereas it should be publishing using the new(er) format `x.y.z-m.n.pre`.",
+      "labels": {
+        "edges": [
+          {
+            "node": {
+              "name": "tool"
+            }
+          },
+          {
+            "node": {
+              "name": "⚠ TODAY"
+            }
+          }
+        ]
+      },
+      "url": "https://github.com/flutter/flutter/issues/54774",
+      "createdAt": "2020-04-14T19:59:40Z",
+      "closedAt": null,
+      "lastEditedAt": null,
+      "updatedAt": "2020-04-16T20:11:37Z",
+      "repository": {
+        "nameWithOwner": "flutter/flutter"
+      },
+      "timelineItems": {
+        "pageInfo": {
+          "startCursor": "Y3Vyc29yOnYyOpPPAAABcX9c6oACqjEwMjk3ODE4MTc=",
+          "hasNextPage": false,
+          "endCursor": "Y3Vyc29yOnYyOpPPAAABcX9c6oACqjEwMjk3ODE4MTc="
+        },
+        "nodes": [
+          {
+            "__typename": "CrossReferencedEvent",
+            "source": {
+              "__typename": "PullRequest",
+              "title": "[flutter_tools] Fix roll dev script, add tests",
+              "number": 54783
+            }
+          }
+        ]
+      }
+    }
+    ''';
+
     var labels = [
       'perf: speed',
       'severe: performance',
@@ -226,7 +280,18 @@ void main() {
       expect(i.timeline[0].number == 17738, true);
       expect(i.timeline[0].title == 'Canvas regression', true);
     });
+    test('Issue from GraphQL - Timeline with labels', () {
+      dynamic node = json.decode(json_Issue_TimelineWithLabels);
+      var i = Issue.fromGraphQL(node);
+      expect(i.number == 54774, true);
+      expect(i.author == Actor('christopherfujino', 'https://github.com/christopherfujino'), true);
+      expect(i.timeline.length == 1, true);
+      expect(i.timeline[0].number == 54783, true);
+      expect(i.labels.length == 2, true);
+      expect(i.labels.containsString('tool'), true);
+      expect(i.labels.containsString('⚠ TODAY'), true);
+      expect(i.labels.containsString('nope'), false);
+    });
   });
-
 
 }
