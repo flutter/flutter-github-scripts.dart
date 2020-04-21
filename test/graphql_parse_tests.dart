@@ -109,7 +109,7 @@ void main() {
   });
 
   group('Issue', () {
-    var json_Issue = '''
+    var json_IssueNoTimeline = '''
       {
         "title": "smoke_catalina_hot_mode_dev_cycle__benchmark hotReloadMillisecondsToFrame & hotReloadMillisecondsToFrame above baseline",
         "id": "MDU6SXNzdWU1OTc5NjA3NTI=",
@@ -163,6 +163,32 @@ void main() {
         }
       }
     ''';
+
+    var json_Issue_TimelineNoLabels = 
+    '''
+    {
+      "number": 55193,
+      "title": "Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ",
+      "timelineItems": {
+        "pageInfo": {
+          "startCursor": "Y3Vyc29yOnYyOpPPAAABcZlZiNACqjEwMzAzNDY5MTA=",
+          "hasNextPage": false,
+          "endCursor": "Y3Vyc29yOnYyOpPPAAABcZlZiNACqjEwMzAzNDY5MTA="
+        },
+        "nodes": [
+          {
+            "__typename": "CrossReferencedEvent",
+            "source": {
+              "__typename": "PullRequest",
+              "title": "Canvas regression",
+              "number": 17738
+            }
+          }
+        ]
+      }
+    }
+    ''';
+
     var labels = [
       'perf: speed',
       'severe: performance',
@@ -171,8 +197,8 @@ void main() {
       'tool',
       '⚠ TODAY'
     ];
-    test('Issue fromGraphQL', () {
-      dynamic node = json.decode(json_Issue);
+    test('Issue fromGraphQL - no Timeline', () {
+      dynamic node = json.decode(json_IssueNoTimeline);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 54456, true);
       expect(i.id == 'MDU6SXNzdWU1OTc5NjA3NTI=', true);
@@ -189,7 +215,17 @@ void main() {
       expect(i.lastEditAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
       expect(i.updatedAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
     });
-
+    test('Issue from GraphQL - Timeline & no labels', () {
+      dynamic node = json.decode(json_Issue_TimelineNoLabels);
+      var i = Issue.fromGraphQL(node);
+      expect(i.number == 55193, true);
+      expect(i.title == 'Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ', true);
+      expect(i.timeline.length == 1, true);
+      print(i.timeline[0].type);
+      expect(i.timeline[0].type == 'CrossReferencedEvent', true);
+      expect(i.timeline[0].number == 17738, true);
+      expect(i.timeline[0].title == 'Canvas regression', true);
+    });
   });
 
 

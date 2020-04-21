@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:quiver/core.dart' show hash2;
 
 
 class Label {
@@ -58,9 +59,68 @@ class Labels {
   }
 }
 
+class TimelineItem {
+  String _type;
+  String get type => _type;
+  String _title;
+  String get title => _title;
+  int _number;
+  int get number => _number;
+
+  TimelineItem(this._type, this._title, this._number);
+
+  static TimelineItem fromGraphQL(dynamic node) {
+    return TimelineItem(
+      node['__typename'], 
+      node['source']['title'], 
+      node['source']['number']);
+  }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is TimelineItem &&
+    runtimeType == other.runtimeType &&
+    _type == other._type &&
+    _title == other._title && 
+    _number == other._number;
+
+  @override 
+  int get hashCode => hash2(
+      hash2(_type.hashCode, _title.hashCode),
+        _number.hashCode);
+}
+
 class Timeline {
+  List<TimelineItem> _timeline;
+  get timeline => _timeline;
+  get length => _timeline.length;
+  void append(l) => _timeline.add(l);
+  bool contains(l) => _timeline.contains(l);
+  
+  String summary() {
+    String markdown = '';
+    _timeline.forEach((entry) {
+      markdown = '${markdown} <${entry.type}> [${entry.number}](https://github.com/flutter/flutter/issues/${entry.number}) ${entry.title}';
+      if (entry != _timeline.last) markdown = markdown + ',\n';
+    });
+    markdown = markdown + '\n\n';
+    return markdown;
+  }
+  String toString() {
+    return summary();
+  }
 
+  TimelineItem operator[](int index) => _timeline[index];
 
+  Timeline(this._timeline);
+  static Timeline fromGraphQL(dynamic node) {
+    var result = Timeline(List<TimelineItem>());
+    for (dynamic n in node['nodes']) {
+      result.append(TimelineItem.fromGraphQL(n));
+    }
+    return result;
+  }
 }
 
 class Repository {
@@ -77,7 +137,7 @@ class Repository {
     return Repository(node['nameWithOwner']);
   }
 
-    @override
+  @override
   bool operator==(Object other) =>
     identical(this, other) ||
     other is Repository &&
@@ -137,7 +197,7 @@ class Issue {
   get updatedAt => _updatedAt;
   Repository _repository;
   get repository => _repository;
-  List<Timeline> _timeline;
+  Timeline _timeline;
   get timeline => _timeline;
 
   Issue(this._title, 
@@ -160,16 +220,16 @@ class Issue {
     return Issue(node['title'],
       node['id'],
       node['number'],
-      Actor.fromGraphQL(node['author']),
+      node['author'] == null ? null : Actor.fromGraphQL(node['author']),
       node['body'],
-      Labels.fromGraphQL(node['labels']),
+      node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
       node['url'],
       node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
       node['closedAt'] == null ? null : DateTime.parse(node['closedAt']),
       node['lastEditedAt'] == null ? null : DateTime.parse(node['lastEditedAt']),
       node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']),
-      Repository.fromGraphQL(node['repository']),
-      null);
+      node['repository'] == null ? null : Repository.fromGraphQL(node['repository']),
+      node['timelineItems'] == null ? null : Timeline.fromGraphQL(node['timelineItems']));
   }
 
   List<Label> _interesting = [

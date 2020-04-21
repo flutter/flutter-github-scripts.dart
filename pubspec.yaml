@@ -1,10 +1,10 @@
-name: flutter_favorite_calc
-description: experimental calculators for determining flutter favorites scores.
+name: flutter_github_scripts
+description: Scripts to provide reports on Flutter's code health.
 version: 0.0.1
 author: Ray Rischpater, KF6GPE <rischpater@google.com>
 
 environment:
-  sdk: '>=2.3.0 <3.0.0'
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   args: ^1.5.0
@@ -12,7 +12,6 @@ dependencies:
   glob: ^1.0.3
   path:
   lcov:
-  github: ^5.0.0
   graphql: ^2.0.0
 
 dev_dependencies:

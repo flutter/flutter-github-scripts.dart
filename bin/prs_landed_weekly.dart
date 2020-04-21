@@ -63,16 +63,20 @@ void main(List<String> args) async {
   final link = auth.concat(httpLink);
   final client = GraphQLClient(cache: InMemoryCache(), link: link);
 
+  var start = opts.from;
+  do {
+    final until = start.add(Duration(hours: 24 * 7));
+    final q = makeQuery(start, until);
+    final options = QueryOptions(document: q);
+    final result = await client.query(options);
+    final timeStampFrom = start.toString().substring(0,10);
+    final timeStampTo = until.toIso8601String().substring(0, 10);
 
-
-  var q = makeQuery(opts.from, opts.to);
-  final options = QueryOptions(document: q);
-  final result = await client.query(options);
-
-  if (result.hasErrors) {
-    print(result.errors.toString());
-    exit(-1);
-  }
-
-  print(extractResponse(result.data));
+    if (result.hasErrors) {
+      print(result.errors.toString());
+      exit(-1);
+    }
+    print(timeStampTo + ',' + extractResponse(result.data).toString());
+    start = until;
+  } while( start.compareTo(opts.to) < 0);
 }
