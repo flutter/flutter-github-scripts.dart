@@ -179,6 +179,8 @@ class Issue {
   get id => _id;
   int _number;
   get number => _number;
+  String _state;
+  get state => _state;
   Actor _author;
   get author => _author;
   String _body;
@@ -203,6 +205,7 @@ class Issue {
   Issue(this._title, 
     this._id,
     this._number,
+    this._state,
     this._author,
     this._body,
     this._labels,
@@ -220,6 +223,7 @@ class Issue {
     return Issue(node['title'],
       node['id'],
       node['number'],
+      node['state'],
       node['author'] == null ? null : Actor.fromGraphQL(node['author']),
       node['body'],
       node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
@@ -241,7 +245,7 @@ class Issue {
 
   String summary({bool boldInteresting = true, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
-    var markdown = '[${this.number}]($this.url}) ${this.title} ${labelsSummary}';
+    var markdown = '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
     if (boldInteresting && _labels.intersect(_interesting)) markdown = '**' + markdown + '**';
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;

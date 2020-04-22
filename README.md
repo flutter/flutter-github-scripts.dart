@@ -15,4 +15,23 @@ Returns a CSV of the number of PRs merged to all repositories in
 the [Flutter](https://github.com/flutter) repository each week
 from `from-date` until `to-date`.
 
+If not specified, the report spans the period from 2019-11-01 until
+the current date. (Weeks thus end on Fridays, as 2019-11-01 was a 
+Friday).
+
+## bin/today_report.dart
+
+Usage: `pub run bin/today_report.dart [-f from-date] [-t to-date]`'
+
+Returns a Markdown document consisting of the number of open 
+`TODAY` issues, `TODAY` issues opened in the period from
+`from-date` until `to-date`, and `TODAY` issues closed in the
+period from `from-date` until `to-date`.
+
+If not specified, the report spans the previous week.
+
+Markdown output includes a preamble suitable for emailing
+to the team when the Markdown is run through
+[pandoc](https://pandoc.org/).
+
 
