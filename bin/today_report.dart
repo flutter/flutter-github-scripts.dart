@@ -78,7 +78,7 @@ void main(List<String> args) async {
   print('### ${open.length} open `TODAY` issue(s)');
   open.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
-  print('#### ${openedThisPeriod.length} `TODAY` issues opened between ${fromStamp} and ${toStamp}');
+  print('### ${openedThisPeriod.length} `TODAY` issues opened between ${fromStamp} and ${toStamp}');
   openedThisPeriod.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
   print('### ${closedThisPeriod.length} `TODAY` issues closed between ${fromStamp} and ${toStamp}');
