@@ -39,15 +39,30 @@ String makeQuery(DateTime from, DateTime to) {
 
   return  
   """
-    query { 
-    search(query:"org:flutter is:pr is:closed merged:${fromIso}..${toIso}", type: ISSUE, last:100) {
-      issueCount
+query { 
+  search(query:"org:flutter is:pr is:closed merged:${fromIso}..${toIso}", type: ISSUE, last:100) {
+    issueCount,
+    nodes {
+      ... on PullRequest {
+        author {
+          login
+        }
       }
-    }
+    } 
+	}
+}
   """;
 }
 
-int extractResponse(dynamic response) {
+int extractUniqueUsers(dynamic response) {
+  var committers = Set<String>();
+  for(var pr in response['search']['nodes']) {
+    committers.add(pr['author']['login']);
+  }
+  return committers.length;
+}
+
+int extractPullRequestCountResponse(dynamic response) {
   return response['search']['issueCount'];
 }
 
@@ -76,7 +91,9 @@ void main(List<String> args) async {
       print(result.errors.toString());
       exit(-1);
     }
-    print(timeStampTo + ',' + extractResponse(result.data).toString());
+    print(timeStampTo + ',' + 
+      extractPullRequestCountResponse(result.data).toString() + ',' + 
+      extractUniqueUsers(result.data).toString());
     start = until;
   } while( start.compareTo(opts.to) < 0);
 }
