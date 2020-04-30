@@ -55,7 +55,8 @@ void main(List<String> args) async {
 
   final github = Github(token);
   
-  var issues = await github.issues('flutter', 'flutter', 'labels: ["⚠ TODAY"]');
+  var issues = await github.issues('flutter', 'flutter'); //, 
+  //  filterSpec: 'labels: ["⚠ TODAY"]');
   
   var open = List<Issue>();
   var openedThisPeriod = List<Issue>();
