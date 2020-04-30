@@ -54,8 +54,6 @@ class Github {
       done = !page.data['repository']['issues']['pageInfo']['hasNextPage'];
       if (!done) after = '"${page.data['repository']['issues']['pageInfo']['endCursor']}"';
 
-print("Done is ${done}");
-
     } while( !done );
 
     return result;
