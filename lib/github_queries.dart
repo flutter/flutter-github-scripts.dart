@@ -21,7 +21,14 @@ class Github {
   }
 
 
-  Future<List<Issue>> issues(String repositoryOwner, String repositoryName, String filter) async {
+  Future<List<Issue>> issues(String repositoryOwner, String repositoryName, {String filterSpec = null}) async {
+    var filter = filterSpec == null ? '' : 
+    '''
+    filterBy: {
+              ${filterSpec}
+            }
+    ''';
+   
     List<Issue> result = List<Issue>();
     bool done = false;
     String after = 'null';
@@ -59,9 +66,7 @@ class Github {
         repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
           issues(first: 100, 
             after: ${after}, 
-            filterBy: {
-              ${filter}
-            }) {
+            ${filter}) {
               totalCount,
               pageInfo {
                 startCursor, hasNextPage, endCursor
