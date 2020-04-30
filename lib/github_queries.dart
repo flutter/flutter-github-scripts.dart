@@ -54,71 +54,72 @@ class Github {
       done = !page.data['repository']['issues']['pageInfo']['hasNextPage'];
       if (!done) after = '"${page.data['repository']['issues']['pageInfo']['endCursor']}"';
 
+print("Done is ${done}");
+
     } while( !done );
 
     return result;
 
   }
 
-      final query_issues = 
-      r'''
-      query { 
-        repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-          issues(first: 100, 
-            after: ${after}, 
-            ${filter}) {
-              totalCount,
+  final query_issues = 
+  r'''
+  query { 
+    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
+      issues(first: 25, 
+        after: ${after}, 
+        ${filter})
+      {
+        totalCount,
+        pageInfo {
+          startCursor, hasNextPage, endCursor
+        },
+        edges {
+          node {
+            title,
+            id,
+            number,
+            state,
+            author {
+              login,
+              resourcePath,
+              url
+            },
+            body,
+            labels(first:100) {
+              edges {
+                node {
+                  name
+                }
+              }
+            },
+            url,
+            createdAt,
+            closedAt,
+            lastEditedAt,
+            updatedAt,
+            repository {
+              nameWithOwner
+            },
+            timelineItems(last: 100, 
+            itemTypes:[CROSS_REFERENCED_EVENT]) {
               pageInfo {
-                startCursor, hasNextPage, endCursor
+                startCursor,
+                hasNextPage,
+                endCursor
               },
-            edges {
-              node {
-                title,
-                id,
-                number,
-                state,
-                author {
-                  login,
-                  resourcePath,
-                  url
-                },
-                body,
-                labels(first:100) {
-                  edges {
-                    node {
-                      name
+              nodes {
+                __typename
+                ... on CrossReferencedEvent {
+                  source {
+                    __typename
+                    ...  on PullRequest {
+                      title,
+                      number,
                     }
-                  }
-                },
-                url,
-                createdAt,
-                closedAt,
-                lastEditedAt,
-                updatedAt,
-                repository {
-                  nameWithOwner
-                },
-                timelineItems(last: 100, 
-                    itemTypes:[CROSS_REFERENCED_EVENT]) {
-                    pageInfo{
-                      startCursor,
-                      hasNextPage,
-                      endCursor
-                    },
-                    nodes {
-                      __typename
-                      ... on CrossReferencedEvent {
-                        source {
-                          __typename
-                          ...  on PullRequest {
-                            title,
-                            number,
-                          }
-                          ... on Issue {
-                            title,
-                            number,
-                          }
-                      }
+                    ... on Issue {
+                      title,
+                      number,
                     }
                   }
                 }
@@ -127,7 +128,9 @@ class Github {
           }
         }
       }
-      ''';
+    }
+  }
+  ''';
 
 
 
