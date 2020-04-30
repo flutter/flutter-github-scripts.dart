@@ -26,8 +26,35 @@ class Github {
     bool done = false;
     String after = 'null';
     do {
-      final query = 
-      '''
+      var query = query_issues
+        .replaceAll(r'${repositoryOwner}', repositoryOwner)
+        .replaceAll(r'${repositoryName}', repositoryName)
+        .replaceAll(r'${after}', after)
+        .replaceAll(r'${filter}', filter);
+
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+      if (page.hasErrors) {
+        throw(page.errors.toString());
+      }
+
+      var edges = page.data['repository']['issues']['edges'];
+      edges.forEach((edge) {
+        var issue = Issue.fromGraphQL(edge['node']);
+        result.add(issue);
+      });
+ 
+      done = !page.data['repository']['issues']['pageInfo']['hasNextPage'];
+      if (!done) after = '"${page.data['repository']['issues']['pageInfo']['endCursor']}"';
+
+    } while( !done );
+
+    return result;
+
+  }
+
+      final query_issues = 
+      r'''
       query { 
         repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
           issues(first: 100, 
@@ -96,28 +123,6 @@ class Github {
         }
       }
       ''';
-
-      final options = QueryOptions(document: query);
-      final page = await _client.query(options);
-      if (page.hasErrors) {
-        throw(page.errors.toString());
-      }
-
-      var edges = page.data['repository']['issues']['edges'];
-      edges.forEach((edge) {
-        var issue = Issue.fromGraphQL(edge['node']);
-        result.add(issue);
-      });
- 
-      done = !page.data['repository']['issues']['pageInfo']['hasNextPage'];
-      if (!done) after = '"${page.data['repository']['issues']['pageInfo']['endCursor']}"';
-
-    } while( !done );
-
-    return result;
-
-  }
-
 
 
 
