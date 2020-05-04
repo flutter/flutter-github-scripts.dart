@@ -261,4 +261,58 @@ class Issue {
   @override 
   int get hashCode => _id.hashCode;
 
+  static final jqueryResponse = 
+  r'''
+  {
+    title,
+    id,
+    number,
+    state,
+    author {
+      login,
+      resourcePath,
+      url
+    },
+    body,
+    labels(first:100) {
+      edges {
+        node {
+          name
+        }
+      }
+    },
+    url,
+    createdAt,
+    closedAt,
+    lastEditedAt,
+    updatedAt,
+    repository {
+      nameWithOwner
+    },
+    timelineItems(last: 100, 
+    itemTypes:[CROSS_REFERENCED_EVENT]) {
+      pageInfo {
+        startCursor,
+        hasNextPage,
+        endCursor
+      },
+      nodes {
+        __typename
+        ... on CrossReferencedEvent {
+          source {
+            __typename
+            ...  on PullRequest {
+              title,
+              number,
+            }
+            ... on Issue {
+              title,
+              number,
+            }
+          }
+        }
+      }
+    }
+  }
+  ''';
 }
