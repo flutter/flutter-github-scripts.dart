@@ -35,3 +35,13 @@ to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
 
 
+## bin/issue.dart
+Usage: `pub run bin/issue.dart issue-number`
+
+Returns a summary of the issue in Markdown format.
+
+## bin/pr.dart
+Usage: `pub run bin/pr.dart pr-number`
+
+Returns a summary of the pull request in Markdown format.
+

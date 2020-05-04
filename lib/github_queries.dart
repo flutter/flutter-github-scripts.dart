@@ -23,6 +23,8 @@ class Github {
 
   Future<Issue> issue({String owner, String name, int number}) async {
     var query = _query_issue
+      .replaceAll(r'${repositoryOwner}', owner)
+      .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
 
@@ -73,12 +75,39 @@ class Github {
 
     return result;
   }
+  
+
+  Future<PullRequest> pullRequest({String owner, String name, int number}) async {
+    var query = _query_pullRequest
+      .replaceAll(r'${repositoryOwner}', owner)
+      .replaceAll(r'${repositoryName}', name)
+      .replaceAll(r'${number}', number.toString())
+      .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse);
+
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+      if (page.hasErrors) {
+        throw(page.errors.toString());
+      }
+
+      return PullRequest.fromGraphQL(page.data['repository']['pullRequest']);
+  }
 
   
+  final _query_pullRequest = 
+  r'''
+  query { 
+    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
+      pullRequest(number:${number}) 
+      ${pullRequestResponse}
+    }
+  }
+  ''';
+
   final _query_issue = 
   r'''
   query { 
-    repository(owner:"flutter", name:"flutter") {
+    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
       issue(
         number:${number}) 
         ${issueResponse}

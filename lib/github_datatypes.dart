@@ -316,3 +316,122 @@ class Issue {
   }
   ''';
 }
+
+class PullRequest {
+  String _title;
+  get title => _title;
+  String _id;
+  get id => _id;
+  int _number;
+  get number => _number;
+  String _state;
+  get state => _state;
+  Actor _author;
+  get author => _author;
+  String _body;
+  get body => _body;
+  Labels _labels;
+  get labels => _labels;
+  String _url;
+  get url => _url;
+  bool _merged;
+  get merged => _merged;
+  DateTime _createdAt;
+  get createdAt => _createdAt;
+  DateTime _mergedAt;
+  get mergedAt => _mergedAt;
+  DateTime _lastEditAt;
+  get lastEditAt => _lastEditAt;
+  DateTime _updatedAt;
+  get updatedAt => _updatedAt;
+  DateTime _closedAt;
+  get closedAt => _closedAt;
+  Repository _repository;
+  get repository => _repository;
+
+  PullRequest(this._title, 
+    this._id,
+    this._number,
+    this._state,
+    this._author,
+    this._body,
+    this._labels,
+    this._url,
+    this._merged,
+    this._createdAt,
+    this._mergedAt,
+    this._lastEditAt,
+    this._updatedAt,
+    this._closedAt,
+    this._repository,
+  );
+   
+  // Passed a node containing an issue, return the issue
+  static PullRequest fromGraphQL(dynamic node) {
+    return PullRequest(node['title'],
+      node['id'],
+      node['number'],
+      node['state'],
+      node['author'] == null ? null : Actor.fromGraphQL(node['author']),
+      node['body'],
+      node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
+      node['url'],
+      node['merged'],
+      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+      node['mergedAt'] == null ? null : DateTime.parse(node['updatedAt']),
+      node['lastEditedAt'] == null ? null : DateTime.parse(node['lastEditedAt']),
+      node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']),
+      node['closedAt'] == null ? null : DateTime.parse(node['closedAt']),
+      node['repository'] == null ? null : Repository.fromGraphQL(node['repository']));
+  }
+
+  String summary({bool linebreakAfter = false}) {
+    var labelsSummary = _labels.summary();
+    var markdown = '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
+    if (linebreakAfter) markdown = markdown + '\n';
+    return markdown;
+  }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is PullRequest &&
+    runtimeType == other.runtimeType &&
+    _id == other._id;
+
+  @override 
+  int get hashCode => _id.hashCode;
+
+  static final jqueryResponse = 
+  r'''
+  {
+    title,
+    id,
+    number,
+    state,
+    author {
+      login,
+      resourcePath,
+      url
+    },
+    body,
+    labels(first:100) {
+      edges {
+        node {
+          name
+        }
+      }
+    },
+    url,
+    merged,
+    createdAt,
+    lastEditedAt,
+    updatedAt,
+    closedAt,
+    repository {
+      nameWithOwner
+    },
+  }
+
+  ''';
+}
