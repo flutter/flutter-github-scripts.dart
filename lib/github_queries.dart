@@ -21,7 +21,21 @@ class Github {
   }
 
 
-  Future<List<Issue>> issues(String repositoryOwner, String repositoryName, {String filterSpec = null}) async {
+  Future<Issue> issue({String owner, String name, int number}) async {
+    var query = _query_issue
+      .replaceAll(r'${number}', number.toString())
+      .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
+
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+      if (page.hasErrors) {
+        throw(page.errors.toString());
+      }
+
+      return Issue.fromGraphQL(page.data['repository']['issue']);
+  }
+
+  Future<List<Issue>> issues({String owner, String name, String filterSpec = null}) async {
     var filter = filterSpec == null ? '' : 
     '''
     filterBy: {
@@ -33,11 +47,12 @@ class Github {
     bool done = false;
     String after = 'null';
     do {
-      var query = query_issues
-        .replaceAll(r'${repositoryOwner}', repositoryOwner)
-        .replaceAll(r'${repositoryName}', repositoryName)
+      var query = _query_issues
+        .replaceAll(r'${repositoryOwner}', owner)
+        .replaceAll(r'${repositoryName}', name)
         .replaceAll(r'${after}', after)
-        .replaceAll(r'${filter}', filter);
+        .replaceAll(r'${filter}', filter)
+        .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
 
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
@@ -57,10 +72,21 @@ class Github {
     } while( !done );
 
     return result;
-
   }
 
-  final query_issues = 
+  
+  final _query_issue = 
+  r'''
+  query { 
+    repository(owner:"flutter", name:"flutter") {
+      issue(
+        number:${number}) 
+        ${issueResponse}
+    }
+  }
+  ''';
+
+  final _query_issues = 
   r'''
   query { 
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
@@ -73,57 +99,7 @@ class Github {
           startCursor, hasNextPage, endCursor
         },
         edges {
-          node {
-            title,
-            id,
-            number,
-            state,
-            author {
-              login,
-              resourcePath,
-              url
-            },
-            body,
-            labels(first:100) {
-              edges {
-                node {
-                  name
-                }
-              }
-            },
-            url,
-            createdAt,
-            closedAt,
-            lastEditedAt,
-            updatedAt,
-            repository {
-              nameWithOwner
-            },
-            timelineItems(last: 100, 
-            itemTypes:[CROSS_REFERENCED_EVENT]) {
-              pageInfo {
-                startCursor,
-                hasNextPage,
-                endCursor
-              },
-              nodes {
-                __typename
-                ... on CrossReferencedEvent {
-                  source {
-                    __typename
-                    ...  on PullRequest {
-                      title,
-                      number,
-                    }
-                    ... on Issue {
-                      title,
-                      number,
-                    }
-                  }
-                }
-              }
-            }
-          }
+          node ${issueResponse}
         }
       }
     }

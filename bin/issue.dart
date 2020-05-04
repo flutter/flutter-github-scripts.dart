@@ -9,18 +9,16 @@ import 'dart:io';
 class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
-  DateTime get from => DateTime.parse(_results['from']);
-  DateTime get to => DateTime.parse(_results['to']);
+  int get number => int.parse(_results.rest[0]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addOption('from', defaultsTo: DateTime.now().subtract(Duration(hours: 24 * 7)).toString(), abbr: 'f', help: 'from date, ISO format yyyy-mm-dd')
-      ..addOption('to', defaultsTo: DateTime.now().toIso8601String(), abbr: 't', help: 'to date, ISO format yyyy-mm-dd');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
+      if (_results.rest.length != 1 ) throw('invalid issue number!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -28,23 +26,9 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run today_report.dart [-f date] [-t date]');
+    print('Usage: pub run issue.dart issue_number');
     print(_parser.usage);
   }
-}
-
-void printHeader(Options opts) {
-  var fromStamp = opts.from.toIso8601String().substring(0,10);
-  var toStamp = opts.to.toIso8601String().substring(0,10);
-
-  print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@gooogle.com\\n');
-  if (DateTime.now().weekday == DateTime.tuesday) print('Subject: Flutter TODAY Tuesday report!\n');
-  if (DateTime.now().weekday == DateTime.thursday) print('Subject: Flutter TODAY Thursday report!\n');
-  if (DateTime.now().weekday != DateTime.tuesday &&
-      DateTime.now().weekday != DateTime.thursday) {
-    print('Subject: TODAY issues from ${fromStamp} to ${toStamp}\n\n');
-  }
-  print('\n\n---\n\n');
 }
 
 void main(List<String> args) async {
@@ -55,7 +39,7 @@ void main(List<String> args) async {
 
   final github = Github(token);
   
-  var issues = await github.issues(owner: 'flutter', name: 'flutter', filterSpec: 'labels: ["⚠ TODAY"]');
+  var issue = await github.issue(owner: 'flutter', name: 'flutter', number: opts.number);
   
   var open = List<Issue>();
   var openedThisPeriod = List<Issue>();
