@@ -50,12 +50,12 @@ void printHeader(Options opts) {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
-
   final token = Platform.environment['GITHUB_TOKEN'];
-
-  final github = Github(token);
+  final github = GitHub(token);
   
-  var issues = await github.issues(owner: 'flutter', name: 'flutter', filterSpec: 'labels: ["⚠ TODAY"]');
+  var issues = await github.issues(owner: 'flutter', 
+    name: 'flutter', 
+    filterSpec: 'labels: ["⚠ TODAY"]');
   
   var open = List<Issue>();
   var openedThisPeriod = List<Issue>();

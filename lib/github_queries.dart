@@ -240,22 +240,22 @@ class _PageInfo {
   ''';
 }
 
-enum DateInfoType { at, range }
+enum DateRangeType { at, range }
 
-class DateInfo {
-  DateInfoType _type;
+class DateRange {
+  DateRangeType _type;
   get type => _type;
   DateTime _at, _start, _end;
   get at => _at;
   get start => _start;
   get end => _end; 
   
-  factory DateInfo(type, [DateTime at, DateTime start, DateTime end]) {
-    if (type == DateInfoType.at && at != null && start == null && end == null) {
-      return DateInfo._internal(type, at, null, null);
+  factory DateRange(type, {DateTime at, DateTime start, DateTime end}) {
+    if (type == DateRangeType.at && at != null && start == null && end == null) {
+      return DateRange._internal(type, at, null, null);
     }
-    else if (type == DateInfoType.range && at == null && start != null && end != null) {
-      return DateInfo._internal(type, null, start, end);
+    else if (type == DateRangeType.range && at == null && start != null && end != null) {
+      return DateRange._internal(type, null, start, end);
     }
     else {
       throw("Illegal arguments");
@@ -263,7 +263,7 @@ class DateInfo {
   }
 
 
-  DateInfo._internal(this._type, this._at, this._start, this._end);
+  DateRange._internal(this._type, this._at, this._start, this._end);
 
 }
 

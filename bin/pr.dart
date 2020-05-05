@@ -35,7 +35,7 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
   final token = Platform.environment['GITHUB_TOKEN'];
-  final github = Github(token);
+  final github = GitHub(token);
   
   var issue = await github.pullRequest(owner: 'flutter', 
     name: 'flutter', 

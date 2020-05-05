@@ -13,7 +13,7 @@ class Options  {
 
   Options(List<String> args) {
     _parser
-      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
+      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -34,37 +34,14 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
   final token = Platform.environment['GITHUB_TOKEN'];
-  final github = Github(token);
+  final github = GitHub(token);
   
-  var issues = await github.issues(owner: 'flutter', 
+  var pullRequests = await github.pullRequests(owner: 'flutter', 
     name: 'flutter', 
-    filterSpec: 'labels: ["⚠ TODAY"]');
+    states: ['OPEN']);
   
-  var open = List<Issue>();
-  var openedThisPeriod = List<Issue>();
-  var closedThisPeriod = List<Issue>();
 
-  issues.forEach((issue) {
-    if (issue.state == "OPEN") open.add(issue);
-    if (issue.createdAt.compareTo(opts.from) >= 0 && issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-    if (issue.state == "CLOSED" && issue.closedAt.compareTo(opts.from) >= 0 && issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
+  pullRequests.forEach((pullRequest) {
+    print(pullRequest.summary(linebreakAfter: true));
   });
-  
-  var fromStamp = opts.from.toIso8601String().substring(0,10);
-  var toStamp = opts.to.toIso8601String().substring(0,10);
-
-  printHeader(opts);
-
-  print('This shows the number of new, open, and closed `TODAY` issues over the period from');
-  print('${fromStamp} to ${toStamp}.\n\n');
-
-  print('### ${open.length} open `TODAY` issue(s)');
-  open.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
-
-  print('### ${openedThisPeriod.length} `TODAY` issues opened between ${fromStamp} and ${toStamp}');
-  openedThisPeriod.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
-
-  print('### ${closedThisPeriod.length} `TODAY` issues closed between ${fromStamp} and ${toStamp}');
-  closedThisPeriod.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
-
 }
