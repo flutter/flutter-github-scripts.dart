@@ -61,6 +61,7 @@ class Github {
       final options = QueryOptions(document: query);
 
       final page = await _client.query(options);
+
       if (page.hasErrors) {
         throw(page.errors.toString());
       }
@@ -98,6 +99,7 @@ class Github {
       return PullRequest.fromGraphQL(page.data['repository']['pullRequest']);
   }
 
+// TODO: Generalize this and the next method into one method
 Future<List<PullRequest>> pullRequests({String owner, String name, List<String> states = null}) async {
     var stateList = states == null ? '' : 
     '''
@@ -113,7 +115,7 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
         .replaceAll(r'${repositoryName}', name)
         .replaceAll(r'${after}', after)
         .replaceAll(r'${states}', stateList)
-        .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
+        .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse)
         .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse);
 
       final options = QueryOptions(document: query);
@@ -123,20 +125,16 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
         throw(page.errors.toString());
       }
 
-      var edges = page.data['repository']['issues']['edges'];
+      var edges = page.data['repository']['pullRequests']['edges'];
       edges.forEach((edge) {
         var pullRequest = PullRequest.fromGraphQL(edge['node']);
-  print(pullRequest);
         result.add(pullRequest);
       });
  
-      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['issues']['pageInfo']);
+      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['pullRequests']['pageInfo']);
 
       done = !pageInfo.hasNextPage;
       if (!done) after = '"${pageInfo.endCursor}"';
-
-
-
     } while( !done );
 
     return result;
@@ -160,7 +158,7 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
       issues(first: 25, 
         after: ${after}, 
-        ${stateList})
+        ${filter})
       {
         totalCount,
         pageInfo ${pageInfoResponse}
@@ -186,9 +184,9 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
   r'''
   query { 
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-      issues(first: 25, 
+      pullRequests(first: 25, 
         after: ${after}, 
-        states: ${states})
+        ${states})
       {
         totalCount,
         pageInfo ${pageInfoResponse}
@@ -199,6 +197,7 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
     }
   }
   ''';
+
 }
 
 
@@ -240,3 +239,70 @@ class _PageInfo {
   },
   ''';
 }
+
+enum DateInfoType { at, range }
+
+class DateInfo {
+  DateInfoType _type;
+  get type => _type;
+  DateTime _at, _start, _end;
+  get at => _at;
+  get start => _start;
+  get end => _end; 
+  
+  factory DateInfo(type, [DateTime at, DateTime start, DateTime end]) {
+    if (type == DateInfoType.at && at != null && start == null && end == null) {
+      return DateInfo._internal(type, at, null, null);
+    }
+    else if (type == DateInfoType.range && at == null && start != null && end != null) {
+      return DateInfo._internal(type, null, start, end);
+    }
+    else {
+      throw("Illegal arguments");
+    } 
+  }
+
+
+  DateInfo._internal(this._type, this._at, this._start, this._end);
+
+}
+
+/*
+Generic query
+query { 
+  search(query:"repo:${repositoryOwner}/${repositoryName} label:\"a: accessibility\" is:issue is:${state} is:${issueOrPr} closed:2019-11-25T18:05..2020-04-02T18:26", type: ISSUE, first:25) {
+    issueCount,
+    pageinfo ${pageInfoResponse}
+    nodes {
+      ... on Issue ${issueResponse}
+      ... on PullRequest ${pullRequestResponse}
+    } 
+	}
+}
+
+Need to insert:
+issueOrPr - "is: issue" | "is:pr"
+for single label:
+- Insert "label: \"${label}\"" into string.
+for multiple labels:
+- do each search sequentially, union results.
+state is one of "OPEN", "CLOSED", or "MERGED"
+
+Dates: can be one or a range
+created
+updated
+closed
+merged
+
+
+
+Function declaration: 
+Future<List<dynamic>> fetch( {String owner, String name,
+  String type = 'issue',
+  String state = 'OPEN',
+  List<String> labels = null,
+
+  
+  })
+
+ */
