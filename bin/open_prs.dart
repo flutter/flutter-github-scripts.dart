@@ -36,9 +36,9 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   
-  var pullRequests = await github.pullRequests(owner: 'flutter', 
+  var pullRequests = await github.fetch(owner: 'flutter', 
     name: 'flutter', 
-    states: ['OPEN']);
+    state: GitHubIssueState.open);
   
 
   pullRequests.forEach((pullRequest) {

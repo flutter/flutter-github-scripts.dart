@@ -6,20 +6,108 @@ import 'package:quiver/core.dart' show hash2;
 // Filter by label: 'labels: ["⚠ TODAY"]'
 
 
-class Github {
+enum GitHubIssueType { issue, pullRequest }
+enum GitHubIssueState { open, closed, merged }
+
+enum GitHubDateQueryType { created, updated, closed, merged, none }
 
 
+
+class GitHub {
   HttpLink _httpLink; 
   AuthLink _auth; 
   Link _link;
   GraphQLClient _client; 
 
-  Github(String token) {
+  GitHub(String token) {
     _httpLink = HttpLink( uri: 'https://api.github.com/graphql', );
     _auth = AuthLink(getToken: () async => 'Bearer ${token}', );
     _link = _auth.concat(_httpLink);
     _client = GraphQLClient(cache: InMemoryCache(), link: _link);
   }
+
+
+Future<List<dynamic>> fetch( {String owner, String name,
+  GitHubIssueType type = GitHubIssueType.issue,
+  GitHubIssueState state = GitHubIssueState.open,
+  List<String> labels = null,
+  GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
+  DateRange dateRange = null
+  }) async {
+    var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
+    var stateString = '';
+    switch(state) {
+      case GitHubIssueState.open: stateString = 'is:open'; break;
+      case GitHubIssueState.closed: stateString = 'is:closed'; break;
+      case GitHubIssueState.merged: stateString = 'is:merged'; break;
+    }
+    
+    if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
+      throw('With a dateQuery you must provide a non-null dateRange!');
+    }
+
+    var dateString = '';
+    switch(dateQuery) {
+      case GitHubDateQueryType.created: dateString = 'created:' + dateRange.toString(); break;
+      case GitHubDateQueryType.updated: dateString = 'updated:' + dateRange.toString(); break;
+      case GitHubDateQueryType.closed: dateString = 'closed:' + dateRange.toString(); break;
+      case GitHubDateQueryType.merged: dateString = 'merged:' + dateRange.toString(); break;
+      case GitHubDateQueryType.none: break;
+    }
+
+    var labelFilters = [];
+    if (labels != null && !labels.isEmpty) {
+      for(var label in labels) {
+        labelFilters.add('label:\"${label}\"');
+      }
+    } else {
+      // We'll do just one query, with no filter
+      labelFilters.add('');
+    }
+
+   var result = List<dynamic>();
+    // For each label, do the query.
+    for(var labelFilter in labelFilters) {
+      var done = false;
+      var after = 'null';
+      do {
+        var query = _queryIssuesOrPRs
+          .replaceAll(r'${repositoryOwner}', owner)
+          .replaceAll(r'${repositoryName}', name)
+          .replaceAll(r'${after}', after)
+          .replaceAll(r'${label}', labelFilter)
+          .replaceAll(r'${state}', stateString)
+          .replaceAll(r'${issueOrPr}', typeString)
+          .replaceAll(r'${dateTime}', dateString)          
+          .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
+          .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
+          .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
+
+        final options = QueryOptions(document: query);
+
+        final page = await _client.query(options);
+
+        if (page.hasErrors) {
+          throw(page.errors.toString());
+        }
+
+        var edges = page.data['repository']['issues']['edges'];
+        edges.forEach((edge) {
+          dynamic item = type == GitHubIssueType.issue ? 
+            Issue.fromGraphQL(edge['node']) : 
+            PullRequest.fromGraphQL(edge['node']);
+          result.add(issue);
+        });
+  
+        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['issues']['pageInfo']);
+
+        done = !pageInfo.hasNextPage;
+        if (!done) after = '"${pageInfo.endCursor}"';
+
+      } while( !done );
+    }
+  }
+
 
 
   Future<Issue> issue({String owner, String name, int number}) async {
@@ -140,6 +228,19 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
     return result;
   }
 
+  final _queryIssuesOrPRs = 
+  r'''
+  query { 
+    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime}", type: ISSUE, first:25) {
+      issueCount,
+      pageinfo ${pageInfoResponse}
+      nodes {
+        ... on Issue ${issueResponse}
+        ... on PullRequest ${pullRequestResponse}
+      } 
+    }
+  }
+  ''';
 
   final _query_issue = 
   r'''
@@ -200,7 +301,6 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
 
 }
 
-
 class _PageInfo {
   String _startCursor;
   get startCursor => _startCursor;
@@ -241,30 +341,44 @@ class _PageInfo {
 }
 
 enum DateRangeType { at, range }
+enum DateRangeWhen { onDate, onOrBefore, onOrAfter }
 
 class DateRange {
   DateRangeType _type;
   get type => _type;
+  DateRangeWhen _when;
+  get when => _when;
   DateTime _at, _start, _end;
   get at => _at;
   get start => _start;
   get end => _end; 
   
-  factory DateRange(type, {DateTime at, DateTime start, DateTime end}) {
-    if (type == DateRangeType.at && at != null && start == null && end == null) {
-      return DateRange._internal(type, at, null, null);
+  String toString() {
+    if(_type == DateRangeType.at) {
+      String comparison = '';
+      switch(_when) {
+        case DateRangeWhen.onDate: comparison = ''; break;
+        case DateRangeWhen.onOrBefore: comparison = '<='; break;
+        case DateRangeWhen.onOrAfter: comparison = '>='; break;
+      }
+      return comparison + _at.toIso8601String();
+    } else {
+      return _start.toIso8601String() + '..' + _end.toIso8601String();
     }
-    else if (type == DateRangeType.range && at == null && start != null && end != null) {
-      return DateRange._internal(type, null, start, end);
+  }
+
+  factory DateRange(type, {DateTime at, DateRangeWhen when = DateRangeWhen.onDate, DateTime start, DateTime end}) {
+    if (type == DateRangeType.at && when != null && at != null && start == null && end == null) {
+      return DateRange._internal(type, at, when, null, null);
+    }
+    else if (type == DateRangeType.range && at == null && when == DateRangeWhen.onDate && start != null && end != null) {
+      return DateRange._internal(type, null, null, start, end);
     }
     else {
       throw("Illegal arguments");
     } 
   }
-
-
-  DateRange._internal(this._type, this._at, this._start, this._end);
-
+  DateRange._internal(this._type, this._at, this._when, this._start, this._end);
 }
 
 /*
@@ -287,7 +401,8 @@ for single label:
 for multiple labels:
 - do each search sequentially, union results.
 state is one of "OPEN", "CLOSED", or "MERGED"
-
+labels: ${labels} - label:\"a: accessibility\"
+datetimerange: ${dateTime} --- closed:2019-11-25T18:05..2020-04-02T18:26
 Dates: can be one or a range
 created
 updated
@@ -296,13 +411,5 @@ merged
 
 
 
-Function declaration: 
-Future<List<dynamic>> fetch( {String owner, String name,
-  String type = 'issue',
-  String state = 'OPEN',
-  List<String> labels = null,
-
-  
-  })
 
  */

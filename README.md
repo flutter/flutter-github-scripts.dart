@@ -7,6 +7,10 @@ contributor, but you might find some snippets here that
 show you how to access Github using either GraphQL or the
 REST API.
 
+## Setup
+You must have an environment variable `GITHUB_TOKEN` set with a valid GitHub token 
+for any of these scripts to work.
+
 ## bin/prs_landed_weekly.dart
 
 Usage: `pub run bin/prs_landed_weekly.dart [-f from-date] [-t to-date]`
@@ -44,4 +48,9 @@ Returns a summary of the issue in Markdown format.
 Usage: `pub run bin/pr.dart pr-number`
 
 Returns a summary of the pull request in Markdown format.
+
+## bin/open_prs.dart
+Usage: `pub run bin/open_prs.dart`
+
+Returns a summary of the open pull requests in Markdown format.
 
