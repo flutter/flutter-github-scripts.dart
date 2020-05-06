@@ -91,15 +91,15 @@ Future<List<dynamic>> fetch( {String owner, String name,
           throw(page.errors.toString());
         }
 
-        var edges = page.data['repository']['issues']['edges'];
+        var edges = page.data['search']['nodes'];
         edges.forEach((edge) {
           dynamic item = type == GitHubIssueType.issue ? 
-            Issue.fromGraphQL(edge['node']) : 
-            PullRequest.fromGraphQL(edge['node']);
-          result.add(issue);
+            Issue.fromGraphQL(edge) : 
+            PullRequest.fromGraphQL(edge);
+          result.add(item);
         });
   
-        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['issues']['pageInfo']);
+        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data[['pageInfo']);
 
         done = !pageInfo.hasNextPage;
         if (!done) after = '"${pageInfo.endCursor}"';
@@ -231,9 +231,9 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
   final _queryIssuesOrPRs = 
   r'''
   query { 
-    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime}", type: ISSUE, first:25) {
+    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime}", type: ISSUE, first:25, after:${after}) {
       issueCount,
-      pageinfo ${pageInfoResponse}
+      pageInfo ${pageInfoResponse}
       nodes {
         ... on Issue ${issueResponse}
         ... on PullRequest ${pullRequestResponse}
@@ -380,36 +380,3 @@ class DateRange {
   }
   DateRange._internal(this._type, this._at, this._when, this._start, this._end);
 }
-
-/*
-Generic query
-query { 
-  search(query:"repo:${repositoryOwner}/${repositoryName} label:\"a: accessibility\" is:issue is:${state} is:${issueOrPr} closed:2019-11-25T18:05..2020-04-02T18:26", type: ISSUE, first:25) {
-    issueCount,
-    pageinfo ${pageInfoResponse}
-    nodes {
-      ... on Issue ${issueResponse}
-      ... on PullRequest ${pullRequestResponse}
-    } 
-	}
-}
-
-Need to insert:
-issueOrPr - "is: issue" | "is:pr"
-for single label:
-- Insert "label: \"${label}\"" into string.
-for multiple labels:
-- do each search sequentially, union results.
-state is one of "OPEN", "CLOSED", or "MERGED"
-labels: ${labels} - label:\"a: accessibility\"
-datetimerange: ${dateTime} --- closed:2019-11-25T18:05..2020-04-02T18:26
-Dates: can be one or a range
-created
-updated
-closed
-merged
-
-
-
-
- */

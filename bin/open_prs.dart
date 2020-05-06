@@ -38,6 +38,7 @@ void main(List<String> args) async {
   
   var pullRequests = await github.fetch(owner: 'flutter', 
     name: 'flutter', 
+    type: GitHubIssueType.pullRequest,
     state: GitHubIssueState.open);
   
 
