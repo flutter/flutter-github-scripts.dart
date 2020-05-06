@@ -37,9 +37,9 @@ Future<List<dynamic>> fetch( {String owner, String name,
     var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
     var stateString = '';
     switch(state) {
-      case GitHubIssueState.open: stateString = 'is:open'; break;
-      case GitHubIssueState.closed: stateString = 'is:closed'; break;
-      case GitHubIssueState.merged: stateString = 'is:merged'; break;
+      case GitHubIssueState.open: stateString = 'open'; break;
+      case GitHubIssueState.closed: stateString = 'closed'; break;
+      case GitHubIssueState.merged: stateString = 'merged'; break;
     }
     
     if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
@@ -82,7 +82,6 @@ Future<List<dynamic>> fetch( {String owner, String name,
           .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
           .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
           .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
-
         final options = QueryOptions(document: query);
 
         final page = await _client.query(options);
@@ -99,13 +98,15 @@ Future<List<dynamic>> fetch( {String owner, String name,
           result.add(item);
         });
   
-        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data[['pageInfo']);
+        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
 
         done = !pageInfo.hasNextPage;
         if (!done) after = '"${pageInfo.endCursor}"';
 
       } while( !done );
     }
+
+    return result;
   }
 
 
@@ -363,7 +364,7 @@ class DateRange {
       }
       return comparison + _at.toIso8601String();
     } else {
-      return _start.toIso8601String() + '..' + _end.toIso8601String();
+      return _start.toIso8601String().replaceAll('.000','') + '..' + _end.toIso8601String().replaceAll('.000','');
     }
   }
 

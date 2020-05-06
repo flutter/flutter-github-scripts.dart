@@ -37,9 +37,9 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   
-  var issue = await github.pullRequest(owner: 'flutter', 
+  var pr = await github.pullRequest(owner: 'flutter', 
     name: 'flutter', 
     number: opts.number);
   
-  print(issue.summary(linebreakAfter: true));
+  print(pr.summary(linebreakAfter: true));
 }

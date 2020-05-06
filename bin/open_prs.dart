@@ -42,7 +42,7 @@ void main(List<String> args) async {
     state: GitHubIssueState.open);
   
 
-  pullRequests.forEach((pullRequest) {
+  for(var pullRequest in pullRequests) {
     print(pullRequest.summary(linebreakAfter: true));
-  });
+  }
 }

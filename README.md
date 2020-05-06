@@ -49,8 +49,10 @@ Usage: `pub run bin/pr.dart pr-number`
 
 Returns a summary of the pull request in Markdown format.
 
-## bin/open_prs.dart
-Usage: `pub run bin/open_prs.dart`
+## bin/prs.dart
+Usage: `pub run bin/prs.dart`
 
-Returns a summary of the open pull requests in Markdown format.
+By default, returns a summary of the open pull requests in Markdown format.
+When passed --closed and two dates in ISO 8601 format, shows the range
+of PRs closed between those two dates inclusive.
 

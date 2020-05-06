@@ -10,8 +10,8 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
-  String get from => _results.rest[0];
-  String get to => _results.rest[1];
+  DateTime get from => DateTime.parse(_results.rest[0]);
+  DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
@@ -29,7 +29,9 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run issue.dart issue_number');
+    print('Usage: pub run prs.dart [-closed fromDate toDate]');
+    print('Prints PRs in flutter/flutter, flutter/engine repositories.');
+    print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
 }
@@ -37,12 +39,36 @@ class Options  {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
+
+  var repos = ['flutter', 'engine'];
+
   final token = Platform.environment['GITHUB_TOKEN'];
-  final github = Github(token);
-  
-  var issue = await github.issue(owner: 'flutter', 
-    name: 'flutter', 
-    number: opts.number);
-  
-  print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  final github = GitHub(token);
+
+  var state = GitHubIssueState.open;
+  DateRange when = null;
+  var rangeType = GitHubDateQueryType.none;
+  if (opts.showClosed) {
+    state = GitHubIssueState.closed;
+    when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
+    rangeType = GitHubDateQueryType.merged;
+  }
+
+  for(var repo in repos) {
+    var prs = await github.fetch(owner: 'flutter', 
+      name: repo, 
+      type: GitHubIssueType.pullRequest,
+      state: state,
+      dateQuery: rangeType,
+      dateRange: when
+    );
+      
+    print( opts.showClosed ? 
+      "## PRs landed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "## Open PRs in flutter/${repo}");
+
+    for(var pr in prs) {
+      print(pr.summary(linebreakAfter: true));
+    }
+  }
 }
