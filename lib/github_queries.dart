@@ -121,52 +121,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
 
       return Issue.fromGraphQL(page.data['repository']['issue']);
   }
-
-  Future<List<Issue>> issues({String owner, String name, String filterSpec = null}) async {
-    var filter = filterSpec == null ? '' : 
-    '''
-    filterBy: {
-              ${filterSpec}
-            }
-    ''';
-   
-    var result = List<Issue>();
-    var done = false;
-    var after = 'null';
-    do {
-      var query = _query_issues
-        .replaceAll(r'${repositoryOwner}', owner)
-        .replaceAll(r'${repositoryName}', name)
-        .replaceAll(r'${after}', after)
-        .replaceAll(r'${filter}', filter)
-        .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
-        .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse);
-
-      final options = QueryOptions(document: query);
-
-      final page = await _client.query(options);
-
-      if (page.hasErrors) {
-        throw(page.errors.toString());
-      }
-
-      var edges = page.data['repository']['issues']['edges'];
-      edges.forEach((edge) {
-        var issue = Issue.fromGraphQL(edge['node']);
-        result.add(issue);
-      });
- 
-      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['issues']['pageInfo']);
-
-      done = !pageInfo.hasNextPage;
-      if (!done) after = '"${pageInfo.endCursor}"';
-
-    } while( !done );
-
-    return result;
-  }
   
-
   Future<PullRequest> pullRequest({String owner, String name, int number}) async {
     var query = _query_pullRequest
       .replaceAll(r'${repositoryOwner}', owner)
@@ -181,47 +136,6 @@ Future<List<dynamic>> fetch( {String owner, String name,
       }
 
       return PullRequest.fromGraphQL(page.data['repository']['pullRequest']);
-  }
-
-// TODO: Generalize this and the next method into one method
-Future<List<PullRequest>> pullRequests({String owner, String name, List<String> states = null}) async {
-    var stateList = states == null ? '' : 
-    '''
-    states: ${states}
-    ''';
-   
-    var result = List<PullRequest>();
-    var done = false;
-    var after = 'null';
-    do {
-      var query = _query_pullRequests
-        .replaceAll(r'${repositoryOwner}', owner)
-        .replaceAll(r'${repositoryName}', name)
-        .replaceAll(r'${after}', after)
-        .replaceAll(r'${states}', stateList)
-        .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse)
-        .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse);
-
-      final options = QueryOptions(document: query);
-
-      final page = await _client.query(options);
-      if (page.hasErrors) {
-        throw(page.errors.toString());
-      }
-
-      var edges = page.data['repository']['pullRequests']['edges'];
-      edges.forEach((edge) {
-        var pullRequest = PullRequest.fromGraphQL(edge['node']);
-        result.add(pullRequest);
-      });
- 
-      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository']['pullRequests']['pageInfo']);
-
-      done = !pageInfo.hasNextPage;
-      if (!done) after = '"${pageInfo.endCursor}"';
-    } while( !done );
-
-    return result;
   }
 
   final _queryIssuesOrPRs = 
@@ -249,24 +163,6 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
   }
   ''';
 
-  final _query_issues = 
-  r'''
-  query { 
-    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-      issues(first: 25, 
-        after: ${after}, 
-        ${filter})
-      {
-        totalCount,
-        pageInfo ${pageInfoResponse}
-        edges {
-          node ${issueResponse}
-        }
-      }
-    }
-  }
-  ''';
-
   final _query_pullRequest = 
   r'''
   query { 
@@ -276,25 +172,6 @@ Future<List<PullRequest>> pullRequests({String owner, String name, List<String> 
     }
   }
   ''';
-
-  final _query_pullRequests = 
-  r'''
-  query { 
-    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-      pullRequests(first: 25, 
-        after: ${after}, 
-        ${states})
-      {
-        totalCount,
-        pageInfo ${pageInfoResponse}
-        edges {
-          node ${pullRequestResponse}
-        }
-      }
-    }
-  }
-  ''';
-
 }
 
 class _PageInfo {
