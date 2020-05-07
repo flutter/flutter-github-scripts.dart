@@ -8,10 +8,7 @@ import 'package:quiver/core.dart' show hash2;
 
 enum GitHubIssueType { issue, pullRequest }
 enum GitHubIssueState { open, closed, merged }
-
 enum GitHubDateQueryType { created, updated, closed, merged, none }
-
-
 
 class GitHub {
   HttpLink _httpLink; 
@@ -58,7 +55,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
     var labelFilters = [];
     if (labels != null && !labels.isEmpty) {
       for(var label in labels) {
-        labelFilters.add('label:\"${label}\"');
+        labelFilters.add('label:\\\"${label}\\\"');
       }
     } else {
       // We'll do just one query, with no filter
@@ -108,8 +105,6 @@ Future<List<dynamic>> fetch( {String owner, String name,
 
     return result;
   }
-
-
 
   Future<Issue> issue({String owner, String name, int number}) async {
     var query = _query_issue

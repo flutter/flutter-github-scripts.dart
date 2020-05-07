@@ -53,23 +53,34 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   
-  var issues = await github.fetch(owner: 'flutter', 
+  var openIssues = await github.fetch(owner: 'flutter', 
     name: 'flutter', 
     type: GitHubIssueType.issue,
     state: GitHubIssueState.open,
     labels: ["⚠ TODAY"]
   );
   
+  var closedIssues = await github.fetch(owner: 'flutter', 
+    name: 'flutter', 
+    type: GitHubIssueType.issue,
+    state: GitHubIssueState.closed,
+    labels: ["⚠ TODAY"]
+  );
+
   var open = List<Issue>();
   var openedThisPeriod = List<Issue>();
   var closedThisPeriod = List<Issue>();
 
-  issues.forEach((issue) {
+  openIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 && issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-    if (issue.state == "CLOSED" && issue.closedAt.compareTo(opts.from) >= 0 && issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
   });
   
+  closedIssues.forEach((issue) {
+    if (issue.state == "CLOSED" && issue.closedAt.compareTo(opts.from) >= 0 && issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
+    if (issue.createdAt.compareTo(opts.from) >= 0 && issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
+  });
+
   var fromStamp = opts.from.toIso8601String().substring(0,10);
   var toStamp = opts.to.toIso8601String().substring(0,10);
 
