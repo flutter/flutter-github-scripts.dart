@@ -253,3 +253,91 @@ class DateRange {
   }
   DateRange._internal(this._type, this._at, this._when, this._start, this._end);
 }
+
+enum ClusterType { byLabel, byAuthor }
+
+class Cluster {
+  ClusterType _type;
+  get type => _type;
+  SplayTreeMap<String, dynamic> _clusters;
+  get clusters => _clusters;
+  
+  static final _unlabeledKey = '__no labels__';
+
+  static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+    result[_unlabeledKey] = List<dynamic>();
+
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      if (item.labels != null) {
+        for (var label in item.labels.labels) {
+          var name = label.label;
+          if (!result.containsKey(name)) {
+            result[name] = List<dynamic>();
+          }
+          result[name].add(item);
+        }
+      } else {
+        result[_unlabeledKey].add(item);
+      }
+    }
+
+    return Cluster._internal(ClusterType.byLabel, result);
+  }
+
+  static Cluster byAuthor(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      var name = item.author.login;
+      if (!result.containsKey(name)) {
+        result[name] = List<dynamic>();
+      }
+      result[name].add(item);
+    }
+
+    return Cluster._internal(ClusterType.byAuthor, result);
+  }
+
+  String summary() {
+    return 'Cluster of ' + 
+      (type == ClusterType.byAuthor ? 'authors' : 'labels') + 
+      ' has ${this.clusters.keys.length} clusters';
+  }
+
+  String toString() => summary();
+
+  String toMarkdown() {
+    var result = '';
+
+    if (clusters.keys.length == 0) {
+      result = 'no items\n\n';
+    }
+    else {
+      
+      var kind = (clusters[clusters.keys.first].first is Issue ? 'issue(s)' : 'pull request(s)');
+      // Sort labels in descending order
+      List<String> keys = clusters.keys.toList();
+      keys.sort((a,b) => clusters[b].length - clusters[a].length);
+      // Remove the unlabled item if it's empty
+      if (clusters[_unlabeledKey]!=null && clusters[_unlabeledKey] .length == 0) keys.remove(_unlabeledKey);
+      // Dump all clusters
+      for (var clusterKey in keys) {
+        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length} ${kind}';
+        for(var item in clusters[clusterKey]) {
+          result = '${result}\n\n' + item.summary(linebreakAfter: true, boldInteresting: false);
+        }
+      }
+    }
+    return '${result}\n\n';
+  }
+
+  Cluster._internal(this._type, this._clusters);
+}
