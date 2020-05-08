@@ -18,6 +18,8 @@ class Options  {
   bool get authors => _results['authors'];
   bool get prs => _results['prs'];
   bool get issues => _results['issues'];
+  bool get alphabetize => _results['alphabetize'];
+  bool get customers => _results['customers-only'];
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
@@ -29,7 +31,9 @@ class Options  {
       ..addFlag('labels', defaultsTo: false, abbr: 'l', negatable: false, help: 'cluster by label')
       ..addFlag('authors', defaultsTo: false, abbr: 'a', negatable: false, help: 'cluster by authors')
       ..addFlag('prs', defaultsTo: false, abbr: 'p', negatable: false, help: 'cluster pull requests')
-      ..addFlag('issues', defaultsTo: false, abbr: 'i', negatable: false, help: 'cluster issues');
+      ..addFlag('issues', defaultsTo: false, abbr: 'i', negatable: false, help: 'cluster issues')
+      ..addFlag('alphabetize', defaultsTo: false, abbr: 'z', negatable: true, help: 'sort labels alphabetically')
+      ..addFlag('customers-only', defaultsTo: false, abbr: 'c', negatable: true, help: 'for labels, show only labels with `customer:`');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -63,6 +67,7 @@ class Options  {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
+  Set<String> keys = Set<String>();
 
   var repos = opts.prs ? ['flutter', 'engine'] : ['flutter'];
 
@@ -95,12 +100,27 @@ void main(List<String> args) async {
     if (opts.labels) clusters = Cluster.byLabel(items);
     if (opts.authors) clusters = Cluster.byAuthor(items);
 
-    print('## ' + (opts.issues ? 'Issues' : 'PRs' ) + ' by ' + (opts.authors ? 'author' : 'label') + 
-      ' for `flutter/${repo} ' + 
+    for(var key in clusters.clusters.keys) keys.add(key);
+
+    print('## ' + (opts.showClosed ? 'Closed ' : 'Open ') + (opts.issues ? 'issues' : 'PRs' ) + ' by ' + (opts.authors ? 'author' : 'label') + 
+      ' for `flutter/${repo}` ' + 
       (opts.showClosed ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}' : '') + '\n\n');
 
-    print(clusters.toMarkdown());
+    if(opts.customers) {
+      for(var label in clusters.clusters.key) {
+        if (label.indexOf('customer: ') != 0) clusters.remove(label);
+      }
+    }
 
-    print('${clusters.clusters.keys.length} unique ' + (opts.labels ? 'labels.' : 'users.' ) );
+    print(clusters.toMarkdown(opts.alphabetize ? ClusterReportSort.byKey : ClusterReportSort.byCount));
+
+    if (opts.authors) {
+      print('${clusters.clusters.keys.length} unique ' + (opts.labels ? 'labels.' : 'users') + ' across this repository.\n\n' );
+    }
   }
+
+  if (opts.authors) {
+    print('A total of ${keys.length} unique ' + (opts.labels ? 'labels' : 'users') + ' across all repositories.\n\n' );
+  }
+
 }
