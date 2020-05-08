@@ -385,7 +385,7 @@ class PullRequest {
       node['repository'] == null ? null : Repository.fromGraphQL(node['repository']));
   }
 
-  String summary({bool linebreakAfter = false}) {
+  String summary({bool linebreakAfter = false, bool boldInteresting = false}) {
     var labelsSummary = _labels.summary();
     var markdown = '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';

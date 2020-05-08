@@ -255,19 +255,22 @@ class DateRange {
 }
 
 enum ClusterType { byLabel, byAuthor }
+enum ClusterReportSort { byKey, byCount }
 
 class Cluster {
   ClusterType _type;
   get type => _type;
   SplayTreeMap<String, dynamic> _clusters;
   get clusters => _clusters;
+
+  void remove(String key) {
+    if (_clusters.containsKey(key)) _clusters.remove(key);
+  }
   
   static final _unlabeledKey = '__no labels__';
-
   static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
     result[_unlabeledKey] = List<dynamic>();
-
 
     for(var item in issuesOrPullRequests) {
       if( !(item is Issue) && !(item is PullRequest)) {
@@ -314,7 +317,7 @@ class Cluster {
 
   String toString() => summary();
 
-  String toMarkdown() {
+  String toMarkdown(ClusterReportSort sortType) {
     var result = '';
 
     if (clusters.keys.length == 0) {
@@ -325,7 +328,9 @@ class Cluster {
       var kind = (clusters[clusters.keys.first].first is Issue ? 'issue(s)' : 'pull request(s)');
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
-      keys.sort((a,b) => clusters[b].length - clusters[a].length);
+      keys.sort((a,b) => sortType == ClusterReportSort.byCount ? 
+        clusters[b].length - clusters[a].length : 
+        a.compareTo(b));
       // Remove the unlabled item if it's empty
       if (clusters[_unlabeledKey]!=null && clusters[_unlabeledKey] .length == 0) keys.remove(_unlabeledKey);
       // Dump all clusters

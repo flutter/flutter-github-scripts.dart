@@ -26,8 +26,6 @@ class Options  {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('closed', defaultsTo: false, abbr: 'o', negatable: true, help: 'cluster open issues')
-      ..addOption('from', defaultsTo: '2019-11-01', abbr: 'f', help: 'from date, ISO format yyyy-mm-dd')
-      ..addOption('to', defaultsTo: DateTime.now().toIso8601String(), abbr: 't', help: 'to date, ISO format yyyy-mm-dd')
       ..addFlag('labels', defaultsTo: false, abbr: 'l', negatable: false, help: 'cluster by label')
       ..addFlag('authors', defaultsTo: false, abbr: 'a', negatable: false, help: 'cluster by authors')
       ..addFlag('prs', defaultsTo: false, abbr: 'p', negatable: false, help: 'cluster pull requests')
@@ -67,7 +65,7 @@ class Options  {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
-  Set<String> keys = Set<String>();
+  var keys = Set<String>();
 
   var repos = opts.prs ? ['flutter', 'engine'] : ['flutter'];
 
@@ -107,9 +105,11 @@ void main(List<String> args) async {
       (opts.showClosed ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}' : '') + '\n\n');
 
     if(opts.customers) {
-      for(var label in clusters.clusters.key) {
-        if (label.indexOf('customer: ') != 0) clusters.remove(label);
+      Set<String> toRemove = Set<String>();
+      for(var label in clusters.clusters.keys) {
+        if (label.indexOf('customer: ') != 0) toRemove.add(label);
       }
+      for(var label in toRemove) clusters.remove(label);
     }
 
     print(clusters.toMarkdown(opts.alphabetize ? ClusterReportSort.byKey : ClusterReportSort.byCount));
