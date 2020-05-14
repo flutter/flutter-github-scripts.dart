@@ -37,7 +37,7 @@ void printHeader(Options opts) {
   var fromStamp = opts.from.toIso8601String().substring(0,10);
   var toStamp = opts.to.toIso8601String().substring(0,10);
 
-  print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@gooogle.com\\n');
+  print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@gooogle.com\n\n');
   if (DateTime.now().weekday == DateTime.tuesday) print('Subject: Flutter TODAY Tuesday report!\n');
   if (DateTime.now().weekday == DateTime.thursday) print('Subject: Flutter TODAY Thursday report!\n');
   if (DateTime.now().weekday != DateTime.tuesday &&
