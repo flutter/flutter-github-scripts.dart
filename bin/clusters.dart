@@ -12,8 +12,8 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
-  DateTime get from => DateTime.parse(_results.rest[0]);
-  DateTime get to => DateTime.parse(_results.rest[1]);
+  DateTime get from => _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
+  DateTime get to => _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
   bool get labels => _results['labels'];
   bool get authors => _results['authors'];
   bool get assignees => _results['assignees'];

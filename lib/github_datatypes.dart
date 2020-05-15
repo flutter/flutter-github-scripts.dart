@@ -66,14 +66,47 @@ class TimelineItem {
   String get title => _title;
   int _number;
   int get number => _number;
+  Actor _actor;
+  Actor get actor => _actor;
+  DateTime _createdAt;
+  DateTime get createdAt => _createdAt;
 
-  TimelineItem(this._type, this._title, this._number);
+  TimelineItem(this._type, this._title, this._number, this._actor, this._createdAt);
 
   static TimelineItem fromGraphQL(dynamic node) {
+    String title  = null;
+    int number = null;
+    Actor actor = null;
+
+    if (node['__typename'] == 'MilestonedEvent' || node['__typename'] == 'DemilestonedEvent') {
+      title = node['milestoneTitle'];
+      actor = Actor.fromGraphQL(node['actor']);
+    } else if (node['__typename'] == 'CrossReferencedEvent') {
+      title = node['source']['title'];
+      number = node['source']['number'];
+    }
+
     return TimelineItem(
       node['__typename'], 
-      node['source']['title'], 
-      node['source']['number']);
+      title,
+      number,
+      actor,
+      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']));
+  }
+
+  String toString() {
+    var result = '${_type} (' + _createdAt.toIso8601String() + ')';
+    result = '${result}' + (_actor != null ? ' by ${actor.login}' : '');
+    
+    if (type == 'CrossReferencedEvent') {
+      result = '${result} [${_number}](https://github.com/flutter/flutter/issues/${_number}) ${_title}';
+    } else if (_type == 'MilestonedEvent') {
+      result = '${result} > ${title}';
+    } else if (_type == 'DemilestonedEvent') {
+      result = '${result} < ${title}';
+    }
+
+    return result;
   }
 
   @override
@@ -100,12 +133,10 @@ class Timeline {
   
   String summary() {
     String markdown = '';
-    _timeline.forEach((entry) {
-      markdown = '${markdown} <${entry.type}> [${entry.number}](https://github.com/flutter/flutter/issues/${entry.number}) ${entry.title}';
-      if (entry != _timeline.last) markdown = markdown + ',\n';
-    });
-    markdown = markdown + '\n\n';
-    return markdown;
+    _timeline.forEach((entry) =>
+      markdown = '${markdown}' + entry.toString() + '\n\n'
+    );
+    return markdown.substring(0, markdown.length-2);
   }
   String toString() {
     return summary();
@@ -318,7 +349,7 @@ class Issue {
       nameWithOwner
     },
     timelineItems(last: 100, 
-    itemTypes:[CROSS_REFERENCED_EVENT]) {
+    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT]) {
       pageInfo {
         startCursor,
         hasNextPage,
@@ -327,6 +358,7 @@ class Issue {
       nodes {
         __typename
         ... on CrossReferencedEvent {
+          createdAt,
           source {
             __typename
             ...  on PullRequest {
@@ -338,6 +370,25 @@ class Issue {
               number,
             }
           }
+        }
+        ... on MilestonedEvent {
+          createdAt,
+          actor {
+          	login,
+      			resourcePath,
+      			url
+          }, 
+          id,
+          milestoneTitle
+        }
+        ... on DemilestonedEvent {
+          actor {
+          	login,
+      			resourcePath,
+      			url
+          }, 
+          id, 
+          milestoneTitle
         }
       }
     }

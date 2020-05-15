@@ -42,4 +42,6 @@ void main(List<String> args) async {
     number: opts.number);
   
   print(issue.summary(boldInteresting: false, linebreakAfter: true));
+
+  print(issue.timeline.toString());
 }
