@@ -57,7 +57,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run clusters.dart [-closed fromDate toDate] [-labels] [-authors] [-prs] [-issues]');
+    print('Usage: pub run clusters.dart [-closed fromDate toDate] [-labels] [-authors] [-assignees] [-prs] [-issues]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);

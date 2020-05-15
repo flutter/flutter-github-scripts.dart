@@ -59,7 +59,7 @@ of PRs closed between those two dates inclusive.
 ## bin/clusters.dart
 Usage: `pub run bin/clusters.dart arguments`
 
-Returns Markdown containing clusters of issues or PRs by either label or author according to
+Returns Markdown containing clusters of issues or PRs by label, assignee, or author according to
 the arguments:
 
   *  Pass `prs` to cluster pull requests, or `issues` to cluster issues.
