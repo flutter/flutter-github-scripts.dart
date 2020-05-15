@@ -254,7 +254,7 @@ class DateRange {
   DateRange._internal(this._type, this._at, this._when, this._start, this._end);
 }
 
-enum ClusterType { byLabel, byAuthor }
+enum ClusterType { byLabel, byAuthor, byAssignee }
 enum ClusterReportSort { byKey, byCount }
 
 class Cluster {
@@ -268,6 +268,8 @@ class Cluster {
   }
   
   static final _unlabeledKey = '__no labels__';
+  static final _unassignedKey = '__unassigned__';
+
   static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
     result[_unlabeledKey] = List<dynamic>();
@@ -309,6 +311,31 @@ class Cluster {
     return Cluster._internal(ClusterType.byAuthor, result);
   }
 
+  static Cluster byAssignees(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      if (item.assignees == null || item.assignees.length == 0) {
+        if (!result.containsKey(_unassignedKey)) {
+          result[_unassignedKey] = List<dynamic>();
+        }
+        result[_unassignedKey].add(item);
+      } else for(var assignee in item.assignees) {
+        var name = assignee.login;
+        if (!result.containsKey(name)) {
+          result[name] = List<dynamic>();
+        }
+        result[name].add(item);
+      }
+    }
+
+    return Cluster._internal(ClusterType.byAssignee, result);
+
+  }
+
   String summary() {
     return 'Cluster of ' + 
       (type == ClusterType.byAuthor ? 'authors' : 'labels') + 
@@ -317,14 +344,13 @@ class Cluster {
 
   String toString() => summary();
 
-  String toMarkdown(ClusterReportSort sortType) {
+  String toMarkdown(ClusterReportSort sortType, bool skipEmpty) {
     var result = '';
 
     if (clusters.keys.length == 0) {
       result = 'no items\n\n';
     }
     else {
-      
       var kind = (clusters[clusters.keys.first].first is Issue ? 'issue(s)' : 'pull request(s)');
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
@@ -332,7 +358,12 @@ class Cluster {
         clusters[b].length - clusters[a].length : 
         a.compareTo(b));
       // Remove the unlabled item if it's empty
-      if (clusters[_unlabeledKey]!=null && clusters[_unlabeledKey] .length == 0) keys.remove(_unlabeledKey);
+      if (clusters[_unlabeledKey] != null && clusters[_unlabeledKey].length == 0) keys.remove(_unlabeledKey);
+      if (clusters[_unassignedKey] != null && clusters[_unassignedKey].length == 0) keys.remove(_unassignedKey);
+      if (skipEmpty) {
+        if (keys.contains(_unlabeledKey)) keys.remove(_unlabeledKey);
+        if (keys.contains(_unassignedKey)) keys.remove(_unassignedKey);
+      }
       // Dump all clusters
       for (var clusterKey in keys) {
         result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length} ${kind}';

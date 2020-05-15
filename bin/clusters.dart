@@ -16,6 +16,7 @@ class Options  {
   DateTime get to => DateTime.parse(_results.rest[1]);
   bool get labels => _results['labels'];
   bool get authors => _results['authors'];
+  bool get assignees => _results['assignees'];
   bool get prs => _results['prs'];
   bool get issues => _results['issues'];
   bool get alphabetize => _results['alphabetize'];
@@ -28,6 +29,7 @@ class Options  {
       ..addFlag('closed', defaultsTo: false, abbr: 'o', negatable: true, help: 'cluster open issues')
       ..addFlag('labels', defaultsTo: false, abbr: 'l', negatable: false, help: 'cluster by label')
       ..addFlag('authors', defaultsTo: false, abbr: 'a', negatable: false, help: 'cluster by authors')
+      ..addFlag('assignees', defaultsTo: false, negatable: false, help: 'cluster by assignee')
       ..addFlag('prs', defaultsTo: false, abbr: 'p', negatable: false, help: 'cluster pull requests')
       ..addFlag('issues', defaultsTo: false, abbr: 'i', negatable: false, help: 'cluster issues')
       ..addFlag('alphabetize', defaultsTo: false, abbr: 'z', negatable: true, help: 'sort labels alphabetically')
@@ -38,8 +40,8 @@ class Options  {
       if (_results['labels'] && _results['authors']) { 
         throw('cannot cluster on both labels and authors');
       }
-      if (!_results['labels'] && !_results['authors']) { 
-        throw(ArgParserException('need to cluster on either labels or pull requests!'));
+      if (!_results['labels'] && !_results['authors'] && !_results['assignees']) { 
+        throw(ArgParserException('need to labels, authors, or assignees!'));
       }
       if (_results['prs'] && _results['issues']) { 
         throw(ArgParserException('cannot cluster both pull requests and issues at the same time!'));
@@ -97,10 +99,16 @@ void main(List<String> args) async {
     Cluster clusters;
     if (opts.labels) clusters = Cluster.byLabel(items);
     if (opts.authors) clusters = Cluster.byAuthor(items);
+    if (opts.assignees) clusters = Cluster.byAssignees(items);
 
     for(var key in clusters.clusters.keys) keys.add(key);
 
-    print('## ' + (opts.showClosed ? 'Closed ' : 'Open ') + (opts.issues ? 'issues' : 'PRs' ) + ' by ' + (opts.authors ? 'author' : 'label') + 
+    var what = '';
+    if (opts.authors) what = 'authors';
+    if (opts.labels) what = 'labels';
+    if (opts.assignees) what = 'owners';
+
+    print('## ' + (opts.showClosed ? 'Closed ' : 'Open ') + (opts.issues ? 'issues' : 'PRs' ) + ' by ${what}' + 
       ' for `flutter/${repo}` ' + 
       (opts.showClosed ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}' : '') + '\n\n');
 
@@ -112,7 +120,7 @@ void main(List<String> args) async {
       for(var label in toRemove) clusters.remove(label);
     }
 
-    print(clusters.toMarkdown(opts.alphabetize ? ClusterReportSort.byKey : ClusterReportSort.byCount));
+    print(clusters.toMarkdown((opts.alphabetize ? ClusterReportSort.byKey : ClusterReportSort.byCount), true));
 
     if (opts.authors) {
       print('${clusters.clusters.keys.length} unique ' + (opts.labels ? 'labels.' : 'users') + ' across this repository.\n\n' );
