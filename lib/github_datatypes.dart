@@ -183,6 +183,8 @@ class Issue {
   get state => _state;
   Actor _author;
   get author => _author;
+  List<Actor> _assignees;
+  get assignees => _assignees;
   String _body;
   get body => _body;
   Labels _labels;
@@ -207,6 +209,7 @@ class Issue {
     this._number,
     this._state,
     this._author,
+    this._assignees,
     this._body,
     this._labels,
     this._url,
@@ -220,11 +223,19 @@ class Issue {
    
   // Passed a node containing an issue, return the issue
   static Issue fromGraphQL(dynamic node) {
+    List<Actor> assignees = null;
+    if (node['assignees']['edges'] != null && node['assignees']['edges'].length != 0) {
+      assignees = List<Actor>();
+      for(var node in node['assignees']['edges']) {
+        assignees.add(Actor.fromGraphQL(node['node']));
+      }
+    }
     return Issue(node['title'],
       node['id'],
       node['number'],
       node['state'],
       node['author'] == null ? null : Actor.fromGraphQL(node['author']),
+      assignees,
       node['body'],
       node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
       node['url'],
@@ -245,7 +256,15 @@ class Issue {
 
   String summary({bool boldInteresting = true, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
-    var markdown = '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
+    var markdown = '[${this.number}](${this.url})';
+    if (_assignees == null || _assignees.length == 0) markdown = '${markdown} > UNASSIGNED'; else
+    {
+      markdown = '${markdown} > (';
+      _assignees.forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
+      markdown = markdown.substring(0, markdown.length-2);
+      markdown = '${markdown})';
+    }
+    markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (boldInteresting && _labels.intersect(_interesting)) markdown = '**' + markdown + '**';
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
@@ -272,6 +291,15 @@ class Issue {
       login,
       resourcePath,
       url
+    },
+    assignees(after: null, last: 100) {
+      edges {
+        node {
+          login,
+          resourcePath,
+          url
+        }
+      }
     },
     body,
     labels(first:100) {
@@ -328,6 +356,8 @@ class PullRequest {
   get state => _state;
   Actor _author;
   get author => _author;
+  List<Actor> _assignees;
+  get assignees => _assignees;
   String _body;
   get body => _body;
   Labels _labels;
@@ -354,6 +384,7 @@ class PullRequest {
     this._number,
     this._state,
     this._author,
+    this._assignees,
     this._body,
     this._labels,
     this._url,
@@ -368,11 +399,19 @@ class PullRequest {
    
   // Passed a node containing an issue, return the issue
   static PullRequest fromGraphQL(dynamic node) {
+    List<Actor> assignees = null;
+    if (node['assignees']['edges'] != null && node['assignees']['edges'].length != 0) {
+      assignees = List<Actor>();
+      for(var node in node['assignees']['edges']) {
+        assignees.add(Actor.fromGraphQL(node['node']));
+      }
+    }
     return PullRequest(node['title'],
       node['id'],
       node['number'],
       node['state'],
       node['author'] == null ? null : Actor.fromGraphQL(node['author']),
+      assignees,
       node['body'],
       node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
       node['url'],
@@ -414,6 +453,15 @@ class PullRequest {
       resourcePath,
       url
     },
+    assignees(after: null, last: 100) {
+      edges {
+        node {
+          login,
+          resourcePath,
+          url
+        }
+      }
+    },    
     body,
     labels(first:100) {
       edges {
