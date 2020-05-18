@@ -351,6 +351,9 @@ class Cluster {
       result = 'no items\n\n';
     }
     else {
+      print(clusters.keys);
+      print(clusters.keys.first);
+      print(clusters[clusters.keys.first]);
       var kind = (clusters[clusters.keys.first].first is Issue ? 'issue(s)' : 'pull request(s)');
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
