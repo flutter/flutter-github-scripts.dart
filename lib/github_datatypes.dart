@@ -84,6 +84,8 @@ class TimelineItem {
     } else if (node['__typename'] == 'CrossReferencedEvent') {
       title = node['source']['title'];
       number = node['source']['number'];
+    } else if (node['__typename'] == 'AssignedEvent' || node['__typename'] == 'UnassignedEvent') {
+      actor = Actor.fromGraphQL(node['assignee']);
     }
 
     return TimelineItem(
@@ -104,6 +106,10 @@ class TimelineItem {
       result = '${result} > ${title}';
     } else if (_type == 'DemilestonedEvent') {
       result = '${result} < ${title}';
+    } else if (_type == 'AssignedEvent') {
+      result = '${result} > ${actor.login}';    
+    } else if (_type == 'UnassignedEvent') {
+      result = '${result} < ${actor.login}'; 
     }
 
     return result;
@@ -349,7 +355,7 @@ class Issue {
       nameWithOwner
     },
     timelineItems(last: 100, 
-    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT]) {
+    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) {
       pageInfo {
         startCursor,
         hasNextPage,
@@ -382,6 +388,7 @@ class Issue {
           milestoneTitle
         }
         ... on DemilestonedEvent {
+          createdAt,          
           actor {
           	login,
       			resourcePath,
@@ -389,6 +396,31 @@ class Issue {
           }, 
           id, 
           milestoneTitle
+        }
+        ... on AssignedEvent {
+          createdAt,          
+          assignee {
+            ... on User {
+              login,
+              resourcePath,
+              url
+            }
+            ... on Bot {
+              login,
+              resourcePath,
+              url            
+            }
+          }
+        }
+        ... on UnassignedEvent {
+          createdAt,          
+          assignee {
+            ... on User {
+              login,
+              resourcePath,
+              url
+            }
+          }          
         }
       }
     }
