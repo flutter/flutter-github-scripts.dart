@@ -152,6 +152,7 @@ class Timeline {
 
   Timeline(this._timeline);
   static Timeline fromGraphQL(dynamic node) {
+    assert(node['pageInfo']['hasNextPage'] == false);
     var result = Timeline(List<TimelineItem>());
     for (dynamic n in node['nodes']) {
       result.append(TimelineItem.fromGraphQL(n));
@@ -354,7 +355,7 @@ class Issue {
     repository {
       nameWithOwner
     },
-    timelineItems(last: 100, 
+    timelineItems(first: 100, 
     itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) {
       pageInfo {
         startCursor,
