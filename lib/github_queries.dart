@@ -351,10 +351,8 @@ class Cluster {
       result = 'no items\n\n';
     }
     else {
-      print(clusters.keys);
-      print(clusters.keys.first);
-      print(clusters[clusters.keys.first]);
-      var kind = (clusters[clusters.keys.first].first is Issue ? 'issue(s)' : 'pull request(s)');
+      // Pick the last item -- the first might be a "__no entries__" label
+      var kind = (clusters[clusters.keys.last].first is Issue ? 'issue(s)' : 'pull request(s)');
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
       keys.sort((a,b) => sortType == ClusterReportSort.byCount ? 
