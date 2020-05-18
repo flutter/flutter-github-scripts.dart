@@ -142,7 +142,7 @@ class Timeline {
     _timeline.forEach((entry) =>
       markdown = '${markdown}' + entry.toString() + '\n\n'
     );
-    return markdown.substring(0, markdown.length-2);
+    return markdown.length > 2 ? markdown.substring(0, markdown.length-2) : markdown;
   }
   String toString() {
     return summary();
@@ -159,6 +159,65 @@ class Timeline {
     }
     return result;
   }
+}
+
+class Milestone {
+  String _title;
+  get title => _title;
+  String _id;
+  get id => _id;
+  int _number;
+  get number => _number;
+  String _url;
+  get url => _url;
+  bool _closed;
+  get closed => closed;
+  DateTime _createdAt;
+  get createdAt => _createdAt;
+  DateTime _closedAt;
+  get closedAt => _closedAt;
+  DateTime _dueOn;
+  get dueOn => _dueOn;
+
+  Milestone(this._title,
+    this._id,
+    this._number,
+    this._url,
+    this._closed,
+    this._createdAt,
+    this._closedAt,
+    this._dueOn);
+
+  static Milestone fromGraphQL(dynamic node) {
+    return Milestone(
+      node['title'],
+      node['id'],
+      node['number'],
+      node['url'],
+      node['closed'],
+      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+      node['closedAt'] == null ? null : DateTime.parse(node['closedAt']),
+      node['dueOn'] == null ? null : DateTime.parse(node['dueOn'])
+    );
+  }
+
+  String toString() {
+    return 'due on ${dueOn} (${title})';
+  }
+
+  static final jqueryResponse = 
+  '''
+    milestone {
+      title,
+      id,
+      number,
+      url,
+      closed,
+      createdAt,
+      closedAt,
+      dueOn,
+    }
+  ''';
 }
 
 class Repository {
@@ -239,6 +298,8 @@ class Issue {
   get updatedAt => _updatedAt;
   Repository _repository;
   get repository => _repository;
+  Milestone _milestone;
+  get milestone => _milestone;
   Timeline _timeline;
   get timeline => _timeline;
 
@@ -256,6 +317,7 @@ class Issue {
     this._lastEditAt,
     this._updatedAt,
     this._repository,
+    this._milestone,
     this._timeline
   );
    
@@ -282,6 +344,7 @@ class Issue {
       node['lastEditedAt'] == null ? null : DateTime.parse(node['lastEditedAt']),
       node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']),
       node['repository'] == null ? null : Repository.fromGraphQL(node['repository']),
+      node['milestone'] == null ? null : Milestone.fromGraphQL(node['milestone']),
       node['timelineItems'] == null ? null : Timeline.fromGraphQL(node['timelineItems']));
   }
 
@@ -319,7 +382,7 @@ class Issue {
   int get hashCode => _id.hashCode;
 
   static final jqueryResponse = 
-  r'''
+  '''
   {
     title,
     id,
@@ -355,6 +418,7 @@ class Issue {
     repository {
       nameWithOwner
     },
+    ${Milestone.jqueryResponse},
     timelineItems(first: 100, 
     itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) {
       pageInfo {
@@ -444,6 +508,8 @@ class PullRequest {
   get assignees => _assignees;
   String _body;
   get body => _body;
+  Milestone _milestone;
+  get milestone => _milestone;
   Labels _labels;
   get labels => _labels;
   String _url;
@@ -470,6 +536,7 @@ class PullRequest {
     this._author,
     this._assignees,
     this._body,
+    this._milestone,
     this._labels,
     this._url,
     this._merged,
@@ -497,6 +564,7 @@ class PullRequest {
       node['author'] == null ? null : Actor.fromGraphQL(node['author']),
       assignees,
       node['body'],
+      node['milestone'] == null ? null : Milestone.fromGraphQL(node['milestone']),
       node['labels'] == null ? null : Labels.fromGraphQL(node['labels']),
       node['url'],
       node['merged'],
@@ -526,7 +594,7 @@ class PullRequest {
   int get hashCode => _id.hashCode;
 
   static final jqueryResponse = 
-  r'''
+  '''
   {
     title,
     id,
@@ -547,6 +615,7 @@ class PullRequest {
       }
     },    
     body,
+    ${Milestone.jqueryResponse},
     labels(first:100) {
       edges {
         node {
@@ -566,4 +635,148 @@ class PullRequest {
   }
 
   ''';
+}
+
+enum ClusterType { byLabel, byAuthor, byAssignee, byMilestone }
+enum ClusterReportSort { byKey, byCount }
+
+class Cluster {
+  ClusterType _type;
+  get type => _type;
+  SplayTreeMap<String, dynamic> _clusters;
+  get clusters => _clusters;
+
+  void remove(String key) {
+    if (_clusters.containsKey(key)) _clusters.remove(key);
+  }
+  
+  static final _unlabeledKey = '__no labels__';
+  static final _unassignedKey = '__unassigned__';
+  static final _noMilestoneKey = '__no milestone__';
+
+  static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+    result[_unlabeledKey] = List<dynamic>();
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      if (item.labels != null) {
+        for (var label in item.labels.labels) {
+          var name = label.label;
+          if (!result.containsKey(name)) {
+            result[name] = List<dynamic>();
+          }
+          result[name].add(item);
+        }
+      } else {
+        result[_unlabeledKey].add(item);
+      }
+    }
+
+    return Cluster._internal(ClusterType.byLabel, result);
+  }
+
+  static Cluster byAuthor(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      var name = item.author.login;
+      if (!result.containsKey(name)) {
+        result[name] = List<dynamic>();
+      }
+      result[name].add(item);
+    }
+
+    return Cluster._internal(ClusterType.byAuthor, result);
+  }
+
+  static Cluster byAssignees(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+    result[_unassignedKey] = List<dynamic>();
+
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+      if (item.assignees == null || item.assignees.length == 0) {
+        result[_unassignedKey].add(item);
+      } else for(var assignee in item.assignees) {
+        var name = assignee.login;
+        if (!result.containsKey(name)) {
+          result[name] = List<dynamic>();
+        }
+        result[name].add(item);
+      }
+    }
+
+    return Cluster._internal(ClusterType.byAssignee, result);
+  }
+
+  static Cluster byMilestone(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+    result[_noMilestoneKey] = List<dynamic>(); 
+
+    for (var item in issuesOrPullRequests) {
+      if (!(item is Issue) && !(item is PullRequest)) {
+        throw('invalid type!');
+      }
+    }
+    throw('not implemented!');
+
+    // return Cluster._internal(ClusterType.byMilestone, result);
+  }
+
+  String summary() {
+    var result = 'Cluster of';
+    switch(type) {
+        case ClusterType.byAssignee: result = '${result} assignees'; break;
+        case ClusterType.byAuthor: result = '${result} authors'; break;
+        case ClusterType.byLabel: result = '${result} labels'; break;
+        case ClusterType.byMilestone: result = '${result} milestones'; break;        
+    }
+    result = '${result} has ${this.clusters.keys.length} clusters';
+    return result;
+  }
+
+  String toString() => summary();
+
+  String toMarkdown(ClusterReportSort sortType, bool skipEmpty) {
+    var result = '';
+
+    if (clusters.keys.length == 0) {
+      result = 'no items\n\n';
+    }
+    else {
+      // Pick the last item -- the first might be a "__no entries__" label
+      var kind = (clusters[clusters.keys.last].first is Issue ? 'issue(s)' : 'pull request(s)');
+      // Sort labels in descending order
+      List<String> keys = clusters.keys.toList();
+      keys.sort((a,b) => sortType == ClusterReportSort.byCount ? 
+        clusters[b].length - clusters[a].length : 
+        a.compareTo(b));
+      // Remove the unlabled item if it's empty
+      if (clusters[_unlabeledKey] != null && clusters[_unlabeledKey].length == 0) keys.remove(_unlabeledKey);
+      if (clusters[_unassignedKey] != null && clusters[_unassignedKey].length == 0) keys.remove(_unassignedKey);
+      if (clusters[_noMilestoneKey] != null && clusters[_noMilestoneKey].length == 0) keys.remove(_noMilestoneKey);
+      if (skipEmpty) {
+        if (keys.contains(_unlabeledKey)) keys.remove(_unlabeledKey);
+        if (keys.contains(_unassignedKey)) keys.remove(_unassignedKey);
+      }
+      // Dump all clusters
+      for (var clusterKey in keys) {
+        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length} ${kind}';
+        for(var item in clusters[clusterKey]) {
+          result = '${result}\n\n' + item.summary(linebreakAfter: true, boldInteresting: false);
+        }
+      }
+    }
+    return '${result}\n\n';
+  }
+
+  Cluster._internal(this._type, this._clusters);
 }

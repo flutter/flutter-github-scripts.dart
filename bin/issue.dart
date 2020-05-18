@@ -42,6 +42,10 @@ void main(List<String> args) async {
     number: opts.number);
   
   print(issue.summary(boldInteresting: false, linebreakAfter: true));
-
-  print(issue.timeline.toString());
+  print('${issue.timeline}\n\n');
+  if (issue.milestone != null) {
+    print('Milestone: ${issue.milestone}');
+  } else {
+    print('no milestone');
+  }
 }
