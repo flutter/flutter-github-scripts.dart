@@ -40,7 +40,7 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  var repos = ['flutter', 'engine'];
+  var repos = ['flutter'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -51,13 +51,13 @@ void main(List<String> args) async {
   if (opts.showClosed) {
     state = GitHubIssueState.closed;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-    rangeType = GitHubDateQueryType.merged;
+    rangeType = GitHubDateQueryType.closed;
   }
 
   for(var repo in repos) {
-    var prs = await github.fetch(owner: 'flutter', 
+    var issues = await github.fetch(owner: 'flutter', 
       name: repo, 
-      type: GitHubIssueType.pullRequest,
+      type: GitHubIssueType.issue,
       state: state,
       dateQuery: rangeType,
       dateRange: when
@@ -67,8 +67,8 @@ void main(List<String> args) async {
       "## PRs landed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
       "## Open PRs in flutter/${repo}");
 
-    for(var pr in prs) {
-      print(pr.summary(linebreakAfter: true));
+    for(var issue in issues) {
+      print(issue.verbose(linebreakAfter: true));
     }
   }
 }

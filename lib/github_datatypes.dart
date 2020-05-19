@@ -358,6 +358,15 @@ class Issue {
   String summary({bool boldInteresting = true, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
     var markdown = '[${this.number}](${this.url})';
+    markdown = '${markdown} ${this.title} ${labelsSummary}';
+    if (boldInteresting && _labels.intersect(_interesting)) markdown = '**' + markdown + '**';
+    if (linebreakAfter) markdown = markdown + '\n';
+    return markdown;
+  }
+
+  String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
+    var labelsSummary = _labels.summary();
+    var markdown = '[${this.number}](${this.url})';
     if (_assignees == null || _assignees.length == 0) markdown = '${markdown} > UNASSIGNED'; else
     {
       markdown = '${markdown} > (';
@@ -365,6 +374,8 @@ class Issue {
       markdown = markdown.substring(0, markdown.length-2);
       markdown = '${markdown})';
     }
+    if (_milestone == null) markdown = '${markdown} with no milestone'; 
+    else markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';    
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (boldInteresting && _labels.intersect(_interesting)) markdown = '**' + markdown + '**';
     if (linebreakAfter) markdown = markdown + '\n';
@@ -582,6 +593,24 @@ class PullRequest {
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
   }
+
+  String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
+    var labelsSummary = _labels.summary();
+    var markdown = '[${this.number}](${this.url})';
+    if (_assignees == null || _assignees.length == 0) markdown = '${markdown} > UNASSIGNED'; else
+    {
+      markdown = '${markdown} > (';
+      _assignees.forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
+      markdown = markdown.substring(0, markdown.length-2);
+      markdown = '${markdown})';
+    }
+    if (_milestone == null) markdown = '${markdown} with no milestone'; 
+    else markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';    
+    markdown = '${markdown} ${this.title} ${labelsSummary}';
+    if (linebreakAfter) markdown = markdown + '\n';
+    return markdown;
+  }
+
 
   @override
   bool operator==(Object other) =>
