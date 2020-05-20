@@ -31,12 +31,12 @@ Future<List<dynamic>> fetch( {String owner, String name,
   GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
   DateRange dateRange = null
   }) async {
-    var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
+    var typeString = type == GitHubIssueType.issue ? 'issues' : 'pullRequests';
     var stateString = '';
     switch(state) {
-      case GitHubIssueState.open: stateString = 'open'; break;
-      case GitHubIssueState.closed: stateString = 'closed'; break;
-      case GitHubIssueState.merged: stateString = 'merged'; break;
+      case GitHubIssueState.open: stateString = 'OPEN'; break;
+      case GitHubIssueState.closed: stateString = 'CLOSED'; break;
+      case GitHubIssueState.merged: stateString = 'MERGED'; break;
     }
     
     if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
@@ -57,50 +57,76 @@ Future<List<dynamic>> fetch( {String owner, String name,
       for(var label in labels) {
         labelFilters.add('label:\\\"${label}\\\"');
       }
-    } else {
-      // We'll do just one query, with no filter
-      labelFilters.add('');
-    }
+    } 
 
-   var result = List<dynamic>();
-    // For each label, do the query.
-    for(var labelFilter in labelFilters) {
-      var done = false;
-      var after = 'null';
-      do {
-        var query = _queryIssuesOrPRs
-          .replaceAll(r'${repositoryOwner}', owner)
-          .replaceAll(r'${repositoryName}', name)
-          .replaceAll(r'${after}', after)
-          .replaceAll(r'${label}', labelFilter)
-          .replaceAll(r'${state}', stateString)
-          .replaceAll(r'${issueOrPr}', typeString)
-          .replaceAll(r'${dateTime}', dateString)          
-          .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
-          .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
-          .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
-        final options = QueryOptions(document: query);
+    var result = List<dynamic>();
+    var done = false;
+    int count = 0;
+    int addedCount = 0;
+    var after = 'null';
+    do {
+      var query = _queryIssuesOrPRs
+        .replaceAll(r'${repositoryOwner}', owner)
+        .replaceAll(r'${repositoryName}', name)
+        .replaceAll(r'${type}', typeString)
+        .replaceAll(r'${after}', after)
+        .replaceAll(r'${state}', stateString)
+        .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
+        .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.jqueryResponse : PullRequest.jqueryResponse);
 
-        final page = await _client.query(options);
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
 
-        if (page.hasErrors) {
-          throw(page.errors.toString());
-        }
+      if (page.hasErrors) {
+        throw(page.errors.toString());
+      }
 
-        var edges = page.data['search']['nodes'];
-        edges.forEach((edge) {
-          dynamic item = type == GitHubIssueType.issue ? 
-            Issue.fromGraphQL(edge) : 
-            PullRequest.fromGraphQL(edge);
+      var edges = page.data['repository'][typeString]['nodes'];
+      edges.forEach((edge) {
+        dynamic item = type == GitHubIssueType.issue ? 
+          Issue.fromGraphQL(edge) : 
+          PullRequest.fromGraphQL(edge);
+        count++;
+        bool add = true;
+        if (dateQuery!=GitHubDateQueryType.none) {
+          switch(dateQuery) {
+            case GitHubDateQueryType.created: 
+              add = item.createdAt.isAfter(dateRange.start) && item.createdAt.isBefore(dateRange.end) ?  true : false;
+              break;
+            case GitHubDateQueryType.updated: 
+              add = item.updatedAt.isAfter(dateRange.start) && item.updatedAt.isBefore(dateRange.end) ?  true : false;
+              break;
+            case GitHubDateQueryType.closed: 
+              add = item.closedAt.isAfter(dateRange.start) && item.closedAt.isBefore(dateRange.end) ?  true : false;
+              break;
+            case GitHubDateQueryType.merged: 
+              add = item.mergedAt.isAfter(dateRange.start) && item.mergedAt.isBefore(dateRange.end) ?  true : false;
+              break;
+            case GitHubDateQueryType.none: add = true; break;
+          }
+        } 
+
+        if (add) {
           result.add(item);
-        });
-  
-        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
+          addedCount++;
+        }
+      });
+      int totalCount = page.data['repository'][typeString]['totalCount'];
+      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository'][typeString]['pageInfo']);
 
-        done = !pageInfo.hasNextPage;
-        if (!done) after = '"${pageInfo.endCursor}"';
+      done = done || !pageInfo.hasNextPage;
+      if (!done) after = '"${pageInfo.endCursor}"';
+    } while( !done );
 
-      } while( !done );
+    // Filter labels
+    if (labelFilters.length > 0) {
+      var filtered = List<dynamic>();
+      for(var item in result) {
+        for(var label in labelFilters) {
+          if(!item.labels.containsString(label)) filtered.add(item);
+        }
+      }
+      result = filtered;
     }
 
     return result;
@@ -140,14 +166,13 @@ Future<List<dynamic>> fetch( {String owner, String name,
 
   final _queryIssuesOrPRs = 
   r'''
-  query { 
-    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime}", type: ISSUE, first:25, after:${after}) {
-      issueCount,
-      pageInfo ${pageInfoResponse}
-      nodes {
-        ... on Issue ${issueResponse}
-        ... on PullRequest ${pullRequestResponse}
-      } 
+  query {
+    repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
+      ${type}(first: 25, after: ${after}, states: ${state}) {
+        totalCount,
+        pageInfo ${pageInfoResponse}
+        nodes ${response}
+      }
     }
   }
   ''';

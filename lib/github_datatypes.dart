@@ -3,6 +3,14 @@ import 'dart:io';
 import 'package:quiver/core.dart' show hash2;
 
 
+// TODO:
+// - Migrate json definitions into smaller object classes, the way
+//   Milestone is now, to decouple the object defintion from the 
+//   Item and PullRequest classes.
+// - Generalize clustering. There's a lot of repeated code that
+//   could be cleaned up with a lambda as a clustering function.
+
+
 class Label {
   String _label;
   get label => _label;
@@ -85,7 +93,7 @@ class TimelineItem {
       title = node['source']['title'];
       number = node['source']['number'];
     } else if (node['__typename'] == 'AssignedEvent' || node['__typename'] == 'UnassignedEvent') {
-      actor = Actor.fromGraphQL(node['assignee']);
+      actor = node['assignee'] != null ? Actor.fromGraphQL(node['assignee']) : null;
     }
 
     return TimelineItem(
@@ -155,6 +163,7 @@ class Timeline {
     assert(node['pageInfo']['hasNextPage'] == false);
     var result = Timeline(List<TimelineItem>());
     for (dynamic n in node['nodes']) {
+      if (n == null) continue;
       result.append(TimelineItem.fromGraphQL(n));
     }
     return result;
@@ -750,14 +759,21 @@ class Cluster {
     var result = SplayTreeMap<String, dynamic>();
     result[_noMilestoneKey] = List<dynamic>(); 
 
-    for (var item in issuesOrPullRequests) {
-      if (!(item is Issue) && !(item is PullRequest)) {
+    for(var item in issuesOrPullRequests) {
+      if( !(item is Issue) && !(item is PullRequest)) {
         throw('invalid type!');
       }
+      if (item.milestone == null) {
+        result[_noMilestoneKey].add(item);
+      } else  {
+        if (!result.containsKey(item.milestone.title)) {
+          result[item.milestone.title] = List<dynamic>();
+        }
+        result[item.milestone.title].add(item);
+      }
     }
-    throw('not implemented!');
 
-    // return Cluster._internal(ClusterType.byMilestone, result);
+    return Cluster._internal(ClusterType.byMilestone, result);
   }
 
   String summary() {

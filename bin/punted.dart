@@ -62,9 +62,26 @@ void main(List<String> args) async {
     dateRange: when
   );
   
-  print( opts.showClosed ? 
+  print(opts.showClosed ? 
+    "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+    "# Open issues from" );
+
+  if (false) {
+    print('## All issues\n');
+    for (var issue in issues) print(issue.summary(linebreakAfter: true));
+    print('\n');
+  }
+
+
+  print("## Issues by milestone\n");
+  print("There were ${issues.length} issues.\n");
+
+  var clusters = Cluster.byMilestone(issues);
+  print(clusters.toMarkdown(ClusterReportSort.byCount, true));
+
+  print((opts.showClosed ? 
     "## Closed issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "## Open issues punted");
+    "## Open issues punted") + ' by milestone');
 
   for(var item in issues) {
     // typecast so we have easy auto-completion in Visual Studio Code
