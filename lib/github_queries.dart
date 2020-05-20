@@ -144,14 +144,6 @@ Future<List<dynamic>> fetch( {String owner, String name,
       throw('With a dateQuery you must provide a non-null dateRange!');
     }
 
-    switch(dateQuery) {
-      case GitHubDateQueryType.created: dateString = 'created:' + dateRange.toString(); break;
-      case GitHubDateQueryType.updated: dateString = 'updated:' + dateRange.toString(); break;
-      case GitHubDateQueryType.closed: dateString = 'closed:' + dateRange.toString(); break;
-      case GitHubDateQueryType.merged: dateString = 'merged:' + dateRange.toString(); break;
-      case GitHubDateQueryType.none: break;
-    }
-
     var result = List<dynamic>();
     var done = false;
     var after = 'null';
