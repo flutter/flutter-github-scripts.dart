@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
