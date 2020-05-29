@@ -29,9 +29,7 @@ class GitHub {
 
 /// Search for issues and PRs matching criteria
 /// Note that search uses the GitHub GraphQL `search` function. 
-/// It's very fast, but can only return up to 1,000 results.
-/// This method throws if it looks like you might be expecting
-/// more than that.
+/// Searching criteria occurs all on the server side.
 Future<List<dynamic>> search( {String owner, String name,
   GitHubIssueType type = GitHubIssueType.issue,
   GitHubIssueState state = GitHubIssueState.open,
@@ -51,14 +49,12 @@ Future<List<dynamic>> search( {String owner, String name,
       throw('With a dateQuery you must provide a non-null dateRange!');
     }
 
-    var dateString = '';
-    switch(dateQuery) {
-      case GitHubDateQueryType.created: dateString = 'created:' + dateRange.toString(); break;
-      case GitHubDateQueryType.updated: dateString = 'updated:' + dateRange.toString(); break;
-      case GitHubDateQueryType.closed: dateString = 'closed:' + dateRange.toString(); break;
-      case GitHubDateQueryType.merged: dateString = 'merged:' + dateRange.toString(); break;
-      case GitHubDateQueryType.none: break;
-    }
+    if (dateRange == null) {
+      dateRange = DateRange(DateRangeType.at, when: DateRangeWhen.onOrBefore, at: DateTime.now());
+    } 
+    var dateString = DateRange.queryToString(dateQuery, dateRange);
+    var startSearchFrom = dateRange;
+    var endSearchAt = dateRange;
 
     var labelFilters = [];
     if (labels != null && !labels.isEmpty) {
@@ -70,50 +66,90 @@ Future<List<dynamic>> search( {String owner, String name,
       labelFilters.add('');
     }
 
-   var result = List<dynamic>();
+    int totalCount = 0;
+    var result = List<dynamic>();
+    var resultsFetched = Set<int>();
     // For each label, do the query.
     for(var labelFilter in labelFilters) {
-      var done = false;
-      var after = 'null';
+      var anotherQuery;
       do {
-        var query = _searchIssuesOrPRs
-          .replaceAll(r'${repositoryOwner}', owner)
-          .replaceAll(r'${repositoryName}', name)
-          .replaceAll(r'${after}', after)
-          .replaceAll(r'${label}', labelFilter)
-          .replaceAll(r'${state}', stateString)
-          .replaceAll(r'${issueOrPr}', typeString)
-          .replaceAll(r'${dateTime}', dateString)          
-          .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
-          .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
-          .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
-        final options = QueryOptions(document: query);
+        var moreRemaining = false;
+        var returnedThisQuery = 0;
+        var after = 'null';
+        do {
+          var query = _searchIssuesOrPRs
+            .replaceAll(r'${repositoryOwner}', owner)
+            .replaceAll(r'${repositoryName}', name)
+            .replaceAll(r'${after}', after)
+            .replaceAll(r'${label}', labelFilter)
+            .replaceAll(r'${state}', stateString)
+            .replaceAll(r'${issueOrPr}', typeString)
+            .replaceAll(r'${dateTime}', dateString)          
+            .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
+            .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
+            .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
+          final options = QueryOptions(document: query);
+// print(query); exit(-1);
+          final page = await _client.query(options);
+          if (page.hasErrors) {
+            throw(page.errors.toString());
+          }
+          var edges = page.data['search']['nodes'];
+          returnedThisQuery += edges.length;
+          totalCount += edges.length;
+          edges.forEach((edge) {
+            dynamic item = type == GitHubIssueType.issue ? 
+              Issue.fromGraphQL(edge) : 
+              PullRequest.fromGraphQL(edge);
+            // Ensure we de-dup across page boundaries.
+            if (!resultsFetched.contains(item.number)) { 
+              resultsFetched.add(item.number);
+              result.add(item);
+            }
+          });
+          // GitHub pagination
+          var pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
+          moreRemaining = pageInfo.hasNextPage;
+          if (moreRemaining) after = '"${pageInfo.endCursor}"';
 
-        final page = await _client.query(options);
+        } while(moreRemaining);
+        
+        // pseudo-pagination -- if this response returns its maximum
+        // try again with a more constrained date range
 
-        if (page.hasErrors) {
-          throw(page.errors.toString());
-        }
+        print('${returnedThisQuery} - ${resultsFetched.length} - ${totalCount} - ${dateRange}');
 
-        if (page.data['search']['issueCount'] == null || page.data['search']['issueCount']== _maxSearchResponse) {
-          throw('search returned maximum number of search results... you may not have gotten everything. Try fetch() instead.');
-        }
+          bool finished = false;
+          switch(dateRange.type) {
+            case DateRangeType.at:
+              throw('unsupported');
+              dateRange = DateRange(DateRangeWhen.onOrBefore, start: result.last.createdAt);
+            break;
+            case DateRangeType.range:
+              DateTime newEnd = startSearchFrom.end;
+              startSearchFrom = DateRange(DateRangeType.range,start: newEnd.subtract(Duration(days:4)), end: newEnd.subtract(Duration(days:2)));
+              var newDateRange = DateRange(DateRangeType.range, start: newEnd.subtract(Duration(days:2)).isBefore(endSearchAt.start) ? endSearchAt.start : newEnd.subtract(Duration(days:2)), end: newEnd);
+              dateRange = newDateRange;
+              if (dateRange.end.isBefore(endSearchAt.start)) finished = true;
+            break;
+          }
 
-        var edges = page.data['search']['nodes'];
-        edges.forEach((edge) {
-          dynamic item = type == GitHubIssueType.issue ? 
-            Issue.fromGraphQL(edge) : 
-            PullRequest.fromGraphQL(edge);
-          result.add(item);
-        });
-  
-        _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
+          if (finished) break;
 
-        done = !pageInfo.hasNextPage;
-        if (!done) after = '"${pageInfo.endCursor}"';
-
-      } while( !done );
+          dateString = DateRange.queryToString(dateQuery, dateRange);
+          anotherQuery = true;
+          returnedThisQuery = 0;
+      } while(true);
     }
+
+
+print(totalCount);
+bool hackFound = false;
+for(var issue in result) {
+  if(issue.number == 112) { hackFound = true; break; }
+}
+print( hackFound ? 'Issue 112 found' : 'Issue 112 not found.');
+
 
     return result;
   }
@@ -156,7 +192,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
         .replaceAll(r'${state}', stateString)
         .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
         .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.jqueryResponse : PullRequest.jqueryResponse);
-
+//print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
 
@@ -222,7 +258,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
-      
+print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {
@@ -265,7 +301,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
   final _searchIssuesOrPRs = 
   r'''
   query { 
-    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime}", type: ISSUE, first:25, after:${after}) {
+    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime} sort:created", type: ISSUE, first:25, after:${after}) {
       issueCount,
       pageInfo ${pageInfoResponse}
       nodes {
@@ -296,7 +332,62 @@ Future<List<dynamic>> fetch( {String owner, String name,
     }
   }
   ''';
+
 }
+
+enum DateRangeType { at, range }
+enum DateRangeWhen { onDate, onOrBefore, onOrAfter }
+
+class DateRange {
+  DateRangeType _type;
+  get type => _type;
+  DateRangeWhen _when;
+  get when => _when;
+  DateTime _at, _start, _end;
+  get at => _at;
+  get start => _start;
+  get end => _end; 
+  
+  String toString() {
+    if(_type == DateRangeType.at) {
+      String comparison = '';
+      switch(_when) {
+        case DateRangeWhen.onDate: comparison = ''; break;
+        case DateRangeWhen.onOrBefore: comparison = '<='; break;
+        case DateRangeWhen.onOrAfter: comparison = '>='; break;
+      }
+      return comparison + _at.toIso8601String();
+    } else {
+      return _start.toIso8601String().replaceAll('.000','') + '..' + _end.toIso8601String().replaceAll('.000','');
+    }
+  }
+
+  static String queryToString(GitHubDateQueryType dateQuery, DateRange range) {
+    var dateString = '';
+    switch(dateQuery) {
+      case GitHubDateQueryType.created: dateString = 'created:' + range.toString(); break;
+      case GitHubDateQueryType.updated: dateString = 'updated:' + range.toString(); break;
+      case GitHubDateQueryType.closed: dateString = 'closed:' + range.toString(); break;
+      case GitHubDateQueryType.merged: dateString = 'merged:' + range.toString(); break;
+      case GitHubDateQueryType.none: break;
+    }
+    return dateString;
+  }
+
+  factory DateRange(type, {DateTime at, DateRangeWhen when = DateRangeWhen.onDate, DateTime start, DateTime end}) {
+    if (type == DateRangeType.at && when != null && at != null && start == null && end == null) {
+      return DateRange._internal(type, at, when, null, null);
+    }
+    else if (type == DateRangeType.range && at == null && when == DateRangeWhen.onDate && start != null && end != null) {
+      return DateRange._internal(type, null, null, start, end);
+    }
+    else {
+      throw("Illegal arguments");
+    } 
+  }
+  DateRange._internal(this._type, this._at, this._when, this._start, this._end);
+}
+
 
 /// Represents a page of information from GitHub.
 class _PageInfo {
@@ -338,47 +429,4 @@ class _PageInfo {
   ''';
 }
 
-/// A date, or a range of dates.
-enum DateRangeType { at, range }
-/// Spans for date ranges.
-enum DateRangeWhen { onDate, onOrBefore, onOrAfter }
-
-/// A range consisting of one or two dates.
-class DateRange {
-  DateRangeType _type;
-  get type => _type;
-  DateRangeWhen _when;
-  get when => _when;
-  DateTime _at, _start, _end;
-  get at => _at;
-  get start => _start;
-  get end => _end; 
-  
-  String toString() {
-    if(_type == DateRangeType.at) {
-      String comparison = '';
-      switch(_when) {
-        case DateRangeWhen.onDate: comparison = ''; break;
-        case DateRangeWhen.onOrBefore: comparison = '<='; break;
-        case DateRangeWhen.onOrAfter: comparison = '>='; break;
-      }
-      return comparison + _at.toIso8601String();
-    } else {
-      return _start.toIso8601String().replaceAll('.000','') + '..' + _end.toIso8601String().replaceAll('.000','');
-    }
-  }
-
-  factory DateRange(type, {DateTime at, DateRangeWhen when = DateRangeWhen.onDate, DateTime start, DateTime end}) {
-    if (type == DateRangeType.at && when != null && at != null && start == null && end == null) {
-      return DateRange._internal(type, at, when, null, null);
-    }
-    else if (type == DateRangeType.range && at == null && when == DateRangeWhen.onDate && start != null && end != null) {
-      return DateRange._internal(type, null, null, start, end);
-    }
-    else {
-      throw("Illegal arguments");
-    } 
-  }
-  DateRange._internal(this._type, this._at, this._when, this._start, this._end);
-}
 

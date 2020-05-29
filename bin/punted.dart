@@ -54,19 +54,19 @@ void main(List<String> args) async {
     rangeType = GitHubDateQueryType.closed;
   }
 
-  var issues = await github.fetch(owner: 'flutter', 
+  var issues = await github.search(owner: 'flutter', 
     name: 'flutter', 
     type: GitHubIssueType.issue,
     state: state,
     dateQuery: rangeType,
     dateRange: when
   );
-  
+
   print(opts.showClosed ? 
     "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
     "# Open issues from" );
 
-  if (false) {
+  if (true) {
     print('## All issues\n');
     for (var issue in issues) print(issue.summary(linebreakAfter: true));
     print('\n');
