@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
+import 'package:path/path.dart';
 import 'package:quiver/core.dart' show hash2;
 // Filter by label: 'labels: ["⚠ TODAY"]'
 
@@ -33,7 +34,7 @@ Future<List<dynamic>> search( {String owner, String name,
   GitHubIssueType type = GitHubIssueType.issue,
   GitHubIssueState state = GitHubIssueState.open,
   List<String> labels = null,
-  GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
+  GitHubDateQueryType dateQuery = GitHubDateQueryType.created,
   DateRange dateRange = null
   }) async {
     var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
@@ -47,11 +48,8 @@ Future<List<dynamic>> search( {String owner, String name,
     if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
       throw('With a dateQuery you must provide a non-null dateRange!');
     }
-
-    if (dateRange == null) {
-      dateRange = DateRange(DateRangeType.at, when: DateRangeWhen.onOrBefore, at: DateTime.now());
-    } 
     var dateString = DateRange.queryToString(dateQuery, dateRange);
+
     var startSearchFrom = dateRange;
     var endSearchAt = dateRange;
 
@@ -65,15 +63,14 @@ Future<List<dynamic>> search( {String owner, String name,
       labelFilters.add('');
     }
 
-    int totalCount = 0;
+    var fetchAnotherDay = false;
+    var splitFetches = false;
     var result = List<dynamic>();
     var resultsFetched = Set<int>();
     // For each label, do the query.
     for(var labelFilter in labelFilters) {
-      var anotherQuery;
       do {
-        var moreRemaining = false;
-        var returnedThisQuery = 0;
+        var fetchAnotherPage = false;
         var after = 'null';
         do {
           var query = _searchIssuesOrPRs
@@ -88,14 +85,12 @@ Future<List<dynamic>> search( {String owner, String name,
             .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
             .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
           final options = QueryOptions(document: query);
-// print(query); exit(-1);
+
           final page = await _client.query(options);
           if (page.hasErrors) {
             throw(page.errors.toString());
           }
           var edges = page.data['search']['nodes'];
-          returnedThisQuery += edges.length;
-          totalCount += edges.length;
           edges.forEach((edge) {
             dynamic item = type == GitHubIssueType.issue ? 
               Issue.fromGraphQL(edge) : 
@@ -106,50 +101,51 @@ Future<List<dynamic>> search( {String owner, String name,
               result.add(item);
             }
           });
+
+          // Pseudo-paginate by date if we're not already, and there's too many responses.
+          if (!splitFetches && page.data['search']['issueCount'] >= _maxSearchResponse) {
+            splitFetches = true;
+          }
+
           // GitHub pagination
           var pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
-          moreRemaining = pageInfo.hasNextPage;
-          if (moreRemaining) after = '"${pageInfo.endCursor}"';
+          fetchAnotherPage = pageInfo.hasNextPage;
+          if (fetchAnotherPage) after = '"${pageInfo.endCursor}"';
 
-        } while(moreRemaining);
+        } while(fetchAnotherPage);
         
         // pseudo-pagination -- if this response returns its maximum
         // try again with a more constrained date range
 
-        print('${returnedThisQuery} - ${resultsFetched.length} - ${totalCount} - ${dateRange}');
+        // If we get the maxmimum number of results and we're already splitting
+        // we're missing something.
 
-          bool finished = false;
+
+        // If we're 
+        if (splitFetches) {
+          fetchAnotherDay = true;
           switch(dateRange.type) {
             case DateRangeType.at:
-              throw('unsupported');
-              dateRange = DateRange(DateRangeWhen.onOrBefore, start: result.last.createdAt);
-            break;
+              throw('unsupported DateRangeType.at with maximum number of elements');
+              break;
             case DateRangeType.range:
-              DateTime newEnd = startSearchFrom.end;
+              var newEnd = startSearchFrom.end;
               startSearchFrom = DateRange(DateRangeType.range,start: newEnd.subtract(Duration(days:4)), end: newEnd.subtract(Duration(days:2)));
               var newDateRange = DateRange(DateRangeType.range, start: newEnd.subtract(Duration(days:2)).isBefore(endSearchAt.start) ? endSearchAt.start : newEnd.subtract(Duration(days:2)), end: newEnd);
               dateRange = newDateRange;
-              if (dateRange.end.isBefore(endSearchAt.start)) finished = true;
+              dateString = DateRange.queryToString(dateQuery, dateRange);
+              if (dateRange.end.isBefore(endSearchAt.start)) fetchAnotherDay = false;
             break;
           }
-
-          if (finished) break;
-
-          dateString = DateRange.queryToString(dateQuery, dateRange);
-          anotherQuery = true;
-          returnedThisQuery = 0;
-      } while(true);
+        }
+        print('${splitFetches} ${fetchAnotherDay} ${dateRange}');
+      } while(fetchAnotherDay);
     }
 
+    print(result.length);
 
-print(totalCount);
-bool hackFound = false;
-for(var issue in result) {
-  if(issue.number == 112) { hackFound = true; break; }
-}
-print( hackFound ? 'Issue 112 found' : 'Issue 112 not found.');
-
-
+    result.sort((a,b) => a.number.compareTo(b.number));
+    exit(-1);
     return result;
   }
 
@@ -191,7 +187,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
         .replaceAll(r'${state}', stateString)
         .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
         .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.jqueryResponse : PullRequest.jqueryResponse);
-//print(query);
+
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
 
@@ -257,7 +253,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
-print(query);
+
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {
