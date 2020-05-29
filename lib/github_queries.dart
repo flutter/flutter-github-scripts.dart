@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:path/path.dart';
 import 'package:quiver/core.dart' show hash2;
-// Filter by label: 'labels: ["⚠ TODAY"]'
-
 
 enum GitHubIssueType { issue, pullRequest }
 enum GitHubIssueState { open, closed, merged }
@@ -65,6 +62,7 @@ Future<List<dynamic>> search( {String owner, String name,
 
     var fetchAnotherDay = false;
     var splitFetches = false;
+    var totalIssueCount = null;
     var result = List<dynamic>();
     var resultsFetched = Set<int>();
     // For each label, do the query.
@@ -108,6 +106,7 @@ Future<List<dynamic>> search( {String owner, String name,
           }
 
           // GitHub pagination
+          if (totalIssueCount == null) totalIssueCount = page.data['search']['issueCount'];
           var pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
           fetchAnotherPage = pageInfo.hasNextPage;
           if (fetchAnotherPage) after = '"${pageInfo.endCursor}"';
@@ -117,11 +116,7 @@ Future<List<dynamic>> search( {String owner, String name,
         // pseudo-pagination -- if this response returns its maximum
         // try again with a more constrained date range
 
-        // If we get the maxmimum number of results and we're already splitting
-        // we're missing something.
-
-
-        // If we're 
+        // If we need to split fetches across days, do so.
         if (splitFetches) {
           fetchAnotherDay = true;
           switch(dateRange.type) {
@@ -129,23 +124,27 @@ Future<List<dynamic>> search( {String owner, String name,
               throw('unsupported DateRangeType.at with maximum number of elements');
               break;
             case DateRangeType.range:
+              final dayDelta = 4;
               var newEnd = startSearchFrom.end;
-              startSearchFrom = DateRange(DateRangeType.range,start: newEnd.subtract(Duration(days:4)), end: newEnd.subtract(Duration(days:2)));
-              var newDateRange = DateRange(DateRangeType.range, start: newEnd.subtract(Duration(days:2)).isBefore(endSearchAt.start) ? endSearchAt.start : newEnd.subtract(Duration(days:2)), end: newEnd);
+              startSearchFrom = DateRange(DateRangeType.range,start: newEnd.subtract(Duration(days:2*dayDelta)), end: newEnd.subtract(Duration(days:dayDelta)));
+              var newDateRange = DateRange(DateRangeType.range, start: newEnd.subtract(Duration(days:dayDelta)).isBefore(endSearchAt.start) ? endSearchAt.start : newEnd.subtract(Duration(days:dayDelta)), end: newEnd);
               dateRange = newDateRange;
               dateString = DateRange.queryToString(dateQuery, dateRange);
               if (dateRange.end.isBefore(endSearchAt.start)) fetchAnotherDay = false;
             break;
           }
         }
-        print('${splitFetches} ${fetchAnotherDay} ${dateRange}');
       } while(fetchAnotherDay);
     }
 
-    print(result.length);
+    // There's still a chance we missed some. If it looks like that's the case,
+    // fail with an exception.
+    if (result.length != totalIssueCount) {
+      throw('We expected ${totalIssueCount} issues or PRs, and only got ${result.length}');
+    }
 
     result.sort((a,b) => a.number.compareTo(b.number));
-    exit(-1);
+
     return result;
   }
 
