@@ -24,9 +24,12 @@ class GitHub {
     _client = GraphQLClient(cache: InMemoryCache(), link: _link);
   }
 
-/// Search for issues and PRs matching criteria
+/// Search for issues and PRs matching criteria across a date range.
 /// Note that search uses the GitHub GraphQL `search` function. 
 /// Searching criteria occurs all on the server side.
+/// Because search returns "relevant" results, it's
+/// possible that large queries may not return all elements,
+/// but only a count. 
 Future<List<dynamic>> search( {String owner, String name,
   GitHubIssueType type = GitHubIssueType.issue,
   GitHubIssueState state = GitHubIssueState.open,
