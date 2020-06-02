@@ -168,6 +168,80 @@ class Timeline {
     }
     return result;
   }
+
+  static var jqueryResponse = 
+  '''
+{
+  pageInfo {
+    startCursor,
+    hasNextPage,
+    endCursor
+  },
+  nodes {
+    __typename
+    ... on CrossReferencedEvent {
+      createdAt,
+      source {
+        __typename
+        ...  on PullRequest {
+          title,
+          number,
+        }
+        ... on Issue {
+          title,
+          number,
+        }
+      }
+    }
+    ... on MilestonedEvent {
+      createdAt,
+      actor {
+            login,
+                    resourcePath,
+                    url
+      }, 
+      id,
+      milestoneTitle
+    }
+    ... on DemilestonedEvent {
+      createdAt,          
+      actor {
+            login,
+                    resourcePath,
+                    url
+      }, 
+      id, 
+      milestoneTitle
+    }
+    ... on AssignedEvent {
+      createdAt,          
+      assignee {
+        ... on User {
+          login,
+          resourcePath,
+          url
+        }
+        ... on Bot {
+          login,
+          resourcePath,
+          url            
+        }
+      }
+    }
+    ... on UnassignedEvent {
+      createdAt,          
+      assignee {
+        ... on User {
+          login,
+          resourcePath,
+          url
+        }
+      }          
+    }
+  }
+}
+  ''';
+
 }
 
 class Milestone {
@@ -440,75 +514,8 @@ class Issue {
     },
     ${Milestone.jqueryResponse},
     timelineItems(first: 100, 
-    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) {
-      pageInfo {
-        startCursor,
-        hasNextPage,
-        endCursor
-      },
-      nodes {
-        __typename
-        ... on CrossReferencedEvent {
-          createdAt,
-          source {
-            __typename
-            ...  on PullRequest {
-              title,
-              number,
-            }
-            ... on Issue {
-              title,
-              number,
-            }
-          }
-        }
-        ... on MilestonedEvent {
-          createdAt,
-          actor {
-          	login,
-      			resourcePath,
-      			url
-          }, 
-          id,
-          milestoneTitle
-        }
-        ... on DemilestonedEvent {
-          createdAt,          
-          actor {
-          	login,
-      			resourcePath,
-      			url
-          }, 
-          id, 
-          milestoneTitle
-        }
-        ... on AssignedEvent {
-          createdAt,          
-          assignee {
-            ... on User {
-              login,
-              resourcePath,
-              url
-            }
-            ... on Bot {
-              login,
-              resourcePath,
-              url            
-            }
-          }
-        }
-        ... on UnassignedEvent {
-          createdAt,          
-          assignee {
-            ... on User {
-              login,
-              resourcePath,
-              url
-            }
-          }          
-        }
-      }
-    }
+    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) 
+      ${Timeline.jqueryResponse}
   }
   ''';
 }

@@ -28,8 +28,9 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run punted.dart [-closed fromDate toDate]');
-    print('Prints punted issues in flutter/flutter.');
+    print('Usage: pub exploratory prs.dart [-closed fromDate toDate]');
+    // TODO
+    print('TODO');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
@@ -38,6 +39,8 @@ class Options  {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
+
+  var repos = ['flutter', 'engine'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -51,21 +54,24 @@ void main(List<String> args) async {
     rangeType = GitHubDateQueryType.closed;
   }
 
-  var issues = await github.search(owner: 'flutter', 
-    name: 'flutter', 
-    type: GitHubIssueType.issue,
-    state: state,
-    dateQuery: rangeType,
-    dateRange: when
-  );
+  var prs = List<dynamic>();
+  for(var repo in repos) {
+    prs.addAll(await github.search(owner: 'flutter', 
+      name: repo, 
+      type: GitHubIssueType.pullRequest,
+      state: state,
+      dateQuery: rangeType,
+      dateRange: when
+    ));
+  }
 
   print(opts.showClosed ? 
-    "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Open issues from" );
+    "# Closed PRs from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+    "# Open PRs from" );
 
   if (false) {
-    print('## All issues\n');
-    for (var issue in issues) print(issue.summary(linebreakAfter: true));
+    print('## All prs\n');
+    for (var pr in prs) print(pr.summary(linebreakAfter: true));
     print('\n');
   }
 

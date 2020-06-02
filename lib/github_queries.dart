@@ -255,7 +255,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
-
+print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {
@@ -272,7 +272,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse);
-
+print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {
