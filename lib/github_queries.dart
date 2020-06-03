@@ -14,7 +14,8 @@ class GitHub {
   Link _link;
   GraphQLClient _client; 
 
-  int _maxSearchResponse = 1000;
+  var _maxSearchResponse = 1000;
+  var _printQuery = false;
 
   /// Initialize the interface
   GitHub(String token) {
@@ -86,7 +87,7 @@ Future<List<dynamic>> search( {String owner, String name,
             .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
             .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
           final options = QueryOptions(document: query);
-
+          if (_printQuery) print(query);
           final page = await _client.query(options);
           if (page.hasErrors) {
             throw(page.errors.toString());
@@ -189,7 +190,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
         .replaceAll(r'${state}', stateString)
         .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
         .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.jqueryResponse : PullRequest.jqueryResponse);
-
+      if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
 
@@ -255,7 +256,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
-print(query);
+      if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {
@@ -272,7 +273,7 @@ print(query);
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
       .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse);
-print(query);
+      if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       if (page.hasErrors) {

@@ -555,6 +555,8 @@ class PullRequest {
   get closedAt => _closedAt;
   Repository _repository;
   get repository => _repository;
+    Timeline _timeline;
+  get timeline => _timeline;
 
   PullRequest(this._title, 
     this._id,
@@ -573,6 +575,7 @@ class PullRequest {
     this._updatedAt,
     this._closedAt,
     this._repository,
+    this._timeline
   );
    
   // Passed a node containing an issue, return the issue
@@ -600,7 +603,8 @@ class PullRequest {
       node['lastEditedAt'] == null ? null : DateTime.parse(node['lastEditedAt']),
       node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']),
       node['closedAt'] == null ? null : DateTime.parse(node['closedAt']),
-      node['repository'] == null ? null : Repository.fromGraphQL(node['repository']));
+      node['repository'] == null ? null : Repository.fromGraphQL(node['repository']),
+      node['timelineItems'] == null ? null : Timeline.fromGraphQL(node['timelineItems']));
   }
 
   String summary({bool linebreakAfter = false, bool boldInteresting = false}) {
