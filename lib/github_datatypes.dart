@@ -11,6 +11,46 @@ import 'package:quiver/core.dart' show hash2;
 //   could be cleaned up with a lambda as a clustering function.
 
 
+/// Represents a page of information from GitHub.
+class PageInfo {
+  String _startCursor;
+  get startCursor => _startCursor;
+  bool _hasNextPage;
+  get hasNextPage => _hasNextPage;
+  String _endCursor;
+  get endCursor => _endCursor;
+  PageInfo(this._startCursor, this._endCursor, this._hasNextPage);
+  static PageInfo fromGraphQL(dynamic node) {
+    return PageInfo(node['startCursor'], node['endCursor'], node['hasNextPage']);
+  }
+
+  String toString() {
+    return 'start: ${startCursor}, end: ${endCursor}, more? ${hasNextPage}';
+  }
+
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is PageInfo &&
+    runtimeType == other.runtimeType &&
+    _startCursor == other._startCursor &&
+    _endCursor == other._endCursor &&
+    _hasNextPage == other._hasNextPage;
+
+  @override 
+  int get hashCode =>  hash2(
+      hash2(_startCursor.hashCode, _endCursor.hashCode),
+        _hasNextPage.hashCode);
+
+
+  static final graphQLResponse = 
+  '''
+  {
+    startCursor, hasNextPage, endCursor
+  }
+  ''';
+}
+
 class Label {
   String _label;
   get label => _label;
@@ -31,6 +71,13 @@ class Label {
 
   @override 
   int get hashCode => _label.hashCode;
+
+  static var graphQLResponse = 
+  '''
+  {
+    name
+  }
+  ''';
 }
 
 class Labels {
@@ -169,14 +216,10 @@ class Timeline {
     return result;
   }
 
-  static var jqueryResponse = 
+  static var graphQLResponse = 
   '''
 {
-  pageInfo {
-    startCursor,
-    hasNextPage,
-    endCursor
-  },
+  pageInfo ${PageInfo.graphQLResponse},
   nodes {
     __typename
     ... on CrossReferencedEvent {
@@ -196,9 +239,9 @@ class Timeline {
     ... on MilestonedEvent {
       createdAt,
       actor {
-            login,
-                    resourcePath,
-                    url
+        login,
+        resourcePath,
+        url
       }, 
       id,
       milestoneTitle
@@ -206,9 +249,9 @@ class Timeline {
     ... on DemilestonedEvent {
       createdAt,          
       actor {
-            login,
-                    resourcePath,
-                    url
+        login,
+        resourcePath,
+        url
       }, 
       id, 
       milestoneTitle
@@ -288,7 +331,7 @@ class Milestone {
     return 'due on ${dueOn} (${title})';
   }
 
-  static final jqueryResponse = 
+  static final graphQLResponse = 
   '''
     milestone {
       title,
@@ -349,7 +392,14 @@ class Actor {
 
   @override 
   int get hashCode => _login.hashCode;
-
+  static var graphQLResponse = 
+  '''
+  {
+    login,
+    resourcePath,
+    url
+  }
+  ''';
 }
 
 class Issue {
@@ -475,33 +525,23 @@ class Issue {
   @override 
   int get hashCode => _id.hashCode;
 
-  static final jqueryResponse = 
+  static final graphQLResponse = 
   '''
   {
     title,
     id,
     number,
     state,
-    author {
-      login,
-      resourcePath,
-      url
-    },
+    author ${Actor.graphQLResponse},
     assignees(after: null, last: 100) {
       edges {
-        node {
-          login,
-          resourcePath,
-          url
-        }
+        node ${Actor.graphQLResponse}
       }
     },
     body,
     labels(first:100) {
       edges {
-        node {
-          name
-        }
+        node ${Label.graphQLResponse}
       }
     },
     url,
@@ -512,10 +552,10 @@ class Issue {
     repository {
       nameWithOwner
     },
-    ${Milestone.jqueryResponse},
+    ${Milestone.graphQLResponse},
     timelineItems(first: 100, 
     itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) 
-      ${Timeline.jqueryResponse}
+      ${Timeline.graphQLResponse}
   }
   ''';
 }
@@ -642,34 +682,24 @@ class PullRequest {
   @override 
   int get hashCode => _id.hashCode;
 
-  static final jqueryResponse = 
+  static final graphQLResponse = 
   '''
   {
     title,
     id,
     number,
     state,
-    author {
-      login,
-      resourcePath,
-      url
-    },
+    author ${Actor.graphQLResponse},
     assignees(after: null, last: 100) {
       edges {
-        node {
-          login,
-          resourcePath,
-          url
-        }
+        node ${Actor.graphQLResponse}
       }
     },    
     body,
-    ${Milestone.jqueryResponse},
+    ${Milestone.graphQLResponse},
     labels(first:100) {
       edges {
-        node {
-          name
-        }
+        node ${Label.graphQLResponse}
       }
     },
     url,

@@ -83,9 +83,9 @@ Future<List<dynamic>> search( {String owner, String name,
             .replaceAll(r'${state}', stateString)
             .replaceAll(r'${issueOrPr}', typeString)
             .replaceAll(r'${dateTime}', dateString)          
-            .replaceAll(r'${issueResponse}', Issue.jqueryResponse)
-            .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
-            .replaceAll(r'${pullRequestResponse}',PullRequest.jqueryResponse);
+            .replaceAll(r'${issueResponse}', Issue.graphQLResponse)
+            .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
+            .replaceAll(r'${pullRequestResponse}',PullRequest.graphQLResponse);
           final options = QueryOptions(document: query);
           if (_printQuery) print(query);
           final page = await _client.query(options);
@@ -111,7 +111,7 @@ Future<List<dynamic>> search( {String owner, String name,
 
           // GitHub pagination
           if (totalIssueCount == null) totalIssueCount = page.data['search']['issueCount'];
-          var pageInfo = _PageInfo.fromGraphQL(page.data['search']['pageInfo']);
+          var pageInfo = PageInfo.fromGraphQL(page.data['search']['pageInfo']);
           fetchAnotherPage = pageInfo.hasNextPage;
           if (fetchAnotherPage) after = '"${pageInfo.endCursor}"';
 
@@ -188,8 +188,8 @@ Future<List<dynamic>> fetch( {String owner, String name,
         .replaceAll(r'${type}', typeString)
         .replaceAll(r'${after}', after)
         .replaceAll(r'${state}', stateString)
-        .replaceAll(r'${pageInfoResponse}', _PageInfo.jqueryResponse)
-        .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.jqueryResponse : PullRequest.jqueryResponse);
+        .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
+        .replaceAll(r'${response}', type == GitHubIssueType.issue ? Issue.graphQLResponse : PullRequest.graphQLResponse);
       if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
@@ -226,7 +226,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
           result.add(item);
         }
       });
-      _PageInfo pageInfo = _PageInfo.fromGraphQL(page.data['repository'][typeString]['pageInfo']);
+      PageInfo pageInfo = PageInfo.fromGraphQL(page.data['repository'][typeString]['pageInfo']);
 
       done = done || !pageInfo.hasNextPage;
       if (!done) after = '"${pageInfo.endCursor}"';
@@ -255,7 +255,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryOwner}', owner)
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
-      .replaceAll(r'${issueResponse}', Issue.jqueryResponse);
+      .replaceAll(r'${issueResponse}', Issue.graphQLResponse);
       if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
@@ -272,7 +272,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       .replaceAll(r'${repositoryOwner}', owner)
       .replaceAll(r'${repositoryName}', name)
       .replaceAll(r'${number}', number.toString())
-      .replaceAll(r'${pullRequestResponse}', PullRequest.jqueryResponse);
+      .replaceAll(r'${pullRequestResponse}', PullRequest.graphQLResponse);
       if (_printQuery) print(query);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
@@ -386,45 +386,5 @@ class DateRange {
   DateRange._internal(this._type, this._at, this._when, this._start, this._end);
 }
 
-
-/// Represents a page of information from GitHub.
-class _PageInfo {
-  String _startCursor;
-  get startCursor => _startCursor;
-  bool _hasNextPage;
-  get hasNextPage => _hasNextPage;
-  String _endCursor;
-  get endCursor => _endCursor;
-  _PageInfo(this._startCursor, this._endCursor, this._hasNextPage);
-  static _PageInfo fromGraphQL(dynamic node) {
-    return _PageInfo(node['startCursor'], node['endCursor'], node['hasNextPage']);
-  }
-
-  String toString() {
-    return 'start: ${startCursor}, end: ${endCursor}, more? ${hasNextPage}';
-  }
-
-  @override
-  bool operator==(Object other) =>
-    identical(this, other) ||
-    other is _PageInfo &&
-    runtimeType == other.runtimeType &&
-    _startCursor == other._startCursor &&
-    _endCursor == other._endCursor &&
-    _hasNextPage == other._hasNextPage;
-
-  @override 
-  int get hashCode =>  hash2(
-      hash2(_startCursor.hashCode, _endCursor.hashCode),
-        _hasNextPage.hashCode);
-
-
-  static final jqueryResponse = 
-  r'''
-  {
-    startCursor, hasNextPage, endCursor
-  },
-  ''';
-}
 
 
