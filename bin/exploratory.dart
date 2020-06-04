@@ -40,7 +40,7 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  var repos = ['flutter', 'engine'];
+  var repos = ['flutter'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -54,11 +54,11 @@ void main(List<String> args) async {
     rangeType = GitHubDateQueryType.closed;
   }
 
-  var prs = List<dynamic>();
+  var issues = List<dynamic>();
   for(var repo in repos) {
-    prs.addAll(await github.search(owner: 'flutter', 
+    issues.addAll(await github.fetch(owner: 'flutter', 
       name: repo, 
-      type: GitHubIssueType.pullRequest,
+      type: GitHubIssueType.issue,
       state: state,
       dateQuery: rangeType,
       dateRange: when
@@ -66,50 +66,41 @@ void main(List<String> args) async {
   }
 
   print(opts.showClosed ? 
-    "# Closed PRs from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Open PRs from" );
+    "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+    "# Open issues from" );
 
   if (false) {
-    print('## All prs\n');
-    for (var pr in prs) print(pr.summary(linebreakAfter: true));
+    print('## All issues\n');
+    for (var pr in issues) print(pr.summary(linebreakAfter: true));
     print('\n');
   }
 
-  print("There were ${prs.length} prs.\n");
+  print("There were ${issues.length} issues.\n");
 
-  var countNoXref = 0;
-  var countNoOwner = 0;
-  var countNoMilestone = 0;
-  for(var item in prs) {
-    var pr = item as PullRequest;
-    bool hasIssueXref = false;
-    bool hasIssueOwner = false;
-    bool hasIssueMilestone = false;
-    if (pr.timeline != null) for(var timelineEntry in pr.timeline) {
-        if (timelineEntry.type == 'CrossReferencedEvent') {
-            hasIssueXref = true;
-            var issue = await github.issue(owner:'flutter', name:'repo', number: timelineEntry.number);
-            if (issue.assignees && issue.assignees.length) hasIssueOwner = true;
-            if (issue.milestone != null) hasIssueMilestone = true;
-        }
+  var noMilestones = List<Issue>();
+  var noAssigneesYetMilestoned = List<Issue>();
+  int processed = 0;
+  for(var item in issues) {
+    var issue = item as Issue;
+    processed++;
+    if (issue.assignees != null && issue.assignees.length == 0 && issue.milestone == null ) {
+      noMilestones.add(issue);
     }
-    if (!hasIssueXref) { 
-      print('! ' + pr.summary(linebreakAfter: true));
-      countNoXref++;
-    }
-    if (hasIssueXref) {
-      if (!hasIssueOwner) { 
-        print('-O '+ pr.summary(linebreakAfter: true));
-        countNoOwner++;
-      }
-      if (!hasIssueMilestone) {
-        print('-M ' + pr.summary(linebreakAfter: true));
-        countNoMilestone++;
-      }
+    if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
+      noAssigneesYetMilestoned.add(issue);
     }
   }
 
-  print('${countNoXref} PRs did not have cross-references.\n');
-  print('${countNoOwner} PRs did not have owners.\n');
-  print('${countNoMilestone} PRs did not have milestones.\n');
+  var clusters = Cluster.byAssignees(noMilestones);
+
+  print('## Owned issues with no milestone by owner (${noMilestones.length})\n');
+  print(clusters.toMarkdown(ClusterReportSort.byKey, true));
+
+  print('## Issues with milestones and no owners (${noAssigneesYetMilestoned.length})');
+  for(var issue in noAssigneesYetMilestoned) {
+    print(issue.summary(linebreakAfter: true, boldInteresting: false));
+  }
+
+
+
 }

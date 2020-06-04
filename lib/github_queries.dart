@@ -35,7 +35,7 @@ Future<List<dynamic>> search( {String owner, String name,
   GitHubIssueType type = GitHubIssueType.issue,
   GitHubIssueState state = GitHubIssueState.open,
   List<String> labels = null,
-  GitHubDateQueryType dateQuery = GitHubDateQueryType.created,
+  GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
   DateRange dateRange = null
   }) async {
     var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
