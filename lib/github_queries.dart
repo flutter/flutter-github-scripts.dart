@@ -46,7 +46,7 @@ Future<List<dynamic>> search( {String owner, String name,
       case GitHubIssueState.merged: stateString = 'merged'; break;
     }
     
-    if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
+    if (dateQuery != GitHubDateQueryType.none && dateRange == null) {
       throw('With a dateQuery you must provide a non-null dateRange!');
     }
     var dateString = DateRange.queryToString(dateQuery, dateRange);

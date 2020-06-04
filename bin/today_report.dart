@@ -53,18 +53,20 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   
-  var openIssues = await github.search(owner: 'flutter', 
+  var openIssues = await github.fetch(owner: 'flutter', 
     name: 'flutter', 
     type: GitHubIssueType.issue,
     state: GitHubIssueState.open,
-    labels: ["⚠ TODAY"]
+    labels: ["P0"],
   );
   
   var closedIssues = await github.search(owner: 'flutter', 
     name: 'flutter', 
     type: GitHubIssueType.issue,
     state: GitHubIssueState.closed,
-    labels: ["⚠ TODAY"]
+    labels: ["P0"],
+    dateQuery: GitHubDateQueryType.closed,
+    dateRange: DateRange(DateRangeType.range, start: opts.from, end: opts.to)
   );
 
   var open = List<Issue>();

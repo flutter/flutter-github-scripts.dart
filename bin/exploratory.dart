@@ -75,44 +75,41 @@ void main(List<String> args) async {
     print('\n');
   }
 
+  print("There were ${prs.length} prs.\n");
 
-  print("## Issues by milestone\n");
-  print("There were ${issues.length} issues.\n");
-
-  var clusters = Cluster.byMilestone(issues);
-  print(clusters.toMarkdown(ClusterReportSort.byCount, true));
-
-  print((opts.showClosed ? 
-    "## Closed issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "## Open issues punted") + ' by milestone');
-
-  for(var item in issues) {
-    // typecast so we have easy auto-completion in Visual Studio Code
-    var issue = item as Issue;
-    var countMilestoned = 0;
-    var countDemilestoned = 0;
-    if (issue.timeline == null || issue.timeline.length == 0) continue;
-    for(var timelineItem in issue.timeline.timeline) {
-      if (timelineItem.type == 'MilestonedEvent') {
-        countMilestoned++;
-      } else if (timelineItem.type == 'DemilestonedEvent') {
-        countDemilestoned++;
-      }
-    }
-    // Was it initially assigned a milestone on creation and didn't get an event?
-    // I'm not sure if this can happen with GitHub, but we don't want to miss it.
-    if(issue.milestone != null && countMilestoned == 0) countMilestoned++;
-    if (countMilestoned >= 1 || countDemilestoned > 0) {
-      print('Issue [#${issue.number}](${issue.url}) "${issue.title}" milestoned ${countMilestoned} times, ' + 
-        'demilestoned ${countDemilestoned} times, now ' + 
-        (issue.milestone == null ? 'not assigned a milestone' 
-          : 'assigned to be ${issue.milestone}'));
-      for(var timelineItem in issue.timeline.timeline) {
-        if (timelineItem.type == 'MilestonedEvent') {
-          print('...assigned the ${timelineItem.title} milestone');
+  var countNoXref = 0;
+  var countNoOwner = 0;
+  var countNoMilestone = 0;
+  for(var item in prs) {
+    var pr = item as PullRequest;
+    bool hasIssueXref = false;
+    bool hasIssueOwner = false;
+    bool hasIssueMilestone = false;
+    if (pr.timeline != null) for(var timelineEntry in pr.timeline) {
+        if (timelineEntry.type == 'CrossReferencedEvent') {
+            hasIssueXref = true;
+            var issue = await github.issue(owner:'flutter', name:'repo', number: timelineEntry.number);
+            if (issue.assignees && issue.assignees.length) hasIssueOwner = true;
+            if (issue.milestone != null) hasIssueMilestone = true;
         }
+    }
+    if (!hasIssueXref) { 
+      print('! ' + pr.summary(linebreakAfter: true));
+      countNoXref++;
+    }
+    if (hasIssueXref) {
+      if (!hasIssueOwner) { 
+        print('-O '+ pr.summary(linebreakAfter: true));
+        countNoOwner++;
       }
-      print('\n');
+      if (!hasIssueMilestone) {
+        print('-M ' + pr.summary(linebreakAfter: true));
+        countNoMilestone++;
+      }
     }
   }
+
+  print('${countNoXref} PRs did not have cross-references.\n');
+  print('${countNoOwner} PRs did not have owners.\n');
+  print('${countNoMilestone} PRs did not have milestones.\n');
 }
