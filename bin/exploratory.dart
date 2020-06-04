@@ -90,7 +90,10 @@ void main(List<String> args) async {
       if (issue.milestone.title == 'Goals' || 
          (issue.milestone.title == 'Stretch Goals') || 
          (issue.milestone.title == 'No milestone necessary') ||
-         (issue.milestone.title == 'Near-term Goals')
+         (issue.milestone.title == 'Near-term Goals') ||
+         (issue.milestone.title == 'Old Stretch Goals') ||
+         (issue.milestone.title == 'Unassigned customer work') ||
+         (issue.milestone.title == 'Declined Customer Request')
          ) continue;
       noAssigneesYetMilestoned.add(issue);
     }
