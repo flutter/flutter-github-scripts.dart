@@ -67,7 +67,7 @@ void main(List<String> args) async {
 
   print(opts.showClosed ? 
     "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Open issues from" );
+    "# Open issues" );
 
   if (false) {
     print('## All issues\n');
@@ -87,6 +87,11 @@ void main(List<String> args) async {
       noMilestones.add(issue);
     }
     if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
+      if (issue.milestone.title == 'Goals' || 
+         (issue.milestone.title == 'Stretch Goals') || 
+         (issue.milestone.title == 'No milestone necessary') ||
+         (issue.milestone.title == 'Near-term Goals')
+         ) continue;
       noAssigneesYetMilestoned.add(issue);
     }
   }
