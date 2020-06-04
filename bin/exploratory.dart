@@ -83,7 +83,7 @@ void main(List<String> args) async {
   for(var item in issues) {
     var issue = item as Issue;
     processed++;
-    if (issue.assignees != null && issue.assignees.length == 0 && issue.milestone == null ) {
+    if (issue.assignees != null && issue.assignees.length != 0 && issue.milestone == null ) {
       noMilestones.add(issue);
     }
     if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
