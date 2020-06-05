@@ -121,10 +121,11 @@ void main(List<String> args) async {
   var clustersInterestingOwned = Cluster.byAssignees(interestingOwnedIssues);
 
   print('## Issues owned by core team members at Google (${interestingOwnedIssues.length})\n');
-  print(clustersInterestingOwned.toMarkdown(ClusterReportSort.byCount, true));
+  print('x̄ = ${clustersInterestingOwned.mean()}, σ = ${clustersInterestingOwned.stdev()}');
+  print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: true));
 
   print('## Owned issues with no milestone by owner (${noMilestones.length})\n');
-  print(clustersNoMlestones.toMarkdown(ClusterReportSort.byKey, true));
+  print(clustersNoMlestones.toMarkdown(sortType: ClusterReportSort.byKey, skipEmpty: true, showStatistics: false));
 
   print('## Issues with milestones and no owners (${noAssigneesYetMilestoned.length})');
   for(var issue in noAssigneesYetMilestoned) {

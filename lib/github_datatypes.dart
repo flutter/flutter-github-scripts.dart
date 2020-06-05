@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:io';
+import 'dart:math';
 import 'package:quiver/core.dart' show hash2;
 
 
@@ -831,8 +831,9 @@ class Cluster {
 
   String toString() => summary();
 
-  String toMarkdown(ClusterReportSort sortType, bool skipEmpty) {
+  String toMarkdown({ClusterReportSort sortType, bool skipEmpty = true, showStatistics = false}) {
     var result = '';
+    var m = mean(), s = stdev();
 
     if (clusters.keys.length == 0) {
       result = 'no items\n\n';
@@ -840,15 +841,11 @@ class Cluster {
     else {
       // Pick the last item -- the first might be a "__no entries__" label
       var kind = '';
-      if (clusters[clusters.keys.first] is Issue) {
+      if (clusters[clusters.keys.first].first is Issue) {
         kind = 'issue(s)';
       } else {
         kind = 'pull request(s)';
       }
-
-print(clusters[clusters.keys.first].runtimeType);
-print(kind);
-exit(-1);
 
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
@@ -865,13 +862,49 @@ exit(-1);
       }
       // Dump all clusters
       for (var clusterKey in keys) {
-        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length} ${kind}';
+        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length}';
+        if(showStatistics) {
+          var z = (clusters[clusterKey].length - m) / s;
+          result = '${result}, z = ${z}';
+        }
+        result = '${result} ${kind}';
+
         for(var item in clusters[clusterKey]) {
           result = '${result}\n\n' + item.summary(linebreakAfter: true, boldInteresting: false);
         }
       }
     }
     return '${result}\n\n';
+  }
+
+  double mean() {
+    double sum = 0.0;
+    double l = 0.0;
+    switch(type) {
+      case ClusterType.byAuthor: l = (clusters.keys.contains(_unassignedKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byAssignee: l = (clusters.keys.contains(_unassignedKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byMilestone: l = (clusters.keys.contains(_noMilestoneKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byLabel: l = (clusters.keys.contains(_unlabeledKey) ? (clusters.keys.length - 1) : clusters.keys.length).toDouble(); break;
+    }
+    clusters.keys.forEach((key) => sum += clusters[key].length);
+    return sum /l;
+  }
+
+  double stdev() {
+    double m = mean();
+    double sum = 0.0;
+    double l = 0.0;
+    switch(type) {
+      case ClusterType.byAuthor: l = (clusters.keys.contains(_unassignedKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byAssignee: l = (clusters.keys.contains(_unassignedKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byMilestone: l = (clusters.keys.contains(_noMilestoneKey) ? clusters.keys.length - 1 : clusters.keys.length).toDouble(); break;
+      case ClusterType.byLabel: l = (clusters.keys.contains(_unlabeledKey) ? (clusters.keys.length - 1) : clusters.keys.length).toDouble(); break;
+    }
+    clusters.keys.forEach((key) => sum += ((clusters[key].length - m)*(clusters[key].length - m)));
+
+    double deviation = sum / l;
+
+    return sqrt(deviation);
   }
 
   Cluster._internal(this._type, this._clusters);
