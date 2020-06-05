@@ -44,6 +44,10 @@ void main(List<String> args) async {
   // Find the list of folks we're interested in
   final orgReportsContents = File('org-reports.csv').readAsStringSync();
   final orgReports = const CsvToListConverter().convert(orgReportsContents);
+  var interesting = List<String>();
+  orgReports.forEach((row) { 
+    if (row[1].toString().toUpperCase() == 'Y') interesting.add(row[0].toString()); 
+  });
 
   final repos = ['flutter'];
 
@@ -84,12 +88,20 @@ void main(List<String> args) async {
 
   var noMilestones = List<Issue>();
   var noAssigneesYetMilestoned = List<Issue>();
+  var interestingOwnedIssues = List<Issue>();
   int processed = 0;
   for(var item in issues) {
     var issue = item as Issue;
     processed++;
-    if (issue.assignees != null && issue.assignees.length != 0 && issue.milestone == null ) {
-      noMilestones.add(issue);
+    if (issue.assignees != null && issue.assignees.length != 0) {
+      for(var assignee in issue.assignees) {
+        if (interesting.contains(assignee.login)) {
+          interestingOwnedIssues.add(issue);
+        }
+        if (issue.milestone == null ) {
+          noMilestones.add(issue);
+        }
+      }
     }
     if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
       if (issue.milestone.title == 'Goals' || 
@@ -104,10 +116,15 @@ void main(List<String> args) async {
     }
   }
 
-  var clusters = Cluster.byAssignees(noMilestones);
+
+  var clustersNoMlestones = Cluster.byAssignees(noMilestones);
+  var clustersInterestingOwned = Cluster.byAssignees(interestingOwnedIssues);
+
+  print('## Issues owned by core team members at Google (${interestingOwnedIssues.length})\n');
+  print(clustersInterestingOwned.toMarkdown(ClusterReportSort.byCount, true));
 
   print('## Owned issues with no milestone by owner (${noMilestones.length})\n');
-  print(clusters.toMarkdown(ClusterReportSort.byKey, true));
+  print(clustersNoMlestones.toMarkdown(ClusterReportSort.byKey, true));
 
   print('## Issues with milestones and no owners (${noAssigneesYetMilestoned.length})');
   for(var issue in noAssigneesYetMilestoned) {
