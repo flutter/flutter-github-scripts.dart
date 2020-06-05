@@ -839,7 +839,17 @@ class Cluster {
     }
     else {
       // Pick the last item -- the first might be a "__no entries__" label
-      var kind = (clusters[clusters.keys.first] is Issue) ? 'issue(s)' : 'pull request(s)';
+      var kind = '';
+      if (clusters[clusters.keys.first] is Issue) {
+        kind = 'issue(s)';
+      } else {
+        kind = 'pull request(s)';
+      }
+
+print(clusters[clusters.keys.first].runtimeType);
+print(kind);
+exit(-1);
+
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
       keys.sort((a,b) => sortType == ClusterReportSort.byCount ? 
