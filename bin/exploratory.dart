@@ -67,7 +67,7 @@ void main(List<String> args) async {
 
   print(opts.showClosed ? 
     "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Open issues from" );
+    "# Open issues" );
 
   if (false) {
     print('## All issues\n');
@@ -83,7 +83,7 @@ void main(List<String> args) async {
   for(var item in issues) {
     var issue = item as Issue;
     processed++;
-    if (issue.assignees != null && issue.assignees.length == 0 && issue.milestone == null ) {
+    if (issue.assignees != null && issue.assignees.length != 0 && issue.milestone == null ) {
       noMilestones.add(issue);
     }
     if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
