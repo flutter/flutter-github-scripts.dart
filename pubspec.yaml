@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   args: ^1.5.0
+  csv:  ^4.0.0
   quiver: '>=2.0.0 < 3.0.0'
   glob: ^1.0.3
   path:
