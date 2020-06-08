@@ -104,13 +104,14 @@ void main(List<String> args) async {
       }
     }
     if (issue.milestone != null && (issue.assignees == null || issue.assignees.length == 0)) {
-      if (issue.milestone.title == 'Goals' || 
-         (issue.milestone.title == 'Stretch Goals') || 
+      if (issue.milestone.title == '[DEPRECATED] Goals' || 
+         (issue.milestone.title == '[DEPRECATED] Stretch Goals') || 
          (issue.milestone.title == 'No milestone necessary') ||
-         (issue.milestone.title == 'Near-term Goals') ||
+         (issue.milestone.title == '[DEPRECATED] Near-term Goals') ||
          (issue.milestone.title == 'Old Stretch Goals') ||
          (issue.milestone.title == 'Unassigned customer work') ||
-         (issue.milestone.title == 'Declined Customer Request')
+         (issue.milestone.title == 'Declined Customer Request') ||
+         (issue.milestone.title == 'Overdue')
          ) continue;
       noAssigneesYetMilestoned.add(issue);
     }
@@ -119,10 +120,16 @@ void main(List<String> args) async {
 
   var clustersNoMlestones = Cluster.byAssignees(noMilestones);
   var clustersInterestingOwned = Cluster.byAssignees(interestingOwnedIssues);
+  List<String> noOwnedIssues = List<String>();
+  noOwnedIssues.addAll(interesting);
+  clustersInterestingOwned.clusters.keys.forEach((interestingUser) => noOwnedIssues.remove(interestingUser));
 
   print('## Issues owned by core team members at Google (${interestingOwnedIssues.length})\n');
   print('x̄ = ${clustersInterestingOwned.mean()}, σ = ${clustersInterestingOwned.stdev()}');
   print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: true));
+
+  print('## Core team members not owning any issues\n');
+  noOwnedIssues.forEach((user) => print('  * ${user}\n'));
 
   print('## Owned issues with no milestone by owner (${noMilestones.length})\n');
   print(clustersNoMlestones.toMarkdown(sortType: ClusterReportSort.byKey, skipEmpty: true, showStatistics: false));
