@@ -95,15 +95,26 @@ class Labels {
   String summary() {
     String markdown = '(';
     _labels.forEach((label) {
-      markdown = markdown + label.label;
-      if (label != _labels.last) markdown = markdown + ', ';
+      markdown = '${markdown}${label.label}';
+      if (label != _labels.last) markdown = '${markdown}, ';
     });
-    markdown = markdown + ')';
+    markdown = '${markdown})';
     return markdown;
   }
+
+  String toCsv() {
+    String csv = '';
+    labels.forEach((label) {
+      csv += '${csv}${label.label}';
+      if (label != labels.last) csv = '${csv},';
+    });
+    return csv;
+  }
+
   String toString() {
     return summary();
   }
+
   Labels(this._labels);
   static Labels fromGraphQL(dynamic node) {
     var result = Labels(Set<Label>());
@@ -170,6 +181,11 @@ class TimelineItem {
     return result;
   }
 
+  // TODO Probably need something better here.
+  String toCsv() {
+    return toString();
+  }
+
   @override
   bool operator==(Object other) =>
     identical(this, other) ||
@@ -195,14 +211,21 @@ class Timeline {
   String summary() {
     String markdown = '';
     _timeline.forEach((entry) =>
-      markdown = '${markdown}' + entry.toString() + '\n\n'
+      markdown = '${markdown}${entry}\n\n'
     );
     return markdown.length > 2 ? markdown.substring(0, markdown.length-2) : markdown;
   }
   String toString() {
     return summary();
   }
-
+  String toCsv() {
+    String csv = '';
+    _timeline.forEach((entry) =>
+      csv = '${csv}${entry},'
+    );
+    return csv.length > 1 ? csv.substring(0, csv.length-1) : csv;
+  }
+  
   TimelineItem operator[](int index) => _timeline[index];
 
   Timeline(this._timeline);
@@ -218,71 +241,71 @@ class Timeline {
 
   static var graphQLResponse = 
   '''
-{
-  pageInfo ${PageInfo.graphQLResponse},
-  nodes {
-    __typename
-    ... on CrossReferencedEvent {
-      createdAt,
-      source {
-        __typename
-        ...  on PullRequest {
-          title,
-          number,
-        }
-        ... on Issue {
-          title,
-          number,
+  {
+    pageInfo ${PageInfo.graphQLResponse},
+    nodes {
+      __typename
+      ... on CrossReferencedEvent {
+        createdAt,
+        source {
+          __typename
+          ...  on PullRequest {
+            title,
+            number,
+          }
+          ... on Issue {
+            title,
+            number,
+          }
         }
       }
-    }
-    ... on MilestonedEvent {
-      createdAt,
-      actor {
-        login,
-        resourcePath,
-        url
-      }, 
-      id,
-      milestoneTitle
-    }
-    ... on DemilestonedEvent {
-      createdAt,          
-      actor {
-        login,
-        resourcePath,
-        url
-      }, 
-      id, 
-      milestoneTitle
-    }
-    ... on AssignedEvent {
-      createdAt,          
-      assignee {
-        ... on User {
+      ... on MilestonedEvent {
+        createdAt,
+        actor {
           login,
           resourcePath,
           url
-        }
-        ... on Bot {
-          login,
-          resourcePath,
-          url            
-        }
+        }, 
+        id,
+        milestoneTitle
       }
-    }
-    ... on UnassignedEvent {
-      createdAt,          
-      assignee {
-        ... on User {
+      ... on DemilestonedEvent {
+        createdAt,          
+        actor {
           login,
           resourcePath,
           url
+        }, 
+        id, 
+        milestoneTitle
+      }
+      ... on AssignedEvent {
+        createdAt,          
+        assignee {
+          ... on User {
+            login,
+            resourcePath,
+            url
+          }
+          ... on Bot {
+            login,
+            resourcePath,
+            url            
+          }
         }
-      }          
+      }
+      ... on UnassignedEvent {
+        createdAt,          
+        assignee {
+          ... on User {
+            login,
+            resourcePath,
+            url
+          }
+        }          
+      }
     }
   }
-}
   ''';
 
 }
@@ -330,19 +353,22 @@ class Milestone {
   String toString() {
     return 'due on ${dueOn} (${title})';
   }
+  String toCsv() {
+    return '${title},${dueOn}';
+  }
 
   static final graphQLResponse = 
   '''
-    milestone {
-      title,
-      id,
-      number,
-      url,
-      closed,
-      createdAt,
-      closedAt,
-      dueOn,
-    }
+  milestone {
+    title,
+    id,
+    number,
+    url,
+    closed,
+    createdAt,
+    closedAt,
+    dueOn,
+  }
   ''';
 }
 
@@ -382,6 +408,9 @@ class Actor {
   static Actor fromGraphQL(dynamic node) {
     return Actor(node['login'], node['url']);
   }
+
+  String toString() => this._login;
+  String toCsv() => this._login;
 
   @override
   bool operator==(Object other) =>
