@@ -64,9 +64,9 @@ void main(List<String> args) async {
 
   var prs = List<dynamic>();
   for(var repo in repos) {
-    prs.addAll(await github.fetch(owner: 'flutter', 
+    prs.addAll(await github.search(owner: 'flutter', 
       name: repo, 
-      type: GitHubIssueType.issue,
+      type: GitHubIssueType.pullRequest,
       state: state,
       dateQuery: rangeType,
       dateRange: when
