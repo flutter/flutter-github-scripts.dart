@@ -90,16 +90,22 @@ void main(List<String> args) async {
   for(var item in prs) {
     var pullRequest = item as PullRequest;
     processed++;
-      for(var assignee in pullRequest.assignees) {
-        if (interesting.contains(assignee.login)) {
-          nonGoogleContributions.add(pullRequest);
+      print(pullRequest.author.login);
+      if (interesting.contains(pullRequest.author.login)) {
+        nonGoogleContributions.add(pullRequest);
+        continue;
+      }
+      if (pullRequest.assignees != null) {
+        for(var assignee in pullRequest.assignees) {
+          if (interesting.contains(assignee.login)) {
+            nonGoogleContributions.add(pullRequest);
+            break;
+          }
         }
     }
   }
 
 
-  var clustersInterestingOwned = Cluster.byAssignees(nonGoogleContributions);
-
-  print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: true));
-
+  var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
+  print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: false));
 }
