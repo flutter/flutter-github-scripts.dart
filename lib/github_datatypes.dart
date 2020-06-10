@@ -919,18 +919,26 @@ class Cluster {
     var result = '';
     var m = mean(), s = stdev();
 
+
+
     if (clusters.keys.length == 0) {
       result = 'no items\n\n';
     }
     else {
-      // Pick the last item -- the first might be a "__no entries__" label
       var kind = '';
-      if (clusters[clusters.keys.first].first is Issue) {
-        kind = 'issue(s)';
-      } else {
-        kind = 'pull request(s)';
+      // Determine the type of this cluster
+      for(var key in clusters.keys) {
+        if (clusters[key] != null && clusters[key].length != 0) {
+          dynamic item = clusters[key].first;
+          if (item is Issue) {
+            kind = 'issue(s)';
+          } else {
+            kind = 'pull request(s)';
+          }
+          break;
+        }
       }
-
+      
       // Sort labels in descending order
       List<String> keys = clusters.keys.toList();
       keys.sort((a,b) => sortType == ClusterReportSort.byCount ? 
@@ -946,12 +954,11 @@ class Cluster {
       }
       // Dump all clusters
       for (var clusterKey in keys) {
-        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length}';
+        result = '${result}\n\n### ${clusterKey} - ${clusters[clusterKey].length} ${kind}';
         if(showStatistics) {
           var z = (clusters[clusterKey].length - m) / s;
           result = '${result}, z = ${z}';
         }
-        result = '${result} ${kind}';
 
         for(var item in clusters[clusterKey]) {
           result = '${result}\n\n' + item.summary(linebreakAfter: true, boldInteresting: false);

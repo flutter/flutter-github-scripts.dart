@@ -43,9 +43,9 @@ void main(List<String> args) async {
   // Find the list of folks we're interested in
   final orgMembersContents = File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
-  var interesting = List<String>();
+  var googleContributors = List<String>();
   orgMembers.forEach((row) { 
-    if (!row[3].toString().toUpperCase().contains('GOOGLE')) interesting.add(row[0].toString()); 
+    if (row[3].toString().toUpperCase().contains('GOOGLE')) googleContributors.add(row[0].toString()); 
   });
 
   final repos = ['flutter', 'engine'];
@@ -64,9 +64,9 @@ void main(List<String> args) async {
 
   var prs = List<dynamic>();
   for(var repo in repos) {
-    prs.addAll(await github.fetch(owner: 'flutter', 
+    prs.addAll(await github.search(owner: 'flutter', 
       name: repo, 
-      type: GitHubIssueType.issue,
+      type: GitHubIssueType.pullRequest,
       state: state,
       dateQuery: rangeType,
       dateRange: when
@@ -90,16 +90,21 @@ void main(List<String> args) async {
   for(var item in prs) {
     var pullRequest = item as PullRequest;
     processed++;
-      for(var assignee in pullRequest.assignees) {
-        if (interesting.contains(assignee.login)) {
-          nonGoogleContributions.add(pullRequest);
+      if (!googleContributors.contains(pullRequest.author.login)) {
+        nonGoogleContributions.add(pullRequest);
+        continue;
+      }
+      if (pullRequest.assignees != null) {
+        for(var assignee in pullRequest.assignees) {
+          if (!googleContributors.contains(assignee.login)) {
+            nonGoogleContributions.add(pullRequest);
+            break;
+          }
         }
     }
   }
 
 
-  var clustersInterestingOwned = Cluster.byAssignees(nonGoogleContributions);
-
-  print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: true));
-
+  var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
+  print(clustersInterestingOwned.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: false));
 }
