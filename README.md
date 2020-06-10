@@ -112,4 +112,27 @@ pub run bin/clusters.dart --prs --authors --closed 2020-05-01 2020-05-03
 ```
 Shows all authors closing PRs between May 1 2020 and May 3 2020.
 
+## bin/issues-milestones.dart
+
+Usage: `pub run bin/issues-milestones.dart'
+
+Generates a list of unmilestoned owned issues, unowned milestoned issues, and 
+some statistics about how many issues are owned by each contributor listed in the 
+CSV `org-reports.csv`. The CSV is a file consisting of records with two 
+comma-delineated fields, the first being GitHub account, the second
+being 'Y' if the contributor should be included in the statistics, or
+'N' otherwise.
+
+## bin/notable-contributors.dart
+
+Usage: `pub run bin/notable-contributors.dart --closed 2019-11-25T18:05:00 2020-04-02T18:26`
+
+Generates a list of non-Googler-submitted PRs in the date range clustered by contributor.
+
+Relies on a file `go_flutter_org_members.csv` in the root directory consisting of a 
+CSV of all organization members, with the following columns:
+```
+GitHub Login,Discord username (if different),Name,Company,"When Added (original data gave GitHub join date, not Flutter add date)",Reason for Adding,Additional notes,Include in reports
+```
+Google employees may contact KF6GPE for a current snapshot of this list.
 

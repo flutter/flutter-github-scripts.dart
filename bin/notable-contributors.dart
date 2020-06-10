@@ -43,9 +43,9 @@ void main(List<String> args) async {
   // Find the list of folks we're interested in
   final orgMembersContents = File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
-  var interesting = List<String>();
+  var googleContributors = List<String>();
   orgMembers.forEach((row) { 
-    if (!row[3].toString().toUpperCase().contains('GOOGLE')) interesting.add(row[0].toString()); 
+    if (row[3].toString().toUpperCase().contains('GOOGLE')) googleContributors.add(row[0].toString()); 
   });
 
   final repos = ['flutter', 'engine'];
@@ -90,14 +90,13 @@ void main(List<String> args) async {
   for(var item in prs) {
     var pullRequest = item as PullRequest;
     processed++;
-      print(pullRequest.author.login);
-      if (interesting.contains(pullRequest.author.login)) {
+      if (!googleContributors.contains(pullRequest.author.login)) {
         nonGoogleContributions.add(pullRequest);
         continue;
       }
       if (pullRequest.assignees != null) {
         for(var assignee in pullRequest.assignees) {
-          if (interesting.contains(assignee.login)) {
+          if (!googleContributors.contains(assignee.login)) {
             nonGoogleContributions.add(pullRequest);
             break;
           }
