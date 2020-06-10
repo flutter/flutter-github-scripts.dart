@@ -544,6 +544,32 @@ class Issue {
     return markdown;
   }
 
+  static get tsvHeader => 
+    'Number\tTitle\tURL\tAuthor\tCreated At\tAssignees\tMilestone\tDue On\tClosed At';
+
+  // Top level entities like Issue and PR must TSV, because their fields CSV,
+  // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
+  // record format.
+  String toTsv() {
+    String tsv = '';
+    tsv = '${tsv}${_number}';
+    tsv = '${tsv}\t${_title}\t';
+    tsv = '${tsv}\t${_url};';
+    tsv = '{tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${createdAt}';
+    if(_assignees != null && _assignees.length>0) {
+      tsv = '${tsv}\t';
+      assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
+      tsv = tsv.substring(0, tsv.length-1);
+    } else {
+      tsv = '${tsv}\t';
+    }
+    tsv = '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = '${tsv}\t${_closedAt}';
+
+    return tsv;
+  }
+
   @override
   bool operator==(Object other) =>
     identical(this, other) ||
@@ -699,6 +725,35 @@ class PullRequest {
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
   }
+
+  static get tsvHeader => 
+    'Number\tTitle\tURL\tAuthor\tCreated At\tMerged?\tAssignees\tMilestone\tDue On\tMerged At\tClosed At';
+
+  // Top level entities like Issue and PR must TSV, because their fields CSV,
+  // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
+  // record format.
+  String toTsv() {
+    String tsv = '';
+    tsv = '${tsv}${_number}';
+    tsv = '${tsv}\t${_title}\t';
+    tsv = '${tsv}\t${_url};';
+    tsv = '{tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${createdAt}';
+    tsv = '$tsv}\t' + (_merged ? 'Y' : 'N');
+    if(_assignees != null && _assignees.length>0) {
+      tsv = '${tsv}\t';
+      assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
+      tsv = tsv.substring(0, tsv.length-1);
+    } else {
+      tsv = '${tsv}\t';
+    }
+    tsv = '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = '${tsv}\t${_mergedAt}';
+    tsv = '${tsv}\t${_closedAt}';
+    
+    return tsv;
+  }
+
 
 
   @override
