@@ -11,10 +11,11 @@ class Options  {
   ArgResults _results;
   int get number => int.parse(_results.rest[0]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
-
+  bool get tsv => _results['tsv'];
   Options(List<String> args) {
     _parser
-      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
+      ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -26,7 +27,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run pr.dart pr number');
+    print('Usage: pub run pr.dart [-tsv] pr_number');
     print(_parser.usage);
   }
 }
@@ -41,5 +42,6 @@ void main(List<String> args) async {
     name: 'flutter', 
     number: opts.number);
   
-  print(pr.summary(linebreakAfter: true));
+  var result = opts.tsv ? PullRequest.tsvHeader + '\n' + pr.toTsv() : pr.summary(linebreakAfter: true);
+  print(result);
 }

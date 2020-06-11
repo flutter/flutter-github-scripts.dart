@@ -115,6 +115,18 @@ class Labels {
     return summary();
   }
 
+  String priority() {
+    final priorities = { 'P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'};
+    String result = '';
+    labels.forEach((label) {
+      if (priorities.contains(label)) {
+        result = label.toString();
+        return;
+      }
+    });
+    return result;
+  }
+
   Labels(this._labels);
   static Labels fromGraphQL(dynamic node) {
     var result = Labels(Set<Label>());
@@ -545,7 +557,7 @@ class Issue {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tAuthor\tCreated At\tAssignees\tMilestone\tDue On\tClosed At';
+    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tAssignees\tMilestone\tDue On\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -553,8 +565,9 @@ class Issue {
   String toTsv() {
     String tsv = '';
     tsv = '${tsv}${_number}';
-    tsv = '${tsv}\t${_title}\t';
-    tsv = '${tsv}\t${_url};';
+    tsv = '${tsv}\t${_title}';
+    tsv = '${tsv}\t${_url}';
+    tsv = '${tsv}\t${_labels.priority()}';
     tsv = '{tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
     if(_assignees != null && _assignees.length>0) {
@@ -564,8 +577,8 @@ class Issue {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
-    tsv = '${tsv}\t${_closedAt}';
+    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = _closedAt == null ? '${tsv}\t': '${tsv}\t${_closedAt}';
 
     return tsv;
   }
@@ -727,7 +740,7 @@ class PullRequest {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tAuthor\tCreated At\tMerged?\tAssignees\tMilestone\tDue On\tMerged At\tClosed At';
+    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tMilestone\tDue On\tMerged At\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -735,11 +748,12 @@ class PullRequest {
   String toTsv() {
     String tsv = '';
     tsv = '${tsv}${_number}';
-    tsv = '${tsv}\t${_title}\t';
-    tsv = '${tsv}\t${_url};';
-    tsv = '{tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${_title}';
+    tsv = '${tsv}\t${_url}';
+    tsv = '${tsv}\t${_labels.priority()}';
+    tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
-    tsv = '$tsv}\t' + (_merged ? 'Y' : 'N');
+    tsv = '${tsv}\t' + (_merged ? 'Y' : 'N');
     if(_assignees != null && _assignees.length>0) {
       tsv = '${tsv}\t';
       assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
@@ -747,9 +761,9 @@ class PullRequest {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
-    tsv = '${tsv}\t${_mergedAt}';
-    tsv = '${tsv}\t${_closedAt}';
+    tsv = _milestone == null ? '${tsv}\t\t' : '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = _mergedAt == null ? '${tsv}\t' : '${tsv}\t${_mergedAt}';
+    tsv = _closedAt == null ? '${tsv}\t' : '${tsv}\t${_closedAt}';
     
     return tsv;
   }

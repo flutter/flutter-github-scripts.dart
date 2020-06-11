@@ -11,10 +11,12 @@ class Options  {
   ArgResults _results;
   int get number => int.parse(_results.rest[0]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  bool get tsv => _results['tsv'];
 
   Options(List<String> args) {
     _parser
-      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
+      ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -41,11 +43,6 @@ void main(List<String> args) async {
     name: 'flutter', 
     number: opts.number);
   
-  print(issue.summary(boldInteresting: false, linebreakAfter: true));
-  print('${issue.timeline}\n\n');
-  if (issue.milestone != null) {
-    print('Milestone: ${issue.milestone}');
-  } else {
-    print('no milestone');
-  }
+  var result = opts.tsv ? Issue.tsvHeader + '\n' + issue.toTsv() : issue.summary(boldInteresting: true, linebreakAfter: true);
+  print(result);
 }
