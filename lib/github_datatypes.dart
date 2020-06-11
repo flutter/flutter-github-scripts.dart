@@ -570,7 +570,7 @@ class Issue {
     tsv = '${tsv}\t${_labels.priority()}';
     tsv = '{tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
-    if(_assignees != null && _assignees.length>0) {
+    if(_assignees != null && _assignees.length > 0) {
       tsv = '${tsv}\t';
       assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
       tsv = tsv.substring(0, tsv.length-1);
@@ -754,7 +754,7 @@ class PullRequest {
     tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
     tsv = '${tsv}\t' + (_merged ? 'Y' : 'N');
-    if(_assignees != null && _assignees.length>0) {
+    if(_assignees != null && _assignees.length > 0) {
       tsv = '${tsv}\t';
       assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
       tsv = tsv.substring(0, tsv.length-1);
