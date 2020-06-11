@@ -118,10 +118,10 @@ class Labels {
   String priority() {
     final priorities = { 'P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'};
     String result = '';
-    labels.forEach((label) {
-      if (priorities.contains(label)) {
-        result = label.toString();
-        return;
+    priorities.forEach((p) {
+      if (containsString(p)) { 
+        result = p; 
+        return; 
       }
     });
     return result;
@@ -248,6 +248,16 @@ class Timeline {
       if (n == null) continue;
       result.append(TimelineItem.fromGraphQL(n));
     }
+    return result;
+  }
+
+  List<String> milestoneTimeline() {
+    var result = List<String>();
+    _timeline.forEach((item) { 
+      if (item.type == 'MilestonedEvent' || item.type == 'DemilestonedEvent') {
+        result.add(item.title);
+      }
+    });
     return result;
   }
 
@@ -563,12 +573,19 @@ class Issue {
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
+    String milestoneHistory = '';
+    if (timeline != null) timeline.milestoneTimeline().forEach((milestone) =>
+      milestoneHistory = '${milestoneHistory},${milestone}'
+    );
+    if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
+    if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+
     String tsv = '';
     tsv = '${tsv}${_number}';
     tsv = '${tsv}\t${_title}';
     tsv = '${tsv}\t${_url}';
     tsv = '${tsv}\t${_labels.priority()}';
-    tsv = '{tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
     if(_assignees != null && _assignees.length>0) {
       tsv = '${tsv}\t';
@@ -577,7 +594,7 @@ class Issue {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${milestoneHistory}\t${_milestone.dueOn}';
     tsv = _closedAt == null ? '${tsv}\t': '${tsv}\t${_closedAt}';
 
     return tsv;
@@ -746,6 +763,13 @@ class PullRequest {
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
+    String milestoneHistory = '';
+    if (timeline != null) timeline.milestoneTimeline().forEach((milestone) =>
+      milestoneHistory = '${milestoneHistory},${milestone}'
+    );
+    if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
+    if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+
     String tsv = '';
     tsv = '${tsv}${_number}';
     tsv = '${tsv}\t${_title}';
@@ -761,7 +785,7 @@ class PullRequest {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = _milestone == null ? '${tsv}\t\t' : '${tsv}\t${_milestone.title}\t${_milestone.dueOn}';
+    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${milestoneHistory}\t${_milestone.dueOn}';
     tsv = _mergedAt == null ? '${tsv}\t' : '${tsv}\t${_mergedAt}';
     tsv = _closedAt == null ? '${tsv}\t' : '${tsv}\t${_closedAt}';
     

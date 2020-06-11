@@ -10,6 +10,7 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
+  bool get tsv => _results['tsv'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
@@ -17,7 +18,8 @@ class Options  {
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show closed PRs in date range');
+      ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show closed PRs in date range')
+      ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -29,7 +31,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run prs.dart [-closed fromDate toDate]');
+    print('Usage: pub run prs.dart [--tsv] [-closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
@@ -64,11 +66,14 @@ void main(List<String> args) async {
     );
       
     print( opts.showClosed ? 
-      "## PRs landed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-      "## Open PRs in flutter/${repo}");
+      "## Issues closed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "## Open issues in flutter/${repo}");
+
+    print(PullRequest.tsvHeader);
 
     for(var issue in issues) {
-      print(issue.verbose(linebreakAfter: true));
+      var issueString = opts.tsv ? issue.toTsv() : issue.summary(linebreakAfter: true);
+      print(issueString);
     }
   }
 }
