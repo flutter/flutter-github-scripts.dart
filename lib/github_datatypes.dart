@@ -568,7 +568,7 @@ class Issue {
     tsv = '${tsv}\t${_title}';
     tsv = '${tsv}\t${_url}';
     tsv = '${tsv}\t${_labels.priority()}';
-    tsv = '{tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
     if(_assignees != null && _assignees.length > 0) {
       tsv = '${tsv}\t';
