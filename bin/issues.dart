@@ -65,12 +65,17 @@ void main(List<String> args) async {
       dateRange: when
     );
       
+    var headerDelimiter = opts.tsv ? '' : '##';
     print( opts.showClosed ? 
-      "## Issues closed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-      "## Open issues in flutter/${repo}");
+      "${headerDelimiter} Issues closed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "${headerDelimiter} Open issues in flutter/${repo}");
+    if (!opts.tsv) print('\n');
 
-    print(PullRequest.tsvHeader);
+    print('There were ${issues.length} ' +
+      ( opts.showClosed ? 'closed ' : ' open' ) + 'issues');
+    if (!opts.tsv) print('\n');
 
+    if (opts.tsv) print(Issue.tsvHeader);
     for(var issue in issues) {
       var issueString = opts.tsv ? issue.toTsv() : issue.summary(linebreakAfter: true);
       print(issueString);
