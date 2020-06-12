@@ -379,6 +379,17 @@ class Milestone {
     return '${title},${dueOn}';
   }
 
+  @override
+  bool operator==(Object other) =>
+    identical(this, other) ||
+    other is Milestone &&
+    runtimeType == other.runtimeType &&
+    _title == other._title && 
+    _number == other._number;
+
+  @override 
+  int get hashCode => _number.hashCode;
+
   static final graphQLResponse = 
   '''
   milestone {
@@ -539,10 +550,13 @@ class Issue {
         Label('severe: performance'),
     ];
 
-  String summary({bool boldInteresting = true, bool linebreakAfter = false}) {
+  String summary({bool boldInteresting = true, showMilestone = false, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
     var markdown = '[${this.number}](${this.url})';
     markdown = '${markdown} ${this.title} ${labelsSummary}';
+    if (showMilestone) {
+      markdown = '${markdown} ' + ( _milestone == null ? '[no milestone]' : '[${_milestone.title}]');
+    }
     if (boldInteresting && _labels.intersect(_interesting)) markdown = '**' + markdown + '**';
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;

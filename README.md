@@ -40,24 +40,24 @@ to the team when the Markdown is run through
 
 
 ## bin/issue.dart
-Usage: `pub run bin/issue.dart issue-number`
+Usage: `pub run bin/issue.dart [-tsv] issue-number`
 
 Returns a summary of the issue in Markdown format.
 
 ## bin/pr.dart
-Usage: `pub run bin/pr.dart pr-number`
+Usage: `pub run bin/pr.dart [-tsv] pr-number`
 
 Returns a summary of the pull request in Markdown format.
 
 ## bin/prs.dart
-Usage: `pub run bin/prs.dart`
+Usage: `pub run bin/prs.dart [-tsv] [--closed from-date to-date]`
 
 By default, returns a summary of the open pull requests in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
 of PRs closed between those two dates inclusive.
 
 ## bin/issues.dart
-Usage: `pub run bin/issues.dart`
+Usage: `pub run bin/issues.dart [-tsv] [--closed from-date to-date]`
 
 By default, returns a summary of the open issues in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
@@ -136,3 +136,19 @@ GitHub Login,Discord username (if different),Name,Company,"When Added (original 
 ```
 Google employees may contact KF6GPE for a current snapshot of this list.
 
+## bin/who-is-doing-what.dart
+
+Usage: `pub run who-is-doing-what.dart`
+
+Generates a list of pending issues owned by core Flutter team members organized by the milestone
+they fall in, and sorted by priority within that milestone. 
+
+Relies on a file `go_flutter_org_members.csv` in the root directory consisting of a 
+CSV of all organization members, with the following columns:
+```
+GitHub Login,Discord username (if different),Name,Company,"When Added (original data gave GitHub join date, not Flutter add date)",Reason for Adding,Additional notes,Include in reports
+```
+
+The report includes those logins for which the `Include in reports` field value is `Y`.
+
+Google employees may contact KF6GPE for a current snapshot of this list.

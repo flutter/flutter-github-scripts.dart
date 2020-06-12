@@ -181,6 +181,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
     var result = List<dynamic>();
     var done = false;
     var after = 'null';
+    int count = 0;
     do {
       var query = _queryIssuesOrPRs
         .replaceAll(r'${repositoryOwner}', owner)
@@ -224,12 +225,17 @@ Future<List<dynamic>> fetch( {String owner, String name,
 
         if (add) {
           result.add(item);
-        }
+          count++;
+        } 
       });
       PageInfo pageInfo = PageInfo.fromGraphQL(page.data['repository'][typeString]['pageInfo']);
 
       done = done || !pageInfo.hasNextPage;
       if (!done) after = '"${pageInfo.endCursor}"';
+      if (false) {
+        var totalCount = page.data['repository'][typeString]['totalCount'];
+        print('${count} / ${totalCount}');
+      }
     } while( !done );
 
     // Filter labels
