@@ -146,5 +146,5 @@ void main(List<String> args) async {
     }
   }
 
-  if (!opts.list) print(report.toMarkdown());
+  if (!opts.list) print(report.toMarkdown(4));
 }
