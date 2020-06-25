@@ -1,9 +1,8 @@
-import 'dart:collection';
-
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'package:csv/csv.dart';
+import 'package:columnar_output/columnar.dart' as columnar;
 import 'dart:io';
 
 
@@ -17,7 +16,7 @@ class Options  {
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('list', defaultsTo: true, abbr: 'l', negatable: true, help: 'show results as a list instead of columns');
+      ..addFlag('list', defaultsTo: false, abbr: 'l', negatable: true, help: 'show results as a list instead of columns');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -75,6 +74,8 @@ void main(List<String> args) async {
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
 
+  var report = new columnar.Document();
+  int column = -1;
 
   var issues = await github.fetch(owner: 'flutter', 
     name: 'flutter', 
@@ -83,20 +84,23 @@ void main(List<String> args) async {
     dateQuery: rangeType,
     dateRange: when
   );
-  
 
   // For each team member, show each milestone in turn,
   // with a rank order by priority of issues in that milestone.
   var byAssignee = Cluster.byAssignees(issues);
   for(var teamMember in teamMembers) {
+    column++;
+    report.appendColumn();
+    report[column].header = teamMember;
+
     if (byAssignee.clusters[teamMember] == null || byAssignee.clusters[teamMember].length == 0) {
       if (opts.list) print('## ${teamMember} has not self-assigned any issues.\n');
+      report[column].append(columnar.Paragraph(text: 'no issues'));
       continue;
     }
+
     // else
     if (opts.list) print('## ${teamMember} working ${byAssignee.clusters[teamMember].length} issues\n');
-
-    print(teamMember);
 
     // Get the issues sorted into milestones, most recent first.
     var issuesByMilestone = clusterByMilestones(byAssignee.clusters[teamMember]);
@@ -111,6 +115,7 @@ void main(List<String> args) async {
     // Show the contents of each milestone, rank-ordered by priority
     for(var milestone in milestones) {
       if (opts.list) print('### ${milestone.title}\n');
+      report[column].append(columnar.Paragraph(text: milestone.title, emphasize: true));
       // Now group by label, so we can filter on priority
       var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]);
 
@@ -122,6 +127,7 @@ void main(List<String> args) async {
           for(var item in issuesByLabel.clusters[label]) {
             var issue = item as Issue;
             if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true));
+            report[column].append(columnar.Paragraph(text: issue.summary(boldInteresting: false, linebreakAfter: false)));
             shown.add(issue);
           }
         }
@@ -131,9 +137,14 @@ void main(List<String> args) async {
         if (opts.list) print('#### Unprioritized\n');
         for(var item in issuesByMilestone[milestone]) {
           var issue = item as Issue;
-          if (!shown.contains(issue) && opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true));
+          if (!shown.contains(issue)) {
+            if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true));
+            report[column].append(columnar.Paragraph(text: issue.summary(boldInteresting: false, linebreakAfter: false)));
+          }
         }
       }
     }
   }
+
+  if (!opts.list) print(report.toMarkdown());
 }
