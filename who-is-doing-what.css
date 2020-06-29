@@ -1,0 +1,44 @@
+.P0 {
+    color: #ff0000;
+}
+
+.P1 {
+    color: #dd0000;
+}
+
+.P2 {
+    color: #aa0000;
+}
+
+.P3 {
+    color: #990000;
+}
+
+.P4 {
+    color: #770000;
+}
+
+.P5 {
+    color: #550000;
+}
+
+.P6 {
+    color: #330000;
+}
+
+.unprioritized {
+    color: #777777;
+}
+
+.milestone {
+    color: #222222;
+    text-align: center;
+}
+
+.equal-width td { 
+    width: 33%;
+}
+
+h1 {
+    text-align: center;
+}

@@ -550,8 +550,8 @@ class Issue {
         Label('severe: performance'),
     ];
 
-  String summary({bool boldInteresting = true, showMilestone = false, bool linebreakAfter = false}) {
-    var labelsSummary = _labels.summary();
+  String summary({bool boldInteresting = true, showMilestone = false, bool linebreakAfter = false, includeLabels: true}) {
+    var labelsSummary = includeLabels ? _labels.summary() : '';
     var markdown = '[${this.number}](${this.url})';
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (showMilestone) {
@@ -746,8 +746,8 @@ class PullRequest {
       node['timelineItems'] == null ? null : Timeline.fromGraphQL(node['timelineItems']));
   }
 
-  String summary({bool linebreakAfter = false, bool boldInteresting = false}) {
-    var labelsSummary = _labels.summary();
+  String summary({bool linebreakAfter = false, bool boldInteresting = false, includeLabels: true}) {
+    var labelsSummary = includeLabels ? _labels.summary() : '';
     var markdown = '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;

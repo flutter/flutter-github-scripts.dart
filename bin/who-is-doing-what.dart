@@ -5,21 +5,30 @@ import 'package:csv/csv.dart';
 import 'package:columnar_output/columnar.dart' as columnar;
 import 'dart:io';
 
+import 'package:test/test.dart';
+
 
 
 class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get list => _results['list'];
+  bool get markdown => _results['markdown'];
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('list', defaultsTo: false, abbr: 'l', negatable: true, help: 'show results as a list instead of columns');
+      ..addFlag('list', defaultsTo: false, abbr: 'l', negatable: true, help: 'show results as a list instead of columns')
+      ..addFlag('markdown', defaultsTo: false, abbr: 'm', negatable: true, help: 'show results in HTML instead of markdown');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
+      if (list && !markdown) {
+        print('Cannot output a list in HTML!');
+        _printUsage();
+        exit(-1);
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -27,8 +36,9 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run who-is-doing-what.dart [--list]');
+    print('Usage: pub run who-is-doing-what.dart [--list] [--html]');
     print('Prints people on the Flutter team and what they have signed up to do.');
+    print('HTML output only works for the default, not for list output.');
     print(_parser.usage);
   }
 }
@@ -53,6 +63,16 @@ Map<Milestone, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
     }
   }
   return result;
+}
+
+columnar.Paragraph summary(Issue issue, String style) {
+  final priorities = {'P0', 'P1', 'P2', 'P3', 'P4 ', 'P5', 'P6' };
+  String priority;
+  String resultText = '';
+  priorities.forEach((label) { if (issue.labels.containsString(label)) priority = label; });
+  priority = priority ?? '--';
+  resultText = '${priority}: <a href="${issue.url}">#${issue.number}</a> ${issue.title}';
+  return columnar.Paragraph(text: resultText, styleClass: style);
 }
 
 void main(List<String> args) async {
@@ -115,7 +135,7 @@ void main(List<String> args) async {
     // Show the contents of each milestone, rank-ordered by priority
     for(var milestone in milestones) {
       if (opts.list) print('### ${milestone.title}\n');
-      report[column].append(columnar.Paragraph(text: milestone.title, emphasize: true));
+      report[column].append(columnar.Paragraph(text: milestone.title, styleClass: 'milestone'));
       // Now group by label, so we can filter on priority
       var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]);
 
@@ -126,8 +146,8 @@ void main(List<String> args) async {
           if (opts.list) print('#### ${label}\n');
           for(var item in issuesByLabel.clusters[label]) {
             var issue = item as Issue;
-            if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true));
-            report[column].append(columnar.Paragraph(text: issue.summary(boldInteresting: false, linebreakAfter: false)));
+            if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true, includeLabels: false));
+            report[column].append(summary(issue, label));
             shown.add(issue);
           }
         }
@@ -138,13 +158,26 @@ void main(List<String> args) async {
         for(var item in issuesByMilestone[milestone]) {
           var issue = item as Issue;
           if (!shown.contains(issue)) {
-            if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true));
-            report[column].append(columnar.Paragraph(text: issue.summary(boldInteresting: false, linebreakAfter: false)));
+            if (opts.list) print(issue.summary(boldInteresting: false, linebreakAfter: true, includeLabels: false));
+            report[column].append(summary(issue, 'unprioritized'));
           }
         }
       }
     }
   }
 
-  if (!opts.list) print(report.toMarkdown(4));
+  if (!opts.list) {
+    if (opts.markdown) {
+      print(report.toMarkdown(4));
+    } else {
+      print('<html>');
+      print('<head><link rel="stylesheet" type="text/css" href="who-is-doing-what.css">');
+      print('</head>');
+      print('<body>');
+      print('<h1>Who is doing what on Flutter as of ' + DateTime.now().toIso8601String() + '</h1>');
+      print(report.toHtml(3));
+      print('</body>');
+      print('</html>');
+    }
+  }
 }
