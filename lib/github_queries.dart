@@ -196,6 +196,8 @@ Future<List<dynamic>> fetch( {String owner, String name,
       final page = await _client.query(options);
 
       if (page.hasErrors) {
+        print(query);
+        print(page.source);
         throw(page.errors.toString());
       }
 
