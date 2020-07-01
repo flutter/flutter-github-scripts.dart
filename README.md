@@ -159,3 +159,13 @@ The report includes those logins for which the `Include in reports` field value 
 
 Google employees may contact KF6GPE for a current snapshot of this list.
 
+## bin/punted.dart
+
+Usage: `pub run punted.dart [--closed from-date to-date]
+
+Generates a list of issues punted from at least one milestone.
+
+Dates are in ISO 8601 format.
+
+
+
