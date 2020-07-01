@@ -161,11 +161,13 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ## bin/punted.dart
 
-Usage: `pub run punted.dart [--closed from-date to-date]
+Usage: `pub run punted.dart [--closed from-date to-date] [--include-milestones]
 
 Generates a list of issues punted from at least one milestone.
 
 Dates are in ISO 8601 format.
+
+If `--include-milestones` is specified, the punt report is prefaced by a list of the punted issues sorted by milestone.
 
 
 

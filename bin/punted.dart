@@ -104,7 +104,7 @@ void main(List<String> args) async {
 
   print((opts.showClosed ? 
     "## Closed issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "## Open issues punted") + ' by milestone');
+    "## Open issues punted"));
 
   var puntedCount = 0;
   for(var item in issues) {
