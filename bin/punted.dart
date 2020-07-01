@@ -106,6 +106,7 @@ void main(List<String> args) async {
     "## Closed issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
     "## Open issues punted") + ' by milestone');
 
+  var puntedCount = 0;
   for(var item in issues) {
     // typecast so we have easy auto-completion in Visual Studio Code
     var issue = item as Issue;
@@ -134,6 +135,7 @@ void main(List<String> args) async {
         lastNotedMilestoneTitle != '' && 
         lastNotedMilestoneTitle != timelineItem.title) {
         punted = true;
+        puntedCount++;
         lastNotedMilestoneTitle = milestoneEvents[i].title;
       }
       // If it was punted, update our counts.
@@ -162,4 +164,7 @@ void main(List<String> args) async {
       print('\n\n');
     }
   }
+
+  print('\n\n${puntedCount} issues were punted from at least one milestone.');
+
 }
