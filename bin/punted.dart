@@ -8,12 +8,16 @@ import 'dart:io';
 class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
-  bool get dateRange => _results['date-range'];
-  bool get includeMilestones => _results['include-milestones'];
-  bool get tsvOutput => _results['tsv-output'];
-  DateTime get from => DateTime.parse(_results.rest[0]);
-  DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  get dateRange => _results['date-range'];
+  get includeMilestones => _results['include-milestones'];
+  get tsvOutput => _results['tsv-output'];
+  get markdownOutput => !tsvOutput;
+  get onlyOpen => _results['only-open'];
+  get onlyClosed => _results['only-closed'];
+  DateTime _from, _to;
+  get from => _from;
+  get to => _to;
+  get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -21,10 +25,20 @@ class Options  {
       ..addFlag('date-range', defaultsTo: false, abbr: 'd', negatable: false, help: 'show punted issues in date range')
       ..addFlag('include-milestones', defaultsTo: false, abbr: 'i', negatable: true, help: 'show all milestones, too')
       ..addFlag('tsv-output', defaultsTo: false, abbr: 't', negatable: true, help: 'output is in tsv format')
+      ..addFlag('only-open', defaultsTo: false, negatable: false, help: 'only show open issues')
+      ..addFlag('only-closed', defaultsTo: false, negatable: false, help: 'only show closed issues');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
-      if (_results['closed'] && _results.rest.length != 2 ) throw('need start and end dates!');
+      if (_results['date-range'] && _results.rest.length != 2 ) {
+        throw('need start and end dates!');
+      } else if (_results['date-range']) {
+        _from = DateTime.parse(_results.rest[0]);
+        _to = DateTime.parse(_results.rest[1]);
+      } else {
+        _from = DateTime( 2015, 4, 29 );
+        _to = DateTime.now();
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -32,9 +46,8 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run punted.dart [-include-milestones] [-closed fromDate toDate]');
+    print('Usage: pub run punted.dart [-include-milestones] [-date-range fromDate toDate]');
     print('Prints punted issues in flutter/flutter.');
-    print('  ')
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
@@ -68,34 +81,50 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  var state = GitHubIssueState.open;
+  var issues = List<dynamic>();
+  
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed) {
-    state = GitHubIssueState.closed;
-    when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-    rangeType = GitHubDateQueryType.closed;
-  }
 
-  var issues = await github.fetch(owner: 'flutter', 
+  
+  var state = GitHubIssueState.open;
+  if (!opts.onlyClosed) issues.addAll(await github.fetch(owner: 'flutter', 
     name: 'flutter', 
     type: GitHubIssueType.issue,
     state: state,
     dateQuery: rangeType,
     dateRange: when
-  );
+  ));
+  state = GitHubIssueState.closed;
+  if (!opts.onlyOpen) issues.addAll(await github.fetch(owner: 'flutter', 
+    name: 'flutter', 
+    type: GitHubIssueType.issue,
+    state: state,
+    dateQuery: rangeType,
+    dateRange: when
+  ));
+  issues.sort((a, b) => a.number.compareTo(b.number));
 
-  print(opts.showClosed ? 
-    "# Closed issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Open issues" );
+  if (opts.tsvOutput) {
+    print(opts.dateRange ? 
+      "Punted issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "Punted issues" );
+    print('Issue number\tIssue summary\tState\tNumber of punts\tOriginal milestone\tLast punt\tCurrent milestone');
+  } else {
+    print(opts.dateRange ? 
+      "# Punted issues from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "# Punted issues" );
+  }
 
-  if (false) {
+  // Lots o' debugging when this is enabled --- flip to true.
+  if (opts.markdownOutput && false) {
     print('## All issues\n');
     for (var issue in issues) print(issue.summary(linebreakAfter: true));
     print('\n');
   }
+  // End debugging
 
-  if (opts.includeMilestones) {
+  if (opts.includeMilestones && opts.markdownOutput) {
     print("## Issues by milestone\n");
     print("There were ${issues.length} issues.\n");
 
@@ -103,11 +132,11 @@ void main(List<String> args) async {
     uninterestingMilestones.forEach((uninteresting) => clusters.remove(uninteresting)); 
 
     print(clusters.toMarkdown(sortType: ClusterReportSort.byCount, skipEmpty: true, showStatistics: false));
+  } else if (opts.markdownOutput) {
+    print(opts.dateRange ? 
+      "## Punted issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "## Punted issues");
   }
-
-  print((opts.showClosed ? 
-    "## Closed issues punted from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "## Open issues punted"));
 
   var puntedCount = 0;
   for(var item in issues) {
@@ -119,7 +148,9 @@ void main(List<String> args) async {
     var milestoneEvents = List<TimelineItem>();
     for(var timelineItem in issue.timeline.timeline) {
       if (timelineItem.type == 'MilestonedEvent' || timelineItem.type == 'DemilestonedEvent') 
-        milestoneEvents.add(timelineItem);
+        if (timelineItem.createdAt.isAfter(opts.from) && timelineItem.createdAt.isBefore(opts.to)) {
+          milestoneEvents.add(timelineItem);
+      }
     }
     // We're interested in re-milestoning, which means at least two milestone events.
     if (milestoneEvents.length < 2 ) continue;
@@ -155,19 +186,46 @@ void main(List<String> args) async {
     if(issue.milestone != null && countMilestoned == 0) countMilestoned++;
 
     if (countMilestoned >= 1 || countDemilestoned > 0) {
-      print('Issue [#${issue.number}](${issue.url}) "${issue.title}" punted ${countMilestoned} times, ' + 
-        'unassigned a milestone ${countDemilestoned} times, now ' + 
-        (issue.milestone == null ? 'not assigned a milestone' 
-          : 'assigned to ${issue.milestone}\n'));
-      for(var timelineItem in milestoneEvents) {
-        if (timelineItem.type == 'MilestonedEvent') {
-          print('  * assigned the ${timelineItem.title} milestone');
-        } 
+      if (opts.markdownOutput) {
+        print('Issue [#${issue.number}](${issue.url}) "${issue.title}" punted ${countMilestoned} times, ' + 
+          'unassigned a milestone ${countDemilestoned} times, now ' + 
+          (milestoneEvents.last.type == 'DemilestonedEvent' ? 'not assigned a milestone' 
+            : 'assigned to ${issue.milestone}\n'));
+      } else if (opts.tsvOutput && milestoneEvents.last.type == 'MilestonedEvent') {
+        // Issue number Issue summary State Original milestone Last punt Last milestone');
+        final separator = '\t';
+        String tsv = '';
+        var firstMilestone = milestoneEvents[0];
+        var lastMilestone = milestoneEvents.last;
+
+        tsv += '=HYPERLINK("${issue.url}","${issue.number}")';
+        tsv += '${separator}${issue.title}';
+        tsv += '${separator}${issue.state}';
+        tsv += '${separator}${countMilestoned}';
+        tsv += '${separator}${firstMilestone.title}';
+        tsv += '${separator}${lastMilestone.createdAt}';
+        if (milestoneEvents.last.type == 'DemilestonedEvent') {
+          tsv += '${separator}(milestone removed; no milestone set)';
+        } else {
+          tsv += '${separator}${issue.milestone.title}';
+        }
+        print(tsv);
       }
-      print('\n\n');
+      for(var timelineItem in milestoneEvents) {
+        if (opts.markdownOutput) {
+          if (timelineItem.type == 'MilestonedEvent') {
+            print('  * assigned the ${timelineItem.title} milestone');
+          } 
+        } else {
+          // NO TSV OUTPUT for this case; this space left blank.
+        }
+      }
+      if (opts.markdownOutput) print('\n\n');
     }
   }
 
-  print('\n\n${puntedCount} issues were punted from at least one milestone.');
+  if (opts.markdownOutput) {
+    print('\n\n${puntedCount} issues were punted from at least one milestone.');
+  }
 
 }
