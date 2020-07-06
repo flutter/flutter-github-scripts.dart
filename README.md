@@ -161,7 +161,7 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ## bin/punted.dart
 
-Usage: `pub run punted.dart [--closed from-date to-date] [--include-milestones]
+Usage: `pub run punted.dart [--date-range from-date to-date] [--include-milestones] [--tsv-output]
 
 Generates a list of issues punted from at least one milestone.
 

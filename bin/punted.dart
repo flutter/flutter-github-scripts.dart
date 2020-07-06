@@ -8,8 +8,9 @@ import 'dart:io';
 class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
-  bool get showClosed => _results['closed'];
+  bool get dateRange => _results['date-range'];
   bool get includeMilestones => _results['include-milestones'];
+  bool get tsvOutput => _results['tsv-output'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
@@ -17,8 +18,9 @@ class Options  {
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show punted issues in date range')
-      ..addFlag('include-milestones', defaultsTo: false, abbr: 'i', negatable: true, help: 'show all milestones, too');
+      ..addFlag('date-range', defaultsTo: false, abbr: 'd', negatable: false, help: 'show punted issues in date range')
+      ..addFlag('include-milestones', defaultsTo: false, abbr: 'i', negatable: true, help: 'show all milestones, too')
+      ..addFlag('tsv-output', defaultsTo: false, abbr: 't', negatable: true, help: 'output is in tsv format')
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -32,6 +34,7 @@ class Options  {
   void _printUsage() {
     print('Usage: pub run punted.dart [-include-milestones] [-closed fromDate toDate]');
     print('Prints punted issues in flutter/flutter.');
+    print('  ')
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
