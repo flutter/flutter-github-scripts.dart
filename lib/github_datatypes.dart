@@ -217,6 +217,24 @@ class Timeline {
   List<TimelineItem> _timeline;
   get timeline => _timeline;
   get length => _timeline.length;
+  get originalMilestone {
+    for(var item in _timeline) {
+      if (item.type == 'MilestonedEvent') {
+        return item;
+      }
+    }
+    return null;
+  }
+  List<TimelineItem> get milestoneTimeline {
+    var result = List<TimelineItem>();
+    _timeline.forEach((item) { 
+      if (item.type == 'MilestonedEvent' || item.type == 'DemilestonedEvent') {
+        result.add(item);
+      }
+    });
+    return result;
+  }
+
   void append(l) => _timeline.add(l);
   bool contains(l) => _timeline.contains(l);
   
@@ -248,16 +266,6 @@ class Timeline {
       if (n == null) continue;
       result.append(TimelineItem.fromGraphQL(n));
     }
-    return result;
-  }
-
-  List<String> milestoneTimeline() {
-    var result = List<String>();
-    _timeline.forEach((item) { 
-      if (item.type == 'MilestonedEvent' || item.type == 'DemilestonedEvent') {
-        result.add(item.title);
-      }
-    });
     return result;
   }
 
@@ -581,18 +589,25 @@ class Issue {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tAssignees\tMilestone\tDue On\tClosed At';
+    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
     String milestoneHistory = '';
-    if (timeline != null) timeline.milestoneTimeline().forEach((milestone) =>
-      milestoneHistory = '${milestoneHistory},${milestone}'
+    if (timeline != null) timeline.milestoneTimeline.forEach((milestone) =>
+      milestoneHistory = milestone == null ? milestoneHistory : '${milestoneHistory},${milestone.title}'
     );
     if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
     if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+
+    var originalMilestone;
+    if (_timeline == null) originalMilestone = '';
+    if (_timeline.originalMilestone == null) originalMilestone = ''; else _timeline.originalMilestone.title;
+    var currentMilestone = _milestone == null ? '' : _milestone.title;
+    var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
+
 
     String tsv = '';
     tsv = '${tsv}${_number}';
@@ -608,7 +623,9 @@ class Issue {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${milestoneHistory}\t${_milestone.dueOn}';
+   tsv = '${tsv}\t${originalMilestone}';
+    tsv = '${tsv}\t${currentMilestone}';
+    tsv = '${tsv}\t${dueOn}';
     tsv = _closedAt == null ? '${tsv}\t': '${tsv}\t${_closedAt}';
 
     return tsv;
@@ -771,18 +788,23 @@ class PullRequest {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tMilestone\tDue On\tMerged At\tClosed At';
+    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tMerged At\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
-    String milestoneHistory = '';
+    var milestoneHistory = '';
     if (timeline != null) timeline.milestoneTimeline().forEach((milestone) =>
-      milestoneHistory = '${milestoneHistory},${milestone}'
+      milestoneHistory = '${milestoneHistory},${milestone.title}'
     );
     if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
     if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+    var originalMilestone;
+    if (_timeline == null) originalMilestone = '';
+    if (_timeline.originalMilestone == null) originalMilestone = ''; else _timeline.originalMilestone.title;
+    var currentMilestone = _milestone == null ? '' : _milestone.title;
+    var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
 
     String tsv = '';
     tsv = '${tsv}${_number}';
@@ -799,7 +821,9 @@ class PullRequest {
     } else {
       tsv = '${tsv}\t';
     }
-    tsv = _milestone == null ? '${tsv}\t' : '${tsv}\t${milestoneHistory}\t${_milestone.dueOn}';
+    tsv = '${tsv}\t${originalMilestone}';
+    tsv = '${tsv}\t${currentMilestone}';
+    tsv = '${tsv}\t${dueOn}';
     tsv = _mergedAt == null ? '${tsv}\t' : '${tsv}\t${_mergedAt}';
     tsv = _closedAt == null ? '${tsv}\t' : '${tsv}\t${_closedAt}';
     
