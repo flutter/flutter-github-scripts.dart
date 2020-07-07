@@ -145,13 +145,8 @@ void main(List<String> args) async {
     var countMilestoned = 0;
     var countDemilestoned = 0;
     if (issue.timeline == null || issue.timeline.length < 2) continue;
-    var milestoneEvents = List<TimelineItem>();
-    for(var timelineItem in issue.timeline.timeline) {
-      if (timelineItem.type == 'MilestonedEvent' || timelineItem.type == 'DemilestonedEvent') 
-        if (timelineItem.createdAt.isAfter(opts.from) && timelineItem.createdAt.isBefore(opts.to)) {
-          milestoneEvents.add(timelineItem);
-      }
-    }
+    var milestoneEvents = issue.timeline.milestoneTimeline;
+    
     // We're interested in re-milestoning, which means at least two milestone events.
     if (milestoneEvents.length < 2 ) continue;
 
