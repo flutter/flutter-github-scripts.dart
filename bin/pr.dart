@@ -27,7 +27,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run pr.dart [-tsv] pr_number');
+    print('Usage: pub run pr.dart [--tsv] pr_number');
     print(_parser.usage);
   }
 }

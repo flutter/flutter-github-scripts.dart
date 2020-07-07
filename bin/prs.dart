@@ -31,7 +31,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run prs.dart [--tsv] [-closed fromDate toDate]');
+    print('Usage: pub run prs.dart [--tsv] [--closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
