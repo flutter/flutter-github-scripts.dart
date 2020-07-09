@@ -11,6 +11,7 @@ class Options  {
   ArgResults _results;
   bool get showClosed => _results['closed'];
   bool get tsv => _results['tsv'];
+  String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
@@ -19,7 +20,8 @@ class Options  {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show closed PRs in date range')
-      ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
+      ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV')
+      ..addOption('label', defaultsTo: null, abbr: 'l', help: 'only issues with this label');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -31,7 +33,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run issues.dart [--tsv] [--closed fromDate toDate]');
+    print('Usage: pub run issues.dart [--tsv] [--label label] [--closed fromDate toDate]');
     print('Prints issues in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
@@ -77,6 +79,7 @@ void main(List<String> args) async {
 
     if (opts.tsv) print(Issue.tsvHeader);
     for(var issue in issues) {
+      if (opts.label != null && !issue.labels.containsString(opts.label)) continue;
       var issueString = opts.tsv ? issue.toTsv() : issue.summary(linebreakAfter: true);
       print(issueString);
     }

@@ -589,7 +589,7 @@ class Issue {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tClosed At';
+    'Number\tTitle\tPriority\tAuthor\tCreated At\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -610,9 +610,8 @@ class Issue {
 
 
     String tsv = '';
-    tsv = '${tsv}${_number}';
+    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")}';
     tsv = '${tsv}\t${_title}';
-    tsv = '${tsv}\t${_url}';
     tsv = '${tsv}\t${_labels.priority()}';
     tsv = '${tsv}\t' + (_author == null ? '' : _author.toCsv());
     tsv = '${tsv}\t${createdAt}';
@@ -788,7 +787,7 @@ class PullRequest {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tURL\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tMerged At\tClosed At';
+    'Number\tTitle\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tMerged At\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -807,9 +806,8 @@ class PullRequest {
     var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
 
     String tsv = '';
-    tsv = '${tsv}${_number}';
+    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")}';
     tsv = '${tsv}\t${_title}';
-    tsv = '${tsv}\t${_url}';
     tsv = '${tsv}\t${_labels.priority()}';
     tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
