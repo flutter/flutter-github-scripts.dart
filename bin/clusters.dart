@@ -51,6 +51,9 @@ class Options  {
       if (!_results['prs'] && !_results['issues']) { 
         throw(ArgParserException('need to cluster either issues or pull requests!'));
       }
+      if (_results['merged'] && _results['closed']) {
+        throw('--merged and --closed are mutually exclusive!');
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -59,9 +62,10 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run clusters.dart [-closed fromDate toDate] [-labels] [-authors] [-assignees] [-prs] [-issues]');
+    print('Usage: pub run clusters.dart [-labels] [-authors] [-assignees] [-prs] [-issues] [-merged fromDate toDate] [-closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
+    print('  --merged and --closed are mutally exclusive');
     print(_parser.usage);
   }
 }
@@ -83,7 +87,7 @@ void main(List<String> args) async {
   var state = GitHubIssueState.open;
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed) {
+  if (opts.showClosed || opts.showMerged) {
     state = opts.showClosed ?  GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
@@ -110,7 +114,10 @@ void main(List<String> args) async {
     if (opts.labels) what = 'labels';
     if (opts.assignees) what = 'owners';
 
-    print('## ' + (opts.showClosed ? 'Closed ' : 'Open ') + (opts.issues ? 'issues' : 'PRs' ) + ' by ${what}' + 
+    var reportType = 'Open';
+    if (opts.showMerged) reportType = 'Merged';
+    if (opts.showClosed) reportType = 'Closed';
+    print('## ${reportType} ' + (opts.issues ? 'issues' : 'PRs' ) + ' by ${what}' + 
       ' for `flutter/${repo}` ' + 
       (opts.showClosed ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}' : '') + '\n\n');
 
@@ -122,7 +129,11 @@ void main(List<String> args) async {
       for(var label in toRemove) clusters.remove(label);
     }
 
-    print(clusters.toMarkdown((opts.alphabetize ? ClusterReportSort.byKey : ClusterReportSort.byCount), true));
+    print(clusters.toMarkdown( 
+      sortType: (opts.alphabetize ? ClusterReportSort.byKey : 
+        ClusterReportSort.byCount), 
+      skipEmpty: true, showStatistics: false)
+    );
 
     if (opts.authors) {
       print('${clusters.clusters.keys.length} unique ' + (opts.labels ? 'labels.' : 'users') + ' across this repository.\n\n' );

@@ -79,7 +79,7 @@ the arguments:
   *  Pass `closed` to cluster on closed items; otherwise cluster open issues or prs. 
      If you pass `closed`, you must also pass the ISO dates beginning and ending the period you're interested in.
 
-  *  Pass `merged` to cluster on closed items; otherwise cluster open issues or prs. 
+  *  Pass `merged` to cluster on merged items; otherwise cluster open issues or prs. 
      If you pass `merged`, you must also pass the ISO dates beginning and ending the period you're interested in.
 
   *  Pass `alphabetize` to sort clusters alphabetically instead of largest-to-smallest.
