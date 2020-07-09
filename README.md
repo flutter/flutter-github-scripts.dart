@@ -42,19 +42,22 @@ to the team when the Markdown is run through
 ## bin/issue.dart
 Usage: `pub run bin/issue.dart [-tsv] issue-number`
 
-Returns a summary of the issue in Markdown format.
+Returns a summary of the issue in Markdown or TSV format.
 
 ## bin/pr.dart
 Usage: `pub run bin/pr.dart [-tsv] pr-number`
 
-Returns a summary of the pull request in Markdown format.
+Returns a summary of the pull request in Markdown or TSV format.
 
 ## bin/prs.dart
-Usage: `pub run bin/prs.dart [-tsv] [--label label] [--closed from-date to-date]`
+Usage: `pub run bin/prs.dart [-tsv] [--label label] [--merged from-date to-date] [--closed from-date to-date]`
 
 By default, returns a summary of the open pull requests in Markdown format.
-When passed --closed and two dates in ISO 8601 format, shows the range
-of PRs closed between those two dates inclusive.
+When passed `--closed` and two dates in ISO 8601 format, shows the range
+of PRs closed between those two dates inclusive. 
+When passed `--merged` and two dates in ISO 8601 format, shows the range
+of PRs merged between those two dates inclusive.
+`--merged` and `--closed` are mutually exclusive.
 
 ## bin/issues.dart
 Usage: `pub run bin/issues.dart [-tsv] [--label label] [--closed from-date to-date]`
@@ -75,6 +78,9 @@ the arguments:
 
   *  Pass `closed` to cluster on closed items; otherwise cluster open issues or prs. 
      If you pass `closed`, you must also pass the ISO dates beginning and ending the period you're interested in.
+
+  *  Pass `merged` to cluster on closed items; otherwise cluster open issues or prs. 
+     If you pass `merged`, you must also pass the ISO dates beginning and ending the period you're interested in.
 
   *  Pass `alphabetize` to sort clusters alphabetically instead of largest-to-smallest.
 

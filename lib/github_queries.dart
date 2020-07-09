@@ -211,16 +211,16 @@ Future<List<dynamic>> fetch( {String owner, String name,
         if (dateQuery!=GitHubDateQueryType.none) {
           switch(dateQuery) {
             case GitHubDateQueryType.created: 
-              add = item.createdAt.isAfter(dateRange.start) && item.createdAt.isBefore(dateRange.end) ?  true : false;
+              add = (item.createdAt != null && item.createdAt.isAfter(dateRange.start) && item.createdAt.isBefore(dateRange.end)) ?  true : false;
               break;
             case GitHubDateQueryType.updated: 
-              add = item.updatedAt.isAfter(dateRange.start) && item.updatedAt.isBefore(dateRange.end) ?  true : false;
+              add = (item.updatedAt != null && item.updatedAt.isAfter(dateRange.start) && item.updatedAt.isBefore(dateRange.end)) ?  true : false;
               break;
             case GitHubDateQueryType.closed: 
-              add = item.closedAt.isAfter(dateRange.start) && item.closedAt.isBefore(dateRange.end) ?  true : false;
+              add = (item.closedAt != null && item.closedAt.isAfter(dateRange.start) && item.closedAt.isBefore(dateRange.end)) ?  true : false;
               break;
             case GitHubDateQueryType.merged: 
-              add = item.mergedAt != null && item.mergedAt.isAfter(dateRange.start) && item.mergedAt.isBefore(dateRange.end) ?  true : false;
+              add = (item.mergedAt != null && item.mergedAt.isAfter(dateRange.start) && item.mergedAt.isBefore(dateRange.end)) ?  true : false;
               break;
             case GitHubDateQueryType.none: add = true; break;
           }

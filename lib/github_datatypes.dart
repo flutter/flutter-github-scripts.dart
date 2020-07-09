@@ -600,17 +600,24 @@ class Issue {
       milestoneHistory = milestone == null ? milestoneHistory : '${milestoneHistory},${milestone.title}'
     );
     if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
-    if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+    if (milestoneHistory.length == 0) milestoneHistory = _milestone != null ? _milestone.title : '';
 
     var originalMilestone;
-    if (_timeline == null) originalMilestone = '';
-    if (_timeline.originalMilestone == null) originalMilestone = ''; else _timeline.originalMilestone.title;
+    if (_timeline == null) {
+      originalMilestone = ''; 
+    } else {
+      if (_timeline.originalMilestone == null) {
+        originalMilestone = ''; 
+      } else {
+        _timeline.originalMilestone.title;
+      }
+    }
     var currentMilestone = _milestone == null ? '' : _milestone.title;
     var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
 
 
     String tsv = '';
-    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")}';
+    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")';
     tsv = '${tsv}\t${_title}';
     tsv = '${tsv}\t${_labels.priority()}';
     tsv = '${tsv}\t' + (_author == null ? '' : _author.toCsv());
@@ -798,15 +805,22 @@ class PullRequest {
       milestoneHistory = '${milestoneHistory},${milestone.title}'
     );
     if (milestoneHistory.length > 0) milestoneHistory = milestoneHistory.substring(1);
-    if (milestoneHistory.length == 0) milestoneHistory = _milestone ?? '';
+    if (milestoneHistory.length == 0) milestoneHistory = _milestone != null ? milestone.title : '';
     var originalMilestone;
-    if (_timeline == null) originalMilestone = '';
-    if (_timeline.originalMilestone == null) originalMilestone = ''; else _timeline.originalMilestone.title;
+    if (_timeline == null) {
+      originalMilestone = ''; 
+    } else {
+      if (_timeline.originalMilestone == null) {
+        originalMilestone = ''; 
+      } else {
+        _timeline.originalMilestone.title;
+      }
+    }
     var currentMilestone = _milestone == null ? '' : _milestone.title;
     var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
 
     String tsv = '';
-    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")}';
+    tsv = '${tsv}=HYPERLINK("${_url}","${_number}")';
     tsv = '${tsv}\t${_title}';
     tsv = '${tsv}\t${_labels.priority()}';
     tsv = '${tsv}\t${_author.toCsv()}';
@@ -866,6 +880,7 @@ class PullRequest {
     lastEditedAt,
     updatedAt,
     closedAt,
+    mergedAt,
     repository {
       nameWithOwner
     },

@@ -27,7 +27,8 @@ class Options  {
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
-      if (_results['closed'] && _results.rest.length != 2 ) throw('need start and end dates!');
+      if ((_results['closed'] || _results['merged']) && _results.rest.length != 2 ) throw('need start and end dates!');
+      if (_results['merged'] && _results['closed']) throw('--merged and --closed are mutually exclusive!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -35,8 +36,9 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run prs.dart [--tsv] [--label] [--closed fromDate toDate] [--closed fromDate toDate]');
+    print('Usage: pub run prs.dart [--tsv] [--label] [--closed fromDate toDate] [--merged fromDate toDate] [--closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
+    print('  --merged and --closed are mutually exclusive');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
@@ -71,9 +73,10 @@ void main(List<String> args) async {
     
 
     var headerDelimiter = opts.tsv ? '' : '## ';
-    print( opts.showClosed ? 
-      "${headerDelimiter}PRs landed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-      "${headerDelimiter}Open PRs in flutter/${repo}");
+    var type = 'Open';
+    if (opts.showMerged) type = 'Merged';
+    if (opts.showClosed) type = 'Closed';
+    print("${headerDelimiter}${type} PRs in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String());
 
     if (opts.tsv) print(PullRequest.tsvHeader);
     for(var pr in prs) {
