@@ -10,6 +10,7 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
+  bool get showMerged => _results['merged'];
   bool get tsv => _results['tsv'];
   String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
@@ -20,6 +21,7 @@ class Options  {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show closed PRs in date range')
+      ..addFlag('merged', defaultsTo: false, abbr: 'm', negatable: false, help: 'show merged PRs in date range')
       ..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV')
       ..addOption('label', defaultsTo: null, abbr: 'l', help: 'only issues with this label');
     try {
@@ -33,7 +35,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub run prs.dart [--tsv] [--label] [--closed fromDate toDate]');
+    print('Usage: pub run prs.dart [--tsv] [--label] [--closed fromDate toDate] [--closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
@@ -52,12 +54,12 @@ void main(List<String> args) async {
   var state = GitHubIssueState.open;
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed) {
-    state = GitHubIssueState.closed;
+  if (opts.showClosed || opts.showMerged) {
+    state = opts.showClosed ?  GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.merged;
   }
-
+ 
   for(var repo in repos) {
     var prs = await github.fetch(owner: 'flutter', 
       name: repo, 

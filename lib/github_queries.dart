@@ -173,7 +173,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
       case GitHubIssueState.closed: stateString = 'CLOSED'; break;
       case GitHubIssueState.merged: stateString = 'MERGED'; break;
     }
-    
+
     if (dateQuery!=GitHubDateQueryType.none && dateRange == null) {
       throw('With a dateQuery you must provide a non-null dateRange!');
     }
@@ -207,6 +207,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
           Issue.fromGraphQL(edge) : 
           PullRequest.fromGraphQL(edge);
         bool add = true;
+
         if (dateQuery!=GitHubDateQueryType.none) {
           switch(dateQuery) {
             case GitHubDateQueryType.created: 
@@ -219,7 +220,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
               add = item.closedAt.isAfter(dateRange.start) && item.closedAt.isBefore(dateRange.end) ?  true : false;
               break;
             case GitHubDateQueryType.merged: 
-              add = item.mergedAt.isAfter(dateRange.start) && item.mergedAt.isBefore(dateRange.end) ?  true : false;
+              add = item.mergedAt != null && item.mergedAt.isAfter(dateRange.start) && item.mergedAt.isBefore(dateRange.end) ?  true : false;
               break;
             case GitHubDateQueryType.none: add = true; break;
           }
