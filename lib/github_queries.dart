@@ -295,7 +295,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
   r'''
   query {
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-      ${type}(first: 25, after: ${after}, states: ${state}) {
+      ${type}(first: 20, after: ${after}, states: ${state}) {
         totalCount,
         pageInfo ${pageInfoResponse}
         nodes ${response}
@@ -307,7 +307,7 @@ Future<List<dynamic>> fetch( {String owner, String name,
   final _searchIssuesOrPRs = 
   r'''
   query { 
-    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime} sort:created", type: ISSUE, first:25, after:${after}) {
+    search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime} sort:created", type: ISSUE, first:20, after:${after}) {
       issueCount,
       pageInfo ${pageInfoResponse}
       nodes {
