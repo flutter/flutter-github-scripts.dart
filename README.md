@@ -50,14 +50,14 @@ Usage: `pub run bin/pr.dart [-tsv] pr-number`
 Returns a summary of the pull request in Markdown format.
 
 ## bin/prs.dart
-Usage: `pub run bin/prs.dart [-tsv] [--closed from-date to-date]`
+Usage: `pub run bin/prs.dart [-tsv] [--label label] [--closed from-date to-date]`
 
 By default, returns a summary of the open pull requests in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
 of PRs closed between those two dates inclusive.
 
 ## bin/issues.dart
-Usage: `pub run bin/issues.dart [-tsv] [--closed from-date to-date]`
+Usage: `pub run bin/issues.dart [-tsv] [--label label] [--closed from-date to-date]`
 
 By default, returns a summary of the open issues in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
