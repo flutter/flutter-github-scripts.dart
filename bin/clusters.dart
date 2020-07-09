@@ -12,6 +12,7 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
+  bool get showMerged => _results['merged'];
   DateTime get from => _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
   DateTime get to => _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
   bool get labels => _results['labels'];
@@ -30,6 +31,7 @@ class Options  {
       ..addFlag('labels', defaultsTo: false, abbr: 'l', negatable: false, help: 'cluster by label')
       ..addFlag('authors', defaultsTo: false, abbr: 'a', negatable: false, help: 'cluster by authors')
       ..addFlag('assignees', defaultsTo: false, negatable: false, help: 'cluster by assignee')
+      ..addFlag('merged', defaultsTo: false, abbr: 'm', negatable: false, help: 'show merged PRs in date range')
       ..addFlag('prs', defaultsTo: false, abbr: 'p', negatable: false, help: 'cluster pull requests')
       ..addFlag('issues', defaultsTo: false, abbr: 'i', negatable: false, help: 'cluster issues')
       ..addFlag('alphabetize', defaultsTo: false, abbr: 'z', negatable: true, help: 'sort labels alphabetically')
@@ -82,7 +84,7 @@ void main(List<String> args) async {
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed) {
-    state = GitHubIssueState.closed;
+    state = opts.showClosed ?  GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
   }
