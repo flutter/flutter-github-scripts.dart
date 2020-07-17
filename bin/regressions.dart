@@ -51,7 +51,7 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  GitHubIssueType type;
+  GitHubIssueType type = GitHubIssueType.issue;
 
   final states = [ GitHubIssueState.open, GitHubIssueState.closed];
   var items = List<dynamic>();
@@ -70,7 +70,7 @@ void main(List<String> args) async {
   final severeKeyword = 'severe: regression';
 
   // Strip all but the found-in labels.
-  var allLabels = byLabel.keys;
+  var allLabels = []..addAll(byLabel.keys);
   for(var label in allLabels) {
     if (!label.startsWith(foundInKeyword)) byLabel.remove(label);
   }
@@ -82,13 +82,14 @@ void main(List<String> args) async {
 
   // For each label in sorted order, print only those that are
   // marked with the 'severe: regression' label.
-  var releaseLabels = byLabel.keys.sort((a, b) => a.compareTo(b));
+  var releaseLabels = []..addAll(byLabel.keys);
+  releaseLabels.sort((a, b) => a.compareTo(b));
   for(var label in releaseLabels) {
     print('${subsectionHeader}${label}${trailing}');
     if (opts.tsv) print(Issue.tsvHeader);
     for(var item in byLabel[label]) {
       var issue = item as Issue;
-      if (!issue.labels.contains(severeKeyword)) continue;
+      if (!issue.labels.containsString(severeKeyword)) continue;
       if (opts.tsv) print(issue.toTsv()); else print(issue.summary(boldInteresting: true, linebreakAfter: true, includeLabels: true));
     }
   }

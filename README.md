@@ -38,6 +38,16 @@ Markdown output includes a preamble suitable for emailing
 to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
 
+## bin/open-issue-count-by-week.dart
+
+Usage: `pub run bin/open-issue-count-by-week.dart [-f from-date] [-t to-date]`'
+
+Returns a TSV document consisting of the number of issues opened each  
+week from `from-date` until `to-date`.
+
+Weeks end on Saturday. 
+
+If not specified, the report spans the previous week.
 
 ## bin/issue.dart
 Usage: `pub run bin/issue.dart [-tsv] issue-number`

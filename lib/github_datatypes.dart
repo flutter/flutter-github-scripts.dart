@@ -589,7 +589,7 @@ class Issue {
   }
 
   static get tsvHeader => 
-    'Number\tTitle\tPriority\tAuthor\tCreated At\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tClosed At';
+    'Number\tTitle\tPriority\tState\tAuthor\tCreated At\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -620,6 +620,7 @@ class Issue {
     tsv = '${tsv}=HYPERLINK("${_url}","${_number}")';
     tsv = '${tsv}\t${_title}';
     tsv = '${tsv}\t${_labels.priority()}';
+    tsv = '${tsv}\t${_state}';
     tsv = '${tsv}\t' + (_author == null ? '' : _author.toCsv());
     tsv = '${tsv}\t${createdAt}';
     if(_assignees != null && _assignees.length > 0) {
@@ -897,6 +898,9 @@ class Cluster {
   get type => _type;
   SplayTreeMap<String, dynamic> _clusters;
   get clusters => _clusters;
+  get keys => _clusters.keys;
+  dynamic operator[](String key) => _clusters[key];
+
 
   void remove(String key) {
     if (_clusters.containsKey(key)) _clusters.remove(key);

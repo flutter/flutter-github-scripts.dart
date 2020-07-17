@@ -76,9 +76,9 @@ void main(List<String> args) async {
     ));
   }
 
-    var reportType = 'Open';
-    if (opts.showMerged) reportType = 'Merged';
-    if (opts.showClosed) reportType = 'Closed';
+    var reportType = 'oen';
+    if (opts.showMerged) reportType = 'merged';
+    if (opts.showClosed) reportType = 'closed';
 
   print(opts.showClosed || opts.showMerged ? 
     "# Non-Google contributors contributing ${reportType} PRs from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
