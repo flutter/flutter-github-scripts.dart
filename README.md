@@ -154,7 +154,7 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ## bin/who-is-doing-what.dart
 
-Usage: `pub run who-is-doing-what.dart [--list --markdown]
+Usage: `pub run bin/who-is-doing-what.dart [--list --markdown]
 
 Generates a list of pending issues owned by core Flutter team members organized by the milestone
 they fall in, and sorted by priority within that milestone.
@@ -177,7 +177,7 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ## bin/punted.dart
 
-Usage: `pub run punted.dart [--date-range from-date to-date] [--include-milestones] [--tsv-output]
+Usage: `pub run bin/punted.dart [--date-range from-date to-date] [--include-milestones] [--tsv-output]
 
 Generates a list of issues punted from at least one milestone.
 
@@ -187,7 +187,7 @@ If `--include-milestones` is specified, the punt report is prefaced by a list of
 
 ## bin/regressions.dart
 
-Usage: `pub run regressions.dart [--tsv] [--between from-date to-date]`
+Usage: `pub run bin/regressions.dart [--tsv] [--between from-date to-date]`
 
 Generates a list of regressions found in all releases (we started tracking after 1.11).
 
