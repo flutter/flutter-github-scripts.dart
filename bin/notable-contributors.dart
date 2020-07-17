@@ -10,6 +10,7 @@ class Options  {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   bool get showClosed => _results['closed'];
+  bool get showMerged => _results['merged'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
@@ -17,11 +18,13 @@ class Options  {
   Options(List<String> args) {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show punted issues in date range');
+      ..addFlag('closed', defaultsTo: false, abbr: 'c', negatable: false, help: 'show punted issues in date range')
+      ..addFlag('merged', defaultsTo: false, abbr: 'm', negatable: false, help: 'show merged PRs in date range');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
-      if (_results['closed'] && _results.rest.length != 2 ) throw('need start and end dates!');
+      if ((_results['closed'] || _results['merged']) && _results.rest.length != 2 ) throw('need start and end dates!');
+      if (_results['merged'] && _results['closed']) throw('--merged and --closed are mutually exclusive!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -29,7 +32,7 @@ class Options  {
   }
 
   void _printUsage() {
-    print('Usage: pub notable-contributors.dart prs.dart [-closed fromDate toDate]');
+    print('Usage: pub notable-contributors.dart [-closed fromDate toDate]');
     print('Prints non-Google contributors by contributor cluster in the specified date range');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
@@ -56,8 +59,8 @@ void main(List<String> args) async {
   var state = GitHubIssueState.open;
   DateRange when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed) {
-    state = GitHubIssueState.closed;
+  if (opts.showClosed || opts.showMerged) {
+    state = opts.showClosed ?  GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
   }
@@ -73,9 +76,13 @@ void main(List<String> args) async {
     ));
   }
 
-  print(opts.showClosed ? 
-    "# Non-Google contributors contributing closed PRs from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-    "# Non-Google contributors contributing Open PRs" );
+    var reportType = 'Open';
+    if (opts.showMerged) reportType = 'Merged';
+    if (opts.showClosed) reportType = 'Closed';
+
+  print(opts.showClosed || opts.showMerged ? 
+    "# Non-Google contributors contributing ${reportType} PRs from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+    "# Non-Google contributors contributing ${reportType} PRs");
 
   if (false) {
     print('## All issues\n');

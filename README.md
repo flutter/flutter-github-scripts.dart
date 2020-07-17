@@ -131,9 +131,9 @@ being 'Y' if the contributor should be included in the statistics, or
 
 ## bin/notable-contributors.dart
 
-Usage: `pub run bin/notable-contributors.dart --closed 2019-11-25T18:05:00 2020-04-02T18:26`
+Usage: `pub run bin/notable-contributors.dart [--merged from-date to-date] [--closed from-date to-date]`
 
-Generates a list of non-Googler-submitted PRs in the date range clustered by contributor.
+Generates a list of non-Googler-submitted PRs (open/closed/merged) in the date range clustered by contributor.
 
 Relies on a file `go_flutter_org_members.csv` in the root directory consisting of a 
 CSV of all organization members, with the following columns:
@@ -174,6 +174,15 @@ Generates a list of issues punted from at least one milestone.
 Dates are in ISO 8601 format.
 
 If `--include-milestones` is specified, the punt report is prefaced by a list of the punted issues sorted by milestone.
+
+## bin/regressions.dart
+
+Usage: `pub run regressions.dart [--tsv] [--between from-date to-date]`
+
+Generates a list of regressions found in all releases (we started tracking after 1.11).
+
+Dates are in ISO 8601 format.
+
 
 
 
