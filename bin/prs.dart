@@ -74,7 +74,9 @@ void main(List<String> args) async {
   if (opts.showClosed || opts.showMerged) {
     state = opts.showClosed ? GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-    rangeType = GitHubDateQueryType.merged;
+    rangeType = opts.showClosed
+        ? GitHubDateQueryType.closed
+        : GitHubDateQueryType.merged;
   }
 
   for (var repo in repos) {
