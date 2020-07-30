@@ -285,18 +285,6 @@ class GitHub {
 
         if (add) {
           result.add(item);
-
-          if (false) {
-            PullRequest r = item as PullRequest;
-            if (r.number == 30058) {
-              print(r.url);
-              print(r.mergedAt);
-              print(r.closedAt);
-              print(r.merged);
-              exit(-1);
-            }
-          }
-
           count++;
         }
       });

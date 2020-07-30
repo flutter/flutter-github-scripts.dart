@@ -141,9 +141,11 @@ being 'Y' if the contributor should be included in the statistics, or
 
 ## bin/notable-contributors.dart
 
-Usage: `pub run bin/notable-contributors.dart [--merged from-date to-date] [--closed from-date to-date]`
+Usage: `pub run bin/notable-contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
 
 Generates a list of non-Googler-submitted PRs (open/closed/merged) in the date range clustered by contributor.
+
+If `--all-contributors` is specified, includes all, not just non-Google, contributors.
 
 Relies on a file `go_flutter_org_members.csv` in the root directory consisting of a 
 CSV of all organization members, with the following columns:
