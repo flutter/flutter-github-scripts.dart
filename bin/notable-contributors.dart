@@ -9,6 +9,7 @@ class Options {
   ArgResults _results;
   bool get showClosed => _results['closed'];
   bool get showMerged => _results['merged'];
+  bool get onlyNotable => !_results['all-contributors'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
@@ -26,7 +27,12 @@ class Options {
           defaultsTo: false,
           abbr: 'm',
           negatable: false,
-          help: 'show merged PRs in date range');
+          help: 'show merged PRs in date range')
+      ..addFlag("all-contributors",
+          defaultsTo: false,
+          abbr: 'a',
+          negatable: true,
+          help: 'show all instead of notable contributors');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -59,7 +65,8 @@ void main(List<String> args) async {
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
   var googleContributors = List<String>();
   orgMembers.forEach((row) {
-    if (row[3].toString().toUpperCase().contains('GOOGLE'))
+    if (opts.onlyNotable &&
+        (row[3].toString().toUpperCase().contains('GOOGLE')))
       googleContributors.add(row[0].toString());
   });
 
@@ -131,4 +138,6 @@ void main(List<String> args) async {
       sortType: ClusterReportSort.byCount,
       skipEmpty: true,
       showStatistics: false));
+  print(
+      '\nThere were ${clustersInterestingOwned.keys.length} contributors\n\n');
 }
