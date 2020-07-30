@@ -63,7 +63,7 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  var repos = ['flutter', 'engine'];
+  var repos = ['flutter', 'engine', 'plugins'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -96,7 +96,7 @@ void main(List<String> args) async {
         opts.from.toIso8601String() +
         ' to ' +
         opts.to.toIso8601String());
-    print("There were ${prs.length} pull requests");
+    print("There were ${prs.length} pull requests.\n");
 
     if (opts.tsv) print(PullRequest.tsvHeader);
     for (var pr in prs) {
