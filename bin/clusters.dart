@@ -114,7 +114,7 @@ void main(List<String> args) async {
   if (opts.exitCode != null) exit(opts.exitCode);
   var keys = Set<String>();
 
-  var repos = opts.prs ? ['flutter', 'engine', 'engine'] : ['flutter'];
+  var repos = opts.prs ? ['flutter', 'engine', 'plugins'] : ['flutter'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
