@@ -88,11 +88,11 @@ void main(List<String> args) async {
         dateQuery: rangeType,
         dateRange: when);
 
-    var headerDelimiter = opts.tsv ? '' : '## ';
+    var headerDelimiter = opts.tsv ? '' : '### ';
     var type = 'Open';
     if (opts.showMerged) type = 'Merged';
     if (opts.showClosed) type = 'Closed';
-    print("${headerDelimiter}${type} PRs in flutter/${repo} from " +
+    print("${headerDelimiter}${type} PRs in `flutter/${repo}` from " +
         opts.from.toIso8601String() +
         ' to ' +
         opts.to.toIso8601String());

@@ -156,7 +156,7 @@ void main(List<String> args) async {
     var reportType = 'Open';
     if (opts.showMerged) reportType = 'Merged';
     if (opts.showClosed) reportType = 'Closed';
-    print('## ${reportType} ' +
+    print('### ${reportType} ' +
         (opts.issues ? 'issues' : 'PRs') +
         ' by ${what}' +
         ' for `flutter/${repo}` ' +
