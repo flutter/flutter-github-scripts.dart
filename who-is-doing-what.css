@@ -1,0 +1,29 @@
+:root { font-family: sans-serif; }
+
+ * { padding: 0; margin: 0; text-align: left; }
+
+ *:link, *:visited { color: inherit; font: inherit; text-decoration: underline; }
+
+ table { display: inline-table; margin: 1em; border-collapse: collapse; table-layout: fixed; width: 60em; border: solid; vertical-align: top; }
+
+ th, td { width: 20em; white-space: nowrap; overflow: hidden; padding: 0 0.1em; }
+
+ th { background: black; color: white; padding-top: 0.25em; }
+
+ .milestone { background: gray; color: white; }
+
+ .p0 { background: #FF0000; color: #FFFF00; }
+
+ .p1 { background: #FF0000; color: #FFFFFF; }
+
+ .p2 { background: #7F0000; color: #FFFFFF; }
+
+ .p3 { background: #007F00; color: #FFFFFF; }
+
+ .p4 { background: #003000; color: #FFFFFF; }
+
+ .p5 { background: #003030; color: #7F7F7F; }
+
+ .p6 { background: #001717; color: #7F7F7F; }
+
+ .unprioritized { background: #0000FF; color: #FFFF00; }

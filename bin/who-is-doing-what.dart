@@ -20,7 +20,7 @@ class Options  {
     _parser
       ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('list', defaultsTo: false, abbr: 'l', negatable: true, help: 'show results as a list instead of columns')
-      ..addFlag('markdown', defaultsTo: false, abbr: 'm', negatable: true, help: 'show results in HTML instead of markdown');
+      ..addFlag('markdown', defaultsTo: false, abbr: 'm', negatable: true, help: 'show results in Markdown instead of HTML');
     try {
       _results = _parser.parse(args);
       if (_results['help'])  _printUsage();
@@ -71,7 +71,7 @@ columnar.Paragraph summary(Issue issue, String style) {
   String resultText = '';
   priorities.forEach((label) { if (issue.labels.containsString(label)) priority = label; });
   priority = priority ?? '--';
-  resultText = '${priority}: <a href="${issue.url}">#${issue.number}</a> ${issue.title}';
+  resultText = '<a href="${issue.url}">${issue.title}</a>';
   return columnar.Paragraph(text: resultText, styleClass: style);
 }
 
@@ -175,7 +175,7 @@ void main(List<String> args) async {
       print('</head>');
       print('<body>');
       print('<h1>Who is doing what on Flutter as of ' + DateTime.now().toIso8601String() + '</h1>');
-      print(report.toHtml(3));
+      print(report.toHtml(1));
       print('</body>');
       print('</html>');
     }
