@@ -15,7 +15,7 @@ dependencies:
   lcov:
   graphql: ^2.0.0
   columnar_output:
-    git: git@github.com:kf6gpe/columnar-output.dart.git
+    git: https://github.com/kf6gpe/columnar-output.dart.git
 
 dev_dependencies:
   test: ^1.0.0

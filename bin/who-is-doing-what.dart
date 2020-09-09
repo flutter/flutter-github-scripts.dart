@@ -5,8 +5,6 @@ import 'package:csv/csv.dart';
 import 'package:columnar_output/columnar.dart' as columnar;
 import 'dart:io';
 
-import 'package:test/test.dart';
-
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
