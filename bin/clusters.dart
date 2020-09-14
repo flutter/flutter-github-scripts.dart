@@ -22,6 +22,7 @@ class Options {
   bool get issues => _results['issues'];
   bool get alphabetize => _results['alphabetize'];
   bool get customers => _results['customers-only'];
+  bool get skipUninteresting => _results['skip-uninteresting-labels'];
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
@@ -38,6 +39,11 @@ class Options {
           abbr: 'l',
           negatable: false,
           help: 'cluster by label')
+      ..addFlag('skip-uninteresting-labels',
+          defaultsTo: false,
+          abbr: 's',
+          negatable: true,
+          help: 'skip uninteresting labels (e.g., \'cla: yes\')')
       ..addFlag('authors',
           defaultsTo: false,
           abbr: 'a',
@@ -101,7 +107,7 @@ class Options {
 
   void _printUsage() {
     print(
-        'Usage: pub run clusters.dart [-labels] [-authors] [-assignees] [-prs] [-issues] [-merged fromDate toDate] [-closed fromDate toDate]');
+        'Usage: pub run clusters.dart [--labels] [--skip-uninteresting-labels] [--authors] [--assignees] [--prs] [--issues] [--merged fromDate toDate] [--closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print('  --merged and --closed are mutally exclusive');
@@ -114,7 +120,8 @@ void main(List<String> args) async {
   if (opts.exitCode != null) exit(opts.exitCode);
   var keys = Set<String>();
 
-  var repos = opts.prs ? ['flutter', 'engine', 'plugins'] : ['flutter'];
+  final repos = opts.prs ? ['flutter', 'engine', 'plugins'] : ['flutter'];
+  final labelsToSkip = ['cla: yes', 'waiting for tree to go green'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -169,6 +176,14 @@ void main(List<String> args) async {
       Set<String> toRemove = Set<String>();
       for (var label in clusters.clusters.keys) {
         if (label.indexOf('customer: ') != 0) toRemove.add(label);
+      }
+      for (var label in toRemove) clusters.remove(label);
+    }
+
+    if (opts.labels && opts.skipUninteresting) {
+      Set<String> toRemove = Set<String>();
+      for (var label in clusters.clusters.keys) {
+        if (labelsToSkip.contains(label)) toRemove.add(label);
       }
       for (var label in toRemove) clusters.remove(label);
     }
