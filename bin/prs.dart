@@ -121,8 +121,7 @@ void main(List<String> args) async {
           break;
         }
       }
-      var author = (pr as PullRequest).author;
-      if (printIt) print(author.toString() + ':' + pullRequestString);
+      if (printIt) print(pullRequestString);
     }
   }
 }
