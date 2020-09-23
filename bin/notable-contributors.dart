@@ -32,7 +32,7 @@ class Options {
           defaultsTo: false,
           abbr: 'a',
           negatable: true,
-          help: 'show all instead of notable contributors');
+          help: 'show all instead of community contributors');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -66,7 +66,8 @@ void main(List<String> args) async {
   var googleContributors = List<String>();
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
-        (row[3].toString().toUpperCase().contains('GOOGLE')))
+        (row[3].toString().toUpperCase().contains('GOOGLE')) ||
+        (row[3].toString().toUpperCase().contains('CANONICAL')))
       googleContributors.add(row[0].toString());
   });
 
@@ -112,7 +113,7 @@ void main(List<String> args) async {
     print('\n');
   }
 
-  print("There were ${prs.length} pull requests.\n");
+  print('There were ${prs.length} pull requests.\n\n');
 
   var nonGoogleContributions = List<PullRequest>();
   int processed = 0;
@@ -134,10 +135,14 @@ void main(List<String> args) async {
   }
 
   var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
+
+  print('${nonGoogleContributions.length} PRs were contributed by community members.\n\n');
+
+  print(
+      '\nThere were ${clustersInterestingOwned.keys.length} contributors.\n\n');
+
   print(clustersInterestingOwned.toMarkdown(
       sortType: ClusterReportSort.byCount,
       skipEmpty: true,
       showStatistics: false));
-  print(
-      '\nThere were ${clustersInterestingOwned.keys.length} contributors\n\n');
 }
