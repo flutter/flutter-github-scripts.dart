@@ -10,6 +10,7 @@ class Options {
   bool get showClosed => _results['closed'];
   bool get showMerged => _results['merged'];
   bool get tsv => _results['tsv'];
+  bool get skipAutorollers => _results['skip-autorollers'];
   String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
@@ -34,6 +35,11 @@ class Options {
           abbr: 't',
           negatable: true,
           help: 'show results as TSV')
+      ..addFlag('skip-autorollers',
+          defaultsTo: false,
+          abbr: 's',
+          negatable: true,
+          help: 'skip autorollers')
       ..addOption('label',
           defaultsTo: null, abbr: 'l', help: 'only issues with this label');
     try {
@@ -63,7 +69,12 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  var repos = ['flutter', 'engine', 'plugins'];
+  final repos = ['flutter', 'engine', 'plugins'];
+
+  final rollers = [
+    'engine-flutter-autoroll',
+    'skia-flutter-autoroll',
+  ];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -103,7 +114,14 @@ void main(List<String> args) async {
       if (opts.label != null && !pr.labels.containsString(opts.label)) continue;
       var pullRequestString =
           opts.tsv ? pr.toTsv() : pr.summary(linebreakAfter: true);
-      print(pullRequestString);
+      var printIt = true;
+      for (var roller in rollers) {
+        if ((pr as PullRequest).author.toString() == roller) {
+          printIt = false || !opts.skipAutorollers;
+          break;
+        }
+      }
+      if (printIt) print(pullRequestString);
     }
   }
 }
