@@ -32,7 +32,7 @@ class Options {
           defaultsTo: false,
           abbr: 'a',
           negatable: true,
-          help: 'show all instead of notable contributors');
+          help: 'show all instead of community contributors');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -66,7 +66,8 @@ void main(List<String> args) async {
   var googleContributors = List<String>();
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
-        (row[3].toString().toUpperCase().contains('GOOGLE')))
+        (row[3].toString().toUpperCase().contains('GOOGLE')) ||
+        (row[3].toString().toUpperCase().contains('CANONICAL')))
       googleContributors.add(row[0].toString());
   });
 
@@ -112,9 +113,10 @@ void main(List<String> args) async {
     print('\n');
   }
 
-  print("There were ${prs.length} pull requests.\n");
+  print('There were ${prs.length} pull requests.\n\n');
 
   var nonGoogleContributions = List<PullRequest>();
+  var uninterestingContributors = List<PullRequest>();
   int processed = 0;
   for (var item in prs) {
     var pullRequest = item as PullRequest;
@@ -123,11 +125,17 @@ void main(List<String> args) async {
         !googleContributors.contains(pullRequest.author.login)) {
       nonGoogleContributions.add(pullRequest);
       continue;
+    } else {
+      uninterestingContributors.add(pullRequest);
+      continue;
     }
     if (pullRequest.assignees != null) {
       for (var assignee in pullRequest.assignees) {
         if (!googleContributors.contains(assignee.login)) {
           nonGoogleContributions.add(pullRequest);
+          break;
+        } else {
+          uninterestingContributors.add(pullRequest);
           break;
         }
       }
@@ -135,10 +143,19 @@ void main(List<String> args) async {
   }
 
   var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
+  var clustersGooglerOwned = Cluster.byAuthor(uninterestingContributors);
+
+  print('${nonGoogleContributions.length} PRs were contributed by community members.\n\n');
+  print(
+      '\nThere were ${clustersInterestingOwned.keys.length} community contributors.\n\n');
+  var totalContributors = clustersGooglerOwned.keys.length + clustersInterestingOwned.keys.length;
+    print(
+      '\nThere were ${totalContributors} total contributors.\n\n');
+
+  
+
   print(clustersInterestingOwned.toMarkdown(
       sortType: ClusterReportSort.byCount,
       skipEmpty: true,
       showStatistics: false));
-  print(
-      '\nThere were ${clustersInterestingOwned.keys.length} contributors\n\n');
 }
