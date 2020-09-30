@@ -119,7 +119,8 @@ void main(List<String> args) async {
   for (var item in prs) {
     var pullRequest = item as PullRequest;
     processed++;
-    if (!googleContributors.contains(pullRequest.author.login)) {
+    if (pullRequest.author != null &&
+        !googleContributors.contains(pullRequest.author.login)) {
       nonGoogleContributions.add(pullRequest);
       continue;
     }
