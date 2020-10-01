@@ -104,7 +104,7 @@ void main(List<String> args) async {
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
-  printHeader(opts, 'TODAUY');
+  printHeader(opts, 'TODAY');
 
   print(
       'This shows the number of new, open, and closed `P0` issues over the period from');
@@ -168,7 +168,7 @@ void main(List<String> args) async {
       'This shows the number of new, open, and closed `severe: performance` issues over the period from');
   print('${fromStamp} to ${toStamp}.\n\n');
 
-  print('### ${open.length} open `severe: performance` issue(s)\n');
+  print('### ${open.length} open `severe: performance` issue(s) in total\n');
 
   print(
       '### ${openedThisPeriod.length} `severe: performance` issue(s) opened between ${fromStamp} and ${toStamp}');
