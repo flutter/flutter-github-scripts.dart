@@ -10,7 +10,7 @@ class Options {
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
-  bool get excludePerformance => _results['include-performance'] ?? false;
+  bool get excludePerformance => _results['exclude-performance'] ?? false;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -24,8 +24,8 @@ class Options {
           defaultsTo: DateTime.now().toIso8601String(),
           abbr: 't',
           help: 'to date, ISO format yyyy-mm-dd')
-      ..addOption('include-performance',
-          abbr: 'p', help: 'include performance issues');
+      ..addOption('exclude-performance',
+          abbr: 'e', help: 'include performance issues');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -136,7 +136,7 @@ void main(List<String> args) async {
     labels: ['severe: performance'],
   );
 
-  var closedPerfIssues = await github.search(
+  var closedPerfIssues = await github.fetch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
