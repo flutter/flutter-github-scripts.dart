@@ -4,23 +4,31 @@ import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
 
-
-
-class Options  {
+class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
-
+  bool get excludePerformance => _results['include-performance'] ?? false;
   Options(List<String> args) {
     _parser
-      ..addFlag('help', defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addOption('from', defaultsTo: DateTime.now().subtract(Duration(hours: 24 * 7)).toString(), abbr: 'f', help: 'from date, ISO format yyyy-mm-dd')
-      ..addOption('to', defaultsTo: DateTime.now().toIso8601String(), abbr: 't', help: 'to date, ISO format yyyy-mm-dd');
+      ..addFlag('help',
+          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
+      ..addOption('from',
+          defaultsTo:
+              DateTime.now().subtract(Duration(hours: 24 * 7)).toString(),
+          abbr: 'f',
+          help: 'from date, ISO format yyyy-mm-dd')
+      ..addOption('to',
+          defaultsTo: DateTime.now().toIso8601String(),
+          abbr: 't',
+          help: 'to date, ISO format yyyy-mm-dd')
+      ..addOption('include-performance',
+          abbr: 'p', help: 'include performance issues');
     try {
       _results = _parser.parse(args);
-      if (_results['help'])  _printUsage();
+      if (_results['help']) _printUsage();
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -33,16 +41,18 @@ class Options  {
   }
 }
 
-void printHeader(Options opts) {
-  var fromStamp = opts.from.toIso8601String().substring(0,10);
-  var toStamp = opts.to.toIso8601String().substring(0,10);
+void printHeader(Options opts, String which) {
+  var fromStamp = opts.from.toIso8601String().substring(0, 10);
+  var toStamp = opts.to.toIso8601String().substring(0, 10);
 
   print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@google.com\n\n');
-  if (DateTime.now().weekday == DateTime.tuesday) print('Subject: Flutter TODAY Tuesday report!\n');
-  if (DateTime.now().weekday == DateTime.thursday) print('Subject: Flutter TODAY Thursday report!\n');
+  if (DateTime.now().weekday == DateTime.tuesday)
+    print('Subject: Flutter ${which} Tuesday report!\n');
+  if (DateTime.now().weekday == DateTime.thursday)
+    print('Subject: Flutter ${which} Thursday report!\n');
   if (DateTime.now().weekday != DateTime.tuesday &&
       DateTime.now().weekday != DateTime.thursday) {
-    print('Subject: TODAY issues from ${fromStamp} to ${toStamp}\n\n');
+    print('Subject: ${which} issues from ${fromStamp} to ${toStamp}\n\n');
   }
   print('\n\n---\n\n');
 }
@@ -52,18 +62,22 @@ void main(List<String> args) async {
   if (opts.exitCode != null) exit(opts.exitCode);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
-  final closedRange = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-  final openedRange = DateRange(DateRangeType.range, start: opts.to.subtract(Duration(hours: 24 * 7)), end:opts.to);
+  final closedRange =
+      DateRange(DateRangeType.range, start: opts.from, end: opts.to);
+  final openedRange = DateRange(DateRangeType.range,
+      start: opts.to.subtract(Duration(hours: 24 * 7)), end: opts.to);
 
-  var openIssues = await github.search(owner: 'flutter', 
-    name: 'flutter', 
+  var openIssues = await github.search(
+    owner: 'flutter',
+    name: 'flutter',
     type: GitHubIssueType.issue,
     state: GitHubIssueState.open,
     labels: ['P0'],
   );
-  
-  var closedIssues = await github.search(owner: 'flutter', 
-    name: 'flutter', 
+
+  var closedIssues = await github.search(
+    owner: 'flutter',
+    name: 'flutter',
     type: GitHubIssueType.issue,
     state: GitHubIssueState.closed,
     labels: ['P0'],
@@ -75,29 +89,94 @@ void main(List<String> args) async {
 
   openIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);
-    if (issue.createdAt.compareTo(opts.from) >= 0 && issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
+    if (issue.createdAt.compareTo(opts.from) >= 0 &&
+        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
   });
-  
+
   closedIssues.forEach((issue) {
-    if (issue.state == "CLOSED" && issue.closedAt.compareTo(opts.from) >= 0 && issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
-    if (issue.createdAt.compareTo(opts.from) >= 0 && issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
+    if (issue.state == "CLOSED" &&
+        issue.closedAt.compareTo(opts.from) >= 0 &&
+        issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
+    if (issue.createdAt.compareTo(opts.from) >= 0 &&
+        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
   });
 
-  var fromStamp = opts.from.toIso8601String().substring(0,10);
-  var toStamp = opts.to.toIso8601String().substring(0,10);
+  var fromStamp = opts.from.toIso8601String().substring(0, 10);
+  var toStamp = opts.to.toIso8601String().substring(0, 10);
 
-  printHeader(opts);
+  printHeader(opts, 'TODAUY');
 
-  print('This shows the number of new, open, and closed `P0` issues over the period from');
+  print(
+      'This shows the number of new, open, and closed `P0` issues over the period from');
   print('${fromStamp} to ${toStamp}.\n\n');
 
   print('### ${open.length} open `P0` issue(s)');
-  open.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+  open.forEach((issue) =>
+      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
-  print('### ${openedThisPeriod.length} `P0` issue(s) opened between ${fromStamp} and ${toStamp}');
-  openedThisPeriod.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+  print(
+      '### ${openedThisPeriod.length} `P0` issue(s) opened between ${fromStamp} and ${toStamp}');
+  openedThisPeriod.forEach((issue) =>
+      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
-  print('### ${closedThisPeriod.length} `P0` issue(s) closed between ${fromStamp} and ${toStamp}');
-  closedThisPeriod.forEach((issue) => print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+  print(
+      '### ${closedThisPeriod.length} `P0` issue(s) closed between ${fromStamp} and ${toStamp}');
+  closedThisPeriod.forEach((issue) =>
+      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
+  // Bail if we don't care about performance issues.
+  if (opts.excludePerformance) return;
+
+  // Now do the same for performance issues.
+  var openPerfIssues = await github.search(
+    owner: 'flutter',
+    name: 'flutter',
+    type: GitHubIssueType.issue,
+    state: GitHubIssueState.open,
+    labels: ['severe: performance'],
+  );
+
+  var closedPerfIssues = await github.search(
+    owner: 'flutter',
+    name: 'flutter',
+    type: GitHubIssueType.issue,
+    state: GitHubIssueState.closed,
+    labels: ['severe: performance'],
+  );
+
+  open = List<Issue>();
+  openedThisPeriod = List<Issue>();
+  closedThisPeriod = List<Issue>();
+
+  openPerfIssues.forEach((issue) {
+    if (issue.state == "OPEN") open.add(issue);
+    if (issue.createdAt.compareTo(opts.from) >= 0 &&
+        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
+  });
+
+  closedPerfIssues.forEach((issue) {
+    if (issue.state == "CLOSED" &&
+        issue.closedAt.compareTo(opts.from) >= 0 &&
+        issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
+    if (issue.createdAt.compareTo(opts.from) >= 0 &&
+        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
+  });
+
+  printHeader(opts, 'performance');
+
+  print(
+      'This shows the number of new, open, and closed `severe: performance` issues over the period from');
+  print('${fromStamp} to ${toStamp}.\n\n');
+
+  print('### ${open.length} open `severe: performance` issue(s)\n');
+
+  print(
+      '### ${openedThisPeriod.length} `severe: performance` issue(s) opened between ${fromStamp} and ${toStamp}');
+  openedThisPeriod.forEach((issue) =>
+      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+
+  print(
+      '### ${closedThisPeriod.length} `severe: performance` issue(s) closed between ${fromStamp} and ${toStamp}');
+  closedThisPeriod.forEach((issue) =>
+      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 }
