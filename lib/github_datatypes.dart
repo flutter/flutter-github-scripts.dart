@@ -59,35 +59,6 @@ class PageInfo {
   ''';
 }
 
-class Label {
-  String _label;
-  get label => _label;
-  Label(this._label);
-  static Label fromGraphQL(dynamic node) {
-    return Label(node['name']);
-  }
-
-  String toString() {
-    return _label;
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Label &&
-          runtimeType == other.runtimeType &&
-          _label == other._label;
-
-  @override
-  int get hashCode => _label.hashCode;
-
-  static var graphQLResponse = '''
-  {
-    name
-  }
-  ''';
-}
-
 class Reaction {
   String _content;
   get content => _content;
