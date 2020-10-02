@@ -29,8 +29,8 @@ Friday).
 Usage: `pub run bin/today_report.dart [-f from-date] [-t to-date]`'
 
 Returns a Markdown document consisting of the number of open
-`TODAY` issues, `TODAY` issues opened in the period from
-`from-date` until `to-date`, and `TODAY` issues closed in the
+`P0` issues, `P0` issues opened in the period from
+`from-date` until `to-date`, and `P0` issues closed in the
 period from `from-date` until `to-date`.
 
 If not specified, the report spans the previous week.
@@ -38,6 +38,22 @@ If not specified, the report spans the previous week.
 Markdown output includes a preamble suitable for emailing
 to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
+
+## bin/today_report.dart
+
+Usage: `pub run bin/performance_report.dart [-f from-date] [-t to-date]`'
+
+Returns a Markdown document consisting of the number of open
+`severe: performance` issues, `severe: performance` issues opened in the 
+period from `from-date` until `to-date`, and `severe: performance` issues 
+closed in the period from `from-date` until `to-date`.
+
+If not specified, the report spans the previous week.
+
+Markdown output includes a preamble suitable for emailing
+to the team when the Markdown is run through
+[pandoc](https://pandoc.org/).
+
 
 ## bin/open-issue-count-by-week.dart
 
