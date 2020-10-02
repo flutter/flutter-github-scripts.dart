@@ -88,6 +88,193 @@ class Reaction {
   ''';
 }
 
+class Comment {
+  Actor _author;
+  get author => _author;
+  DateTime _createdAt;
+  get createdAt => _createdAt;
+  String _body;
+  get body => _body;
+  String _id;
+  get id => _id;
+  String _ownerId;
+  get ownerId => _ownerId;
+  get reactionStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = _commentQuery
+          .replaceAll(r'${ownerId}', ownerId)
+          .replaceAll(r'${after}', after);
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+
+      PageInfo pageInfo =
+          PageInfo.fromGraphQL(page.data['node']['comments']['pageInfo']);
+      hasNextPage = pageInfo.hasNextPage;
+      after = '"${pageInfo.endCursor}"';
+
+      // Parse the responses into a buffer
+      var bufferReactions = List<Reaction>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['node']['comments']['nodes']) {
+        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+      }
+
+      // Yield each item in our buffer
+      if (bufferReactions.length > 0)
+        do {
+          yield bufferReactions[bufferIndex++];
+        } while (bufferIndex < bufferReactions.length);
+    } while (hasNextPage);
+  }
+
+  Comment(this._author, this._createdAt, this._body);
+  static Comment fromGraphQL(dynamic node) {
+    return Comment(
+        Actor.fromGraphQL(node['author']),
+        node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+        node['body']);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Comment && runtimeType == other.runtimeType && _id == other._id;
+
+  @override
+  int get hashCode => _id.hashCode;
+
+// sample ID  "MDU6SXNzdWUyOTM3NTMyODE="
+  final _commentQuery = r'''
+query { 
+		node(id:"${ownerId}") {
+    	... on Issue {
+			id,
+      comments(last: 100, after: ${after} ) {
+        totalCount,
+        pageInfo {
+          hasNextPage,
+          endCursor,
+        },
+        nodes {
+          body,
+          author { url, login},
+          reactions(last: 100, after: null) {
+            totalCount,
+            nodes{
+              content
+            }
+          }
+        }
+      }
+    }
+    ... on PullRequest {
+			id,
+      comments(last: 100, after: ${after} ) {
+        totalCount,
+        pageInfo {
+          hasNextPage,
+          endCursor,
+        },
+        nodes {
+          body,
+          author { url, login},
+          reactions(last: 100, after: null) {
+            totalCount,
+            nodes{
+              content
+            }
+          }
+        }
+      }
+    }
+  }
+  ''';
+  final _unused = r'''
+query { 
+
+  node(id:  "${id}") {
+    __typename 
+    ... on IssueComment
+    {
+			id,
+      body,
+      createdAt,
+      author {
+      	login,
+        url,
+      },
+			reactions(last: 100, after: null) {
+      	totalCount,
+        nodes {
+        	content
+	      }
+  		}
+    }
+    ... on TeamDiscussionComment
+    {
+			id,
+      body,
+      createdAt,
+      author {
+      	login,
+        url,
+      },
+			reactions(last: 100, after: null) {
+      	totalCount,
+        nodes {
+        	content
+	      }
+  		}
+    }
+    ... on CommitComment
+    {
+			id,
+      body,
+      createdAt,
+      author {
+      	login,
+        url,
+      },
+			reactions(last: 100, after: null) {
+      	totalCount,
+        nodes {
+        	content
+	      }
+  		}
+    }
+    ... on PullRequestReviewComment
+    {
+			id,
+      body,
+      createdAt,
+      author {
+      	login,
+        url,
+      },
+			reactions(last: 100, after: null) {
+      	totalCount,
+        nodes {
+        	content
+	      }
+  		}
+    }
+     ... on GistComment
+    {
+			id,
+      body,
+      createdAt,
+      author {
+      	login,
+        url,
+  		}
+    }
+  }
+}
+''';
+}
+
 class Label {
   String _label;
   get label => _label;
@@ -536,7 +723,6 @@ class Issue {
   get reactionStream async* {
     var after = 'null';
     bool hasNextPage;
-
     do {
       var query = _reactionQuery
           .replaceAll(r'${issue}', this.number.toString())
