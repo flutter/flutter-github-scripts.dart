@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:quiver/core.dart' show hash2;
 
 enum GitHubIssueType { issue, pullRequest }
 enum GitHubIssueState { open, closed, merged }

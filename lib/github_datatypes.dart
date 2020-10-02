@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 import 'package:quiver/core.dart' show hash2;
+import 'package:graphql/client.dart';
 
 // TODO:
 // - Migrate json definitions into smaller object classes, the way
@@ -80,8 +81,8 @@ class Reaction {
   String _content;
   get content => _content;
   Reaction(this._content);
-  static Label fromGraphQL(dynamic node) {
-    return Label(node['content']);
+  static Reaction fromGraphQL(dynamic node) {
+    return Reaction(node['content']);
   }
 
   String toString() {
@@ -537,6 +538,37 @@ class Issue {
   get milestone => _milestone;
   Timeline _timeline;
   get timeline => _timeline;
+  get reactionStream async* {
+    var after = 'null';
+    bool hasNextPage;
+
+    do {
+      var query = _reactionQuery
+          .replaceAll(r'${issue}', this.number.toString())
+          .replaceAll(r'${after}', after);
+      final options = QueryOptions(document: query);
+      if (_printQuery) print(query);
+      final page = await _client.query(options);
+
+      hasNextPage = page.data['repository']['issue']['reactions']['pageInfo']
+          ['hasNextPage'];
+      after =
+          '"${page.data['repository']['issue']['reactions']['pageInfo']['endCursor']}"';
+
+      // Parse the responses into a buffer
+      var bufferReactions = List<Reaction>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['repository']['issue']['reactions']
+          ['nodes']) {
+        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+      }
+
+      // Yield each item in our buffer
+      do {
+        yield bufferReactions[bufferIndex++];
+      } while (bufferIndex < bufferReactions.length);
+    } while (hasNextPage);
+  }
 
   Issue(
       this._title,
@@ -734,6 +766,25 @@ class Issue {
       ${Timeline.graphQLResponse}
   }
   ''';
+
+  final _reactionQuery = r'''
+  query {
+    repository(owner:"flutter", name:"flutter") {
+      issue(number: ${issue}) {
+            reactions(first: 100, after: ${after}) {
+              totalCount,
+              pageInfo {
+                endCursor,
+                hasNextPage,
+              }
+              nodes {
+                content
+              },
+            },
+          },
+        },
+      }
+''';
 }
 
 class PullRequest {

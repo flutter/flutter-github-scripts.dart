@@ -115,7 +115,7 @@ void main(List<String> args) async {
   //   1. A stream of reactions on the issue.
   //   2. A stream of reactions on each comment.
   int sanity = 0;
-  var stream = issueReactionStream(issue);
+  var stream = issue.reactionStream;
   await for (var reaction in stream) {
     sanity++;
     print('\t${reaction.content}');
