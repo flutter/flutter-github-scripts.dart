@@ -10,7 +10,6 @@ class Options {
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
-  bool get excludePerformance => _results['exclude-performance'] ?? false;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -23,9 +22,7 @@ class Options {
       ..addOption('to',
           defaultsTo: DateTime.now().toIso8601String(),
           abbr: 't',
-          help: 'to date, ISO format yyyy-mm-dd')
-      ..addOption('exclude-performance',
-          abbr: 'e', help: 'include performance issues');
+          help: 'to date, ISO format yyyy-mm-dd');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -121,62 +118,6 @@ void main(List<String> args) async {
 
   print(
       '### ${closedThisPeriod.length} `P0` issue(s) closed between ${fromStamp} and ${toStamp}');
-  closedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
-
-  // Bail if we don't care about performance issues.
-  if (opts.excludePerformance) return;
-
-  // Now do the same for performance issues.
-  var openPerfIssues = await github.search(
-    owner: 'flutter',
-    name: 'flutter',
-    type: GitHubIssueType.issue,
-    state: GitHubIssueState.open,
-    labels: ['severe: performance'],
-  );
-
-  var closedPerfIssues = await github.fetch(
-    owner: 'flutter',
-    name: 'flutter',
-    type: GitHubIssueType.issue,
-    state: GitHubIssueState.closed,
-    labels: ['severe: performance'],
-  );
-
-  open = List<Issue>();
-  openedThisPeriod = List<Issue>();
-  closedThisPeriod = List<Issue>();
-
-  openPerfIssues.forEach((issue) {
-    if (issue.state == "OPEN") open.add(issue);
-    if (issue.createdAt.compareTo(opts.from) >= 0 &&
-        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
-
-  closedPerfIssues.forEach((issue) {
-    if (issue.state == "CLOSED" &&
-        issue.closedAt.compareTo(opts.from) >= 0 &&
-        issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
-    if (issue.createdAt.compareTo(opts.from) >= 0 &&
-        issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
-
-  printHeader(opts, 'performance');
-
-  print(
-      'This shows the number of new, open, and closed `severe: performance` issues over the period from');
-  print('${fromStamp} to ${toStamp}.\n\n');
-
-  print('### ${open.length} open `severe: performance` issue(s) in total\n');
-
-  print(
-      '### ${openedThisPeriod.length} `severe: performance` issue(s) opened between ${fromStamp} and ${toStamp}');
-  openedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
-
-  print(
-      '### ${closedThisPeriod.length} `severe: performance` issue(s) closed between ${fromStamp} and ${toStamp}');
   closedThisPeriod.forEach((issue) =>
       print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 }
