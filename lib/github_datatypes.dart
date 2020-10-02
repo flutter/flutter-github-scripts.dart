@@ -1,7 +1,18 @@
 import 'dart:collection';
 import 'dart:math';
+import 'dart:io';
 import 'package:quiver/core.dart' show hash2;
 import 'package:graphql/client.dart';
+
+final token = Platform.environment['GITHUB_TOKEN'];
+final _httpLink = HttpLink(
+  uri: 'https://api.github.com/graphql',
+);
+final _auth = AuthLink(
+  getToken: () async => 'Bearer ${token}',
+);
+final _link = _auth.concat(_httpLink);
+final _client = GraphQLClient(cache: InMemoryCache(), link: _link);
 
 // TODO:
 // - Migrate json definitions into smaller object classes, the way
@@ -547,13 +558,12 @@ class Issue {
           .replaceAll(r'${issue}', this.number.toString())
           .replaceAll(r'${after}', after);
       final options = QueryOptions(document: query);
-      if (_printQuery) print(query);
       final page = await _client.query(options);
 
-      hasNextPage = page.data['repository']['issue']['reactions']['pageInfo']
-          ['hasNextPage'];
-      after =
-          '"${page.data['repository']['issue']['reactions']['pageInfo']['endCursor']}"';
+      PageInfo pageInfo = PageInfo.fromGraphQL(
+          page.data['repository']['issue']['reactions']['pageInfo']);
+      hasNextPage = pageInfo.hasNextPage;
+      after = '"${pageInfo.endCursor}"';
 
       // Parse the responses into a buffer
       var bufferReactions = List<Reaction>();
