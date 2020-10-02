@@ -574,9 +574,10 @@ class Issue {
       }
 
       // Yield each item in our buffer
-      do {
-        yield bufferReactions[bufferIndex++];
-      } while (bufferIndex < bufferReactions.length);
+      if (bufferReactions.length > 0)
+        do {
+          yield bufferReactions[bufferIndex++];
+        } while (bufferIndex < bufferReactions.length);
     } while (hasNextPage);
   }
 
