@@ -1,8 +1,9 @@
-import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
+
+/// 14330 has lots of items. 2020 has no items
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
@@ -54,49 +55,6 @@ query {
       },
     }
 ''';
-
-final token = Platform.environment['GITHUB_TOKEN'];
-final _httpLink = HttpLink(
-  uri: 'https://api.github.com/graphql',
-);
-final _auth = AuthLink(
-  getToken: () async => 'Bearer ${token}',
-);
-final _link = _auth.concat(_httpLink);
-final _client = GraphQLClient(cache: InMemoryCache(), link: _link);
-final _printQuery = false;
-
-Stream<Reaction> issueReactionStream(Issue issue) async* {
-  var after = 'null';
-  bool hasNextPage;
-
-  do {
-    var query = _reactionQuery
-        .replaceAll(r'${issue}', issue.number.toString())
-        .replaceAll(r'${after}', after);
-    final options = QueryOptions(document: query);
-    if (_printQuery) print(query);
-    final page = await _client.query(options);
-
-    hasNextPage = page.data['repository']['issue']['reactions']['pageInfo']
-        ['hasNextPage'];
-    after =
-        '"${page.data['repository']['issue']['reactions']['pageInfo']['endCursor']}"';
-
-    // Parse the responses into a buffer
-    var bufferReactions = List<Reaction>();
-    var bufferIndex = 0;
-    for (var jsonSub in page.data['repository']['issue']['reactions']
-        ['nodes']) {
-      bufferReactions.add(Reaction.fromGraphQL(jsonSub));
-    }
-
-    // Yield each item in our buffer
-    do {
-      yield bufferReactions[bufferIndex++];
-    } while (bufferIndex < bufferReactions.length);
-  } while (hasNextPage);
-}
 
 void main(List<String> args) async {
   final opts = Options(args);
