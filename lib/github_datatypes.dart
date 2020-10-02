@@ -76,6 +76,51 @@ class Label {
   ''';
 }
 
+class Reaction {
+  String _content;
+  get content => _content;
+  Reaction(this._content);
+  static Label fromGraphQL(dynamic node) {
+    return Label(node['content']);
+  }
+
+  String toString() {
+    return _content;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Reaction &&
+          runtimeType == other.runtimeType &&
+          _content == other._content;
+
+  @override
+  int get hashCode => _content.hashCode;
+
+  static var graphQLResponse = '''
+  {
+    content
+  }
+  ''';
+}
+
+class Reactions {
+  List<Reaction> _reactions;
+  operator [](index) => _reactions[index];
+  get length => _reactions.length;
+  void add(item) => _reactions.add(item);
+  void contains(String item) => _reactions.contains(Reaction(item));
+  Map<String, int> reactionCounts() {
+    Map<String, int> result = Map<String, int>();
+    for (var reaction in _reactions) {
+      if (!result.keys.contains(reaction.content)) result[reaction.content] = 0;
+      result[reaction.content]++;
+    }
+    return result;
+  }
+}
+
 class Labels {
   Set<Label> _labels;
   get labels => _labels;
