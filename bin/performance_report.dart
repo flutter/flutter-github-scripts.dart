@@ -43,7 +43,7 @@ void printHeader(Options opts, String which) {
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
   print(
-      '\n\nTo: flutter-performancegoogle.com, flutter-dart-tpm@google.com\n\n');
+      '\n\nTo: flutter-performanceg@oogle.com, flutter-dart-tpm@google.com\n\n');
   if (DateTime.now().weekday == DateTime.tuesday)
     print('Subject: Flutter ${which} Tuesday report!\n');
   if (DateTime.now().weekday == DateTime.thursday)
@@ -103,7 +103,7 @@ void main(List<String> args) async {
   var closedCluster = Cluster.byLabel(closedPerfIssues);
   final interestingPriorities = ['P0', 'P1', 'P2', 'P3'];
 
-  printHeader(opts, 'performance');
+  printHeader(opts, 'Performance');
 
   print(
       'This shows the number of new, open, and closed `severe: performance` issues over the period from');
