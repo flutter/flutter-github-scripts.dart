@@ -33,25 +33,18 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run performance_report.dart [-f date] [-t date]');
+    print('Usage: pub run regression_report.dart [-f date] [-t date]');
     print(_parser.usage);
   }
 }
 
-void printHeader(Options opts, String which) {
+void printHeader(Options opts) {
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
+  print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@google.com\n\n');
   print(
-      '\n\nTo: flutter-performancegoogle.com, flutter-dart-tpm@google.com\n\n');
-  if (DateTime.now().weekday == DateTime.tuesday)
-    print('Subject: Flutter ${which} Tuesday report!\n');
-  if (DateTime.now().weekday == DateTime.thursday)
-    print('Subject: Flutter ${which} Thursday report!\n');
-  if (DateTime.now().weekday != DateTime.tuesday &&
-      DateTime.now().weekday != DateTime.thursday) {
-    print('Subject: ${which} issues from ${fromStamp} to ${toStamp}\n\n');
-  }
+      'Subject: severe:regression issues report from ${fromStamp} to ${toStamp}\n\n');
   print('\n\n---\n\n');
 }
 
@@ -64,33 +57,33 @@ void main(List<String> args) async {
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
   // Now do the same for performance issues.
-  var openPerfIssues = await github.search(
+  var openIssues = await github.search(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
     state: GitHubIssueState.open,
-    labels: ['severe: performance'],
+    labels: ['severe: regression'],
   );
 
-  var closedPerfIssues = await github.fetch(
+  var closedIssues = await github.fetch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
     state: GitHubIssueState.closed,
-    labels: ['severe: performance'],
+    labels: ['severe: regression'],
   );
 
   var open = List<Issue>();
   var openedThisPeriod = List<Issue>();
   var closedThisPeriod = List<Issue>();
 
-  openPerfIssues.forEach((issue) {
+  openIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
   });
 
-  closedPerfIssues.forEach((issue) {
+  closedIssues.forEach((issue) {
     if (issue.state == "CLOSED" &&
         issue.closedAt.compareTo(opts.from) >= 0 &&
         issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
@@ -99,25 +92,25 @@ void main(List<String> args) async {
   });
 
   // Cluster them to get our counts by priority
-  var openCluster = Cluster.byLabel(openPerfIssues);
-  var closedCluster = Cluster.byLabel(closedPerfIssues);
+  var openCluster = Cluster.byLabel(openIssues);
+  var closedCluster = Cluster.byLabel(closedIssues);
   final interestingPriorities = ['P0', 'P1', 'P2', 'P3'];
 
-  printHeader(opts, 'performance');
+  printHeader(opts);
 
   print(
-      'This shows the number of new, open, and closed `severe: performance` issues over the period from');
+      'This shows the number of new, open, and closed `severe: regression` issues over the period from');
   print('${fromStamp} to ${toStamp}.\n\n');
 
-  print('### ${open.length} open `severe: performance` issue(s) in total\n');
+  print('### ${open.length} open `severe: regression` issue(s) in total\n');
 
   print(
-      '### ${openedThisPeriod.length} `severe: performance` issue(s) opened between ${fromStamp} and ${toStamp}');
+      '### ${openedThisPeriod.length} `severe: regression` issue(s) opened between ${fromStamp} and ${toStamp}');
   openedThisPeriod.forEach((issue) =>
       print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 
   print(
-      '### ${closedThisPeriod.length} `severe: performance` issue(s) closed between ${fromStamp} and ${toStamp}');
+      '### ${closedThisPeriod.length} `severe: regression` issue(s) closed between ${fromStamp} and ${toStamp}');
   closedThisPeriod.forEach((issue) =>
       print(issue.summary(boldInteresting: false, linebreakAfter: true)));
 

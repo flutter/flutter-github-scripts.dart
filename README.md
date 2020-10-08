@@ -39,7 +39,7 @@ Markdown output includes a preamble suitable for emailing
 to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
 
-## bin/today_report.dart
+## bin/performance_report.dart
 
 Usage: `pub run bin/performance_report.dart [-f from-date] [-t to-date]`'
 
@@ -54,6 +54,20 @@ Markdown output includes a preamble suitable for emailing
 to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
 
+## bin/regression_report.dart
+
+Usage: `pub run bin/regression_report.dart [-f from-date] [-t to-date]`'
+
+Returns a Markdown document consisting of the number of open
+`severe: regression` issues, `severe: regression` issues opened in the 
+period from `from-date` until `to-date`, and `severe: regression` issues 
+closed in the period from `from-date` until `to-date`.
+
+If not specified, the report spans the previous week.
+
+Markdown output includes a preamble suitable for emailing
+to the team when the Markdown is run through
+[pandoc](https://pandoc.org/).
 
 ## bin/open-issue-count-by-week.dart
 
