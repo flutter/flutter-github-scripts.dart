@@ -97,11 +97,42 @@ class Comment {
   get body => _body;
   String _id;
   get id => _id;
+  get reactionStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = _reactionQuery
+          .replaceAll(r'${id}', this._id)
+          .replaceAll(r'${after}', after);
+      final options = QueryOptions(document: query);
 
-  Comment(this._author, this._createdAt, this._body);
+      final page = await _client.query(options);
+
+      PageInfo pageInfo =
+          PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
+      hasNextPage = pageInfo.hasNextPage;
+      after = '"${pageInfo.endCursor}"';
+      if (_id == "MDEyOklzc3VlQ29tbWVudDM2NTUwMjY4Mw==") exit(-1);
+      // Parse the responses into a buffer
+      var bufferReactions = List<Reaction>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['node']['reactions']['nodes']) {
+        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+      }
+
+      // Yield each item in our buffer
+      if (bufferReactions.length > 0)
+        do {
+          yield bufferReactions[bufferIndex++];
+        } while (bufferIndex < bufferReactions.length);
+    } while (hasNextPage);
+  }
+
+  Comment(this._author, this._id, this._createdAt, this._body);
   static Comment fromGraphQL(dynamic node) {
     return Comment(
         Actor.fromGraphQL(node['author']),
+        node['id'],
         node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
         node['body']);
   }
@@ -113,6 +144,37 @@ class Comment {
 
   @override
   int get hashCode => _id.hashCode;
+
+  String _reactionQuery = r'''
+    query { 
+      node(id: "${id}") {
+      ... on IssueComment {
+            reactions(first: 100, after: ${after}) {
+              totalCount,
+              pageInfo {
+                endCursor,
+                hasNextPage,
+              }
+              nodes {
+                content
+              },
+            },
+          },
+        ... on CommitComment {
+          reactions(first: 100, after:${after}) {
+            totalCount,
+            pageInfo {
+              endCursor,
+              hasNextPage,
+            }
+            nodes {
+              content
+            },
+          },
+        },
+    }
+  }
+''';
 }
 
 class Label {
@@ -578,10 +640,12 @@ class Issue {
       // Parse the responses into a buffer
       var bufferReactions = List<Reaction>();
       var bufferIndex = 0;
-      for (var jsonSub in page.data['repository']['issue']['reactions']
-          ['nodes']) {
-        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
-      }
+      if (page.data['repository']['issue']['reactions']['nodes'] == null ||
+          page.data['repository']['issue']['reactions']['nodes'].length == 0)
+        for (var jsonSub in page.data['repository']['issue']['reactions']
+            ['nodes']) {
+          bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+        }
 
       // Yield each item in our buffer
       if (bufferReactions.length > 0)
@@ -600,24 +664,25 @@ class Issue {
           .replaceAll(r'${after}', after);
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
-
       PageInfo pageInfo =
           PageInfo.fromGraphQL(page.data['node']['comments']['pageInfo']);
       hasNextPage = pageInfo.hasNextPage;
       after = '"${pageInfo.endCursor}"';
 
       // Parse the responses into a buffer
-      var bufferReactions = List<Reaction>();
+      var commentBuffer = List<Comment>();
       var bufferIndex = 0;
+      if (page.data['node']['comments']['nodes'] == null ||
+          page.data['node']['comments']['nodes'].length == 0) return;
       for (var jsonSub in page.data['node']['comments']['nodes']) {
-        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+        commentBuffer.add(Comment.fromGraphQL(jsonSub));
       }
 
       // Yield each item in our buffer
-      if (bufferReactions.length > 0)
+      if (commentBuffer.length > 0)
         do {
-          yield bufferReactions[bufferIndex++];
-        } while (bufferIndex < bufferReactions.length);
+          yield commentBuffer[bufferIndex++];
+        } while (bufferIndex < commentBuffer.length);
     } while (hasNextPage);
   }
 
@@ -839,43 +904,46 @@ class Issue {
 
 // sample ID  "MDU6SXNzdWUyOTM3NTMyODE="
   final _commentQuery = r'''
-query { 
-		node(id:"${ownerId}") {
-    	... on Issue {
-			id,
-      comments(last: 100, after: ${after} ) {
-        totalCount,
-        pageInfo {
-          hasNextPage,
-          endCursor,
-        },
-        nodes {
-          body,
-          author { url, login},
-          reactions(last: 100, after: null) {
-            totalCount,
-            nodes{
-              content
+  query { 
+      node(id:"${ownerId}") {
+        ... on Issue {
+        id,
+        comments(last: 100, after: ${after} ) {
+          totalCount,
+          pageInfo {
+            hasNextPage,
+            endCursor,
+          },
+          nodes {
+            id,
+            body,
+            author { url, login},
+            reactions(last: 100, after: null) {
+              totalCount,
+              nodes{
+                content
+              }
             }
           }
         }
       }
-    }
-    ... on PullRequest {
-			id,
-      comments(last: 100, after: ${after} ) {
-        totalCount,
-        pageInfo {
-          hasNextPage,
-          endCursor,
-        },
-        nodes {
-          body,
-          author { url, login},
-          reactions(last: 100, after: null) {
-            totalCount,
-            nodes{
-              content
+      ... on PullRequest {
+        id,
+        comments(last: 100, after: ${after} ) {
+          totalCount,
+          pageInfo {
+            hasNextPage,
+            endCursor,
+          },
+          nodes {
+            id,
+            body,
+            author { url, login},
+            reactions(last: 100, after: null) {
+              totalCount,
+              nodes{
+                content
+              }
             }
           }
         }

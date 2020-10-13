@@ -73,10 +73,165 @@ void main(List<String> args) async {
   //   1. A stream of reactions on the issue.
   //   2. A stream of reactions on each comment.
   int sanity = 0;
-  var stream = issue.reactionStream;
-  await for (var reaction in stream) {
-    sanity++;
-    print('\t${reaction.content}');
-  }
+  var postReactionStream = issue.reactionStream;
+  print('Reactions to main post');
+  if (false)
+    await for (var reaction in postReactionStream) {
+      sanity++;
+      print('\t${reaction.content}');
+    }
   print('${sanity} reactions.');
+
+  var totalReactions = sanity;
+  int commentCount = 0;
+  var commentStream = issue.commentStream;
+  await for (var comment in commentStream) {
+    commentCount++;
+    print('${comment.body}');
+    var reactionStream = comment.reactionStream;
+    await for (var reaction in reactionStream) {
+      totalReactions++;
+      print('\t${reaction.content}');
+    }
+  }
+  print('${commentCount} comments.');
+  print('${totalReactions} reactions in total.');
 }
+
+/* Some helper crap TODO REMOVE
+ID of a comment with reactions: MDEyOklzc3VlQ29tbWVudDM2NTUwMjY4Mw==
+
+ query { 
+    repository(owner:"flutter", name:"flutter") {
+      issue(
+        number:14330) 
+          {
+    title,
+    id,
+    number,
+    state,
+    author   {
+    login,
+    resourcePath,
+    url
+  },
+    comments(first: 100, after:null) {
+      nodes {
+        id,
+      }
+    },
+    assignees(after: null, last: 100) {
+      edges {
+        node   {
+    login,
+    resourcePath,
+    url
+  }
+  
+      }
+    },
+    body,
+    labels(first:100) {
+      edges {
+        node   {
+    name
+  }
+  
+      }
+    },
+    url,
+    createdAt,
+    closedAt,
+    lastEditedAt,
+    updatedAt,
+    repository {
+      nameWithOwner
+    },
+      milestone {
+    title,
+    id,
+    number,
+    url,
+    closed,
+    createdAt,
+    closedAt,
+    dueOn,
+  }
+  ,
+    timelineItems(first: 100, 
+    itemTypes:[CROSS_REFERENCED_EVENT, MILESTONED_EVENT, DEMILESTONED_EVENT, ASSIGNED_EVENT, UNASSIGNED_EVENT]) 
+        {
+    pageInfo   {
+    startCursor, hasNextPage, endCursor
+  }
+  ,
+    nodes {
+      __typename
+      ... on CrossReferencedEvent {
+        createdAt,
+        source {
+          __typename
+          ...  on PullRequest {
+            title,
+            number,
+          }
+          ... on Issue {
+            title,
+            number,
+          }
+        }
+      }
+      ... on MilestonedEvent {
+        createdAt,
+        actor {
+          login,
+          resourcePath,
+          url
+        }, 
+        id,
+        milestoneTitle
+      }
+      ... on DemilestonedEvent {
+        createdAt,          
+        actor {
+          login,
+          resourcePath,
+          url
+        }, 
+        id, 
+        milestoneTitle
+      }
+      ... on AssignedEvent {
+        createdAt,          
+        assignee {
+          ... on User {
+            login,
+            resourcePath,
+            url
+          }
+          ... on Bot {
+            login,
+            resourcePath,
+            url            
+          }
+        }
+      }
+      ... on UnassignedEvent {
+        createdAt,          
+        assignee {
+          ... on User {
+            login,
+            resourcePath,
+            url
+          }
+        }          
+      }
+    }
+  }
+  
+  }
+  
+    }
+  }
+  
+  */
