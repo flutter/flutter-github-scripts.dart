@@ -60,8 +60,25 @@ class PageInfo {
 }
 
 class Reaction {
+  static final kinds = [
+    "CONFUSED",
+    "EYES",
+    "HEART",
+    "HOORAY",
+    "LAUGH",
+    "ROCKET",
+    "THUMBS_DOWN",
+    "THUMBS_UP"
+  ];
+
   String _content;
   get content => _content;
+  bool get positive =>
+      _content == "HEART" || _content == "HOORAY" || _content == "THUMBS_UP";
+  bool get negative => _content == "CONFUSED" || _content == "THUMBS_DOWN";
+  bool get neutral =>
+      _content == "EYES" || _content == "LAUGH" || _content == "ROCKET";
+
   Reaction(this._content);
   static Reaction fromGraphQL(dynamic node) {
     return Reaction(node['content']);
