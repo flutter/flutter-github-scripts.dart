@@ -72,31 +72,37 @@ void main(List<String> args) async {
   // Now get all of the reactions from this issue. We do this with two streams:
   //   1. A stream of reactions on the issue.
   //   2. A stream of reactions on each comment.
-  int sanity = 0;
+  var sanity = 0;
+  var positive = 0, negative = 0, neutral = 0;
   var postReactionStream = issue.reactionStream;
-  print('Reactions to main post');
-  if (false)
-    await for (var reaction in postReactionStream) {
-      sanity++;
-      print('\t${reaction.content}');
-    }
-  print('${sanity} reactions.');
+  print('Reactions to main post:');
+  await for (var reaction in postReactionStream) {
+    sanity++;
+    if (reaction.positive) positive++;
+    if (reaction.negative) negative++;
+    if (reaction.neutral) neutral++;
+    print('${reaction.comment}');
+  }
+  print('${sanity} reaction(s).');
 
   var totalReactions = sanity;
-  int commentCount = 0;
+  var commentCount = 0;
   var commentStream = issue.commentStream;
   await for (var comment in commentStream) {
     commentCount++;
-    var summary = comment.body.toString().length > 40
-        ? comment.body.toString().substring(0, 40)
-        : comment.body.toString();
-    print('${summary}');
+    print('Comment: ${commentCount}');
     var reactionStream = comment.reactionStream;
     await for (var reaction in reactionStream) {
       totalReactions++;
+      if (reaction.positive) positive++;
+      if (reaction.negative) negative++;
+      if (reaction.neutral) neutral++;
       print('\t${reaction.content}');
     }
   }
-  print('${commentCount} comments.');
+  print('${commentCount} comment(s).');
   print('${totalReactions} reactions in total.');
+  print('\t${positive} positive comments.');
+  print('\t${negative} negative comments.');
+  print('\t${neutral} neutral comments.');
 }
