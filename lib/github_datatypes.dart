@@ -656,11 +656,17 @@ class Issue {
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
 
-      PageInfo pageInfo = PageInfo.fromGraphQL(
-          page.data['repository']['issue']['reactions']['pageInfo']);
-      hasNextPage = pageInfo.hasNextPage;
-      after = '"${pageInfo.endCursor}"';
-
+      try {
+        PageInfo pageInfo = PageInfo.fromGraphQL(
+            page.data['repository']['issue']['reactions']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Exception {
+        print(page.data);
+        print(page.errors);
+        throw Exception(
+            'error in Issue.reactionStream for issue ${_number} ${_id}');
+      }
       // Parse the responses into a buffer
       var bufferReactions = List<Reaction>();
       var bufferIndex = 0;
