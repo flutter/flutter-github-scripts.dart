@@ -125,11 +125,16 @@ class Comment {
 
       final page = await _client.query(options);
 
-      PageInfo pageInfo =
-          PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
-      hasNextPage = pageInfo.hasNextPage;
-      after = '"${pageInfo.endCursor}"';
-      if (_id == "MDEyOklzc3VlQ29tbWVudDM2NTUwMjY4Mw==") exit(-1);
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Exception {
+        print(id);
+        print(page.errors);
+        exit(-1);
+      }
       // Parse the responses into a buffer
       var bufferReactions = List<Reaction>();
       var bufferIndex = 0;
@@ -582,7 +587,9 @@ class Actor {
 
   Actor(this._login, this._url);
   static Actor fromGraphQL(dynamic node) {
-    return Actor(node['login'], node['url']);
+    return node != null && node['login'] != null
+        ? Actor(node['login'], node['url'])
+        : null;
   }
 
   String toString() => this._login;
@@ -657,12 +664,10 @@ class Issue {
       // Parse the responses into a buffer
       var bufferReactions = List<Reaction>();
       var bufferIndex = 0;
-      if (page.data['repository']['issue']['reactions']['nodes'] == null ||
-          page.data['repository']['issue']['reactions']['nodes'].length == 0)
-        for (var jsonSub in page.data['repository']['issue']['reactions']
-            ['nodes']) {
-          bufferReactions.add(Reaction.fromGraphQL(jsonSub));
-        }
+      for (var jsonSub in page.data['repository']['issue']['reactions']
+          ['nodes']) {
+        bufferReactions.add(Reaction.fromGraphQL(jsonSub));
+      }
 
       // Yield each item in our buffer
       if (bufferReactions.length > 0)
@@ -685,12 +690,9 @@ class Issue {
           PageInfo.fromGraphQL(page.data['node']['comments']['pageInfo']);
       hasNextPage = pageInfo.hasNextPage;
       after = '"${pageInfo.endCursor}"';
-
       // Parse the responses into a buffer
       var commentBuffer = List<Comment>();
       var bufferIndex = 0;
-      if (page.data['node']['comments']['nodes'] == null ||
-          page.data['node']['comments']['nodes'].length == 0) return;
       for (var jsonSub in page.data['node']['comments']['nodes']) {
         commentBuffer.add(Comment.fromGraphQL(jsonSub));
       }
@@ -925,7 +927,7 @@ class Issue {
       node(id:"${ownerId}") {
         ... on Issue {
         id,
-        comments(last: 100, after: ${after} ) {
+        comments(first: 100, after: ${after} ) {
           totalCount,
           pageInfo {
             hasNextPage,
@@ -935,7 +937,7 @@ class Issue {
             id,
             body,
             author { url, login},
-            reactions(last: 100, after: null) {
+            reactions(first: 100, after: null) {
               totalCount,
               nodes{
                 content
@@ -946,7 +948,7 @@ class Issue {
       }
       ... on PullRequest {
         id,
-        comments(last: 100, after: ${after} ) {
+        comments(first: 100, after: ${after} ) {
           totalCount,
           pageInfo {
             hasNextPage,
@@ -956,7 +958,7 @@ class Issue {
             id,
             body,
             author { url, login},
-            reactions(last: 100, after: null) {
+            reactions(first: 100, after: null) {
               totalCount,
               nodes{
                 content

@@ -32,7 +32,7 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run issue.dart issue_number');
+    print('Usage: pub run reaction_count.dart issue_number');
     print(_parser.usage);
   }
 }
@@ -76,13 +76,14 @@ void main(List<String> args) async {
   var positive = 0, negative = 0, neutral = 0;
   var postReactionStream = issue.reactionStream;
   print('Reactions to main post:');
-  await for (var reaction in postReactionStream) {
-    sanity++;
-    if (reaction.positive) positive++;
-    if (reaction.negative) negative++;
-    if (reaction.neutral) neutral++;
-    print('${reaction.comment}');
-  }
+  if (false)
+    await for (var reaction in postReactionStream) {
+      sanity++;
+      if (reaction.positive) positive++;
+      if (reaction.negative) negative++;
+      if (reaction.neutral) neutral++;
+      print('${reaction.comment}');
+    }
   print('${sanity} reaction(s).');
 
   var totalReactions = sanity;

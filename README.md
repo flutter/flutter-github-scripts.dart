@@ -240,3 +240,17 @@ Usage: `pub run bin/regressions.dart [--tsv] [--between from-date to-date]`
 Generates a list of regressions found in all releases (we started tracking after 1.11).
 
 Dates are in ISO 8601 format.
+
+## bin/reaction_count.dart
+
+Usage: `pub run bin/reaction_count.dart issue`
+
+Indicates the total number of positive, negative, and neutral reactions across the issue
+and all comments.
+
+## bin/top_reactions.dart
+
+Usage: `pub run bin/top_reactions.dart'
+
+Dumps all open issues and counts of positive, negative, and neutral reactions in
+TSV format. For import to analyze in Google Sheets.
