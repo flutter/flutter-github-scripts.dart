@@ -30,10 +30,7 @@ class Options {
       ..addFlag('help',
           defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('closed',
-          defaultsTo: false,
-          abbr: 'o',
-          negatable: true,
-          help: 'cluster open issues')
+          defaultsTo: false, negatable: true, help: 'cluster closed issues')
       ..addFlag('labels',
           defaultsTo: false,
           abbr: 'l',
