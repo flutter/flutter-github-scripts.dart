@@ -204,7 +204,7 @@ void main(List<String> args) async {
           ' across this repository.\n\n');
     }
 
-    if (opts.ranking && opts.customers) {
+    if (opts.ranking) {
       print('### Customer ' +
           (opts.issues ? 'issues' : 'PRs') +
           ' rank-ordered by label');
