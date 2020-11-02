@@ -124,7 +124,11 @@ class Comment {
       final options = QueryOptions(document: query);
 
       final page = await _client.query(options);
-
+      if (page.data == [] || page.data == null) {
+        print(page.errors);
+        print(page.data);
+        exit(-1);
+      }
       try {
         PageInfo pageInfo =
             PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
