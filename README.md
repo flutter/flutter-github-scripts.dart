@@ -131,7 +131,10 @@ the arguments:
 
 - Pass `alphabetize` to sort clusters alphabetically instead of largest-to-smallest.
 
-- Pass `customers-only` when clustering issues by label to show only those issues with customer labels.
+- Pass `customers-only` when clustering issues by label to show only those issues with customer labels. 
+
+- Pass `-ranking` to include a ranked list of other labels for each label
+at the end of the report.
 
 Examples:
 

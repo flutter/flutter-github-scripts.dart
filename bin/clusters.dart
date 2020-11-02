@@ -22,6 +22,7 @@ class Options {
   bool get issues => _results['issues'];
   bool get alphabetize => _results['alphabetize'];
   bool get customers => _results['customers-only'];
+  bool get ranking => _results['ranking'];
   bool get skipUninteresting => _results['skip-uninteresting-labels'];
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
@@ -30,10 +31,7 @@ class Options {
       ..addFlag('help',
           defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
       ..addFlag('closed',
-          defaultsTo: false,
-          abbr: 'o',
-          negatable: true,
-          help: 'cluster open issues')
+          defaultsTo: false, negatable: true, help: 'cluster closed issues')
       ..addFlag('labels',
           defaultsTo: false,
           abbr: 'l',
@@ -75,7 +73,12 @@ class Options {
           defaultsTo: false,
           abbr: 'c',
           negatable: true,
-          help: 'for labels, show only labels with `customer:`');
+          help: 'for labels, show only labels with `customer:`')
+      ..addFlag('ranking',
+          defaultsTo: false,
+          abbr: 'r',
+          negatable: true,
+          help: 'rank-order issues report in addition to clustering');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -199,6 +202,34 @@ void main(List<String> args) async {
       print('${clusters.clusters.keys.length} unique ' +
           (opts.labels ? 'labels.' : 'users') +
           ' across this repository.\n\n');
+    }
+
+    if (opts.ranking) {
+      print('### Customer ' +
+          (opts.issues ? 'issues' : 'PRs') +
+          ' rank-ordered by label');
+      for (var customer in clusters.clusters.keys) {
+        var labelCountsByLabel = Map<String, int>();
+        for (var item in clusters.clusters[customer]) {
+          for (var labelItem in item.labels.labels) {
+            var label = labelItem as Label;
+            if (!labelCountsByLabel.containsKey(label.label)) {
+              labelCountsByLabel[label.label] = 1;
+            } else {
+              labelCountsByLabel[label.label]++;
+            }
+          }
+        }
+        var rankedLabelList = labelCountsByLabel.keys.toList();
+        // REVERSE sort, not incremental sort
+        rankedLabelList.sort(
+            (a, b) => labelCountsByLabel[b].compareTo(labelCountsByLabel[a]));
+
+        print('#### ${customer}\n\n');
+        for (var labelName in rankedLabelList) {
+          print('  * ${labelName}: ${labelCountsByLabel[labelName]}\n');
+        }
+      }
     }
   }
 
