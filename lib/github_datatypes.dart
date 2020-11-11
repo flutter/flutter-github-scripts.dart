@@ -1256,7 +1256,7 @@ class Cluster {
       if (!(item is Issue) && !(item is PullRequest)) {
         throw ('invalid type!');
       }
-      var name = item.author.login;
+      var name = item.author != null ? item.author.login : '@@@ NO AUTHOR @@@';
       if (!result.containsKey(name)) {
         result[name] = List<dynamic>();
       }
