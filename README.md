@@ -253,7 +253,9 @@ and all comments.
 
 ## bin/top_reactions.dart
 
-Usage: `pub run bin/top_reactions.dart'
+Usage: `pub run bin/top_reactions.dart [-only-unprioritized]'
 
 Dumps all open issues and counts of positive, negative, and neutral reactions in
 TSV format. For import to analyze in Google Sheets.
+
+If only-unprioritize is passed, only show unprioritized issues.

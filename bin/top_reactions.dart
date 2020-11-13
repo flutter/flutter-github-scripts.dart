@@ -8,12 +8,14 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
+  bool get onlyUnprioritized = _results['only-unprioritized']
   int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
       ..addFlag('help',
-          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
+      ..addFlag('only-unprioritized', defaultsTo: false, abbr: 'o', negatable: true, help: 'only issues without a label P0-P6');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -24,29 +26,13 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run issue.dart issue_number');
+    print('Usage: pub run reactions.dart [-only-unprioritized]');
+    print('If only-unprioritize is passed, only show unprioritized issues.');
     print(_parser.usage);
   }
 }
 
-final _reactionQuery = r'''
-query {
-  repository(owner:"flutter", name:"flutter") {
-		issue(number: ${issue}) {
-        	reactions(first: 100, after: ${after}) {
-          	totalCount,
-            pageInfo {
-              endCursor,
-              hasNextPage,
-            }
-          	nodes {
-            	content
-            },
-          },
-        },
-      },
-    }
-''';
+var skipLabels = ['P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'];
 
 void main(List<String> args) async {
   final opts = Options(args);
@@ -69,6 +55,21 @@ void main(List<String> args) async {
   print('${Issue.tsvHeader}\tPositive\tNegative\tNeutral\tTotal');
 
   for (var issue in issues) {
+
+    // If we're not interested in issues with priority labels,
+    // skip this label if it has a priority.
+    if (opts.onlyUnprioritized) {
+      bool skip = false;
+      for(label in isssue.labels) {
+        if (skipLabels.contains(label.name)) {
+          skip = true;
+          break;
+        }
+      }
+      if (skip) continue;
+    }
+
+
     var resultTsv = issue.toTsv();
 
     // Now get all of the reactions from this issue. We do this with two streams:
