@@ -259,3 +259,14 @@ Dumps all open issues and counts of positive, negative, and neutral reactions in
 TSV format. For import to analyze in Google Sheets.
 
 If only-unprioritize is passed, only show unprioritized issues.
+
+## run_release_report.sh
+
+Usage: `run_release_report.sh [to-date]`
+Runs a release report from Flutter's 1.20 stable release through the given date.
+
+Creates the files notable-contributors, prs_merged_by_label, prs_merged, 
+issues_closed in Markdown, DOCX, and HTML.
+
+
+
