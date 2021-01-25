@@ -8,14 +8,22 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
-  bool get onlyUnprioritized = _results['only-unprioritized']
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  bool get onlyUnprioritized => _results['only-unprioritized'];
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
 
   Options(List<String> args) {
     _parser
       ..addFlag('help',
           defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage')
-      ..addFlag('only-unprioritized', defaultsTo: false, abbr: 'o', negatable: true, help: 'only issues without a label P0-P6');
+      ..addFlag('only-unprioritized',
+          defaultsTo: false,
+          abbr: 'o',
+          negatable: true,
+          help: 'only issues without a label P0-P6');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -55,12 +63,11 @@ void main(List<String> args) async {
   print('${Issue.tsvHeader}\tPositive\tNegative\tNeutral\tTotal');
 
   for (var issue in issues) {
-
     // If we're not interested in issues with priority labels,
     // skip this label if it has a priority.
     if (opts.onlyUnprioritized) {
       bool skip = false;
-      for(label in isssue.labels) {
+      for (var label in issue.labels.labels) {
         if (skipLabels.contains(label.name)) {
           skip = true;
           break;
@@ -68,7 +75,6 @@ void main(List<String> args) async {
       }
       if (skip) continue;
     }
-
 
     var resultTsv = issue.toTsv();
 
