@@ -993,6 +993,8 @@ class PullRequest {
   get state => _state;
   Actor _author;
   get author => _author;
+  List<Actor> _reviewers;
+  get reviewers => _reviewers;
   List<Actor> _assignees;
   get assignees => _assignees;
   String _body;
@@ -1026,6 +1028,7 @@ class PullRequest {
       this._number,
       this._state,
       this._author,
+      this._reviewers,
       this._assignees,
       this._body,
       this._milestone,
@@ -1043,6 +1046,7 @@ class PullRequest {
   // Passed a node containing an issue, return the issue
   static PullRequest fromGraphQL(dynamic node) {
     List<Actor> assignees = null;
+    List<Actor> reviewers = null;
     if (node['assignees']['edges'] != null &&
         node['assignees']['edges'].length != 0) {
       assignees = List<Actor>();
@@ -1056,6 +1060,7 @@ class PullRequest {
         node['number'],
         node['state'],
         node['author'] == null ? null : Actor.fromGraphQL(node['author']),
+        reviewers,
         assignees,
         node['body'],
         node['milestone'] == null
@@ -1112,7 +1117,7 @@ class PullRequest {
   }
 
   static get tsvHeader =>
-      'Number\tTitle\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tOriginal Milestone\tCurrent Milestone\tDue On\tMerged At\tClosed At';
+      'Number\tTitle\tPriority\tAuthor\tCreated At\tMerged?\tAssignees\tReviewers\tOriginal Milestone\tCurrent Milestone\tDue On\tMerged At\tClosed At';
 
   // Top level entities like Issue and PR must TSV, because their fields CSV,
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
@@ -1148,7 +1153,14 @@ class PullRequest {
     tsv = '${tsv}\t' + (_merged ? 'Y' : 'N');
     if (_assignees != null && _assignees.length > 0) {
       tsv = '${tsv}\t';
-      assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
+      _assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
+      tsv = tsv.substring(0, tsv.length - 1);
+    } else {
+      tsv = '${tsv}\t';
+    }
+    if (_reviewers != null && _reviewers.length > 0) {
+      tsv = '${tsv}\t';
+      _reviewers.forEach((reviewer) => tsv = '${tsv}${reviewer.login},');
       tsv = tsv.substring(0, tsv.length - 1);
     } else {
       tsv = '${tsv}\t';
@@ -1183,7 +1195,19 @@ class PullRequest {
       edges {
         node ${Actor.graphQLResponse}
       }
-    },    
+    },
+    reviews(after:null, last:100) {
+      edges {
+        node {
+          author {
+            avatarUrl
+            login
+            resourcePath
+            url
+          }
+        }
+      }
+    },  
     body,
     ${Milestone.graphQLResponse},
     labels(first:100) {

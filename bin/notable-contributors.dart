@@ -12,7 +12,11 @@ class Options {
   bool get onlyNotable => !_results['all-contributors'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
 
   Options(List<String> args) {
     _parser
@@ -66,7 +70,7 @@ void main(List<String> args) async {
   var googleContributors = List<String>();
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
-        (row[3].toString().toUpperCase().contains('GOOGLE')) ||
+            (row[3].toString().toUpperCase().contains('GOOGLE')) ||
         (row[3].toString().toUpperCase().contains('CANONICAL')))
       googleContributors.add(row[0].toString());
   });
@@ -96,7 +100,7 @@ void main(List<String> args) async {
         dateRange: when));
   }
 
-  var reportType = 'oen';
+  var reportType = 'open';
   if (opts.showMerged) reportType = 'merged';
   if (opts.showClosed) reportType = 'closed';
 
@@ -145,14 +149,13 @@ void main(List<String> args) async {
   var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
   var clustersGooglerOwned = Cluster.byAuthor(uninterestingContributors);
 
-  print('${nonGoogleContributions.length} PRs were contributed by community members.\n\n');
+  print(
+      '${nonGoogleContributions.length} PRs were contributed by community members.\n\n');
   print(
       '\nThere were ${clustersInterestingOwned.keys.length} community contributors.\n\n');
-  var totalContributors = clustersGooglerOwned.keys.length + clustersInterestingOwned.keys.length;
-    print(
-      '\nThere were ${totalContributors} total contributors.\n\n');
-
-  
+  var totalContributors =
+      clustersGooglerOwned.keys.length + clustersInterestingOwned.keys.length;
+  print('\nThere were ${totalContributors} total contributors.\n\n');
 
   print(clustersInterestingOwned.toMarkdown(
       sortType: ClusterReportSort.byCount,
