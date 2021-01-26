@@ -1054,6 +1054,14 @@ class PullRequest {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
     }
+    if (node['reviewers']['edges'] != null &&
+        node['reviewers']['edges'].length != 0) {
+      reviewers = List<Actor>();
+      for (var node in node['assignees']['edges']) {
+        reviewers.add(Actor.fromGraphQL(node));
+      }
+      ;
+    }
     return PullRequest(
         node['title'],
         node['id'],
