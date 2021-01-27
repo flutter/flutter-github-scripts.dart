@@ -18,13 +18,18 @@ class Options {
   bool get labels => _results['labels'];
   bool get authors => _results['authors'];
   bool get assignees => _results['assignees'];
+  bool get reviewers => _results['reviewers'];
   bool get prs => _results['prs'];
   bool get issues => _results['issues'];
   bool get alphabetize => _results['alphabetize'];
   bool get customers => _results['customers-only'];
   bool get ranking => _results['ranking'];
   bool get skipUninteresting => _results['skip-uninteresting-labels'];
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
 
   Options(List<String> args) {
     _parser
@@ -78,7 +83,9 @@ class Options {
           defaultsTo: false,
           abbr: 'r',
           negatable: true,
-          help: 'rank-order issues report in addition to clustering');
+          help: 'rank-order issues report in addition to clustering')
+      ..addFlag('reviewers',
+          defaultsTo: false, negatable: true, help: 'cluster by reviewer');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -110,7 +117,7 @@ class Options {
 
   void _printUsage() {
     print(
-        'Usage: pub run clusters.dart [--labels] [--skip-uninteresting-labels] [--authors] [--assignees] [--prs] [--issues] [--merged fromDate toDate] [--closed fromDate toDate]');
+        'Usage: pub run clusters.dart [--labels] [--skip-uninteresting-labels] [--authors] [--assignees] [--reviewers] [--prs] [--issues] [--merged fromDate toDate] [--closed fromDate toDate]');
     print('Prints PRs in flutter/flutter, flutter/engine repositories.');
     print('  Dates are in ISO 8601 format');
     print('  --merged and --closed are mutally exclusive');
@@ -155,6 +162,7 @@ void main(List<String> args) async {
     if (opts.labels) clusters = Cluster.byLabel(items);
     if (opts.authors) clusters = Cluster.byAuthor(items);
     if (opts.assignees) clusters = Cluster.byAssignees(items);
+    //if (opts.reviewers) clusters = Cluster.byReviewers(items);
 
     for (var key in clusters.clusters.keys) keys.add(key);
 

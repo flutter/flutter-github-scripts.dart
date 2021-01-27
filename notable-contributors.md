@@ -1,1727 +1,3927 @@
-# Non-Google contributors contributing oen PRs
-There were 529 pull requests.
+# Non-Google contributors contributing closed PRs from 2020-09-10T18:17:00.000 to 2021-01-26T15:17:14.000Z
+There were 6249 pull requests.
 
 
-377 PRs were contributed by community members.
+999 PRs were contributed by community members.
 
 
 
-There were 289 community contributors.
+There were 456 community contributors.
 
 
 
-There were 342 total contributors.
+There were 556 total contributors.
 
 
 
 
-#### xu-baolin - 7 pull request(s)
+#### xu-baolin - 53 pull request(s)
 
-[64452](https://github.com/flutter/flutter/pull/64452) Update Slider widget to support secondaryValue (cla: yes, f: material design, framework)
+[65226](https://github.com/flutter/flutter/pull/65226) Improve the behavior of Scrollable.ensureVisible when Scrollable nested (cla: yes, f: scrolling, framework)
 
 
-[65015](https://github.com/flutter/flutter/pull/65015) PageView resize from zero-size viewport should not lose state (a: state restoration, cla: yes, f: material design, f: scrolling, framework)
+[65235](https://github.com/flutter/flutter/pull/65235) CupertinoTextField should not accept requestFocus when disabled (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-[69670](https://github.com/flutter/flutter/pull/69670) Refactor the RenderTable class (cla: yes, framework)
+[65246](https://github.com/flutter/flutter/pull/65246) Deprecated unused property [RectangularSliderTrackShape.disabledThumbGapWidth] (cla: yes, f: material design, framework)
 
 
-[71209](https://github.com/flutter/flutter/pull/71209) Update CupertinoContextMenu Widget (cla: yes, f: cupertino, framework)
+[65753](https://github.com/flutter/flutter/pull/65753) CupertinoTextField should not accept requestFocus when disabled (cla: yes, f: cupertino, framework)
 
 
-[71821](https://github.com/flutter/flutter/pull/71821) RefreshIndicator should appear from the top of the dragged widget where the [GlowingOverscrollIndicator] appears position. (cla: yes, f: material design, framework)
+[65754](https://github.com/flutter/flutter/pull/65754) Fix the inconsistency between the local state of the input and the engine state (cla: yes, framework, waiting for tree to go green)
 
 
-[74620](https://github.com/flutter/flutter/pull/74620) Reland "Update PopupMenuButton to match Material Design spec" (a: accessibility, a: internationalization, cla: yes, f: material design, framework, team)
+[65915](https://github.com/flutter/flutter/pull/65915) Fix DropdownButton bug (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[74722](https://github.com/flutter/flutter/pull/74722) TextField should be visible on the screen when the cursor is not shown (cla: yes, f: material design, framework)
+[65998](https://github.com/flutter/flutter/pull/65998) Fix bug when updating the `divisions` and `value` of the slider at the same time (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### pedromassango - 6 pull request(s)
+[66016](https://github.com/flutter/flutter/pull/66016) Do not review, just test if the CI green. (cla: yes, f: material design, framework)
 
-[62725](https://github.com/flutter/flutter/pull/62725) Add thumbColor parameter into Slider and Slider.adaptive constructor (cla: yes, f: cupertino, f: material design, framework)
 
+[66262](https://github.com/flutter/flutter/pull/66262) SliverList perform layout start from the initial child when there is no valid layout offset (cla: yes, framework, waiting for tree to go green)
 
-[69461](https://github.com/flutter/flutter/pull/69461) [WIP] Proposal for text selection programmatically (cla: yes, f: material design, framework)
 
+[66634](https://github.com/flutter/flutter/pull/66634) Improve pageStorage behavior (cla: yes, framework)
 
-[70638](https://github.com/flutter/flutter/pull/70638) Fix nullable BottomSheet animationController issue (cla: yes, f: material design, framework)
 
+[66771](https://github.com/flutter/flutter/pull/66771) Fix BottomNavigationBar can not apply some theme property (cla: yes, f: material design, framework)
 
-[74046](https://github.com/flutter/flutter/pull/74046) Fix "[proposal] provide a way to change the clipBehavior of the AnimatedList widget " (cla: yes, framework)
 
+[66798](https://github.com/flutter/flutter/pull/66798) Fix ListTile assert when layout at zero size (cla: yes, f: material design, framework)
 
-[74047](https://github.com/flutter/flutter/pull/74047) Fix "Support configurable hit test behavior on Draggable and DragTarget" (cla: yes, framework)
 
+[66889](https://github.com/flutter/flutter/pull/66889) Add more unit test cases for EditableText widget (cla: yes, framework, waiting for tree to go green)
 
-[1923](https://github.com/flutter/plugins/pull/1923) [android_intent] added support for more than 70th actions (cla: yes, feature, in review)
 
+[67811](https://github.com/flutter/flutter/pull/67811) Fix typos in the [BottomNavigationBar] document (cla: yes, d: api docs, f: material design, framework, waiting for tree to go green)
 
-#### sidrao2006 - 6 pull request(s)
 
-[67496](https://github.com/flutter/flutter/pull/67496) Add custom alignment for InputDecoration prefix/suffix icons (cla: yes, f: cupertino, f: material design, framework)
+[67892](https://github.com/flutter/flutter/pull/67892) Fix TextField bug when the formatter repeatedly format (cla: yes, framework, waiting for tree to go green)
 
 
-[69852](https://github.com/flutter/flutter/pull/69852) [WIP] Add support for material image lists (cla: yes, f: material design, framework)
+[67913](https://github.com/flutter/flutter/pull/67913) Add test case for AndroidView clipBehavior (cla: yes, framework, waiting for tree to go green)
 
 
-[72716](https://github.com/flutter/flutter/pull/72716) Improve Lighthouse score (cla: yes, platform-web, team)
+[67988](https://github.com/flutter/flutter/pull/67988) prevent pageView scrolling when calling ensureVisible (cla: yes, framework, waiting for tree to go green)
 
 
-[3217](https://github.com/flutter/plugins/pull/3217) Fix grammatical error in contributing guide (cla: yes)
+[68001](https://github.com/flutter/flutter/pull/68001) Improve the document of pageView and ListView (cla: yes, framework, waiting for tree to go green)
 
 
-[3228](https://github.com/flutter/plugins/pull/3228) [WIP] [share] Add web support for share plugin (cla: yes)
+[68171](https://github.com/flutter/flutter/pull/68171) Make TabBar indicator color automatic adjustment optional (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[3266](https://github.com/flutter/plugins/pull/3266) [webview_flutter] Fix broken keyboard issue link (cla: yes)
+[68587](https://github.com/flutter/flutter/pull/68587) Fix a multiple pointers bug (cla: yes, framework)
 
 
-#### CareF - 5 pull request(s)
+[68681](https://github.com/flutter/flutter/pull/68681) Apply Desktop specs for Tooltip (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[63200](https://github.com/flutter/flutter/pull/63200) update dev/integration_tests/flutter_gallery/android/settings.gradle (cla: yes, team)
 
+[68694](https://github.com/flutter/flutter/pull/68694) Fix a widgetspan hittest bug (cla: yes, framework, waiting for tree to go green)
 
-[64490](https://github.com/flutter/flutter/pull/64490) migrate fading_child_animation_perf to e2e (cla: yes, team)
 
+[68775](https://github.com/flutter/flutter/pull/68775) change TextEditingController.clear() behavior (cla: yes, framework)
 
-[64495](https://github.com/flutter/flutter/pull/64495) migrate imagefiltered_transform_animation_perf to e2e (cla: yes, team)
 
+[69101](https://github.com/flutter/flutter/pull/69101) Mouse drag should not show selection handles (cla: yes, framework)
 
-[64497](https://github.com/flutter/flutter/pull/64497) migrate post_backdrop_filter_perf to e2e (cla: yes, team)
 
+[69156](https://github.com/flutter/flutter/pull/69156) Reland "change TextEditingController.clear() behavior"" (cla: yes, framework)
 
-[64500](https://github.com/flutter/flutter/pull/64500) migrate simple_animation_perf to e2e (cla: yes, team)
 
+[69299](https://github.com/flutter/flutter/pull/69299) UnconstrainedBox overflow indicator should not shown when overflowing but [clipBehavior] is not [Clip.none] (cla: yes, framework)
 
-#### cbenhagen - 5 pull request(s)
 
-[66185](https://github.com/flutter/flutter/pull/66185) [macOS] Enable NSSupportsAutomaticGraphicsSwitching (cla: yes, tool)
+[69383](https://github.com/flutter/flutter/pull/69383) Fix the PopupMenuButton offset bug (a: quality, cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[21285](https://github.com/flutter/engine/pull/21285) [macOS] Enable offline renderers (cla: yes, waiting for customer response)
+[69866](https://github.com/flutter/flutter/pull/69866) Add a [valid] property of [MouseTrackerAnnotation] indicates the annotation states. (cla: yes, framework, waiting for tree to go green)
 
 
-[2380](https://github.com/flutter/plugins/pull/2380) [video_player] Update ExoPlayer to version 2.11.0 (cla: yes)
+[70080](https://github.com/flutter/flutter/pull/70080) Let SnackBar inherit themeData from its ancestor (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[2397](https://github.com/flutter/plugins/pull/2397) [video_player] Update texture on seekTo (cla: yes)
+[70160](https://github.com/flutter/flutter/pull/70160) Update PopupMenuButton to match Material Design spec (a: fidelity, cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[2437](https://github.com/flutter/plugins/pull/2437) [WIP] [video_player] Add macOS support (cla: yes)
+[70277](https://github.com/flutter/flutter/pull/70277) Improve the behavior of DropdownButton.disabledHint (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### chinmoy12c - 5 pull request(s)
+[70442](https://github.com/flutter/flutter/pull/70442) InkWell can show focusColor optional on touch device (cla: yes, f: focus, f: material design, framework)
 
-[69600](https://github.com/flutter/flutter/pull/69600) Dropdown button can have itemHeight less than kMinInteractiveDimension in web (cla: yes, f: material design, framework)
 
+[70447](https://github.com/flutter/flutter/pull/70447) fix some unit test cases(ink_well_test.dart) bug (cla: yes, f: material design, framework)
 
-[69826](https://github.com/flutter/flutter/pull/69826) Added enableFeedback property to FloatingActionButton (cla: yes, f: material design, framework)
 
+[70670](https://github.com/flutter/flutter/pull/70670) Update [ToggleButtons] to support extend down/up vertically (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[69880](https://github.com/flutter/flutter/pull/69880) Added enableFeedback property to DropdownButton (cla: yes, f: material design, framework)
 
+[70683](https://github.com/flutter/flutter/pull/70683) Set [InputDecoration.floatingLabelBehavior] default to null (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[71217](https://github.com/flutter/flutter/pull/71217) Added checkboxHorizontalMargin to DataTable and PaginatedDataTable (cla: yes, f: material design, framework)
 
+[71303](https://github.com/flutter/flutter/pull/71303) RefreshIndicator can be shown when dragging from non-zero scroll position (cla: yes, f: material design, framework, team, waiting for tree to go green)
 
-[74043](https://github.com/flutter/flutter/pull/74043) Added enableFeedback property to BottomNavigationBar (cla: yes, f: material design, framework)
 
+[71628](https://github.com/flutter/flutter/pull/71628) Reland "Improve the behavior of DropdownButton.disabledHint" (cla: yes, f: material design, framework)
 
-#### knopp - 5 pull request(s)
 
-[21498](https://github.com/flutter/engine/pull/21498) WIP: Partial Repaint (Work in progress (WIP), cla: yes, platform-android, platform-ios)
+[71843](https://github.com/flutter/flutter/pull/71843) Improve the ScrollBar behavior when nested (a: quality, cla: yes, f: cupertino, f: material design, f: scrolling, framework, severe: new feature, waiting for tree to go green)
 
 
-[21649](https://github.com/flutter/engine/pull/21649) WIP: Do not paint layers when outside of cull rect (Work in progress (WIP), cla: yes)
+[72132](https://github.com/flutter/flutter/pull/72132) RefreshIndicator should not be shown when overscroll occurs due to inertia (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[21650](https://github.com/flutter/engine/pull/21650) WIP: BackdropFilterLayer paint_bounds should be cull_rect (Work in progress (WIP), cla: yes)
+[72512](https://github.com/flutter/flutter/pull/72512) fix a DragTarget type cast bug (cla: yes, framework, waiting for tree to go green)
 
 
-[21824](https://github.com/flutter/engine/pull/21824) Add DiffContext (Work in progress (WIP), cla: yes)
+[72922](https://github.com/flutter/flutter/pull/72922) fix a RenderSliverFixedExtentBoxAdaptor Exception  (cla: yes, framework, waiting for tree to go green)
 
 
-[22279](https://github.com/flutter/engine/pull/22279) WIP: Smooth windows resizing on Windows (win32) (Work in progress (WIP), cla: yes)
+[73016](https://github.com/flutter/flutter/pull/73016) fix an assertion causes by zero offset pointer scroll (cla: yes, f: scrolling, framework, severe: crash, waiting for tree to go green)
 
 
-#### Amitpatil215 - 4 pull request(s)
+[73084](https://github.com/flutter/flutter/pull/73084) Improve the Scaffold.bottomSheet update behavior (a: quality, cla: yes, f: focus, f: material design, framework, waiting for tree to go green)
 
-[71567](https://github.com/flutter/flutter/pull/71567) Make AboutDialog customizable.  (cla: yes, f: material design, framework)
 
+[73303](https://github.com/flutter/flutter/pull/73303) fix a Gallery Menus issue (cla: yes, f: material design, team)
 
-[71856](https://github.com/flutter/flutter/pull/71856) maxWidth property added for Dialog and DialogTheme  (cla: yes, f: material design, framework)
 
+[73474](https://github.com/flutter/flutter/pull/73474) Add [pointerCount] property to Scale Gesture Details (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[72602](https://github.com/flutter/flutter/pull/72602) Customizable hintOverflow for InputDecoration (cla: yes, f: material design, framework)
 
+[73545](https://github.com/flutter/flutter/pull/73545) Re-enable a ensureVisible test case (a: tests, cla: yes, framework, waiting for tree to go green)
 
-[74571](https://github.com/flutter/flutter/pull/74571) Fix regression for strange values of slider using precision property (cla: yes, f: material design, framework)
 
+[73558](https://github.com/flutter/flutter/pull/73558) snackBar should paint above the bottomSheet (cla: yes, f: material design, framework, waiting for tree to go green, will affect goldens)
 
-#### JamesMcIntosh - 4 pull request(s)
 
-[2043](https://github.com/flutter/plugins/pull/2043) [google_maps_flutter] Map marker to obey consume tap events configuration (cla: yes)
+[73780](https://github.com/flutter/flutter/pull/73780) Fix single ToggleButton border painting bugs (cla: yes, f: material design, framework, waiting for tree to go green, will affect goldens)
 
 
-[2652](https://github.com/flutter/plugins/pull/2652) Markers to respond based on consumeTapEvents parameter (cla: yes)
+[73846](https://github.com/flutter/flutter/pull/73846) fix a tap gesture exception (cla: yes, framework, waiting for tree to go green)
 
 
-[2653](https://github.com/flutter/plugins/pull/2653) [google_maps_flutter] Marker dragging events (cla: yes, in review)
+[74021](https://github.com/flutter/flutter/pull/74021) [WIP]Reland ''prevent pageView scrolling when calling ensureVisible'' (cla: yes, framework)
 
 
-[2838](https://github.com/flutter/plugins/pull/2838) Google maps marker drag events impl (cla: yes)
+[74104](https://github.com/flutter/flutter/pull/74104) Reland "Improve the ScrollBar behavior when nested (#71843)" (cla: yes, f: cupertino, f: material design, f: scrolling, framework, waiting for tree to go green)
 
 
-#### Abhishek01039 - 3 pull request(s)
+[74309](https://github.com/flutter/flutter/pull/74309) MaterialBanner alignment fixes and improvements (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[74415](https://github.com/flutter/flutter/pull/74415) Adding hero example (cla: yes, d: api docs, d: examples, documentation, framework)
 
+[74402](https://github.com/flutter/flutter/pull/74402) fix a RenderBox.size access exception (cla: yes, framework, waiting for tree to go green)
 
-[23947](https://github.com/flutter/engine/pull/23947) changed the docs (cla: yes)
 
+#### a14n - 36 pull request(s)
 
-[23948](https://github.com/flutter/engine/pull/23948) Grammatical mistake on pull request template (cla: yes)
+[54495](https://github.com/flutter/flutter/pull/54495) SizedBox instead of Container (a: accessibility, a: tests, cla: yes, d: examples, f: cupertino, f: material design, framework, team)
 
 
-#### MahdiPishguy - 3 pull request(s)
+[65489](https://github.com/flutter/flutter/pull/65489) remove non-nullable enforcement on AsyncSnapshot (cla: yes, framework)
 
-[68189](https://github.com/flutter/flutter/pull/68189) add supporting divider color for PopupMenuDivider (cla: yes, f: material design, framework, waiting for customer response)
 
+[65528](https://github.com/flutter/flutter/pull/65528) Reland "Nnbd widgets" (a: accessibility, cla: yes, f: cupertino, framework, waiting for tree to go green)
 
-[70766](https://github.com/flutter/flutter/pull/70766) Update popup_menu_test.dart (cla: yes, f: material design, framework)
 
+[65576](https://github.com/flutter/flutter/pull/65576) Migrate material to nullsafety (a: accessibility, cla: yes, f: cupertino, f: material design, framework)
 
-[71708](https://github.com/flutter/flutter/pull/71708) Update popup_menu_test.dart (cla: yes, f: material design, framework)
 
+[65861](https://github.com/flutter/flutter/pull/65861) fix nullability of ScrollMetrics (cla: yes, framework)
 
-#### NWalker1208 - 3 pull request(s)
 
-[73216](https://github.com/flutter/flutter/pull/73216) Modified RawChip to render color as background of material (cla: yes, f: material design, framework)
+[65880](https://github.com/flutter/flutter/pull/65880) migrate some cupertino files to nullsafety (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-[73526](https://github.com/flutter/flutter/pull/73526) SliverAppBar Default Elevation Patch (cla: yes, f: material design, framework)
+[65997](https://github.com/flutter/flutter/pull/65997) remove non-nullability on Navigator methods (cla: yes, framework, team, waiting for tree to go green)
 
 
-[74373](https://github.com/flutter/flutter/pull/74373) ListTile Material Ripple and Shape Patch (cla: yes, f: material design, framework)
+[66024](https://github.com/flutter/flutter/pull/66024) migrate some cupertino files to nullsafety (cla: yes, f: cupertino, framework)
 
 
-#### Roshan13046 - 3 pull request(s)
+[66387](https://github.com/flutter/flutter/pull/66387) enable lint unnecessary_nullable_for_final_variable_declarations (cla: yes, framework)
 
-[72008](https://github.com/flutter/flutter/pull/72008) added debugDisableShadows usage explaination  (cla: yes, framework)
 
+[66418](https://github.com/flutter/flutter/pull/66418) fix nullability issues (cla: yes, f: cupertino, framework)
 
-[3350](https://github.com/flutter/plugins/pull/3350) added disclaimer for missing web support in readme of url_launcher. (cla: yes)
 
+[66424](https://github.com/flutter/flutter/pull/66424) migrate some cupertino files to nullsafety (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
-[3371](https://github.com/flutter/plugins/pull/3371) package_info readme file dependency constraints corrected. (cla: yes)
 
+[66455](https://github.com/flutter/flutter/pull/66455) apply upcoming lint cast_nullable_to_non_nullable (a: tests, cla: yes, framework)
 
-#### Yarikk26 - 3 pull request(s)
 
-[897](https://github.com/flutter/plugins/pull/897) [video_player]Added HTTP headers setting to video_player plugin (cla: yes)
+[66493](https://github.com/flutter/flutter/pull/66493) migrate cupertino to nullsafety (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-[1146](https://github.com/flutter/plugins/pull/1146) [video_player] Added absolute position property for video_player (cla: yes, feature)
+[66633](https://github.com/flutter/flutter/pull/66633) migration of material files to nullsafety (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[1168](https://github.com/flutter/plugins/pull/1168) [video_player] added getting display aspect ratio from native players (bugfix, cla: yes, feature)
+[66783](https://github.com/flutter/flutter/pull/66783) fix the tree (cla: yes, f: cupertino, framework)
 
 
-#### YeungKC - 3 pull request(s)
+[66858](https://github.com/flutter/flutter/pull/66858) migrate some material files to nullsafty (cla: yes, f: material design, framework)
 
-[69702](https://github.com/flutter/flutter/pull/69702) Add PageStorageKey support for DefaultTabController (cla: yes, f: material design, framework)
 
+[66985](https://github.com/flutter/flutter/pull/66985) migrate some material files to nullsafety (cla: yes, f: material design, framework)
 
-[69815](https://github.com/flutter/flutter/pull/69815) Make _NestedScrollPosition child of NestedScrollView support PageStorageKey (cla: yes, framework)
 
+[67078](https://github.com/flutter/flutter/pull/67078) migrate some material files to nullsafety (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[71138](https://github.com/flutter/flutter/pull/71138) Let InkWell/Ink/ancestor support GlobalKey so that splash does not stop when changing position. (cla: yes, f: material design, framework)
 
+[67166](https://github.com/flutter/flutter/pull/67166) migrate material to nullsafety (a: tests, cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
 
-#### balvinderz - 3 pull request(s)
 
-[3079](https://github.com/flutter/plugins/pull/3079) [battery] added support for MacOS (cla: yes)
+[67306](https://github.com/flutter/flutter/pull/67306) fix nullability issues (a: accessibility, cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-[3278](https://github.com/flutter/plugins/pull/3278)  [google_maps_flutter_web]added webOnlyDraggableCursor parameter (cla: yes)
+[67410](https://github.com/flutter/flutter/pull/67410) Fix the tree (cla: yes, f: cupertino, framework)
 
 
-[3388](https://github.com/flutter/plugins/pull/3388) [image_picker_platform_interface] use XFile instead of PickedFile (cla: yes)
+[67443](https://github.com/flutter/flutter/pull/67443) fix nullability issues (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### hamdikahloun - 3 pull request(s)
+[67525](https://github.com/flutter/flutter/pull/67525) unnecessary null comparison (a: tests, cla: yes, f: material design, framework, waiting for tree to go green)
 
-[3053](https://github.com/flutter/plugins/pull/3053) [battery] Android: Add BATTERY_STATUS_NOT_CHARGING status (cla: yes)
 
+[67557](https://github.com/flutter/flutter/pull/67557) enable null_check_on_nullable_type_parameter and tighten_type_of_initializing_formals (cla: yes, f: material design, framework, waiting for tree to go green)
 
-[3083](https://github.com/flutter/plugins/pull/3083) [battery] Battery platform interface : not_charging Android Status (cla: yes)
 
+[67629](https://github.com/flutter/flutter/pull/67629) enable lint cast_nullable_to_non_nullable (a: tests, cla: yes, f: cupertino, f: material design, framework)
 
-[3234](https://github.com/flutter/plugins/pull/3234) [wifi_info_flutter] Check Permissions in Android O or higher (cla: yes)
 
+[67668](https://github.com/flutter/flutter/pull/67668) fix the tree (cla: yes, f: material design, framework)
 
-#### jaysephjw - 3 pull request(s)
 
-[3136](https://github.com/flutter/plugins/pull/3136) [video_player_platform_interface] Add cookie support (1/3) (cla: yes)
+[67682](https://github.com/flutter/flutter/pull/67682) Final definite assignment (a: accessibility, cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
 
 
-[3137](https://github.com/flutter/plugins/pull/3137) [video_player_web] Add cookie support (2/3) (cla: yes)
+[68136](https://github.com/flutter/flutter/pull/68136) Sync lints (cla: yes, f: cupertino, f: material design, framework, team, tool, waiting for tree to go green)
 
 
-[3138](https://github.com/flutter/plugins/pull/3138) [video_player] Add cookie support (3/3) (cla: yes)
+[68277](https://github.com/flutter/flutter/pull/68277) fix the tree (cla: yes, tool)
 
 
-#### yash1200 - 3 pull request(s)
+[68287](https://github.com/flutter/flutter/pull/68287) fix the tree (cla: yes, framework)
 
-[70171](https://github.com/flutter/flutter/pull/70171) [Checkbox] Adds shape property (cla: yes, f: material design, framework)
 
+[68301](https://github.com/flutter/flutter/pull/68301) use_is_even_rather_than_modulo (a: accessibility, a: tests, cla: yes, f: material design, framework, team)
 
-[3330](https://github.com/flutter/plugins/pull/3330) [path_provider_linux] Migrate to null safety (cla: yes)
 
+[68302](https://github.com/flutter/flutter/pull/68302) enable unnecessary_string_escapes and use_raw_strings (a: internationalization, a: tests, cla: yes, f: cupertino, f: material design, framework, team, tool, waiting for tree to go green)
 
-[3332](https://github.com/flutter/plugins/pull/3332) [shared_preferences_platform_interface] Migrate to null safety (cla: yes)
 
+[68629](https://github.com/flutter/flutter/pull/68629) remove unused ignore (a: accessibility, a: tests, cla: yes, f: cupertino, f: material design, framework, team, tool)
 
-#### roohaani786 - 3 pull request(s)
 
-[3453](https://github.com/flutter/plugins/pull/3453) [camera] Removed overflow from _cameraTogglesRowWidget (main.dart) (cla: yes, p: camera)
+[69025](https://github.com/flutter/flutter/pull/69025) Reland: enable unnecessary_string_escapes and use_raw_strings (#68302) (a: internationalization, a: tests, cla: yes, f: cupertino, f: material design, framework, team, tool, waiting for tree to go green)
 
 
-[3454](https://github.com/flutter/plugins/pull/3454) [camera] Changed version in changelog to 0.7.0+2 (cla: yes, p: camera)
+[71547](https://github.com/flutter/flutter/pull/71547) fix nullability of parameters with redirecting factory constructors (cla: yes, f: material design, framework)
 
 
-[3455](https://github.com/flutter/plugins/pull/3455) [camera] Update pubspec.yaml, Changed version in changelog to 0.7.0+2 (cla: yes, p: camera)
+[74627](https://github.com/flutter/flutter/pull/74627) use predefined constants (cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
 
 
-#### tolotrasamuel - 3 pull request(s)
+#### hamdikahloun - 24 pull request(s)
 
-[1189](https://github.com/flutter/plugins/pull/1189) [google_maps_flutter] Added LatLngBounds constructor from list of LatLng (backlog, cla: yes, feature)
+[65010](https://github.com/flutter/flutter/pull/65010) Fix Semi Hidden helpText in showDatePicker (a: internationalization, cla: yes, f: date/time picker, f: material design, framework)
 
 
-[3027](https://github.com/flutter/plugins/pull/3027) [flutter_google_maps] Added isGesture to onCameraMoveStartedWith Gesture (cla: yes)
+[67926](https://github.com/flutter/flutter/pull/67926) Date Picker jumps back to initialDatePickerMode after day selection (cla: yes, f: material design, framework)
 
 
-[3033](https://github.com/flutter/plugins/pull/3033) [google_maps_flutter_platform_interface] Added isGesture to onCameraMoveStartedWith Gesture  (cla: yes)
+[21189](https://github.com/flutter/engine/pull/21189) Fix NPE in PlatformPlugin.getClipboardData() (cla: yes, platform-android)
 
 
-#### truongsinh - 3 pull request(s)
+[21290](https://github.com/flutter/engine/pull/21290) SecurityException: Permission Denial (cla: yes, platform-android)
 
-[975](https://github.com/flutter/plugins/pull/975) [device_info]unit test for `IosDeviceInfo` (cla: yes, submit queue)
 
+[22495](https://github.com/flutter/engine/pull/22495) [Android] Fix SystemNavigator.pop() behavior in FlutterFragment (cla: yes, platform-android)
 
-[1032](https://github.com/flutter/plugins/pull/1032) Enable code coverage for this project (cla: yes)
 
+[22538](https://github.com/flutter/engine/pull/22538) [Android] Add systemNavigationBarDividerColor (cla: yes, platform-android, waiting for tree to go green)
 
-[1036](https://github.com/flutter/plugins/pull/1036) [device_info]first unit test for native iOS, running with XCode (not CLI) only, with coverage (cla: yes)
 
+[3004](https://github.com/flutter/plugins/pull/3004) [share] MethodCallHandler.java uses unchecked or unsafe operations (cla: yes)
 
-#### vanlooverenkoen - 3 pull request(s)
 
-[3275](https://github.com/flutter/plugins/pull/3275) [video_player] Added the setCaptionOffset  (cla: yes, p: video_player)
+[3018](https://github.com/flutter/plugins/pull/3018) [camera] CameraPlugin.java uses or overrides a deprecated API (cla: yes)
 
 
-[3374](https://github.com/flutter/plugins/pull/3374) [video_player] bugfix caption still showing when text is empty (cla: yes, p: video_player)
+[3019](https://github.com/flutter/plugins/pull/3019) [video_player] VideoPlayerPlugin.java uses or overrides a deprecated API (cla: yes)
 
 
-[3441](https://github.com/flutter/plugins/pull/3441) [google_maps_flutter] iOS Pattern Support for Polylines (cla: yes, p: google_maps_flutter)
+[3020](https://github.com/flutter/plugins/pull/3020) [android_alarm_manager] Android Code Inspection and Clean up (cla: yes)
 
 
-#### wwwdata - 3 pull request(s)
+[3043](https://github.com/flutter/plugins/pull/3043) [android_intent] Android Code Inspection and Clean up (cla: yes)
 
-[2278](https://github.com/flutter/plugins/pull/2278) [webview_flutter] Add setter and getter for cookies (cla: yes)
 
+[3051](https://github.com/flutter/plugins/pull/3051) [connectivity] Android Code Inspection and Clean up (cla: yes)
 
-[2379](https://github.com/flutter/plugins/pull/2379) [webview_flutter] Send history events (cla: yes)
 
+[3111](https://github.com/flutter/plugins/pull/3111) [Espresso] Android Code Inspection and Clean up (cla: yes)
 
-[2420](https://github.com/flutter/plugins/pull/2420) [webview_flutter] Support basic auth requests (cla: yes)
 
+[3112](https://github.com/flutter/plugins/pull/3112) [google_maps_flutter] Android Code Inspection and Clean up (cla: yes)
 
-#### anirudhb - 2 pull request(s)
 
-[20714](https://github.com/flutter/engine/pull/20714) Linux texture support (Work in progress (WIP), cla: yes)
+[3117](https://github.com/flutter/plugins/pull/3117) [webview_flutter] Android Code Inspection and Clean up (cla: yes)
 
 
-[21756](https://github.com/flutter/engine/pull/21756) Partial ShaderMask for Web DOM (cla: yes, platform-web)
+[3120](https://github.com/flutter/plugins/pull/3120) [in_app_purchase] Android Code Inspection and Clean up (cla: yes)
 
 
-#### jamesblasco - 2 pull request(s)
+[3122](https://github.com/flutter/plugins/pull/3122) [video_player] Fix SSLProtocolException for low API version (cla: yes)
 
-[67515](https://github.com/flutter/flutter/pull/67515) Implement Cupertino Sheet (cla: yes, f: cupertino, f: material design, framework)
 
+[3152](https://github.com/flutter/plugins/pull/3152) [share] Replace deprecated Environment.getExternalStorageDirectory() call on Android. (cla: yes)
 
-[69669](https://github.com/flutter/flutter/pull/69669) Implement api for delegate route transitions (cla: yes, f: cupertino, f: material design, framework)
 
+[3166](https://github.com/flutter/plugins/pull/3166) [connectivity] Fix IllegalArgumentException & Add Log warning  (cla: yes)
 
-#### axellebot - 2 pull request(s)
 
-[1606](https://github.com/flutter/plugins/pull/1606) [WIP][audio_player] Create audio player plugin (backlog, cla: yes, feature)
+[3204](https://github.com/flutter/plugins/pull/3204) [video_player] Upgrade ExoPlayer (cla: yes)
 
 
-[1636](https://github.com/flutter/plugins/pull/1636) [WIP][video_player] Add custom buffer (cla: yes)
+[3235](https://github.com/flutter/plugins/pull/3235) [connectivity] Fix IllegalArgumentException (cla: yes)
 
 
-#### RichardJCai - 2 pull request(s)
+[3245](https://github.com/flutter/plugins/pull/3245) [video_player] Android: Dispose video players when app is closed (cla: yes)
 
-[22905](https://github.com/flutter/engine/pull/22905) [MacOS] Add support for creating and presenting platform views. (cla: no)
 
+[3283](https://github.com/flutter/plugins/pull/3283) [many] Android: Target API level 30. (cla: yes)
 
-[22929](https://github.com/flutter/engine/pull/22929) Add an Info.plist flag to enable MacOS platform views preview support (Work in progress (WIP), cla: yes)
 
+[3296](https://github.com/flutter/plugins/pull/3296) [camera] Suppress the deprecation warning for createCaptureSession (cla: yes)
 
-#### callbiruk - 2 pull request(s)
 
-[3351](https://github.com/flutter/plugins/pull/3351) [local_auth] The alert should be called in the main thread. (cla: yes)
+#### mvanbeusekom - 21 pull request(s)
 
+[3040](https://github.com/flutter/plugins/pull/3040) [url_launcher] Document why canLaunch can return false on Android API 30 (cla: yes)
 
-[3352](https://github.com/flutter/plugins/pull/3352) [local_auth] Fix iOS app crash issue: alerts should be alled in the m… (cla: yes)
 
+[3124](https://github.com/flutter/plugins/pull/3124) [camera] Camera fix android audio (cla: yes)
 
-#### pennzht - 2 pull request(s)
 
-[66351](https://github.com/flutter/flutter/pull/66351) [WIP] Migrate Gallery benchmarks out of `flutter/flutter` (flutter side) (cla: yes, f: material design, team)
+[3127](https://github.com/flutter/plugins/pull/3127) [camera] Add null check before starting preview (cla: yes)
 
 
-[66911](https://github.com/flutter/flutter/pull/66911) [WIP] Migrate Gallery benchmarks, Version 3 (flutter side) (cla: yes, f: material design, team)
+[3142](https://github.com/flutter/plugins/pull/3142) [url_launcher] Url launcher platform interface null safety (cla: yes)
 
 
-#### agent3bood - 2 pull request(s)
+[3148](https://github.com/flutter/plugins/pull/3148) [url_launcher] migrate url_launcher package to null safety (cla: yes)
 
-[2667](https://github.com/flutter/plugins/pull/2667) [shared_preferences] prefix setter and getter (cla: yes, waiting for test harness)
 
+[3171](https://github.com/flutter/plugins/pull/3171) [url_launcher] Migrates the url_launcher_web package to null safety (cla: yes)
 
-[2868](https://github.com/flutter/plugins/pull/2868) [shared_preferences] Document the prefix necessary for testing. (cla: yes)
 
+[3253](https://github.com/flutter/plugins/pull/3253) [camera] Add `camera_platform_interface` package (cla: yes)
 
-#### shihchanghsiungsonos - 2 pull request(s)
 
-[1661](https://github.com/flutter/plugins/pull/1661) [video_player] [iOS] Fix the issue of sometimes still never get a val… (cla: yes)
+[3258](https://github.com/flutter/plugins/pull/3258) [camera] Move camera to camera/camera (cla: yes)
 
 
-[2480](https://github.com/flutter/plugins/pull/2480) [video_player] : Flutter's video plugin can cause crashes after a closing a flutter vi… (cla: yes)
+[3260](https://github.com/flutter/plugins/pull/3260) [cross_file] An abstraction to allow working with files across multiple platforms. (cla: yes)
 
 
-#### shinriyo - 2 pull request(s)
+[3286](https://github.com/flutter/plugins/pull/3286) [file_selector] Replace locally defined XFile type with cross_file package (cla: yes)
 
-[67390](https://github.com/flutter/flutter/pull/67390) Flutter Version Management (cla: yes, team)
 
+[3312](https://github.com/flutter/plugins/pull/3312) [camera] Add zoom support to platform interface (cla: yes)
 
-[3025](https://github.com/flutter/plugins/pull/3025) casting (cla: yes)
+
+[3315](https://github.com/flutter/plugins/pull/3315) [camera] Zoom functionality for Android and iOS (cla: yes)
+
+
+[3316](https://github.com/flutter/plugins/pull/3316) [camera] Suppress unchecked cast warning in java test (cla: yes)
+
+
+[3326](https://github.com/flutter/plugins/pull/3326) [camera_platform_interface] Add torch definition to the FlashModes enum  (cla: yes)
+
+
+[3337](https://github.com/flutter/plugins/pull/3337) [camera] Add implementation of didFinishProcessingPhoto callback (iOS) (cla: yes)
+
+
+[3362](https://github.com/flutter/plugins/pull/3362) [camera] Fix API documentation of the `CameraController.takePicture` method (cla: yes)
+
+
+[3363](https://github.com/flutter/plugins/pull/3363) [cross_file] Make sure saveTo returns a Future (cla: yes)
+
+
+[3376](https://github.com/flutter/plugins/pull/3376) [camera] Update camera_platform_interface dependency to 1.2.0 (cla: yes, waiting for tree to go green)
+
+
+[3383](https://github.com/flutter/plugins/pull/3383) [camera] disable auto focus when using front facing camera on Android (cla: yes)
+
+
+[3411](https://github.com/flutter/plugins/pull/3411) [camera] Fixes crash when taking a picture on iOS devices without flash (cla: yes)
+
+
+[3413](https://github.com/flutter/plugins/pull/3413) [camera] Copy zoom settings from preview to final capture builder on Android (cla: yes)
+
+
+#### jpnurmi - 17 pull request(s)
+
+[69891](https://github.com/flutter/flutter/pull/69891) Fix Editable(Text) shortcuts to respect read-only on desktop (cla: yes, framework, waiting for tree to go green)
+
+
+[69920](https://github.com/flutter/flutter/pull/69920) [flutter_tools] deploy version.json asset on Linux (cla: yes, tool, waiting for tree to go green)
+
+
+[70018](https://github.com/flutter/flutter/pull/70018) [flutter_tools] add helpful API link to Linux plugin template (cla: yes, tool)
+
+
+[70026](https://github.com/flutter/flutter/pull/70026) [flutter_tools] Let CMake handle escaping (cla: yes, tool, waiting for tree to go green)
+
+
+[70972](https://github.com/flutter/flutter/pull/70972) Fix EditableText.enableInteractiveSelection on desktop & web (cla: yes, framework)
+
+
+[71003](https://github.com/flutter/flutter/pull/71003) [flutter_tools] Set basic error matcher for Linux builds (cla: yes, tool)
+
+
+[72189](https://github.com/flutter/flutter/pull/72189) [flutter_tools] use 1-based index for device selection (cla: yes, tool, waiting for tree to go green)
+
+
+[72196](https://github.com/flutter/flutter/pull/72196) [flutter_tools] improve error surfacing from Linux builds (cla: yes, tool, waiting for tree to go green)
+
+
+[72559](https://github.com/flutter/flutter/pull/72559) [flutter_tools] catch fatal build output errors on Linux (cla: yes, tool, waiting for tree to go green)
+
+
+[72803](https://github.com/flutter/flutter/pull/72803) [text_input] prepare for custom text input sources (cla: yes, framework, waiting for tree to go green)
+
+
+[21405](https://github.com/flutter/engine/pull/21405) Add workaround for missing fl_method_xxx_response_get_type() symbols (cla: yes, waiting for tree to go green)
+
+
+[21406](https://github.com/flutter/engine/pull/21406) fl_method_response.cc: fix lint failures (cla: yes)
+
+
+[21875](https://github.com/flutter/engine/pull/21875) Fix typos in FlValue docs (cla: yes, waiting for tree to go green)
+
+
+[21879](https://github.com/flutter/engine/pull/21879) Fix memory leaks in FlTextInputPlugin (cla: yes)
+
+
+[22007](https://github.com/flutter/engine/pull/22007) Fix FlTextInputPlugin tear down (affects: desktop, cla: yes, needs tests, platform-linux, waiting for tree to go green)
+
+
+[22463](https://github.com/flutter/engine/pull/22463) [Linux] FlValue: add foreach functions for list & map (cla: yes)
+
+
+[3257](https://github.com/flutter/plugins/pull/3257) [file_selector] add GtkFileChooserDialog based implementation for Linux (cla: yes)
+
+
+#### srawlins - 16 pull request(s)
+
+[65583](https://github.com/flutter/flutter/pull/65583) Try dartdoc at head (cla: yes, team)
+
+
+[67744](https://github.com/flutter/flutter/pull/67744) Bump meta to 1.3.0-nullsafety.4 (cla: yes, team, tool)
+
+
+[68038](https://github.com/flutter/flutter/pull/68038) Mark unusuallyLongTimeout as internal (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+[68814](https://github.com/flutter/flutter/pull/68814) Ignore "unused" analysis for dart:ui imports for web-only API. (cla: yes, framework, platform-web, waiting for tree to go green)
+
+
+[72409](https://github.com/flutter/flutter/pull/72409) Return null instead of empty in Future.catchError callbacks (cla: yes, tool, waiting for tree to go green)
+
+
+[72410](https://github.com/flutter/flutter/pull/72410) Remove unused dart:async imports. (cla: yes, f: cupertino, framework, tool, waiting for tree to go green)
+
+
+[73340](https://github.com/flutter/flutter/pull/73340) Remove "unnecessary" imports in flutter/src/services (cla: yes, framework, waiting for tree to go green)
+
+
+[73344](https://github.com/flutter/flutter/pull/73344) Remove "unnecessary" imports. (cla: yes, framework, waiting for tree to go green)
+
+
+[73368](https://github.com/flutter/flutter/pull/73368) Remove "unnecessary" imports in flutter/src/rendering (cla: yes, framework, waiting for tree to go green)
+
+
+[73389](https://github.com/flutter/flutter/pull/73389) Remove "unnecessary" imports from flutter/src/gestures (cla: yes, framework, waiting for tree to go green)
+
+
+[73486](https://github.com/flutter/flutter/pull/73486) Remove "unnecessary" imports in flutter/src/cupertino (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+[73488](https://github.com/flutter/flutter/pull/73488) Remove "unnecessary" import in flutter_tools (cla: yes, tool, waiting for tree to go green)
+
+
+[74383](https://github.com/flutter/flutter/pull/74383) Remove "unnecessary" imports in dev/integration_tests (a: accessibility, cla: yes, f: material design, team, waiting for tree to go green)
+
+
+[74385](https://github.com/flutter/flutter/pull/74385) Remove "unnecessary" imports in dev/manual_tests (cla: yes, f: material design, team, waiting for tree to go green)
+
+
+[21109](https://github.com/flutter/engine/pull/21109) Fix erroneous dartdoc @tool directive. (cla: yes, waiting for tree to go green)
+
+
+[23101](https://github.com/flutter/engine/pull/23101) Return null in Future<WebSocketChannel>.catchError handler (cla: yes, platform-web)
+
+
+#### BeMacized - 15 pull request(s)
+
+[3302](https://github.com/flutter/plugins/pull/3302) [camera] Add implementations for `camera_platform_interface` package. (cla: yes, feature)
+
+
+[3313](https://github.com/flutter/plugins/pull/3313) [camera] Expanded platform interface to support setting flash mode (cla: yes)
+
+
+[3314](https://github.com/flutter/plugins/pull/3314) [camera] Flash functionality for Android and iOS (cla: yes)
+
+
+[3338](https://github.com/flutter/plugins/pull/3338) [camera] Add implementations for the torch flash mode. (cla: yes)
+
+
+[3345](https://github.com/flutter/plugins/pull/3345) [camera_platform_interface] Add platform interface methods for setting auto exposure. (cla: yes)
+
+
+[3346](https://github.com/flutter/plugins/pull/3346) [camera] Add iOS and Android implementations for managing auto exposure. (cla: yes)
+
+
+[3367](https://github.com/flutter/plugins/pull/3367) [camera] Fix flash/torch not working on some Android devices. (cla: yes)
+
+
+[3369](https://github.com/flutter/plugins/pull/3369) [camera_platform_interface] Add platform interface methods for setting auto focus. (cla: yes)
+
+
+[3370](https://github.com/flutter/plugins/pull/3370) [camera] Add iOS and Android implementations for managing auto focus. (cla: yes)
+
+
+[3375](https://github.com/flutter/plugins/pull/3375) [camera] Fix video recording exception on Android (cla: yes)
+
+
+[3377](https://github.com/flutter/plugins/pull/3377) [camera] Revert platform interface dependency to lower version (cla: yes, waiting for tree to go green)
+
+
+[3389](https://github.com/flutter/plugins/pull/3389) [camera_platform_interface] Add platform interface methods for locking capture orientation. (cla: yes)
+
+
+[3390](https://github.com/flutter/plugins/pull/3390) [camera] Implemented capture orientation locking. Fixed preview rotation issues. Fixed video and photo orientation upon save. (cla: yes, waiting for tree to go green)
+
+
+[3406](https://github.com/flutter/plugins/pull/3406) [camera] Fix initialization error in camera example on iOS (cla: yes)
+
+
+[3414](https://github.com/flutter/plugins/pull/3414) [camera] Fix picture capture causing a crash on some Huawei devices. (cla: yes)
+
+
+#### yash1200 - 15 pull request(s)
+
+[65539](https://github.com/flutter/flutter/pull/65539) Making label field required in BottomNavigationBarItem (cla: yes, framework)
+
+
+[65918](https://github.com/flutter/flutter/pull/65918) Changed field title to label in bottom_navigation_bar_test.dart (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[66186](https://github.com/flutter/flutter/pull/66186) Changed title to label in flutter/test/material (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[66670](https://github.com/flutter/flutter/pull/66670) Updated tests in material/bottom_navigation_bar_test.dart (cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
+
+
+[67083](https://github.com/flutter/flutter/pull/67083) [flutter] Update some tests in flutter/test (a: tests, cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[68358](https://github.com/flutter/flutter/pull/68358) [SwitchListTile and CheckboxListTile] Adds selectedTileColor property (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69399](https://github.com/flutter/flutter/pull/69399) [RadioListTile] Adds shape, tileColor and selectedTileColor to RadioListTile (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[71079](https://github.com/flutter/flutter/pull/71079) [BottomNavigationBar] Adds more control to ToolTip (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[71587](https://github.com/flutter/flutter/pull/71587) Accessibility: repeated label on BottomNavigationBar fixed (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[2994](https://github.com/flutter/plugins/pull/2994) [battery] Linux support added in battery (cla: yes)
+
+
+[3085](https://github.com/flutter/plugins/pull/3085) [package_info] Moved everything from package_info to package_info/package_info (cla: yes)
+
+
+[3108](https://github.com/flutter/plugins/pull/3108) [url_launcher] Updated dependencies in url_launcher (cla: yes)
+
+
+[3207](https://github.com/flutter/plugins/pull/3207) [wifi_info_flutter] Method channel name fixed for android (cla: yes)
+
+
+[3262](https://github.com/flutter/plugins/pull/3262) [path_provider_linux] Migration to null safety (cla: yes)
+
+
+[3282](https://github.com/flutter/plugins/pull/3282) [shared_preferences_platform_interface] Migrate to null safety (cla: yes)
+
+
+#### knopp - 14 pull request(s)
+
+[67320](https://github.com/flutter/flutter/pull/67320) Provide oldLayer where possible (cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
+
+
+[21009](https://github.com/flutter/engine/pull/21009) WIP: API to track damage rectangles (cla: yes)
+
+
+[21108](https://github.com/flutter/engine/pull/21108) WIP: Discard wrong size layer tree instead of rendering it (cla: yes)
+
+
+[21110](https://github.com/flutter/engine/pull/21110) WIP: Smooth window resizing on macOS (cla: yes)
+
+
+[21126](https://github.com/flutter/engine/pull/21126) WIP: API to track damage rectangles (cla: yes)
+
+
+[21179](https://github.com/flutter/engine/pull/21179) Discard wrong size layer tree instead of rendering it (cla: yes, perf: speed, severe: performance, waiting for tree to go green)
+
+
+[21252](https://github.com/flutter/engine/pull/21252) WIP: Smooth window resizing on macOS (cla: yes)
+
+
+[21267](https://github.com/flutter/engine/pull/21267) WIP: API to track damage rectangles  (cla: yes)
+
+
+[21299](https://github.com/flutter/engine/pull/21299) WIP: API to diff layer tree to track damage (cla: yes)
+
+
+[21409](https://github.com/flutter/engine/pull/21409) WIP: API to diff layer tree to track damage (cla: yes)
+
+
+[21525](https://github.com/flutter/engine/pull/21525) Smooth window resizing on macOS (affects: desktop, cla: yes, needs tests, platform-macos, waiting for tree to go green)
+
+
+[21648](https://github.com/flutter/engine/pull/21648) Use preTranslate when applying offset to matrix (cla: yes, waiting for tree to go green)
+
+
+[22270](https://github.com/flutter/engine/pull/22270) Fix code style issues in MacOS embedder (cla: yes, waiting for tree to go green)
+
+
+[22457](https://github.com/flutter/engine/pull/22457) [macOS] Disable synchronous resizing until a frame is produced (affects: desktop, cla: yes, needs tests, platform-macos)
+
+
+#### DanielEdrisian - 13 pull request(s)
+
+[65960](https://github.com/flutter/flutter/pull/65960) Android error message (cla: no, tool)
+
+
+[65964](https://github.com/flutter/flutter/pull/65964) Updated androidMissingSdkInstructions error message (cla: yes, tool, waiting for tree to go green)
+
+
+[66692](https://github.com/flutter/flutter/pull/66692) Allow modifying barrier color and barrier dismissible for Cupertino Modal Popup (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+[68074](https://github.com/flutter/flutter/pull/68074) Added CupertinoSearchTextField (a: internationalization, cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
+
+
+[68918](https://github.com/flutter/flutter/pull/68918) Adaptive TextField (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69143](https://github.com/flutter/flutter/pull/69143) Adaptive progress indicator (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69285](https://github.com/flutter/flutter/pull/69285) Adaptive FlatButton (cla: yes, f: cupertino, f: material design, framework)
+
+
+[69286](https://github.com/flutter/flutter/pull/69286) Adaptive RaisedButton (cla: yes, f: material design, framework)
+
+
+[70676](https://github.com/flutter/flutter/pull/70676) Added CupertinoFormSection, CupertinoSplitFormRow, and CupertinoTextFormField (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+[71522](https://github.com/flutter/flutter/pull/71522) Re-land CupertinoFormSection, CupertinoFormRow, and CupertinoTextFormFieldRow (cla: yes, f: cupertino, framework)
+
+
+[71707](https://github.com/flutter/flutter/pull/71707) Add stretch property to CupertinoSliverNavigationBar (cla: yes, f: cupertino, framework)
+
+
+[72046](https://github.com/flutter/flutter/pull/72046) Add footer to CupertinoFormSection and fix CupertinoFormSection margins. (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+[72064](https://github.com/flutter/flutter/pull/72064) Cupertino text selection on long press (cla: yes, framework)
+
+
+#### RichardJCai - 13 pull request(s)
+
+[21331](https://github.com/flutter/engine/pull/21331) clarify that offset is not used in addPlatformView for iOS/Android (cla: yes)
+
+
+[21996](https://github.com/flutter/engine/pull/21996) wip: prototype for macos platform views (Work in progress (WIP), cla: yes, platform-ios)
+
+
+[22152](https://github.com/flutter/engine/pull/22152) do not merge: resize not working (cla: yes)
+
+
+[22199](https://github.com/flutter/engine/pull/22199) dnm: MacOS Compositor using GL backing store (cla: yes)
+
+
+[22229](https://github.com/flutter/engine/pull/22229) Refactor MacOS to use MacOSCompositor for creating backing stores. (cla: yes)
+
+
+[22274](https://github.com/flutter/engine/pull/22274) dnm Using framebuffers (cla: yes)
+
+
+[22500](https://github.com/flutter/engine/pull/22500) Refactor MacOS to use Compositor to create backing stores using FlutterSurfaceManager (cla: yes)
+
+
+[22644](https://github.com/flutter/engine/pull/22644) Compositor with fsm with pv 11202020 (cla: yes)
+
+
+[22656](https://github.com/flutter/engine/pull/22656) Create FlutterFrameBufferProvider class (affects: desktop, cla: yes, needs tests, platform-macos, waiting for tree to go green)
+
+
+[22663](https://github.com/flutter/engine/pull/22663) Create wrapper for IOSurface (affects: desktop, cla: yes, needs tests, platform-macos)
+
+
+[22679](https://github.com/flutter/engine/pull/22679) Create FlutterGLCompositor to render only one layer (cla: yes)
+
+
+[22742](https://github.com/flutter/engine/pull/22742) Add avoid_cache field to EmbedderRenderTarget to allow RenderTargets to avoid the cache (cla: yes)
+
+
+[22782](https://github.com/flutter/engine/pull/22782) (MacOS) Add FlutterGLCompositor with support for rendering multiple layers (cla: yes)
+
+
+#### chinmoy12c - 13 pull request(s)
+
+[66653](https://github.com/flutter/flutter/pull/66653) Changed TickerProviderStateMixin to SingleTickerProviderStateMixin in… (cla: yes, f: material design, framework)
+
+
+[68217](https://github.com/flutter/flutter/pull/68217) Exposes controller of TextFormField to InputDatePickerFormField (cla: yes, f: material design, framework)
+
+
+[68987](https://github.com/flutter/flutter/pull/68987) Added none property in a DismissDirection (cla: yes, f: material design, framework, team, waiting for tree to go green)
+
+
+[69088](https://github.com/flutter/flutter/pull/69088) added enableFeedback property to ListTile (cla: yes, f: material design, framework)
+
+
+[69404](https://github.com/flutter/flutter/pull/69404) Added padding property in NavigationRail (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69466](https://github.com/flutter/flutter/pull/69466) Added enableFeedback property to a few standard widgets. (cla: yes, f: material design, framework)
+
+
+[69581](https://github.com/flutter/flutter/pull/69581) Added enableFeedback property to a few standard widgets (cla: yes, f: material design, framework)
+
+
+[69811](https://github.com/flutter/flutter/pull/69811) Added enableFeedback property to BottomNavigationBar (cla: yes, f: material design, framework)
+
+
+[69890](https://github.com/flutter/flutter/pull/69890) Added enableFeedback property PopupMenuButton (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[70872](https://github.com/flutter/flutter/pull/70872) Prevent text from overflowing in OutlineButton and OutlinedButton label. (cla: yes, f: material design, framework)
+
+
+[71376](https://github.com/flutter/flutter/pull/71376) Added mainAxisExtent to SliverGridDelegateWithFixedCrossAxisCount and SliverGridDelegateWithMaxCrossAxisExtent (cla: yes, f: scrolling, framework, severe: new feature, waiting for tree to go green)
+
+
+[73138](https://github.com/flutter/flutter/pull/73138) Removed mouseCursor property from list of not null properties in InkWell and InkResponse. (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[73247](https://github.com/flutter/flutter/pull/73247) Fixed typo in icon theme (cla: yes, documentation, framework, waiting for tree to go green)
+
+
+#### creativecreatorormaybenot - 12 pull request(s)
+
+[69507](https://github.com/flutter/flutter/pull/69507) Add stackTrace to AsyncSnapshot (cla: yes, framework, waiting for tree to go green)
+
+
+[70862](https://github.com/flutter/flutter/pull/70862) [flutter_test] Correct flutter_test_configuration.dart documentation (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+[70968](https://github.com/flutter/flutter/pull/70968) [flutter] Update package README (cla: yes, framework, waiting for tree to go green)
+
+
+[71981](https://github.com/flutter/flutter/pull/71981) Test generated_plugin_registrant analysis & suppress long lines in web plugin registrant (cla: yes, tool, waiting for tree to go green)
+
+
+[72930](https://github.com/flutter/flutter/pull/72930) Correct typos in RenderParagraph (cla: yes, framework, waiting for tree to go green)
+
+
+[3031](https://github.com/flutter/plugins/pull/3031) [template] [video_player] Add playback speed support on all platforms (cla: yes)
+
+
+[3032](https://github.com/flutter/plugins/pull/3032) [video_player_platform_interface] Playback speed (cla: yes)
+
+
+[3034](https://github.com/flutter/plugins/pull/3034) [all] Update CODEOWNERS to properly request reviews (cla: yes)
+
+
+[3081](https://github.com/flutter/plugins/pull/3081) [video_player_web] Playback speed (cla: yes)
+
+
+[3082](https://github.com/flutter/plugins/pull/3082) [video_player] Fix tests (cla: yes)
+
+
+[3084](https://github.com/flutter/plugins/pull/3084) [video_player] Playback speed (cla: yes)
+
+
+[3119](https://github.com/flutter/plugins/pull/3119) [video_player] fix Timer Leak (cla: yes)
+
+
+#### liguisheng - 12 pull request(s)
+
+[22988](https://github.com/flutter/engine/pull/22988) fix crash in FontCollection::init() when FontFamily is empty (cla: no, waiting for customer response)
+
+
+[23019](https://github.com/flutter/engine/pull/23019) fix crash in FontCollection::init() when FontFamily is empty (cla: yes, waiting for tree to go green)
+
+
+[23167](https://github.com/flutter/engine/pull/23167) fix skia crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23171](https://github.com/flutter/engine/pull/23171) fix skia crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23173](https://github.com/flutter/engine/pull/23173) fix skia crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23174](https://github.com/flutter/engine/pull/23174) fix skia crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23176](https://github.com/flutter/engine/pull/23176) fix skia crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23178](https://github.com/flutter/engine/pull/23178) fix OpenGL crash in GrOpsTask::onExecute when application enter background on iOS (cla: no, platform-ios)
+
+
+[23283](https://github.com/flutter/engine/pull/23283) fix memory leaks in fml/message.cc (cla: no)
+
+
+[23288](https://github.com/flutter/engine/pull/23288) fix memory leaks in fml/message.cc (cla: yes)
+
+
+[23294](https://github.com/flutter/engine/pull/23294) fix OpenGL crash in GrOpsTask::onExecute when application enter background on iOS (cla: yes, platform-ios)
+
+
+[23485](https://github.com/flutter/engine/pull/23485) fix OpenGL crash in GrOpsTask::onExecute when application enter background on iOS (cla: yes, platform-ios)
+
+
+#### CareF - 11 pull request(s)
+
+[64478](https://github.com/flutter/flutter/pull/64478) migrate animated_placeholder_perf to e2e (cla: yes, team, waiting for tree to go green)
+
+
+[64482](https://github.com/flutter/flutter/pull/64482) migrate backdrop_filter_perf to e2e (cla: yes, team, waiting for tree to go green)
+
+
+[64484](https://github.com/flutter/flutter/pull/64484) migrate color_filter_and_fade_perf to e2e (cla: yes, team, waiting for tree to go green)
+
+
+[64487](https://github.com/flutter/flutter/pull/64487) migrate cubic_bezier_perf to e2e (cla: yes, team, waiting for tree to go green)
+
+
+[64503](https://github.com/flutter/flutter/pull/64503) migrate textfield_perf to e2e (cla: yes, team, waiting for tree to go green)
+
+
+[66611](https://github.com/flutter/flutter/pull/66611) fix complex_layout_android__scroll_smoothness's lost of input event (cla: yes, team, waiting for tree to go green)
+
+
+[66743](https://github.com/flutter/flutter/pull/66743) cleanup completed todo and unused variable for WidgetTester (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+[66745](https://github.com/flutter/flutter/pull/66745) move resampler to handlePointerEvent and fix complex_layout_android__scroll_smoothness with PointerEvent (a: tests, cla: yes, framework, team, waiting for tree to go green)
+
+
+[67594](https://github.com/flutter/flutter/pull/67594) Transport `e2e` based perforamnce test to `integration_test` and remove duplicate `watchPerformance` (cla: yes, team, waiting for tree to go green)
+
+
+[72479](https://github.com/flutter/flutter/pull/72479) add doc for scroll_smoothness metrics (cla: yes, team, waiting for tree to go green)
+
+
+[3116](https://github.com/flutter/plugins/pull/3116) [integration_test] Add watchPerformance (cla: yes, waiting for test harness)
+
+
+#### Abhishek01039 - 10 pull request(s)
+
+[67218](https://github.com/flutter/flutter/pull/67218) change the documentation of bottom navigation bar (cla: yes, framework, waiting for tree to go green)
+
+
+[68219](https://github.com/flutter/flutter/pull/68219) [doc] Null safety in InputDecorator's Properties (cla: yes, f: material design, framework)
+
+
+[68393](https://github.com/flutter/flutter/pull/68393) null safety in ElevatedButton.icon (a: null-safety, cla: yes, f: material design, framework)
+
+
+[69532](https://github.com/flutter/flutter/pull/69532) Add Scaffold to Tooltip code samples (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69654](https://github.com/flutter/flutter/pull/69654) removed `an` and used `a` (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[72490](https://github.com/flutter/flutter/pull/72490) Bottom navigation items length docs (cla: yes, d: api docs, f: material design, framework, waiting for tree to go green)
+
+
+[74219](https://github.com/flutter/flutter/pull/74219) Added note to new buttons (cla: yes, f: material design, framework)
+
+
+[3147](https://github.com/flutter/plugins/pull/3147) [webview_flutter] minSdkVersion to 20 (cla: yes)
+
+
+[3162](https://github.com/flutter/plugins/pull/3162) [android_alarm_manager] minSdkVersion to 19 (cla: yes)
+
+
+[3200](https://github.com/flutter/plugins/pull/3200) [android_alarm_manager] deprecated display1 (cla: yes)
+
+
+#### YeungKC - 10 pull request(s)
+
+[65501](https://github.com/flutter/flutter/pull/65501) Update the cupertino picker visuals (cla: yes, f: cupertino, framework)
+
+
+[65695](https://github.com/flutter/flutter/pull/65695) Fix FormFieldState value not in sync with the onChanged value from TextFormField. (cla: yes, f: material design, framework)
+
+
+[66039](https://github.com/flutter/flutter/pull/66039) fix mouse wheel scroll miscontrol of ScrollPosition. (a: desktop, a: mouse, cla: yes, f: scrolling, framework, waiting for tree to go green)
+
+
+[67736](https://github.com/flutter/flutter/pull/67736) Fix text field label width on outline input border (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[68402](https://github.com/flutter/flutter/pull/68402) Fix error cursor position for left and right arrow event after text selection (cla: yes, framework, waiting for tree to go green)
+
+
+[68727](https://github.com/flutter/flutter/pull/68727) Fix floating behavior of long label and outline input border (cla: yes, f: material design, framework)
+
+
+[69323](https://github.com/flutter/flutter/pull/69323) onFocus and onBlur support (cla: yes, f: cupertino, f: material design, framework)
+
+
+[70607](https://github.com/flutter/flutter/pull/70607) Fix ink splashes don't survive key reparenting (cla: yes, f: material design, framework)
+
+
+[73276](https://github.com/flutter/flutter/pull/73276) Fix dateAndTime and time modes of CupertinoDatePicker. (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+[73654](https://github.com/flutter/flutter/pull/73654) Fix dropdown menu overscroll (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### pedromassango - 10 pull request(s)
+
+[65180](https://github.com/flutter/flutter/pull/65180) [fix] once errorBuilder is called Image widget stops loading images (cla: yes, framework)
+
+
+[65190](https://github.com/flutter/flutter/pull/65190) Format values added via textEditingController.text (a: quality, a: text input, cla: yes, framework)
+
+
+[65320](https://github.com/flutter/flutter/pull/65320) Add onSelectionChanged into SelectableText widget (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[66267](https://github.com/flutter/flutter/pull/66267) Add back the autovalidate class property (a: text input, cla: yes, framework)
+
+
+[67135](https://github.com/flutter/flutter/pull/67135) Expose the tileColor property (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[67144](https://github.com/flutter/flutter/pull/67144) Improves the error message shown if one tries to show a SnackBar during the build phase. (a: error message, cla: yes, f: material design, framework)
+
+
+[68000](https://github.com/flutter/flutter/pull/68000) Provide a way to change the default PopupMenuButton's icon size (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[68720](https://github.com/flutter/flutter/pull/68720) Fix: 'index == parameters.length': is not true (cla: yes, framework)
+
+
+[72431](https://github.com/flutter/flutter/pull/72431) Fixes: "FloatingActionButton.extended's isExtended property if false should show icon, not label" (cla: yes, f: material design, framework)
+
+
+[73566](https://github.com/flutter/flutter/pull/73566) Fix "RefreshIndicator.color didn't update at runtime" (cla: yes, f: material design, framework)
+
+
+#### sidrao2006 - 10 pull request(s)
+
+[64789](https://github.com/flutter/flutter/pull/64789) Update icon button splash radius to prevent overflow in appbar (cla: yes, f: cupertino, f: material design, framework)
+
+
+[66725](https://github.com/flutter/flutter/pull/66725) Update SearchDelegate's Textfield theme (cla: yes, f: material design, framework)
+
+
+[67212](https://github.com/flutter/flutter/pull/67212) Add missing @ in the `required` annotation (cla: yes, framework)
+
+
+[68103](https://github.com/flutter/flutter/pull/68103) Card padding (cla: yes, f: material design, framework)
+
+
+[69457](https://github.com/flutter/flutter/pull/69457) Enable customization of TabBar's InkWell (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[69498](https://github.com/flutter/flutter/pull/69498) AdoptAWidget - Progress indicator (adopt a widget, cla: yes, f: material design, framework)
+
+
+[70945](https://github.com/flutter/flutter/pull/70945) Use details tag to improve issue log readability (cla: yes, team, waiting for tree to go green)
+
+
+[70994](https://github.com/flutter/flutter/pull/70994) Add Discord chat badge (cla: yes)
+
+
+[71195](https://github.com/flutter/flutter/pull/71195) [WIP] Add checkBoxHorizontalMargin property (cla: yes, f: material design, framework)
+
+
+[3267](https://github.com/flutter/plugins/pull/3267) Remove v1 migration notice (cla: yes)
+
+
+#### danielroek - 9 pull request(s)
+
+[3047](https://github.com/flutter/plugins/pull/3047) [video_player]  Bug/issue 48670 (cla: no)
+
+
+[3048](https://github.com/flutter/plugins/pull/3048) [video_player] Fixed HLS streams on iOS (#48760) (cla: yes)
+
+
+[3096](https://github.com/flutter/plugins/pull/3096) Fixed HLS Stream on iOS (cla: yes)
+
+
+[3161](https://github.com/flutter/plugins/pull/3161) Camera federated (cla: yes)
+
+
+[3335](https://github.com/flutter/plugins/pull/3335) [camera] Ios support documentation  (cla: yes)
+
+
+[3344](https://github.com/flutter/plugins/pull/3344) [camera] Fixed stale images in imageStream subscriptions (cla: yes)
+
+
+[3359](https://github.com/flutter/plugins/pull/3359) [camera] Implemented ImageStream ImageFormat setting for Dart and Android (cla: yes)
+
+
+[3364](https://github.com/flutter/plugins/pull/3364) [camera_platform_interface] Added imageFormatGroup to initialize (cla: yes)
+
+
+[3365](https://github.com/flutter/plugins/pull/3365) [camera] Added maxVideoDuration to startVideoRecording (cla: yes)
+
+
+#### Amitpatil215 - 8 pull request(s)
+
+[69509](https://github.com/flutter/flutter/pull/69509) AdoptAWidget: aspectRatio (adopt a widget, cla: yes, framework, waiting for tree to go green)
+
+
+[71314](https://github.com/flutter/flutter/pull/71314) BottomNavigationBar unselected items modified to use unselectedWidgetColor (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[71380](https://github.com/flutter/flutter/pull/71380) Card respects surface color  (cla: yes, f: material design, framework)
+
+
+[71580](https://github.com/flutter/flutter/pull/71580) Updated dialog background color documentation (cla: yes, f: material design, framework)
+
+
+[71783](https://github.com/flutter/flutter/pull/71783) circleAvatar: foreground Image uses background Image as a fall-back  (cla: yes, f: material design, framework, will affect goldens)
+
+
+[71791](https://github.com/flutter/flutter/pull/71791) [SnackBarBehavior.floating] is default for the SnackBar (cla: yes, f: material design, framework)
+
+
+[71838](https://github.com/flutter/flutter/pull/71838) showDialog assertion for non-null builder or child property (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[74494](https://github.com/flutter/flutter/pull/74494) Expose clipBehavior in simple dialog (cla: yes, f: material design, framework)
+
+
+#### AyushBherwani1998 - 8 pull request(s)
+
+[63466](https://github.com/flutter/flutter/pull/63466) [MaterialSlice] adds property to customize slice color (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[63887](https://github.com/flutter/flutter/pull/63887) [ListTile] fixes how background color is applied to ListTile (cla: yes, f: material design, framework)
+
+
+[65000](https://github.com/flutter/flutter/pull/65000) [LayoutBuilder] Implements baseline logic to pass baseline to child (cla: yes, framework, waiting for tree to go green)
+
+
+[67105](https://github.com/flutter/flutter/pull/67105) [AppBarTheme] adds titleSpacing parameter (cla: yes, f: material design, framework)
+
+
+[67419](https://github.com/flutter/flutter/pull/67419) Exposes ListTile.shape for CheckboxListTile and SwitchListTile (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[68123](https://github.com/flutter/flutter/pull/68123) [MergeSemantics] added code snippet (cla: yes, framework, waiting for tree to go green)
+
+
+[69575](https://github.com/flutter/flutter/pull/69575) [ExpansionTile] adds collapsedBackgroundColor property (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[71657](https://github.com/flutter/flutter/pull/71657) [ExpansionPanel] Exposes color property of MaterialSlice (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### abrush21 - 8 pull request(s)
+
+[65194](https://github.com/flutter/flutter/pull/65194) Disables test failing due to new semantics flag. (a: tests, cla: yes, framework)
+
+
+[65766](https://github.com/flutter/flutter/pull/65766) Adds getter/setter for slider semantics flag. (a: accessibility, cla: yes, framework)
+
+
+[66916](https://github.com/flutter/flutter/pull/66916) Re-enables tests previously failing due to new semantics flag. (a: accessibility, a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+[21367](https://github.com/flutter/engine/pull/21367) Reland: Adds fuchsia node roles to accessibility bridge updat… (cla: yes)
+
+
+[22061](https://github.com/flutter/engine/pull/22061) Includes roles for links, checkboxes, and radio buttons in semantics (cla: yes, waiting for tree to go green)
+
+
+[22542](https://github.com/flutter/engine/pull/22542) Ensures that flutter crashes if a11y manager closes channel. (cla: yes, platform-fuchsia)
+
+
+[23499](https://github.com/flutter/engine/pull/23499) Adds a mechanism for announce events to be forwarded to a11y. (cla: yes, waiting for tree to go green)
+
+
+[23704](https://github.com/flutter/engine/pull/23704) Populates fuchsia a11y toggled state. (cla: yes)
+
+
+#### chaselatta - 8 pull request(s)
+
+[22009](https://github.com/flutter/engine/pull/22009) [fuchsia] opt-out null-safety in standalone scripts (cla: yes, waiting for tree to go green)
+
+
+[23000](https://github.com/flutter/engine/pull/23000) add ffi_struct_patch.dart to libraries.yaml (cla: yes)
+
+
+[23067](https://github.com/flutter/engine/pull/23067) bump fuchsia toolchain to clang-12 (cla: yes)
+
+
+[23155](https://github.com/flutter/engine/pull/23155) Roll fuchsia toolchain (cla: yes)
+
+
+[23456](https://github.com/flutter/engine/pull/23456) Revert "bump fuchsia toolchain to clang-12" (cla: yes)
+
+
+[23608](https://github.com/flutter/engine/pull/23608) [dart-runner] Avoid calling Destroy on nullptr (cla: yes, waiting for tree to go green)
+
+
+[23656](https://github.com/flutter/engine/pull/23656) Reland - bump fuchsia toolchain to clang 12 (cla: yes)
+
+
+[23842](https://github.com/flutter/engine/pull/23842) use the toolchain in //build for fuchsia (cla: yes, waiting for tree to go green)
+
+
+#### valconetti - 8 pull request(s)
+
+[3021](https://github.com/flutter/plugins/pull/3021) [image_picker] Updated documentation of getImage() to include information about Andr… (cla: no)
+
+
+[3036](https://github.com/flutter/plugins/pull/3036) [image_picker] changed ExifInterface to AndroidX version, including d… (cla: yes)
+
+
+[3037](https://github.com/flutter/plugins/pull/3037) [image_picker] Updated docs getImage() about preference rear front not working on Android (cla: yes)
+
+
+[3131](https://github.com/flutter/plugins/pull/3131) [image_picker] Update documentation to include information about support HEIC images. (cla: yes)
+
+
+[3132](https://github.com/flutter/plugins/pull/3132) [url_launcher] suppress a `uses or overrides a deprecated API` warning in WebViewActivity (cla: yes)
+
+
+[3180](https://github.com/flutter/plugins/pull/3180) [camera] Added documentation about video not working correctly on Android emulators (cla: yes)
+
+
+[3181](https://github.com/flutter/plugins/pull/3181) [camera] Changed the order of the setters for mediaRecorder in MediaRecorderBu… (cla: yes)
+
+
+[3336](https://github.com/flutter/plugins/pull/3336) [camera] Added closeCaptureSession() to stopVideoRecording in Java side (cla: yes)
+
+
+#### JuYeong0413 - 7 pull request(s)
+
+[63910](https://github.com/flutter/flutter/pull/63910) Improve Stepper controlsBuilder docs (cla: yes, d: api docs, documentation, f: material design, framework, waiting for tree to go green)
+
+
+[64409](https://github.com/flutter/flutter/pull/64409) Improve error message when Navigator.pop() is called accidentally (a: error message, cla: yes, f: routes, framework)
+
+
+[64468](https://github.com/flutter/flutter/pull/64468) Fix CupertinoAlertDialog TextStyle (cla: yes, f: cupertino, framework, waiting for tree to go green, will affect goldens)
+
+
+[64678](https://github.com/flutter/flutter/pull/64678) Wrap PopupMenu with SafeArea to respect status bar (a: layout, a: quality, cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[65645](https://github.com/flutter/flutter/pull/65645) Update Japanese localization of CupertinoDatePicker (a: internationalization, cla: yes, f: cupertino)
+
+
+[70382](https://github.com/flutter/flutter/pull/70382) Update FlexibleSpaceBar dartpad sample (adopt a widget, cla: yes, d: api docs, d: examples, documentation, f: material design, framework, waiting for tree to go green)
+
+
+[71050](https://github.com/flutter/flutter/pull/71050) Add dartpad sample for AnimatedPadding (adopt a widget, cla: yes, d: api docs, d: examples, documentation, framework, waiting for tree to go green)
+
+
+#### RoyARG02 - 7 pull request(s)
+
+[67438](https://github.com/flutter/flutter/pull/67438) Add contentPadding property for RadioListTile (cla: yes, f: material design, framework)
+
+
+[68237](https://github.com/flutter/flutter/pull/68237) Add useDeleteButtonTooltip property for Chip (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[68866](https://github.com/flutter/flutter/pull/68866) [flutter_tools] Add --verify-only flag to flutter upgrade (cla: yes, tool)
+
+
+[69420](https://github.com/flutter/flutter/pull/69420) [flutter_tools] Make flutter upgrade --verify-only display framework version differences instead of commit hashes (cla: yes, tool, waiting for tree to go green)
+
+
+[70184](https://github.com/flutter/flutter/pull/70184) [FloatingActionButtonLocation] Add diagrams to documentation of FloatingActionButtonLocation (cla: yes, d: api docs, d: examples, documentation, f: material design, framework, waiting for tree to go green)
+
+
+[71378](https://github.com/flutter/flutter/pull/71378) [FloatingActionButtonLocation] Add proper formatting to documentation (cla: yes, d: api docs, f: material design, framework, waiting for tree to go green)
+
+
+[71537](https://github.com/flutter/flutter/pull/71537) [flutter_tools] New update message (cla: yes, tool)
+
+
+#### filmil - 7 pull request(s)
+
+[20748](https://github.com/flutter/engine/pull/20748) Git versioning flag (cla: yes)
+
+
+[21934](https://github.com/flutter/engine/pull/21934) [fuchsia] Adds a test for timezone change (cla: yes, waiting for tree to go green)
+
+
+[22380](https://github.com/flutter/engine/pull/22380) Roll ICU to 715ec351c0bcdd6b2d22f36e7d33b8e2ec519846 (cla: yes)
+
+
+[22465](https://github.com/flutter/engine/pull/22465) Roll ICU to c2a4cae149aae7fd30c4cbe3cf1b30df03b386f1 (cla: yes)
+
+
+[22466](https://github.com/flutter/engine/pull/22466) Add an include in minikin (cla: yes)
+
+
+[22485](https://github.com/flutter/engine/pull/22485) Add and use --quiet flag on the license checker (cla: yes, waiting for tree to go green)
+
+
+[23262](https://github.com/flutter/engine/pull/23262) [fuchsia][input] Migrate Flutter to "input3" (cla: yes, platform-fuchsia, waiting for tree to go green)
+
+
+#### math1man - 7 pull request(s)
+
+[22203](https://github.com/flutter/engine/pull/22203) Fix some serious lifecycle bugs with Android embedding code (cla: yes, platform-android, waiting for tree to go green)
+
+
+[22552](https://github.com/flutter/engine/pull/22552) [DRAFT] Example test (cla: yes, platform-android)
+
+
+[22610](https://github.com/flutter/engine/pull/22610) Update the log tag for FlutterEngineConnectionRegistry to be 23 characters (cla: yes, platform-android)
+
+
+[3205](https://github.com/flutter/plugins/pull/3205) [google_maps_flutter] Clean up google_maps_flutter plugin (cla: yes)
+
+
+[3206](https://github.com/flutter/plugins/pull/3206) [google_maps_flutter] Clean up google_maps_flutter plugin (cla: yes)
+
+
+[3211](https://github.com/flutter/plugins/pull/3211) [google_maps_flutter] Overhaul lifecycle management in GoogleMapsPlugin. (cla: yes)
+
+
+[3213](https://github.com/flutter/plugins/pull/3213) [google_maps_flutter] Overhaul lifecycle management in GoogleMapsPlugin (cla: yes)
+
+
+#### marcin-jelenski - 6 pull request(s)
+
+[67456](https://github.com/flutter/flutter/pull/67456) Flutter Driver - Create widget finders from serialized finders extensions (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+[67711](https://github.com/flutter/flutter/pull/67711) Reland "Flutter Driver - Create widget finders from serialized finders extensions" with null safety (a: tests, cla: yes, framework)
+
+
+[67769](https://github.com/flutter/flutter/pull/67769) Flutter driver patch: export finder factory (a: tests, cla: yes, framework)
+
+
+[67779](https://github.com/flutter/flutter/pull/67779) Patch: Flutter driver export finder factory (a: tests, cla: yes, framework)
+
+
+[67808](https://github.com/flutter/flutter/pull/67808) [Duplicate] Flutter Driver: command extensions and extension feature cleanup (a: tests, cla: yes, framework)
+
+
+[67916](https://github.com/flutter/flutter/pull/67916) Flutter Driver: command extensions and extension feature cleanup (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+#### mikerreed - 6 pull request(s)
+
+[70732](https://github.com/flutter/flutter/pull/70732) Merge pull request #1 from flutter/master (cla: yes)
+
+
+[22845](https://github.com/flutter/engine/pull/22845) opt into new Skia APIs (cla: yes, platform-android, waiting for tree to go green)
+
+
+[22871](https://github.com/flutter/engine/pull/22871) Update sites to use new SkMatrix factories (cla: yes, platform-ios)
+
+
+[23350](https://github.com/flutter/engine/pull/23350) Switch to new virtuals on SkCanvas (cla: yes)
+
+
+[23363](https://github.com/flutter/engine/pull/23363) Remove dead code for 3x3 matrices (cla: yes)
+
+
+[23476](https://github.com/flutter/engine/pull/23476) Update virtual to take sampling (cla: yes, waiting for tree to go green)
+
+
+#### otopba - 5 pull request(s)
+
+[1809](https://github.com/flutter/plugins/pull/1809) [google_maps_flutter] My location button and my location fixes (cla: no, in review)
+
+
+[2421](https://github.com/flutter/plugins/pull/2421) [video_player] Added `muted` attribute (cla: no)
+
+
+[2479](https://github.com/flutter/plugins/pull/2479) [google_maps_flutter] Dummy map initialization (cla: no)
+
+
+[3029](https://github.com/flutter/plugins/pull/3029)  Update installation instructions for Android 11+ (cla: no)
+
+
+[3268](https://github.com/flutter/plugins/pull/3268) [image_picker_for_web] update versions in readme (cla: yes)
+
+
+#### dwrobel - 5 pull request(s)
+
+[21176](https://github.com/flutter/engine/pull/21176) Add missing <cstring> header for (strcmp, strrchr) (cla: yes)
+
+
+[21217](https://github.com/flutter/engine/pull/21217) Add missing cstring header (fixes fl_renderer_wayland.cc) (cla: yes, waiting for tree to go green)
+
+
+[21218](https://github.com/flutter/engine/pull/21218) Support Wayland only (without X11 support in gdk) (cla: yes)
+
+
+[21408](https://github.com/flutter/engine/pull/21408) Fix linking issue (missing wayland-client library) (cla: yes)
+
+
+[23138](https://github.com/flutter/engine/pull/23138) Fix argument specifier and type for g_warning() (cla: yes, waiting for tree to go green)
+
+
+#### balvinderz - 5 pull request(s)
+
+[64644](https://github.com/flutter/flutter/pull/64644) [flutter_tools] generates version.json for web using flutter tool (cla: yes, tool)
+
+
+[3035](https://github.com/flutter/plugins/pull/3035) [WIP][package_info] web implementation of package_info (cla: yes)
+
+
+[3039](https://github.com/flutter/plugins/pull/3039) [package_info] Package info subdir (cla: yes)
+
+
+[3223](https://github.com/flutter/plugins/pull/3223) [google_maps_flutter_web] show only single info window  (cla: yes)
+
+
+[3224](https://github.com/flutter/plugins/pull/3224) [google_maps_flutter_web] show only single infoWindow (cla: yes)
+
+
+#### sarbagyastha - 5 pull request(s)
+
+[69164](https://github.com/flutter/flutter/pull/69164) Replaced null check with `hasContentDimensions` in NestedScrollView (cla: yes, framework, waiting for tree to go green)
+
+
+[22292](https://github.com/flutter/engine/pull/22292) Updated return-type for PathMetric.extractPath to be non-nullable (cla: yes, waiting for tree to go green)
+
+
+[23561](https://github.com/flutter/engine/pull/23561) Android deeplink sends "path + query" instead of just path (cla: yes, platform-android)
+
+
+[23562](https://github.com/flutter/engine/pull/23562) iOS deeplink sends "path + query" instead of just path (cla: yes, platform-ios, waiting for tree to go green)
+
+
+[2227](https://github.com/flutter/plugins/pull/2227) [webview_flutter] Added 'allowsInlineMediaPlayback' property (cla: yes)
+
+
+#### chihempat - 5 pull request(s)
+
+[68664](https://github.com/flutter/flutter/pull/68664) Create hindi.dart (cla: no, d: examples, team)
+
+
+[69508](https://github.com/flutter/flutter/pull/69508) AdoptAWidget: SliverWithKeepAliveWidget (adopt a widget, cla: yes, framework)
+
+
+[69523](https://github.com/flutter/flutter/pull/69523) Added Reference to SliverWithKeepAliveWidget #69470 (adopt a widget, cla: yes, framework)
+
+
+[69536](https://github.com/flutter/flutter/pull/69536) AdoptAWidget: SliverWithKeepAliveWidget_retry (cla: yes, framework)
+
+
+[69557](https://github.com/flutter/flutter/pull/69557) AdoptAWidget: SliverWithKeepAliveWidget (#69470) (cla: yes, framework, waiting for tree to go green)
+
+
+#### MrBirb - 5 pull request(s)
+
+[64379](https://github.com/flutter/flutter/pull/64379) Make Dismissible's HitTestBehavior an argument (cla: yes, f: gestures, framework, waiting for tree to go green)
+
+
+[64698](https://github.com/flutter/flutter/pull/64698) Added sample code to AnimatedAlign (cla: yes, d: api docs, d: examples, documentation, framework, waiting for tree to go green)
+
+
+[64766](https://github.com/flutter/flutter/pull/64766) Updated README.md file of the hello_world example (cla: yes, d: examples, team, waiting for tree to go green)
+
+
+[65910](https://github.com/flutter/flutter/pull/65910) Added clipBehavior to Overlay, Flow, AnimatedSize and AndroidView (cla: yes, framework, waiting for tree to go green)
+
+
+[66213](https://github.com/flutter/flutter/pull/66213) Fixes typos in showDialog documentation (cla: yes, d: api docs, f: material design, framework)
+
+
+#### zhongwuzw - 4 pull request(s)
+
+[19292](https://github.com/flutter/engine/pull/19292) [iOS] Fix platfotm view called multiple times (cla: yes, platform-ios, waiting for tree to go green)
+
+
+[21863](https://github.com/flutter/engine/pull/21863) [iOS] Skip unnecessary canvas operations (cla: yes, platform-ios)
+
+
+[21987](https://github.com/flutter/engine/pull/21987) [iOS] Fixes leaks of presses key message (cla: yes, platform-ios)
+
+
+[22194](https://github.com/flutter/engine/pull/22194) [iOS] Fixes DisplayLinkManager leaks (cla: yes, platform-ios)
+
+
+#### lazylazyllama - 4 pull request(s)
+
+[68330](https://github.com/flutter/flutter/pull/68330) Migrate AlertDialog to OverflowBar (cla: no, f: material design, framework)
+
+
+[69562](https://github.com/flutter/flutter/pull/69562) Reduce refresh indicator pull-down distance (cla: yes, f: material design, framework)
+
+
+[69783](https://github.com/flutter/flutter/pull/69783) Reduce refresh indicator pull-down distance (cla: yes, f: material design, framework)
+
+
+[21730](https://github.com/flutter/engine/pull/21730) Fix viewInset.bottom and viewPadding.bottom… (affects: engine, cla: yes, platform-android, waiting for tree to go green)
+
+
+#### letsar - 4 pull request(s)
+
+[71986](https://github.com/flutter/flutter/pull/71986) Add removeListenerWhileNotifying benchmark for ChangeNotifier (cla: yes, framework, team, waiting for tree to go green)
+
+
+[74428](https://github.com/flutter/flutter/pull/74428) Add details to the iOS part integration_test (cla: yes, team)
+
+
+[74473](https://github.com/flutter/flutter/pull/74473) [integration_test] fix zip command (cla: yes, team)
+
+
+[3448](https://github.com/flutter/plugins/pull/3448) [integration_test] Added details to setup the iOS application (cla: yes, p: integration_test)
+
+
+#### Sempakonka - 4 pull request(s)
+
+[3097](https://github.com/flutter/plugins/pull/3097) [url_launcher] Improved documentation of the `headers` parameter. (cla: yes)
+
+
+[3125](https://github.com/flutter/plugins/pull/3125) [url_launcher] Handling the ActivityNotFoundExeption. (cla: yes)
+
+
+[3182](https://github.com/flutter/plugins/pull/3182) [Camera] Return correct error message when supplied file points to a directory. (cla: yes)
+
+
+[3193](https://github.com/flutter/plugins/pull/3193) [Camera] Made CameraController.isDisposed publicly accessible. Added unit Tests for the new implementation. (cla: yes)
+
+
+#### esouthren - 4 pull request(s)
+
+[66037](https://github.com/flutter/flutter/pull/66037) InputDecoration theme override in Search (cla: no, f: material design, framework)
+
+
+[66431](https://github.com/flutter/flutter/pull/66431) Theme override in search (cla: no, f: material design, framework)
+
+
+[66435](https://github.com/flutter/flutter/pull/66435) Search theme inputDecoration theme override (cla: no, f: material design, framework)
+
+
+[66436](https://github.com/flutter/flutter/pull/66436) Search theme inputDecoration override (cla: yes, f: material design, framework)
+
+
+#### feinstein - 4 pull request(s)
+
+[65412](https://github.com/flutter/flutter/pull/65412) Add TextTheme.of(context) (#65410) (cla: yes, f: material design, framework)
+
+
+[68534](https://github.com/flutter/flutter/pull/68534) Improve the date and time input pickers (#68047) (f: material design, framework)
+
+
+[68968](https://github.com/flutter/flutter/pull/68968) Fix typo in form.dart (cla: yes, d: api docs, framework, waiting for tree to go green)
+
+
+[68981](https://github.com/flutter/flutter/pull/68981) Error on FocusTraversalGroup or Focus docs (cla: yes, framework)
+
+
+#### nero-angela - 4 pull request(s)
+
+[64140](https://github.com/flutter/flutter/pull/64140) [ReorderableListView] Fix item dropping animation (a: animation, cla: yes, f: material design, f: scrolling, framework, waiting for tree to go green)
+
+
+[65080](https://github.com/flutter/flutter/pull/65080) [ReorderableListView] remove extra margin added after picking up the item (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[65081](https://github.com/flutter/flutter/pull/65081) [SwitchListTile.adaptive] Remove splash effect on iOS and macOS (cla: yes, f: material design, framework)
+
+
+[65463](https://github.com/flutter/flutter/pull/65463) [Tabs] Fix tab indicator flies off issue (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### Mokusesei - 4 pull request(s)
+
+[69311](https://github.com/flutter/flutter/pull/69311) Fix android studio 4.1 plugin path for mac (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool, waiting for customer response)
+
+
+[69358](https://github.com/flutter/flutter/pull/69358) Fix: fix android studio 4.1 plugin path for macOS (cla: no, tool)
+
+
+[69364](https://github.com/flutter/flutter/pull/69364) Fix: fix android studio 4.1 plugin path for macOS (cla: yes, tool, waiting for tree to go green)
+
+
+[69954](https://github.com/flutter/flutter/pull/69954) Fix android studio 4.1 plugin path for mac (cla: yes, tool)
+
+
+#### figureConan - 4 pull request(s)
+
+[61589](https://github.com/flutter/flutter/pull/61589) [flutter_tools] According to AnalysisSeverity return exit code detailed proposal (cla: yes, tool)
+
+
+[62417](https://github.com/flutter/flutter/pull/62417) [flutter_tools] Add channel order aware version_test (cla: yes, tool, waiting for tree to go green)
+
+
+[66629](https://github.com/flutter/flutter/pull/66629) [flutter_tools] flutter devices add header (cla: yes, tool, waiting for customer response)
+
+
+[70815](https://github.com/flutter/flutter/pull/70815) [flutter_tools] Treat public_member_api_docs similar to others linter output (cla: yes, tool, waiting for customer response)
+
+
+#### sanekyy - 4 pull request(s)
+
+[1721](https://github.com/flutter/plugins/pull/1721) [google_maps_flutter] Adds support for holes in polygon overlays to the Google Maps plugin (cla: yes, waiting for tree to go green)
+
+
+[2406](https://github.com/flutter/plugins/pull/2406) [video_player android/ios/web/platform_interface] Reusable video controller (cla: no)
+
+
+[2429](https://github.com/flutter/plugins/pull/2429) [video_player] Caching for network data source (cla: no)
+
+
+[3135](https://github.com/flutter/plugins/pull/3135) [google_maps_flutter_platform_interface] Adds support for holes in polygon overlays to the Google Maps plugin (cla: yes, waiting for tree to go green)
+
+
+#### jnschulze - 4 pull request(s)
+
+[61098](https://github.com/flutter/flutter/pull/61098) [flutter_tools] copy flutter_texture_registrar.h header for Windows shell (cla: yes, tool)
+
+
+[65929](https://github.com/flutter/flutter/pull/65929) update_dart_sdk.ps1: Ensure Start-BitsTransfer always throws an exception (cla: yes, tool, waiting for tree to go green)
+
+
+[19405](https://github.com/flutter/engine/pull/19405) Add windows plugin texture support (Work in progress (WIP), cla: yes, waiting for tree to go green)
+
+
+[23623](https://github.com/flutter/engine/pull/23623) Windows textures: Add placeholder flutter_texture_registrar.h (cla: yes, waiting for tree to go green)
+
+
+#### clocksmith - 4 pull request(s)
+
+[65659](https://github.com/flutter/flutter/pull/65659) [Material] Fix a jumping animation in the beginning of the extended Navigation Rail transition (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[65877](https://github.com/flutter/flutter/pull/65877) Update Navigation Rail test with regression comment and cleaner size checking (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[67334](https://github.com/flutter/flutter/pull/67334) Fix Align widthFactor and heightFactor docs to allow 0 values (cla: yes, framework)
+
+
+[22300](https://github.com/flutter/engine/pull/22300) Create setter for uniforms (cla: yes, platform-ios)
+
+
+#### emem365 - 4 pull request(s)
+
+[63683](https://github.com/flutter/flutter/pull/63683) Tab bar improvements (cla: yes, f: material design, framework)
+
+
+[64645](https://github.com/flutter/flutter/pull/64645) Updates docs on nested scaffolds. Issue #64136 (cla: no, d: api docs, documentation, f: material design, framework)
+
+
+[66972](https://github.com/flutter/flutter/pull/66972) Nested Scaffolds - Suggested Changes (cla: yes, d: api docs, f: material design, framework)
+
+
+[73103](https://github.com/flutter/flutter/pull/73103) Add BottomNavigationBarType.shifting sample #72936 (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### sanjayc77 - 3 pull request(s)
+
+[21550](https://github.com/flutter/engine/pull/21550) Adds response to view requestFocus platformview message (cla: yes)
+
+
+[21576](https://github.com/flutter/engine/pull/21576) Hookup view connected/disconnected events for platform view codepath (cla: yes)
+
+
+[22545](https://github.com/flutter/engine/pull/22545) Check valid view_holder ptr before updating view (cla: yes, platform-fuchsia)
+
+
+#### HidenoriMatsubayashi - 3 pull request(s)
+
+[20254](https://github.com/flutter/engine/pull/20254) Add support of cross-building the engine for ARM64 Linux Host (cla: yes)
+
+
+[22284](https://github.com/flutter/engine/pull/22284) [linux] Change the buildroot DEPS for Linux Arm64 support (cla: yes, waiting for tree to go green)
+
+
+[22484](https://github.com/flutter/engine/pull/22484) [linux] Update buildroot DEPS (cla: yes)
+
+
+#### Kavantix - 3 pull request(s)
+
+[65323](https://github.com/flutter/flutter/pull/65323) Sliver padding overlap fix (a: quality, cla: yes, f: scrolling, framework, waiting for tree to go green)
+
+
+[66257](https://github.com/flutter/flutter/pull/66257) Actually consume top padding in bottomsheet if scrollcontrolled (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[17881](https://github.com/flutter/engine/pull/17881) Enabled metal on ios simulator (cla: yes, waiting for tree to go green)
+
+
+#### NebiSarigul - 3 pull request(s)
+
+[48118](https://github.com/flutter/flutter/pull/48118) Updated .gitignore for Android (cla: yes, team)
+
+
+[66176](https://github.com/flutter/flutter/pull/66176) Updated .gitignore.tmpl for Android (cla: yes, tool)
+
+
+[66382](https://github.com/flutter/flutter/pull/66382) Update .gitignore.tmpl (cla: yes, tool, waiting for tree to go green)
+
+
+#### Renesanse - 3 pull request(s)
+
+[67178](https://github.com/flutter/flutter/pull/67178) reverted to old getScrollPhysics from 1.17 flutter version (cla: yes, framework)
+
+
+[2486](https://github.com/flutter/plugins/pull/2486) added flash toggle (cla: yes)
+
+
+[3076](https://github.com/flutter/plugins/pull/3076) added flash enabling for android and ios (cla: yes)
+
+
+#### Anas35 - 3 pull request(s)
+
+[69513](https://github.com/flutter/flutter/pull/69513) AnimatedPositioned (adopt a widget, cla: yes, framework, waiting for tree to go green)
+
+
+[69887](https://github.com/flutter/flutter/pull/69887) add fillColor for unselected toggle button (cla: yes, f: material design, framework)
+
+
+[70154](https://github.com/flutter/flutter/pull/70154) fixed SnackBarBehavior.floating when using it with bottomSheet (cla: yes, f: material design, framework)
+
+
+#### tugorez - 3 pull request(s)
+
+[3140](https://github.com/flutter/plugins/pull/3140) [file_selector] initial implementation (cla: yes)
+
+
+[3141](https://github.com/flutter/plugins/pull/3141) [file_selector_web]: Add initial implementation (cla: yes, waiting for test harness)
+
+
+[3422](https://github.com/flutter/plugins/pull/3422) [file_selector_platform_interface] Bump the cross_file version. (cla: yes)
+
+
+#### tgucio - 3 pull request(s)
+
+[69326](https://github.com/flutter/flutter/pull/69326) Restart EditableText cursor timer when it moves (cla: yes, framework)
+
+
+[70785](https://github.com/flutter/flutter/pull/70785) Restart EditableText cursor timer when it moves (cla: yes, framework)
+
+
+[70787](https://github.com/flutter/flutter/pull/70787) Restart EditableText cursor timer when it moves (cla: yes, framework, waiting for tree to go green)
+
+
+#### shinriyo - 3 pull request(s)
+
+[64682](https://github.com/flutter/flutter/pull/64682) [Feature]More understandable message (cla: yes, tool, waiting for customer response)
+
+
+[65522](https://github.com/flutter/flutter/pull/65522) better templates (cla: yes, tool)
+
+
+[65523](https://github.com/flutter/flutter/pull/65523) better (cla: yes, tool)
+
+
+#### obitodarky - 3 pull request(s)
+
+[69525](https://github.com/flutter/flutter/pull/69525) AdoptAWidget: Stepper (adopt a widget, cla: yes, f: material design, framework)
+
+
+[70092](https://github.com/flutter/flutter/pull/70092) AdoptAWidget: Stepper (cla: yes, f: material design, framework)
+
+
+[70525](https://github.com/flutter/flutter/pull/70525) [Documentation] Additional BottomNavigationBar use cases (cla: yes, d: api docs, f: material design, framework)
+
+
+#### DanTup - 3 pull request(s)
+
+[65623](https://github.com/flutter/flutter/pull/65623) Remove invalid assert in daemon (cla: yes, tool, waiting for tree to go green)
+
+
+[67295](https://github.com/flutter/flutter/pull/67295) Handle missing Android SDKs in getEmulators() (cla: yes, tool, waiting for tree to go green)
+
+
+[69194](https://github.com/flutter/flutter/pull/69194) Include VS Code + Android Studio URLs in the No IDE message (cla: yes, t: flutter doctor, tool, waiting for tree to go green)
+
+
+#### wmww - 3 pull request(s)
+
+[20629](https://github.com/flutter/engine/pull/20629) Add Linux Wayland support (cla: yes)
+
+
+[21796](https://github.com/flutter/engine/pull/21796) Use X11 display to create EGL display (cla: yes)
+
+
+[21896](https://github.com/flutter/engine/pull/21896) Show OSK on GNOME+Wayland (cla: yes)
+
+
+#### Calamity210 - 3 pull request(s)
+
+[63880](https://github.com/flutter/flutter/pull/63880) [WIP] Toggle buttons directionality (cla: yes, f: material design, framework)
+
+
+[64130](https://github.com/flutter/flutter/pull/64130) Textfield tests corrected (a: tests, a: text input, cla: yes, f: cupertino, f: material design, framework)
+
+
+[65584](https://github.com/flutter/flutter/pull/65584) List tile docs (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### jensjoha - 3 pull request(s)
+
+[72136](https://github.com/flutter/flutter/pull/72136) [dev] Don't use await for on stdout and stdin; pass local engine argument (cla: yes, team)
+
+
+[22585](https://github.com/flutter/engine/pull/22585) Change ToStringVisitor to not specify type on RecursiveVisitor to fac… (cla: yes)
+
+
+[23915](https://github.com/flutter/engine/pull/23915) Use ToStringTransformer from dart frontend_server (cla: yes)
+
+
+#### iapicca - 3 pull request(s)
+
+[66197](https://github.com/flutter/flutter/pull/66197) Added default TextStyle() to TextSpan constructor (a: typography, cla: yes, framework)
+
+
+[20898](https://github.com/flutter/engine/pull/20898) implemented Size diagonal (cla: yes)
+
+
+[3308](https://github.com/flutter/plugins/pull/3308) [documentation] [url_launcher] fix for readme code sample (cla: yes)
+
+
+#### gusghrlrl101 - 3 pull request(s)
+
+[63272](https://github.com/flutter/flutter/pull/63272) Remove back button when using end drawer (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[64639](https://github.com/flutter/flutter/pull/64639) Change LicensePage's loading color from scaffoldBackgroundColor to cardColor (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[64746](https://github.com/flutter/flutter/pull/64746) FloatingActionButton always keeps the same position when FloatingActionButtonLocation is top. (a: quality, cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### feHouyushan - 3 pull request(s)
+
+[70819](https://github.com/flutter/flutter/pull/70819) Add RichText debugFillProperties TestCase (cla: yes, framework, waiting for tree to go green)
+
+
+[71137](https://github.com/flutter/flutter/pull/71137) Fix the duration assertion error for the _animateToInternal method and refine the error description (cla: yes, framework, waiting for tree to go green)
+
+
+[71830](https://github.com/flutter/flutter/pull/71830) Fix a ConstantTween's clerical error and Add some Tween testcases. (cla: yes, framework, waiting for tree to go green)
+
+
+#### ened - 3 pull request(s)
+
+[66881](https://github.com/flutter/flutter/pull/66881) Allow setting a size constraint for DrawerHeader (cla: yes, f: material design, framework)
+
+
+[3192](https://github.com/flutter/plugins/pull/3192) [path_provider] Depend on guava-android instead of full guava library (cla: yes)
+
+
+[3303](https://github.com/flutter/plugins/pull/3303) [connectivity] Clear networkCallback object as soon as stream is cancelled (cla: yes)
+
+
+#### NWalker1208 - 2 pull request(s)
+
+[73195](https://github.com/flutter/flutter/pull/73195) SliverAppBar with ShrinkWrap Patch (a: layout, cla: yes, f: scrolling, framework, waiting for tree to go green)
+
+
+[73618](https://github.com/flutter/flutter/pull/73618) ListTile Material Ripple and Shape Patch (cla: yes, f: material design, framework)
+
+
+#### ponnamkarthik - 2 pull request(s)
+
+[2982](https://github.com/flutter/plugins/pull/2982) [image_picker] pickVideo returns jpg (cla: yes)
+
+
+[3123](https://github.com/flutter/plugins/pull/3123) Fixes Playing video from asset on Android (cla: yes)
+
+
+#### Jjagg - 2 pull request(s)
+
+[72091](https://github.com/flutter/flutter/pull/72091) Cleanup nullability for ImplicitlyAnimatedWidgetState (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+[72344](https://github.com/flutter/flutter/pull/72344) Add BuildContext parameter to TextEditingController.buildTextSpan (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### ny927 - 2 pull request(s)
+
+[64638](https://github.com/flutter/flutter/pull/64638) Add sample code to DefaultTextStyleTransition (cla: yes, d: api docs, d: examples, documentation, framework, waiting for tree to go green)
+
+
+[65550](https://github.com/flutter/flutter/pull/65550) Add sample code to Offstage (cla: yes, d: api docs, d: examples, documentation, framework)
+
+
+#### najeira - 2 pull request(s)
+
+[48223](https://github.com/flutter/flutter/pull/48223) Add HeroMode widget (a: animation, cla: yes, f: cupertino, f: routes, framework, waiting for tree to go green)
+
+
+[3419](https://github.com/flutter/plugins/pull/3419) [camera] Fixes crash with using inner camera on some Android devices. (cla: yes, waiting for tree to go green)
+
+
+#### mzdm - 2 pull request(s)
+
+[64966](https://github.com/flutter/flutter/pull/64966) Minor docs updates (cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
+
+
+[22530](https://github.com/flutter/engine/pull/22530) Replace dead links in docs (cla: yes, waiting for tree to go green)
+
+
+#### miquelbeltran - 2 pull request(s)
+
+[56024](https://github.com/flutter/flutter/pull/56024) Pass RouteSettings to the internal Route in showCupertinoModalPopup (cla: yes, f: cupertino, framework)
+
+
+[67990](https://github.com/flutter/flutter/pull/67990) Fix for "Pass RouteSettings to the internal Route in showCupertinoModalPopup" (cla: yes, f: cupertino, framework)
+
+
+#### mikaelpessa - 2 pull request(s)
+
+[21339](https://github.com/flutter/engine/pull/21339) Merge pull request #1 from flutter/master (cla: yes)
+
+
+[22067](https://github.com/flutter/engine/pull/22067) Add "input shield" to capture pointer input for reinjection (cla: yes, waiting for tree to go green)
+
+
+#### sudhakaranswell - 2 pull request(s)
+
+[3385](https://github.com/flutter/plugins/pull/3385) Image Picker crashes when picking an image (cla: no)
+
+
+[3386](https://github.com/flutter/plugins/pull/3386) https://github.com/flutter/flutter/issues/47755 (cla: no)
+
+
+#### lybeen - 2 pull request(s)
+
+[20103](https://github.com/flutter/engine/pull/20103) add dart vm args when initialize FlutterViewController with FlutterDa… (cla: yes, platform-ios)
+
+
+[20433](https://github.com/flutter/engine/pull/20433) support init engine asynchronous (cla: no, platform-ios)
+
+
+#### Muskan4010 - 2 pull request(s)
+
+[70052](https://github.com/flutter/flutter/pull/70052) AdoptAWidget: ColorFiltered (cla: no, framework)
+
+
+[71093](https://github.com/flutter/flutter/pull/71093) AdoptAWidget: ColorFiltered (adopt a widget, cla: yes, d: api docs, d: examples, documentation, framework, waiting for tree to go green)
+
+
+#### uc-ach - 2 pull request(s)
+
+[3290](https://github.com/flutter/plugins/pull/3290) Test (cla: no)
+
+
+[3292](https://github.com/flutter/plugins/pull/3292) 11129 flutter (cla: no)
+
+
+#### luigi-rosso - 2 pull request(s)
+
+[19287](https://github.com/flutter/engine/pull/19287) Fixing memory leak with CanvasKit SkParagraphs never getting deleted. (cla: yes, platform-web)
+
+
+[21372](https://github.com/flutter/engine/pull/21372) Fix for issue flutter/#66502. (cla: yes, platform-web)
+
+
+#### speaking-in-code - 2 pull request(s)
+
+[64432](https://github.com/flutter/flutter/pull/64432) Reland "Make sure all isolates start during flutter driver tests" (a: tests, cla: yes, d: examples, framework, team, waiting for tree to go green)
+
+
+[65703](https://github.com/flutter/flutter/pull/65703) Make sure all isolates start during flutter driver tests. (a: tests, cla: yes, framework, waiting for tree to go green)
+
+
+#### lucasradaelli - 2 pull request(s)
+
+[21329](https://github.com/flutter/engine/pull/21329) [a11y] Flutter sends node roles as part of Fuchsia semantics updates. (cla: yes, waiting for tree to go green)
+
+
+[21484](https://github.com/flutter/engine/pull/21484) [fuchsia][a11y] Don't populate hidden state. (accessibility, cla: yes, platform-fuchsia, waiting for tree to go green)
+
+
+#### lizhuoyuan - 2 pull request(s)
+
+[66727](https://github.com/flutter/flutter/pull/66727) required should be @required (cla: yes, framework)
+
+
+[66773](https://github.com/flutter/flutter/pull/66773) required should be @required (cla: yes, framework)
+
+
+#### Chinmay-KB - 2 pull request(s)
+
+[69561](https://github.com/flutter/flutter/pull/69561) AdoptAWidget: WillPopScope (cla: no, framework)
+
+
+[69563](https://github.com/flutter/flutter/pull/69563) AdoptAWidget: WillPopScope (adopt a widget, cla: yes, framework)
+
+
+#### lagar79 - 2 pull request(s)
+
+[67246](https://github.com/flutter/flutter/pull/67246) Flutter 1.17.1 cherrypicks (#57052) (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
+
+
+[67247](https://github.com/flutter/flutter/pull/67247) Flutter 1.17.1 cherrypicks (#57052) (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
+
+
+#### ABausG - 2 pull request(s)
+
+[3412](https://github.com/flutter/plugins/pull/3412) [google_maps_flutter_web] Support for Holes in Polygons (cla: yes)
+
+
+[3440](https://github.com/flutter/plugins/pull/3440) [google_maps_flutter_web] Hole Direction in Polygons (cla: yes)
+
+
+#### OmarEmaraDev - 2 pull request(s)
+
+[69576](https://github.com/flutter/flutter/pull/69576) Correct GtkKeyHelper key codes for the Meta key (cla: yes, framework, waiting for tree to go green)
+
+
+[22268](https://github.com/flutter/engine/pull/22268) Fix Linux handling of window exposure events (affects: desktop, cla: yes, needs tests, platform-linux)
+
+
+#### Paolo9711 - 2 pull request(s)
+
+[67722](https://github.com/flutter/flutter/pull/67722) [ReorderableListView] Extract "elevation" and "dropAreaMargin" parameters from ReorderableListView (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
+
+
+[67725](https://github.com/flutter/flutter/pull/67725) [ReorderableListView] Extract "elevation" and "dropAreaMargin" parameters from ReorderableListView (cla: yes, f: material design, framework)
+
+
+#### PixelToast - 2 pull request(s)
+
+[65693](https://github.com/flutter/flutter/pull/65693) Fix minor comment formatting issues (cla: yes, f: material design, framework)
+
+
+[67046](https://github.com/flutter/flutter/pull/67046) Add transformAlignment and clipBehavior to AnimatedContainer (cla: yes, framework)
+
+
+#### knaeckeKami - 2 pull request(s)
+
+[65768](https://github.com/flutter/flutter/pull/65768) Teach the flutter tool how to find android output files if the flavor contains uppercase letters (cla: yes, tool)
+
+
+[66687](https://github.com/flutter/flutter/pull/66687) Teach the flutter tool how to find android output files if the flavor contains uppercase letters (cla: yes, tool, waiting for tree to go green)
+
+
+#### kevinsakuma - 2 pull request(s)
+
+[23724](https://github.com/flutter/engine/pull/23724) Removes deprecated WLAN API dependency. (cla: no)
+
+
+[23726](https://github.com/flutter/engine/pull/23726) Removes deprecated WLAN API dependency. (cla: yes, waiting for tree to go green)
+
+
+#### jparound30 - 2 pull request(s)
+
+[58853](https://github.com/flutter/flutter/pull/58853) [flutter_tools] Support IntelliJ 2020.1 and later on Linux and Windows (cla: yes, tool)
+
+
+[68020](https://github.com/flutter/flutter/pull/68020) [flutter_tools] change the IntelliJ plugin detection logic. (cla: yes, tool)
+
+
+#### jodysankey - 2 pull request(s)
+
+[23128](https://github.com/flutter/engine/pull/23128) [fuchsia] Add wrapper for zx_clock_get_monotonic. (cla: yes, platform-fuchsia)
+
+
+[23731](https://github.com/flutter/engine/pull/23731) [fuchsia] Add missing static binding check. (cla: yes, waiting for tree to go green)
+
+
+#### toly1994328 - 2 pull request(s)
+
+[22195](https://github.com/flutter/engine/pull/22195) Update painting.dart with an annotation error. (cla: yes, waiting for tree to go green)
+
+
+[22221](https://github.com/flutter/engine/pull/22221) Update painting.dart  (cla: yes, waiting for tree to go green)
+
+
+#### KammererTob - 2 pull request(s)
+
+[65193](https://github.com/flutter/flutter/pull/65193) Generate RawKeyEvents for iOS 13.4+ (a: tests, cla: yes, framework, team)
+
+
+[20972](https://github.com/flutter/engine/pull/20972) Added keyEvent support for iOS 13.4+  (cla: yes, platform-ios, waiting for tree to go green)
+
+
+#### Ravivarshney - 2 pull request(s)
+
+[67082](https://github.com/flutter/flutter/pull/67082) Upgrade with the Latest version details (cla: no, invalid)
+
+
+[3102](https://github.com/flutter/plugins/pull/3102) Update with latest version plugin details  (cla: no, invalid)
+
+
+#### veljkomih - 2 pull request(s)
+
+[3297](https://github.com/flutter/plugins/pull/3297) Merge from main repo 2 12 2020 (cla: no)
+
+
+[3298](https://github.com/flutter/plugins/pull/3298) [video_player] Adding a fix for video player alignment issues on iPhone 12Pro (cla: no)
+
+
+#### iyedb - 2 pull request(s)
+
+[3201](https://github.com/flutter/plugins/pull/3201) [google_maps_flutter] Wrap main widget with a SingleChildScrollView (cla: yes)
+
+
+[3202](https://github.com/flutter/plugins/pull/3202) [google_maps_flutter] Wrap main widget with a SingleChildScrollView (cla: yes)
+
+
+#### yringler - 2 pull request(s)
+
+[68750](https://github.com/flutter/flutter/pull/68750) Fix grammer mistake, clarify (cla: yes, framework)
+
+
+[68751](https://github.com/flutter/flutter/pull/68751) router.dart: fix grammer mistake (cla: yes, d: api docs, framework, waiting for tree to go green)
+
+
+#### RomanJos - 2 pull request(s)
+
+[71266](https://github.com/flutter/flutter/pull/71266) [Proposal] Make mouseWheel zoom in % instead of pixels value (cla: yes, framework)
+
+
+[73281](https://github.com/flutter/flutter/pull/73281) Add clipBehavior to InteractiveViewer (cla: yes, framework)
+
+
+#### Akshaykale84 - 2 pull request(s)
+
+[67226](https://github.com/flutter/flutter/pull/67226) Update gradient.dart (cla: no, framework)
+
+
+[67254](https://github.com/flutter/flutter/pull/67254) Resolved issue colors parameter from various classes of gradient.dart (cla: yes, framework)
+
+
+#### hello-paulvin - 2 pull request(s)
+
+[69355](https://github.com/flutter/flutter/pull/69355) Added a final boolean variable endPads to SliverFillViewport class to align pageview ViewPort to left. (cla: yes, framework)
+
+
+[70823](https://github.com/flutter/flutter/pull/70823) Added a final boolean variable padEnds to SliverFillViewport class to align pageview ViewPort to left. (cla: yes, framework)
+
+
+#### amanv8060 - 2 pull request(s)
+
+[65765](https://github.com/flutter/flutter/pull/65765) Update flutter_command.dart (cla: yes, tool, waiting for tree to go green)
+
+
+[3098](https://github.com/flutter/plugins/pull/3098) [image_picker] Update README.md  (cla: yes, waiting for tree to go green)
+
+
+#### satsukiu - 2 pull request(s)
+
+[63996](https://github.com/flutter/flutter/pull/63996) fuchsia_remote_debug_protocol allows open port on remote device (a: tests, cla: yes, framework, tool)
+
+
+[66271](https://github.com/flutter/flutter/pull/66271) Reland fuchsia_remote_debug_protocol allows open port on remote device (a: tests, cla: yes, framework, tool, waiting for tree to go green)
+
+
+#### Shadow-NewBee - 2 pull request(s)
+
+[68075](https://github.com/flutter/flutter/pull/68075) Solve Chinese Pinyin Composing status problem when textfield has inpu… (cla: no, framework)
+
+
+[69553](https://github.com/flutter/flutter/pull/69553) Solve the problem when a textField sets inputFormatters (cla: yes, framework, waiting for customer response)
+
+
+#### fredlee12345678 - 2 pull request(s)
+
+[20997](https://github.com/flutter/engine/pull/20997) add checker board for clip_path,clip_rect,clip_rrect,physical_shap_layer (cla: yes)
+
+
+[22315](https://github.com/flutter/engine/pull/22315) WIP: Fred/layer raster cache bugfix (Work in progress (WIP), cla: yes)
+
+
+#### flanij - 2 pull request(s)
+
+[71633](https://github.com/flutter/flutter/pull/71633) Add tests (cla: yes)
+
+
+[71666](https://github.com/flutter/flutter/pull/71666) added HashUrlStrategy tests and removed assert in getPath (cla: yes, framework, platform-web)
+
+
+#### sagallea - 2 pull request(s)
+
+[3405](https://github.com/flutter/plugins/pull/3405) Add onInputFocusEvent to WebViewPlatformCallbacksHandler (cla: yes)
+
+
+[3408](https://github.com/flutter/plugins/pull/3408) Change onMethodCall to protected (cla: yes)
+
+
+#### rws08 - 2 pull request(s)
+
+[3178](https://github.com/flutter/plugins/pull/3178) [webview_flutter] Add a file chooser for Android. (cla: no)
+
+
+[3185](https://github.com/flutter/plugins/pull/3185) [webview_flutter] Add a file chooser for Android (cla: no)
+
+
+#### TahaTesser - 2 pull request(s)
+
+[3121](https://github.com/flutter/plugins/pull/3121) [local_auth] Update README for Android Integration  (cla: yes)
+
+
+[3251](https://github.com/flutter/plugins/pull/3251) [url_launcher] Update readme for iOS targeting iOS 9.0 and higher (cla: no)
+
+
+#### Asscre - 2 pull request(s)
+
+[67714](https://github.com/flutter/flutter/pull/67714) Fixed a problem where the Vsync could not be found (cla: no, framework)
+
+
+[67715](https://github.com/flutter/flutter/pull/67715) Fixed a problem where the Vsync could not be found (cla: yes, framework)
+
+
+#### ds84182 - 2 pull request(s)
+
+[69219](https://github.com/flutter/flutter/pull/69219) Fix crash when a MultiFrameImageStreamCompleter is disposed during frame decoding (cla: yes, framework, waiting for tree to go green)
+
+
+[69609](https://github.com/flutter/flutter/pull/69609) Add custom header resolution to NetworkImage (cla: yes, framework)
+
+
+#### dennis-tra - 2 pull request(s)
+
+[3074](https://github.com/flutter/plugins/pull/3074) [in_app_purchase] Fix AppStore cancel payment modal (cla: no)
+
+
+[3106](https://github.com/flutter/plugins/pull/3106) [in_app_purchase] Fix finishing purchases upon payment dialog cancel… (cla: yes)
+
+
+#### darshankawar - 2 pull request(s)
+
+[64150](https://github.com/flutter/flutter/pull/64150) Link waitfor doc (a: tests, cla: yes, d: api docs, documentation, framework)
+
+
+[69761](https://github.com/flutter/flutter/pull/69761) Link the API docs on waitFor() to the docs for runUnsynchronized() (a: tests, cla: yes, framework)
+
+
+#### cskau-g - 2 pull request(s)
+
+[21241](https://github.com/flutter/engine/pull/21241) [Fix] Replaces call to deprecated method Name.name. (cla: yes)
+
+
+[21802](https://github.com/flutter/engine/pull/21802) Enable lazy-async-stacks by-default in all modes (Take 4) (cla: yes)
+
+
+#### YazeedAlKhalaf - 2 pull request(s)
+
+[66572](https://github.com/flutter/flutter/pull/66572) 🐛 Fix expanded widget (cla: yes, framework)
+
+
+[70185](https://github.com/flutter/flutter/pull/70185) 🚀 AdoptAWidget: IgnorePointer (cla: yes, framework)
 
 
 #### cpboyd - 2 pull request(s)
 
-[61242](https://github.com/flutter/flutter/pull/61242) fix(cupertino-nav-bar): use transparent backgroundColor on largeTitle (a: fidelity, cla: yes, f: cupertino, framework)
+[61271](https://github.com/flutter/flutter/pull/61271) Use CloseButton on AppBar in PopupRoute (cla: yes, f: material design, framework)
 
 
-[3264](https://github.com/flutter/plugins/pull/3264) [image_picker] add forceFullMetaData parameter (cla: yes)
+[3090](https://github.com/flutter/plugins/pull/3090) [image_picker] optionally disable PHAsset & iOS permission request (cla: yes)
 
 
-#### snwagbata - 2 pull request(s)
+#### Andy-Python-Programmer - 2 pull request(s)
 
-[3012](https://github.com/flutter/plugins/pull/3012) [docs] updated link (cla: yes)
+[65916](https://github.com/flutter/flutter/pull/65916) Added transfromAlignment parameter to container (cla: no, framework)
 
 
-[3103](https://github.com/flutter/plugins/pull/3103) [local_auth] docs update (cla: yes)
+[66201](https://github.com/flutter/flutter/pull/66201) Added transformAlignment for container (cla: yes, framework, waiting for tree to go green)
 
 
-#### stevenmetzger - 2 pull request(s)
+#### ZainUrRehmanKhan - 2 pull request(s)
 
-[74354](https://github.com/flutter/flutter/pull/74354) TextFormField does not get blurred when tapped outside of the widget. (cla: yes, f: material design, framework)
+[71636](https://github.com/flutter/flutter/pull/71636) [showModalBottomSheet] fix: showModalBottomSheet does not move along keyboard (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-[22517](https://github.com/flutter/engine/pull/22517) TextFormField does not get blurred when tapped outside of the widget. (cla: yes, platform-web)
+[72541](https://github.com/flutter/flutter/pull/72541) Proposal : #72346 - expose property to pass AnimationController to showBottomSheet/showModalBottomSheet (a: animation, cla: yes, f: material design, framework)
 
 
-#### tbm98 - 2 pull request(s)
+#### rahul13199kumar - 2 pull request(s)
 
-[60664](https://github.com/flutter/flutter/pull/60664) Update translations for Vietnamese (a: internationalization, cla: yes, f: material design)
+[71970](https://github.com/flutter/flutter/pull/71970) Added Merge Semantics Code Snippet (cla: yes, framework)
 
 
-[2881](https://github.com/flutter/plugins/pull/2881) [image_picker] update Android Installation (cla: yes)
+[72847](https://github.com/flutter/flutter/pull/72847) [MergeSemantics] add a code snippet (cla: yes, framework)
 
 
-#### duynp117 - 2 pull request(s)
+#### AlexV525 - 2 pull request(s)
 
-[2441](https://github.com/flutter/plugins/pull/2441) [local_auth]Fix app crash when biometrics lockout on ios 13 (cla: yes)
+[68086](https://github.com/flutter/flutter/pull/68086) Introduce `MaxLengthEnforcement` (cla: yes, f: cupertino, f: material design, framework)
 
 
-[2442](https://github.com/flutter/plugins/pull/2442) [local_auth] Fix Get Available Biometrics Android (cla: yes)
+[72043](https://github.com/flutter/flutter/pull/72043) Deprecate `maxLengthEnforced` for text fields (cla: yes, f: cupertino, f: material design, framework)
 
 
-#### eggfly - 2 pull request(s)
+#### bungeman - 2 pull request(s)
 
-[23909](https://github.com/flutter/engine/pull/23909) Fix ImageReader may leak images when onDraw() not called. (cla: yes, platform-android)
+[21474](https://github.com/flutter/engine/pull/21474) Replace kLegacyFontHost_InitType with kUnknown_SkPixelGeometry. (cla: yes)
 
 
-[23955](https://github.com/flutter/engine/pull/23955) Add buffer.rewind() (cla: yes, platform-android)
+[23547](https://github.com/flutter/engine/pull/23547) Fix leak when parsing base64. (cla: yes)
 
 
-#### tugorez - 2 pull request(s)
+#### bsalomon - 2 pull request(s)
 
-[3417](https://github.com/flutter/plugins/pull/3417) [file_selector] Endorse the web implementation (cla: yes, p: file_selector)
+[23153](https://github.com/flutter/engine/pull/23153) Update ios to use new YUVA texture SkImage factory (cla: yes, platform-ios)
 
 
-[3451](https://github.com/flutter/plugins/pull/3451) [file_selector]: Verify that extensions doesn't have a leading dot. (cla: yes, p: file_selector)
+[23537](https://github.com/flutter/engine/pull/23537) Use Fractal rather than Improved noise in shader mask flow unit test (cla: yes)
 
 
-#### feinstein - 2 pull request(s)
+#### bladeofgod - 2 pull request(s)
 
-[68523](https://github.com/flutter/flutter/pull/68523) Fix the OutlineInputBorder padding (#67707) (cla: yes, f: material design, framework)
+[70262](https://github.com/flutter/flutter/pull/70262) fix animation controller's code bug (cla: no, framework)
 
 
-[2971](https://github.com/flutter/plugins/pull/2971) [google_sign_in] Fix Exception leaking in debug mode (#64681) (cla: yes)
+[70263](https://github.com/flutter/flutter/pull/70263) fix animation controller's code bug (cla: no, framework)
 
 
-#### guykogus - 2 pull request(s)
+#### bikcrum - 2 pull request(s)
 
-[3415](https://github.com/flutter/plugins/pull/3415) [google_maps_flutter] Avoid calling onMapCreated when already disposed (cla: yes)
+[67204](https://github.com/flutter/flutter/pull/67204) Add drawer callbacks (both drawer and endDrawer) to Scaffold widget (cla: yes, f: material design, framework)
 
 
-[3426](https://github.com/flutter/plugins/pull/3426) [google_maps_flutter] Fix iOS crash by observing map frame change only once (cla: yes)
+[67249](https://github.com/flutter/flutter/pull/67249) Add detection of drawer open and close in Scaffold widget as a callback method. (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### zljj0818 - 2 pull request(s)
+#### arturocervantesgalvan - 2 pull request(s)
 
-[23793](https://github.com/flutter/engine/pull/23793) fix video(texture) with opacity can not play issue (cla: yes)
+[3393](https://github.com/flutter/plugins/pull/3393) Update pubspec.yaml (cla: no)
 
 
-[23850](https://github.com/flutter/engine/pull/23850) fix concurrent threads cannot set thread name on Android issue (cla: yes)
+[3394](https://github.com/flutter/plugins/pull/3394) Update pubspec.yaml (cla: no)
 
 
-#### Niek - 2 pull request(s)
+#### agyapongdaniel7777 - 2 pull request(s)
 
-[2851](https://github.com/flutter/plugins/pull/2851) Fix Apple HIG link (cla: yes)
+[67439](https://github.com/flutter/flutter/pull/67439) named parameter error fix (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
 
 
-[3226](https://github.com/flutter/plugins/pull/3226) wifi_info_flutter - fix documentation (class name) (cla: yes)
+[67481](https://github.com/flutter/flutter/pull/67481) typo fixed (cla: yes, framework)
 
 
-#### NikitaZhelonkin - 1 pull request(s)
+#### Alabhya268 - 2 pull request(s)
 
-[2248](https://github.com/flutter/plugins/pull/2248) [in_app_purchase] Added serviceTimeout code for google iab (cla: yes, in review)
+[69781](https://github.com/flutter/flutter/pull/69781) Added dartpad examples for SliverAppBar (adopt a widget, cla: yes, d: api docs, d: examples, documentation, f: material design, framework, team, waiting for tree to go green)
 
 
-#### AlbertWang0116 - 1 pull request(s)
+[73044](https://github.com/flutter/flutter/pull/73044) [Api docs]Added dartpad demo for Bottom App Bar (cla: yes, d: api docs, d: examples, documentation, f: material design, framework, waiting for tree to go green)
 
-[2620](https://github.com/flutter/plugins/pull/2620) [e2e] Split native test cases aligning to the Dart test cases. (cla: yes)
 
+#### akindone - 1 pull request(s)
 
-#### NickalasB - 1 pull request(s)
+[2962](https://github.com/flutter/plugins/pull/2962) [video_player]add option to set extractor flag for Android (cla: yes)
 
-[3325](https://github.com/flutter/plugins/pull/3325) [webview_flutter]Add zoom to android webview (cla: yes)
 
+#### akshay-rirev - 1 pull request(s)
 
-#### 6a209 - 1 pull request(s)
+[2907](https://github.com/flutter/plugins/pull/2907) Added WAKE_LOCK permission instructions ()
 
-[70542](https://github.com/flutter/flutter/pull/70542) Fixes TabController Listener call twice. (#69763) (cla: yes, f: material design, framework)
 
+#### akunumanarif - 1 pull request(s)
 
-#### Arkangel12 - 1 pull request(s)
+[67748](https://github.com/flutter/flutter/pull/67748) [hotfix] flutter create -t plugin remove no-op iOS folder and set sdk min to 1.20.0 (#62990) (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
 
-[72480](https://github.com/flutter/flutter/pull/72480) hourOfPeriod fails at noon (cla: yes, f: date/time picker, f: material design, framework)
 
+#### alensh12 - 1 pull request(s)
 
-#### NikulinEB - 1 pull request(s)
+[2894](https://github.com/flutter/plugins/pull/2894) bug fixes web view crashes when drop down is selected (cla: no)
 
-[2645](https://github.com/flutter/plugins/pull/2645) [android_intent] Ignoring packages in intent. (cla: yes)
 
+#### alexandrets - 1 pull request(s)
 
-#### Notzuonotdied - 1 pull request(s)
-
-[2361](https://github.com/flutter/plugins/pull/2361) [Sensors] Fix:avoid calling setState() when mounted is false. (cla: yes)
-
-
-#### PiN73 - 1 pull request(s)
-
-[2506](https://github.com/flutter/plugins/pull/2506) [image_picker] update flutter_plugin_android_lifecycle version (cla: yes)
-
-
-#### PixelToast - 1 pull request(s)
-
-[73283](https://github.com/flutter/flutter/pull/73283) Make it easier to catch multiple errors during a test (a: tests, cla: yes, framework)
-
-
-#### PiyushMishra318 - 1 pull request(s)
-
-[1548](https://github.com/flutter/plugins/pull/1548) [local_auth] (cla: yes)
-
-
-#### RafaO - 1 pull request(s)
-
-[981](https://github.com/flutter/plugins/pull/981) [google_maps_flutter]provide builder class for LatLngBounds (backlog, cla: yes)
-
-
-#### Raigen - 1 pull request(s)
-
-[2078](https://github.com/flutter/plugins/pull/2078) [device_info] Add firebase test lab indicator (cla: yes)
-
-
-#### AyushBherwani1998 - 1 pull request(s)
-
-[62383](https://github.com/flutter/flutter/pull/62383) [ExpansionPanel] adds parameter to customize expansion indicator icon (cla: yes, f: material design, framework)
-
-
-#### BRO3886 - 1 pull request(s)
-
-[65650](https://github.com/flutter/flutter/pull/65650) feature: add border-radius to dropdown (cla: yes, f: material design, framework)
-
-
-#### SDxBacon - 1 pull request(s)
-
-[2572](https://github.com/flutter/plugins/pull/2572) [image_picker] fix getting wrong png data from photo library on iOS 13+ (cla: yes)
-
-
-#### SirJohn2024 - 1 pull request(s)
-
-[2225](https://github.com/flutter/plugins/pull/2225) [google_maps_flutter] Fix getScreenCoordinate return value with actual screen density. (cla: yes)
-
-
-#### SirusCodes - 1 pull request(s)
-
-[73205](https://github.com/flutter/flutter/pull/73205) Added warning when not enabled platform is selected  (cla: yes, tool)
-
-
-#### Sunbreak - 1 pull request(s)
-
-[3057](https://github.com/flutter/plugins/pull/3057) [webview_flutter] Use TextDirection.ltr for webview_android (cla: yes)
-
-
-#### SvenSlijkoord - 1 pull request(s)
-
-[2454](https://github.com/flutter/plugins/pull/2454) [google_maps_flutter] Implement google maps flutter heatmap (cla: yes)
-
-
-#### TahaTesser - 1 pull request(s)
-
-[3252](https://github.com/flutter/plugins/pull/3252) [url_launcher] Update readme for iOS targeting iOS 9.0 and higher  (cla: yes)
-
-
-#### TheVinhLuong - 1 pull request(s)
-
-[2107](https://github.com/flutter/plugins/pull/2107) [webview_flutter] Add listener for scrolling and set the scrolled position programmatically in Android (backlog, cla: yes)
-
-
-#### TimWhiting - 1 pull request(s)
-
-[2831](https://github.com/flutter/plugins/pull/2831) [path_provider] WIP Use LocalPlatform in determining the platform for registering plugins. (cla: yes)
-
-
-#### TramPamPam - 1 pull request(s)
-
-[3387](https://github.com/flutter/plugins/pull/3387) Draft: [image_picker: iOS] Expose allowsEditing field of UIImagePickerController. (cla: yes)
-
-
-#### Water-bamboo - 1 pull request(s)
-
-[72611](https://github.com/flutter/flutter/pull/72611) Fix crash when do three finger gesture (cla: yes, framework)
-
-
-#### Bubu - 1 pull request(s)
-
-[3194](https://github.com/flutter/plugins/pull/3194) [image_picker] fix camera on Android 11 (cla: yes)
-
-
-#### YazeedAlKhalaf - 1 pull request(s)
-
-[71984](https://github.com/flutter/flutter/pull/71984) ➕ Add IconAlignment to new Material Buttons (cla: yes, f: material design, framework)
-
-
-#### ABausG - 1 pull request(s)
-
-[3274](https://github.com/flutter/plugins/pull/3274) [in_app_purchase] presentCodeRedemptionSheet (cla: yes, p: in_app_purchase)
-
-
-#### YukiOya - 1 pull request(s)
-
-[988](https://github.com/flutter/plugins/pull/988) [webview_flutter]Fix sharing session with WKWebViews for webview_flutter (cla: yes, feature)
-
-
-#### abhirup-deb - 1 pull request(s)
-
-[2614](https://github.com/flutter/plugins/pull/2614) Light-Dark mode feature for Video-Player Added (cla: yes)
-
-
-#### abrush21 - 1 pull request(s)
-
-[23931](https://github.com/flutter/engine/pull/23931) Ensures that hit testing only returns focusable nodes. (cla: yes)
-
-
-#### abs0 - 1 pull request(s)
-
-[2961](https://github.com/flutter/plugins/pull/2961) [in_app_purchase] Update to use google play obfuscatedAccountId (cla: yes)
-
-
-#### Crdzbird - 1 pull request(s)
-
-[3139](https://github.com/flutter/plugins/pull/3139) Migration of shared_preferences to kotlin, upgraded flutter base repository. (cla: yes)
-
-
-#### akoprow - 1 pull request(s)
-
-[2846](https://github.com/flutter/plugins/pull/2846) [in_app_purchase] Typos in comments (cla: yes)
-
-
-#### alexmarkley - 1 pull request(s)
-
-[2309](https://github.com/flutter/plugins/pull/2309) [webview_flutter] Consistent allowsInlineMediaPlayback on iOS (cla: yes)
+[74594](https://github.com/flutter/flutter/pull/74594) Stable 1.22.5 cherrypicks - engine revert (#72079) (a: tests, cla: no, d: examples, engine, f: cupertino, f: material design, framework, team, tool)
 
 
 #### aloisdeniel - 1 pull request(s)
 
-[2721](https://github.com/flutter/plugins/pull/2721) [image_picker] Add "DateTimeOriginal" to EXIF copied attributes. (cla: yes)
+[67712](https://github.com/flutter/flutter/pull/67712) Allow to override app media query. (cla: yes, framework)
 
 
-#### amourinho - 1 pull request(s)
+#### altanod - 1 pull request(s)
 
-[1179](https://github.com/flutter/plugins/pull/1179) [webview] Added ability to add cookies to CookieManager (Android only currently) (cla: yes, feature, webview)
-
-
-#### andzejsw - 1 pull request(s)
-
-[3094](https://github.com/flutter/plugins/pull/3094) [webview_flutter] Android getContentHeight added (cla: yes)
+[2166](https://github.com/flutter/plugins/pull/2166) [camera] setFlash function added camera plugin (cla: yes)
 
 
-#### animator - 1 pull request(s)
+#### ahyangnb - 1 pull request(s)
 
-[2981](https://github.com/flutter/plugins/pull/2981) Update README.md to reflect the correct Go Link (cla: yes)
-
-
-#### Daniel-Sogbey - 1 pull request(s)
-
-[70167](https://github.com/flutter/flutter/pull/70167) Added hello world in Portuguese (cla: yes, d: examples, team)
+[72772](https://github.com/flutter/flutter/pull/72772) Unprefixes the class with the "new" keyword (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### anisalibegic - 1 pull request(s)
+#### ametsuramet - 1 pull request(s)
 
-[69704](https://github.com/flutter/flutter/pull/69704) Fix spelling errors (cla: yes, f: cupertino, f: material design, framework)
-
-
-#### apaatsio - 1 pull request(s)
-
-[1547](https://github.com/flutter/plugins/pull/1547) Format Java code with google-java-format 1.7 (cla: yes)
+[2330](https://github.com/flutter/plugins/pull/2330) [webview_flutter] fixing crash select tag (cla: no, in review)
 
 
-#### arthurdenner - 1 pull request(s)
+#### amm98d - 1 pull request(s)
 
-[2709](https://github.com/flutter/plugins/pull/2709) [package_info] add override to toString method (cla: yes)
-
-
-#### asherkach - 1 pull request(s)
-
-[2550](https://github.com/flutter/plugins/pull/2550) [path_provider] Remove unnecessary string concatenation. (cla: yes)
+[74048](https://github.com/flutter/flutter/pull/74048) Update .gitignore (cla: no)
 
 
-#### DanielEdrisian - 1 pull request(s)
+#### amogiska - 1 pull request(s)
 
-[72100](https://github.com/flutter/flutter/pull/72100) Add CupertinoSliverNavigationBar large title magnification on over scroll (cla: yes, f: cupertino, framework)
-
-
-#### ayush1612 - 1 pull request(s)
-
-[3186](https://github.com/flutter/plugins/pull/3186) [goole_maps_flutter] Added information to docs (cla: yes)
+[57789](https://github.com/flutter/flutter/pull/57789) Add IPv6 loopback address to Doctor's proxy check (cla: yes, tool, waiting for customer response)
 
 
-#### DenisDashkevich - 1 pull request(s)
+#### androiddevnotes - 1 pull request(s)
 
-[21837](https://github.com/flutter/engine/pull/21837) [web]Update Locale.toString() for web SDK (cla: yes, platform-web)
-
-
-#### bluelet13 - 1 pull request(s)
-
-[1044](https://github.com/flutter/plugins/pull/1044) [shared_preferences] Added compatibility for existing apps (backlog, cla: yes)
+[66029](https://github.com/flutter/flutter/pull/66029) Fix typos (cla: yes, team)
 
 
-#### brunobowden - 1 pull request(s)
+#### anirudhb - 1 pull request(s)
 
-[3216](https://github.com/flutter/plugins/pull/3216) [multiple] Java 8 target for all plugins with -Werror compiler arg (cla: yes)
+[21585](https://github.com/flutter/engine/pull/21585) Refactor make_mock_engine into fl_test (cla: yes, waiting for tree to go green)
 
 
-#### bubunyo - 1 pull request(s)
+#### apomalyn - 1 pull request(s)
 
-[1945](https://github.com/flutter/plugins/pull/1945) [connectivity] - add mobile network type to connection result (cla: yes, in review)
+[68019](https://github.com/flutter/flutter/pull/68019) Set slider semantics flag for sliders (a: tests, cla: yes, f: cupertino, f: material design, framework, waiting for tree to go green)
+
+
+#### arps18 - 1 pull request(s)
+
+[69568](https://github.com/flutter/flutter/pull/69568) AdoptAWidget: Shortcut (cla: yes, framework)
+
+
+#### agniswarm - 1 pull request(s)
+
+[2901](https://github.com/flutter/plugins/pull/2901) [connectivity] Making the link a secure link in Readme.md (cla: yes)
+
+
+#### asjqkkkk - 1 pull request(s)
+
+[2583](https://github.com/flutter/plugins/pull/2583) [webview_flutter]  Fix the issue that webview cannot load assets html and local html (cla: yes)
+
+
+#### ayyshim - 1 pull request(s)
+
+[73181](https://github.com/flutter/flutter/pull/73181) Updated syntax on line 150, 365, 598 and 877 (cla: yes, framework)
+
+
+#### b1acKr0se - 1 pull request(s)
+
+[66542](https://github.com/flutter/flutter/pull/66542) Fix last month not being displayed if last date is selected in DateRangePicker (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### Amitbhave - 1 pull request(s)
+
+[2891](https://github.com/flutter/plugins/pull/2891) Update flutter.io link with https (cla: yes)
+
+
+#### bananagag - 1 pull request(s)
+
+[69195](https://github.com/flutter/flutter/pull/69195) Adding a CalendarMultiDatePicker to cater discrete multi-date selection  (cla: yes, f: material design, framework)
+
+
+#### benjaminhorner - 1 pull request(s)
+
+[33177](https://github.com/flutter/flutter/pull/33177) Support for background gradients and images in CupertinoSliverNavigationBar and CupertinoNavigationBar (cla: yes, f: cupertino, waiting for customer response)
+
+
+#### 1amageek - 1 pull request(s)
+
+[66541](https://github.com/flutter/flutter/pull/66541) flutter build ios-framework Some plugin debug framework creation failing (cla: yes, tool, waiting for customer response)
+
+
+#### bhargavprajapati949 - 1 pull request(s)
+
+[67445](https://github.com/flutter/flutter/pull/67445) fix LinearGradient constructor missing '@' fixed #67444 (cla: no, framework)
+
+
+#### adam118 - 1 pull request(s)
+
+[72993](https://github.com/flutter/flutter/pull/72993) Merge branch 'stable' of https://github.com/flutter/flutter into stable (cla: no, f: material design, framework)
+
+
+#### acoutts - 1 pull request(s)
+
+[2837](https://github.com/flutter/plugins/pull/2837) [camera] Added support for flash/torch mode in iOS and Android (cla: yes, feature)
+
+
+#### brandondiamond - 1 pull request(s)
+
+[39993](https://github.com/flutter/flutter/pull/39993) Add on/off accessibility labels to CupertinoSwitch (a: tests, cla: yes, f: cupertino, framework, will affect goldens)
+
+
+#### bruno-garcia - 1 pull request(s)
+
+[3026](https://github.com/flutter/plugins/pull/3026) badges for pub.dev scores (cla: yes)
+
+
+#### Aman9026 - 1 pull request(s)
+
+[64177](https://github.com/flutter/flutter/pull/64177) Updated printError in AndroidMavenArtifacts (cla: yes, tool, waiting for customer response)
+
+
+#### abd99 - 1 pull request(s)
+
+[69535](https://github.com/flutter/flutter/pull/69535) AdoptAWidget: Dismissible (adopt a widget, cla: yes, framework, waiting for tree to go green)
 
 
 #### burekas7 - 1 pull request(s)
 
-[73105](https://github.com/flutter/flutter/pull/73105) [UserAccountsDrawerHeader] New option for changing profiles images size (cla: yes, f: material design, framework)
+[73102](https://github.com/flutter/flutter/pull/73102) [UserAccountsDrawerHeader] New option for changing profiles images size (cla: no, f: material design, framework)
 
 
-#### Dn-a - 1 pull request(s)
+#### cbenhagen - 1 pull request(s)
 
-[2832](https://github.com/flutter/plugins/pull/2832) [webview_flutter] Added possibility to activate the zoom webview - IOS & Android (cla: yes)
+[23244](https://github.com/flutter/engine/pull/23244) Fix HiDPI platform view transforms in CanvasKit (cla: yes, platform-web)
 
 
-#### camillobucciarelli - 1 pull request(s)
+#### cfchris - 1 pull request(s)
 
-[3218](https://github.com/flutter/plugins/pull/3218) [video_player] Added upscaling on bandwidth change (cla: yes)
+[2426](https://github.com/flutter/plugins/pull/2426) [camera] Set encoding bitrate to recording bitrate (fixes 38787) (cla: yes, needs love)
 
 
-#### 0xcodezero - 1 pull request(s)
+#### chandarrengoog - 1 pull request(s)
 
-[2336](https://github.com/flutter/plugins/pull/2336) [ImagePicker] Captured Video quality and duration support (cla: yes, in review)
+[22769](https://github.com/flutter/engine/pull/22769) Cleanup dart_runner examples & tests. (cla: yes, waiting for tree to go green)
 
 
-#### charafau - 1 pull request(s)
+#### charles-toller - 1 pull request(s)
 
-[1970](https://github.com/flutter/plugins/pull/1970) [webview_flutter] Webiew post url support (cla: yes, in review, needs love)
-
-
-#### FisherWL - 1 pull request(s)
-
-[2451](https://github.com/flutter/plugins/pull/2451) [webview_flutter]Add pinch to zoom for Android (cla: yes)
-
-
-#### cimplesid - 1 pull request(s)
-
-[2983](https://github.com/flutter/plugins/pull/2983) [local_auth] Unnecessary reassignment in example removed (cla: yes)
-
-
-#### clarkezone - 1 pull request(s)
-
-[23573](https://github.com/flutter/engine/pull/23573) Windows: Add CoreWindow implementation of FlutterWindowsView (Flutter#70205) (cla: yes)
-
-
-#### GaspardMerten - 1 pull request(s)
-
-[73483](https://github.com/flutter/flutter/pull/73483) [Refactoring] Replacing Size(x, x) with default constructors (a: accessibility, cla: yes, f: cupertino, f: material design, framework)
-
-
-#### crazecoder - 1 pull request(s)
-
-[2245](https://github.com/flutter/plugins/pull/2245) [webview_flutter] fix not working choose file (cla: yes)
-
-
-#### creativecreatorormaybenot - 1 pull request(s)
-
-[3404](https://github.com/flutter/plugins/pull/3404) [video_player] Fix playback speed resetting on iOS (cla: yes)
-
-
-#### crisboarna - 1 pull request(s)
-
-[72244](https://github.com/flutter/flutter/pull/72244) [flutter_tools] Added doctor host validator (cla: yes, tool, waiting for customer response)
-
-
-#### crizant - 1 pull request(s)
-
-[2895](https://github.com/flutter/plugins/pull/2895) [webview_flutter] add option to set the background to transparent (cla: yes)
-
-
-#### cspensky - 1 pull request(s)
-
-[3272](https://github.com/flutter/plugins/pull/3272) [local_auth] Catching crashing exception when result was already previously returned in Android (cla: yes)
-
-
-#### danielroek - 1 pull request(s)
-
-[3403](https://github.com/flutter/plugins/pull/3403) [camera] Limit video length with maxVideoDuration on startVideoRecording (cla: yes)
-
-
-#### daohoangson - 1 pull request(s)
-
-[2263](https://github.com/flutter/plugins/pull/2263) [webview_flutter] Add support for `NavigationRequest.type` (cla: yes)
-
-
-#### devhammed - 1 pull request(s)
-
-[2638](https://github.com/flutter/plugins/pull/2638) [path_provider] refactor: move Directory if statements to function (cla: yes)
-
-
-#### devxpy - 1 pull request(s)
-
-[1460](https://github.com/flutter/plugins/pull/1460) [shared_preferences] Make a clone of mutable containers before set/get. (bugfix, cla: yes)
-
-
-#### dotcink - 1 pull request(s)
-
-[2468](https://github.com/flutter/plugins/pull/2468) [webview_flutter] add `mixedContentMode` option for Android WebView (cla: yes)
-
-
-#### dragostis - 1 pull request(s)
-
-[23488](https://github.com/flutter/engine/pull/23488) Switched engine to use buffer collection. (cla: yes)
-
-
-#### GeertJohan - 1 pull request(s)
-
-[2463](https://github.com/flutter/plugins/pull/2463) [webview_flutter] Expose loadData function for webviews (cla: yes)
-
-
-#### dwrobel - 1 pull request(s)
-
-[23674](https://github.com/flutter/engine/pull/23674) Fix argument specifier for g_warning() (cla: yes)
-
-
-#### e-adrien - 1 pull request(s)
-
-[3431](https://github.com/flutter/plugins/pull/3431) [webview_flutter] Add an option to set a transparent background for the webview (cla: yes)
-
-
-#### GelaZhang - 1 pull request(s)
-
-[19016](https://github.com/flutter/engine/pull/19016) Fixes crash when multiple Flutter VC shared one engine (cla: yes, crash, platform-ios, waiting for customer response)
-
-
-#### ekibun - 1 pull request(s)
-
-[73206](https://github.com/flutter/flutter/pull/73206) InkResponse's radius fallbacks to circumcircle. (cla: yes, f: material design, framework)
-
-
-#### el12n - 1 pull request(s)
-
-[3384](https://github.com/flutter/plugins/pull/3384) [share: iOS] Return activity type and catching when user cancel sharing action (cla: yes, p: share)
-
-
-#### eligt - 1 pull request(s)
-
-[2308](https://github.com/flutter/plugins/pull/2308) [android_intent] Added 'action_app' action and getIntentExtras, getIntentData (cla: yes)
-
-
-#### eltociear - 1 pull request(s)
-
-[73201](https://github.com/flutter/flutter/pull/73201) Fix typo in form_row.dart (cla: yes, f: cupertino, framework)
-
-
-#### ened - 1 pull request(s)
-
-[2821](https://github.com/flutter/plugins/pull/2821) [image_picker] Do not rename videos to .jpg + Do not resize GIF images (cla: yes)
-
-
-#### erickok - 1 pull request(s)
-
-[2987](https://github.com/flutter/plugins/pull/2987) [url_launcher] Adds newTask flag to launch (cla: yes)
-
-
-#### evelyne24 - 1 pull request(s)
-
-[1757](https://github.com/flutter/plugins/pull/1757) [flutter_webview] Prevent universal app links from opening the app (cla: yes)
-
-
-#### everton-e26 - 1 pull request(s)
-
-[2642](https://github.com/flutter/plugins/pull/2642) [google_maps_flutter] fix camera update LatLngBounds.builder  (cla: yes, in review, waiting for test harness)
-
-
-#### exKAZUu - 1 pull request(s)
-
-[3095](https://github.com/flutter/plugins/pull/3095) [webview_flutter] Fix a typo in README (cla: yes)
-
-
-#### fbcouch - 1 pull request(s)
-
-[3356](https://github.com/flutter/plugins/pull/3356) [google_sign_in] Fix issue obtaining serverAuthCode on Android and add forceCodeForRefreshToken parameter (cla: yes)
-
-
-#### Gorter-dev - 1 pull request(s)
-
-[62856](https://github.com/flutter/flutter/pull/62856) Updated Stepper(horizontally) widget to support custom elevation  (cla: yes, f: material design, framework, severe: new feature)
-
-
-#### felix-ht - 1 pull request(s)
-
-[71722](https://github.com/flutter/flutter/pull/71722) Fixed IconButton not respecting IconTheme (cla: yes, f: material design, framework)
-
-
-#### fergusdixon - 1 pull request(s)
-
-[3062](https://github.com/flutter/plugins/pull/3062) [google_maps_flutter] Heatmap platform interface (cla: yes)
-
-
-#### ferrazrx - 1 pull request(s)
-
-[2878](https://github.com/flutter/plugins/pull/2878) [video_player] VTT Support (cla: yes)
-
-
-#### fesp - 1 pull request(s)
-
-[3225](https://github.com/flutter/plugins/pull/3225) [webview_flutter] Add file chooser on Android (cla: yes, p: webview_flutter)
-
-
-#### figureConan - 1 pull request(s)
-
-[68288](https://github.com/flutter/flutter/pull/68288) [Widget] RangeSlider active section support on tap (cla: yes, f: material design, framework)
-
-
-#### fkorotkov - 1 pull request(s)
-
-[2495](https://github.com/flutter/plugins/pull/2495) [skip ci] Disable GitHub Actions for PRs (cla: yes)
-
-
-#### freitzzz - 1 pull request(s)
-
-[2662](https://github.com/flutter/plugins/pull/2662) [image_picker] Updated pickImage and pickVideo docs to expose the possible errors that can be thrown (cla: yes)
-
-
-#### gaetschwartz - 1 pull request(s)
-
-[2861](https://github.com/flutter/plugins/pull/2861) [shared_preferences] Allow to specify the suiteName for NSUserDefaults (cla: yes)
-
-
-#### gallinaettore - 1 pull request(s)
-
-[2823](https://github.com/flutter/plugins/pull/2823) [device_info] Add screenWidth, screenHeight, density, language, country (cla: yes)
-
-
-#### gapspt - 1 pull request(s)
-
-[2825](https://github.com/flutter/plugins/pull/2825) [share] Show the share text in the iOS share preview panel (cla: yes)
-
-
-#### gazialankus - 1 pull request(s)
-
-[3450](https://github.com/flutter/plugins/pull/3450) [camera] The old example URL did not have an example. (cla: yes, p: camera)
-
-
-#### greymag - 1 pull request(s)
-
-[2720](https://github.com/flutter/plugins/pull/2720) [device_info] Added toString() implementations (cla: yes)
-
-
-#### HidenoriMatsubayashi - 1 pull request(s)
-
-[61221](https://github.com/flutter/flutter/pull/61221) [flutter_tools] Add ARM64 Linux host and cross-building option support (a: desktop, cla: yes, platform-linux, tool)
-
-
-#### INDAPP - 1 pull request(s)
-
-[2578](https://github.com/flutter/plugins/pull/2578) [video_player] audio asset check (cla: yes)
-
-
-#### happy-san - 1 pull request(s)
-
-[3305](https://github.com/flutter/plugins/pull/3305) [integration_test] Update "eponymous concept" link. (cla: yes)
-
-
-#### hkg90 - 1 pull request(s)
-
-[71958](https://github.com/flutter/flutter/pull/71958) Create README.md for packages directory (cla: yes, team)
-
-
-#### hpoul - 1 pull request(s)
-
-[1446](https://github.com/flutter/plugins/pull/1446) [webview_flutter] iOS specific initialization configuration, for enabling video playback. (cla: yes, feature)
-
-
-#### huanghongxun - 1 pull request(s)
-
-[23951](https://github.com/flutter/engine/pull/23951) Hides symbols exported by statically linked libcxxabi (cla: yes)
-
-
-#### ibnYusrat - 1 pull request(s)
-
-[2725](https://github.com/flutter/plugins/pull/2725) Update README.md (cla: yes)
-
-
-#### isacjunior - 1 pull request(s)
-
-[2171](https://github.com/flutter/plugins/pull/2171) [connectivity] Added null check assignment (cla: yes, in review)
-
-
-#### ivansapr - 1 pull request(s)
-
-[2416](https://github.com/flutter/plugins/pull/2416) Feature/web view failure listener (cla: yes)
-
-
-#### iyedb - 1 pull request(s)
-
-[3203](https://github.com/flutter/plugins/pull/3203) [google_maps_flutter] Wrap main widget with a SingleChildScrollView (cla: yes)
-
-
-#### jaeheon - 1 pull request(s)
-
-[23817](https://github.com/flutter/engine/pull/23817) [ui-input] First N events "chatty" logging (#74368) (cla: yes)
-
-
-#### IchordeDionysos - 1 pull request(s)
-
-[2886](https://github.com/flutter/plugins/pull/2886) [video_player] Clarify the use of NSAllowsArbitraryLoads (cla: yes)
-
-
-#### jasonpanelli - 1 pull request(s)
-
-[2897](https://github.com/flutter/plugins/pull/2897) File Selector Plugin (cla: yes)
-
-
-#### jaumard - 1 pull request(s)
-
-[1336](https://github.com/flutter/plugins/pull/1336) [webview_flutter] put webview with transparent background (bugfix, cla: yes, webview)
-
-
-#### Imgkl - 1 pull request(s)
-
-[73556](https://github.com/flutter/flutter/pull/73556) added Tamil version of Hello world (cla: yes, d: examples, team)
-
-
-#### jddeep - 1 pull request(s)
-
-[2556](https://github.com/flutter/plugins/pull/2556) [device_info] Tests: Added device_info Test. (cla: yes)
-
-
-#### jeremie-movify - 1 pull request(s)
-
-[2151](https://github.com/flutter/plugins/pull/2151) [webview_flutter] Support for loading progress tracking (cla: yes)
-
-
-#### jerryrt - 1 pull request(s)
-
-[3457](https://github.com/flutter/plugins/pull/3457) [image_picker]returned value should be of original video on iOS. (cla: yes, p: image_picker)
-
-
-#### jerryzhoujw - 1 pull request(s)
-
-[2012](https://github.com/flutter/plugins/pull/2012) [webview_flutter] Add support for js `alert`, `confirm`, `prompt`. (backlog, cla: yes)
-
-
-#### jesusrp98 - 1 pull request(s)
-
-[3439](https://github.com/flutter/plugins/pull/3439) [image_picker_for_web] Added image resize functionality (cla: yes)
-
-
-#### jlubeck - 1 pull request(s)
-
-[73964](https://github.com/flutter/flutter/pull/73964) Adds First/Last buttons to PaginatedDataTable (a: internationalization, cla: yes, f: material design, framework, waiting for tree to go green)
-
-
-#### jnlopar - 1 pull request(s)
-
-[984](https://github.com/flutter/plugins/pull/984) [video_player]Update video_player docs: Add note about Java 8 (cla: yes, documentation, submit queue)
-
-
-#### jpnurmi - 1 pull request(s)
-
-[69146](https://github.com/flutter/flutter/pull/69146) Add enablers for custom/in-app virtual keyboards (a: text input, cla: yes, framework)
-
-
-#### kagouda - 1 pull request(s)
-
-[3300](https://github.com/flutter/plugins/pull/3300) [share] Update README.md (cla: yes, submit queue)
-
-
-#### kalkotekedar - 1 pull request(s)
-
-[2031](https://github.com/flutter/plugins/pull/2031) [url_launcher] Added a note to the README (cla: yes, in review, needs love)
-
-
-#### kangwang1988 - 1 pull request(s)
-
-[18742](https://github.com/flutter/engine/pull/18742) Coordinate surfaceUpdated&scheduleFrame with UIApplication lifecycle. Rendering can only happens when UIApplicationStateActive. (Work in progress (WIP), cla: yes)
-
-
-#### kaparray - 1 pull request(s)
-
-[2616](https://github.com/flutter/plugins/pull/2616) [local_auth] support localizedFallbackTitle in IOSAuthMessages (cla: yes)
-
-
-#### karlklose - 1 pull request(s)
-
-[73560](https://github.com/flutter/flutter/pull/73560) [test.dart] Add a flag to skip engine hash validation on 3H builder (cla: yes, team)
-
-
-#### kentcb - 1 pull request(s)
-
-[3427](https://github.com/flutter/plugins/pull/3427) [webview_flutter] Add ability to ignore SSL certificate errors on Android (cla: yes)
-
-
-#### kikuchy - 1 pull request(s)
-
-[2632](https://github.com/flutter/plugins/pull/2632) [image_picker] Remove unnecessary permission on Android (cla: yes)
-
-
-#### JamalBelilet - 1 pull request(s)
-
-[1325](https://github.com/flutter/plugins/pull/1325) [android_intent] Allows to specify an explicit type (a MIME type) of the intent data (cla: yes, feature)
-
-
-#### leonetosoft - 1 pull request(s)
-
-[2626](https://github.com/flutter/plugins/pull/2626) Change datasource without redrawing the component (cla: yes)
-
-
-#### letsar - 1 pull request(s)
-
-[71947](https://github.com/flutter/flutter/pull/71947) Improve the performances of ChangeNotifier (cla: yes, framework)
-
-
-#### lexor90 - 1 pull request(s)
-
-[2724](https://github.com/flutter/plugins/pull/2724) [in_app_purchase] Add support to cross-grade a subscription on Android (cla: yes)
-
-
-#### ljungqvist - 1 pull request(s)
-
-[1099](https://github.com/flutter/plugins/pull/1099) [sensors]Added gravityEvents to the sensors package (cla: yes, feature)
-
-
-#### lkrjangid1 - 1 pull request(s)
-
-[73168](https://github.com/flutter/flutter/pull/73168) improve hello world example web app (cla: yes, d: examples, team)
-
-
-#### lrhn - 1 pull request(s)
-
-[2835](https://github.com/flutter/plugins/pull/2835) Fix typo in image_picker_for_web README.md (cla: yes)
-
-
-#### luismarquesfreire - 1 pull request(s)
-
-[2251](https://github.com/flutter/plugins/pull/2251) Shared Preferences Plugin support for App Group (iOS only feature) (cla: yes)
-
-
-#### lukepighetti - 1 pull request(s)
-
-[2726](https://github.com/flutter/plugins/pull/2726) clarify how to opt into embedded views on iOS (cla: yes)
-
-
-#### madXmd - 1 pull request(s)
-
-[2610](https://github.com/flutter/plugins/pull/2610) [url_launcher_web] Update Gradle version (cla: yes)
-
-
-#### maplerichie - 1 pull request(s)
-
-[68560](https://github.com/flutter/flutter/pull/68560) Scrollable horizontal stepper (cla: yes, f: material design, framework)
-
-
-#### math1man - 1 pull request(s)
-
-[3232](https://github.com/flutter/plugins/pull/3232) [google_maps_flutter] Fix state-saving logic in google_maps_flutter (cla: yes)
-
-
-#### matthew-carroll - 1 pull request(s)
-
-[2294](https://github.com/flutter/plugins/pull/2294) WIP maps plugin migration attempt as embedding sanity check. (cla: yes)
-
-
-#### md-weber - 1 pull request(s)
-
-[61545](https://github.com/flutter/flutter/pull/61545) iconColor is now modifiable via the constructor - InputDecoration enhancement (cla: yes, f: material design, framework)
-
-
-#### mhbdev - 1 pull request(s)
-
-[3167](https://github.com/flutter/plugins/pull/3167) [video_player_web] Error: Unsupported operation: Infinity. (cla: yes)
-
-
-#### miguelpruivo - 1 pull request(s)
-
-[2860](https://github.com/flutter/plugins/pull/2860) [image_picker] Fixes an issue where videos could be wrongly picked with .jpg extension (cla: yes, waiting for test harness)
-
-
-#### mikeryder - 1 pull request(s)
-
-[1563](https://github.com/flutter/plugins/pull/1563) [sensors] Change Android implementation to use SENSOR_DELAY_GAME, … (cla: yes)
-
-
-#### miksen - 1 pull request(s)
-
-[2839](https://github.com/flutter/plugins/pull/2839) [url_launcher] Clarify supported platforms (cla: yes)
-
-
-#### mkw8263 - 1 pull request(s)
-
-[64900](https://github.com/flutter/flutter/pull/64900) Inset padding dialog (cla: yes, f: material design, framework)
-
-
-#### mx1up - 1 pull request(s)
-
-[71582](https://github.com/flutter/flutter/pull/71582) properly pass on gradle exit code (#71484) (cla: yes, tool)
-
-
-#### najeira - 1 pull request(s)
-
-[72919](https://github.com/flutter/flutter/pull/72919) Add CupertinoTabBar.height (cla: yes, f: cupertino, framework)
-
-
-#### nathanaelneveux - 1 pull request(s)
-
-[3360](https://github.com/flutter/plugins/pull/3360) [video_player] Fixed HLS Streams on iOS (cla: yes)
-
-
-#### zzzs123 - 1 pull request(s)
-
-[2640](https://github.com/flutter/plugins/pull/2640) [image_picker]fix touches event through UIImagePickerController down to Flutter Widgets (cla: yes)
-
-
-#### nogicoder - 1 pull request(s)
-
-[74699](https://github.com/flutter/flutter/pull/74699) WIP: Adjust Flutter's Cupertino widgets to match with Native UI (cla: yes, f: cupertino, framework)
-
-
-#### nohli - 1 pull request(s)
-
-[3333](https://github.com/flutter/plugins/pull/3333) [url_launcher] Fix PlatformException introduced in nnbd release (cla: yes)
-
-
-#### noordawod - 1 pull request(s)
-
-[72052](https://github.com/flutter/flutter/pull/72052) Feature refresh indicator padding (cla: yes, f: material design, framework)
-
-
-#### olivierbrand - 1 pull request(s)
-
-[2887](https://github.com/flutter/plugins/pull/2887) [quick_actions] Fixed plugin on iOS. Entire lifecycle was not taken care of (cla: yes)
-
-
-#### otopba - 1 pull request(s)
-
-[2077](https://github.com/flutter/plugins/pull/2077) [google_maps_flutter] Add TileOverlay support (cla: yes)
-
-
-#### owersbrett - 1 pull request(s)
-
-[2570](https://github.com/flutter/plugins/pull/2570) google_sign_in_web Updating README.md (cla: yes)
-
-
-#### p30arena - 1 pull request(s)
-
-[2255](https://github.com/flutter/plugins/pull/2255) [video_player] fix: #40429 (cla: yes)
-
-
-#### paddingme - 1 pull request(s)
-
-[2254](https://github.com/flutter/plugins/pull/2254) [shared_preferences](docs):Add tips for using plugins in  hybrid app (cla: yes)
-
-
-#### panmari - 1 pull request(s)
-
-[20890](https://github.com/flutter/engine/pull/20890) [WIP] Exposing matrix convolution as image filter. (cla: yes)
-
-
-#### parkwonhui - 1 pull request(s)
-
-[65351](https://github.com/flutter/flutter/pull/65351) fixed CupertinoNavigationBar leading issue (cla: yes, f: cupertino, framework)
-
-
-#### patniemeyer - 1 pull request(s)
-
-[2708](https://github.com/flutter/plugins/pull/2708) Add support for MacOS to in_app_purchase plugin. (cla: yes)
-
-
-#### payam-zahedi - 1 pull request(s)
-
-[70585](https://github.com/flutter/flutter/pull/70585) Update BorderRadius parameter and change it with BorderRadiusGeometry in OutlinedBorder subclasses  (cla: yes, f: material design, framework)
+[2935](https://github.com/flutter/plugins/pull/2935) [google_sign_in_platform_interface] Add clientId to the method channel (cla: yes)
 
 
 #### 2ZeroSix - 1 pull request(s)
 
-[72707](https://github.com/flutter/flutter/pull/72707) Fix/ValueListenableBuilder rebuilds (cla: yes, framework)
+[72738](https://github.com/flutter/flutter/pull/72738) Fix/animation notifications only on value change (cla: yes, f: material design, framework)
 
 
-#### JanKn - 1 pull request(s)
+#### chengyuhui - 1 pull request(s)
 
-[2587](https://github.com/flutter/plugins/pull/2587) [google_sign_in] Fix "pick account" on iOS (cla: yes)
+[2563](https://github.com/flutter/plugins/pull/2563) fix(video_player): buffering state events missing on Android & Web (fixes flutter/flutter#28494) (cla: yes)
 
 
-#### phaylali - 1 pull request(s)
+#### ZeshanGIT - 1 pull request(s)
 
-[2833](https://github.com/flutter/plugins/pull/2833) [google_sign_in] removing the R8 (cla: yes)
+[73598](https://github.com/flutter/flutter/pull/73598) Typo (cla: no, framework)
 
 
-#### philip-peterson - 1 pull request(s)
+#### Yogeshk25 - 1 pull request(s)
 
-[3214](https://github.com/flutter/plugins/pull/3214) [webview_flutter] Support loading data directly in WebView via loadData and loadDataBase64 (cla: yes)
+[3301](https://github.com/flutter/plugins/pull/3301) [video_player] Added new field observeAppLifecycle to enable background playing of v… (cla: no)
 
 
-#### philiplindberg - 1 pull request(s)
+#### christian-muertz - 1 pull request(s)
 
-[3291](https://github.com/flutter/plugins/pull/3291) [share] Use NSURL when sharing non-image files to make correct actions appear in share sheet (cla: yes)
+[65072](https://github.com/flutter/flutter/pull/65072) Find text containing in tests (a: tests, cla: yes, framework, waiting for tree to go green)
 
 
-#### progid - 1 pull request(s)
+#### chulwoo-park - 1 pull request(s)
 
-[2464](https://github.com/flutter/plugins/pull/2464) [local_auth] Fix adding fingerprint to the methods when device's config file is out (cla: yes)
+[71041](https://github.com/flutter/flutter/pull/71041) Remove unnecessary argument from Row and Column constructor comments (cla: yes, framework, waiting for tree to go green)
 
 
-#### prosac - 1 pull request(s)
+#### cikelengfeng - 1 pull request(s)
 
-[73143](https://github.com/flutter/flutter/pull/73143) Add optional DragAnchorStrategy to Draggable (cla: yes, framework)
+[2905](https://github.com/flutter/plugins/pull/2905) ios camera takes advantage of NV12 pixelbuffer (cla: yes)
 
 
-#### qiushouchen - 1 pull request(s)
+#### clarkezone - 1 pull request(s)
 
-[3244](https://github.com/flutter/plugins/pull/3244) [shared_preferences] Use executeOnExecutor instead of execute. (cla: yes)
+[21754](https://github.com/flutter/engine/pull/21754) Windows: Add UWP target stub [Flutter#14697] (cla: yes, waiting for tree to go green)
 
 
-#### quentinleguennec - 1 pull request(s)
+#### Ankur-Khandelwal - 1 pull request(s)
 
-[1451](https://github.com/flutter/plugins/pull/1451) [video_player] Fixed orientation and position issue for some videos metadata. (bugfix, cla: yes)
+[67009](https://github.com/flutter/flutter/pull/67009) Improved README and fixed a typo. (cla: yes, invalid)
 
 
-#### rahulraj64 - 1 pull request(s)
+#### cocoaLaiSan - 1 pull request(s)
 
-[2822](https://github.com/flutter/plugins/pull/2822) [in_app_purchase] Add support for InApp subscription upgrade/downgrade (cla: yes)
+[68933](https://github.com/flutter/flutter/pull/68933) Solve the problem when a textField sets inputFormatters (cla: no, framework)
 
 
-#### raymondr - 1 pull request(s)
+#### Albert221 - 1 pull request(s)
 
-[1837](https://github.com/flutter/plugins/pull/1837) [camera] Resolution (backlog, bugfix, cla: yes)
+[67167](https://github.com/flutter/flutter/pull/67167) Add missing margin to SnackBarAction (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### rcunning - 1 pull request(s)
+#### AnupKumarPanwar - 1 pull request(s)
 
-[953](https://github.com/flutter/plugins/pull/953) [video_player]add http headers option when loading network data source (cla: yes, feature)
+[3402](https://github.com/flutter/plugins/pull/3402) [in_app_purchase] remove ! in auto consume check (cla: yes)
 
 
-#### rdev-software - 1 pull request(s)
+#### VarolOkan - 1 pull request(s)
 
-[2456](https://github.com/flutter/plugins/pull/2456) CRASH - canLaunchURL (cla: yes)
+[1524](https://github.com/flutter/plugins/pull/1524) [androidintent] Android intent external (cla: no, feature)
 
 
-#### recastrodiaz - 1 pull request(s)
+#### cspensky - 1 pull request(s)
 
-[1307](https://github.com/flutter/plugins/pull/1307) [video_player] Fix some videos being rendered black on iOS (backlog, cla: yes)
+[3306](https://github.com/flutter/plugins/pull/3306) Catching exception to stop app from crashing (cla: no)
 
 
-#### renefloor - 1 pull request(s)
+#### ctrysbita - 1 pull request(s)
 
-[3126](https://github.com/flutter/plugins/pull/3126) [image_picker] Add option to retrieve image with thumbnail. (cla: yes)
+[66020](https://github.com/flutter/flutter/pull/66020) Remove deprecated activity indicator (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-#### rh-id - 1 pull request(s)
+#### cv692001 - 1 pull request(s)
 
-[3294](https://github.com/flutter/plugins/pull/3294) [shared_preferences] Replace AsyncTask class with AsyncHandler to handle async task for Android (cla: yes)
+[69800](https://github.com/flutter/flutter/pull/69800) Added Dartpad Sample to Hero Widget closes #69477 (cla: yes, framework)
 
 
-#### richardbushnell - 1 pull request(s)
+#### cxjwin - 1 pull request(s)
 
-[2775](https://github.com/flutter/plugins/pull/2775) Expose AppStoreConnection and getTransactions method from the payment… (cla: no)
+[19036](https://github.com/flutter/engine/pull/19036) Fixes UI update problem when multiple Flutter VC shared one engine (cla: yes, platform-ios)
 
 
-#### rignaneseleo - 1 pull request(s)
+#### ArishSultan - 1 pull request(s)
 
-[2058](https://github.com/flutter/plugins/pull/2058) [share] More specific description (cla: yes, in review)
+[68028](https://github.com/flutter/flutter/pull/68028) Fixed Incorrect Translation Generation (l10n) #67217 (cla: no, tool, waiting for customer response)
 
 
-#### rogeryi - 1 pull request(s)
+#### Vardiak - 1 pull request(s)
 
-[23911](https://github.com/flutter/engine/pull/23911) Fix Android IO and Worker threads priority issue (cla: yes, platform-android)
+[3086](https://github.com/flutter/plugins/pull/3086) [in_app_purchase] Fix crash iOS sandboxTesting default value (cla: yes)
 
 
-#### Jjagg - 1 pull request(s)
+#### daviddgl - 1 pull request(s)
 
-[73510](https://github.com/flutter/flutter/pull/73510) Reland "Add BuildContext parameter to TextEditingController.buildTextSpan" (cla: yes, f: material design, framework, severe: API break)
+[68199](https://github.com/flutter/flutter/pull/68199) Fix/issue 68182: Fix rounding issue in getMaxChildIndexForScrollOffset (cla: yes, f: scrolling, framework, waiting for tree to go green)
 
 
-#### rotorgames - 1 pull request(s)
+#### davidlj95 - 1 pull request(s)
 
-[3284](https://github.com/flutter/plugins/pull/3284) [android_alarm_manager] Configuration a background engine in the user's code (cla: yes)
+[72933](https://github.com/flutter/flutter/pull/72933) fix(cupertinoDatePicker): do not display previous day when minimumDat… (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-#### russellwheatley - 1 pull request(s)
+#### davidmartos96 - 1 pull request(s)
 
-[3407](https://github.com/flutter/plugins/pull/3407) [video_player]: initial test coverage file() constructor api (cla: yes)
+[70687](https://github.com/flutter/flutter/pull/70687) Chip theme label style is merged with the provided label style (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### rws08 - 1 pull request(s)
+#### davidmorgan - 1 pull request(s)
 
-[3250](https://github.com/flutter/plugins/pull/3250) [webview_flutter] Add a file chooser for Android (cla: yes)
+[70765](https://github.com/flutter/flutter/pull/70765) Fix cast in `message_codecs.dart`. The string can be `null`, so cast should be to `String?` (cla: yes, framework)
 
 
-#### ryanheise - 1 pull request(s)
+#### Thipphachanh - 1 pull request(s)
 
-[2521](https://github.com/flutter/plugins/pull/2521) [google_sign_in] Fix crash on iOS caused by null hostedDomain (cla: yes)
+[67862](https://github.com/flutter/flutter/pull/67862) stable (a: tests, cla: no, engine, f: cupertino, f: material design, framework, team, tool)
 
 
-#### scutlight - 1 pull request(s)
+#### dependabot - 1 pull request(s)
 
-[19936](https://github.com/flutter/engine/pull/19936) Make rasterizer setup to be parallel (cla: yes, waiting for customer response)
+[73689](https://github.com/flutter/flutter/pull/73689) Bump cocoapods from 1.10.0 to 1.10.1 in /dev/ci/mac (cla: yes, team, team: infra, waiting for tree to go green)
 
 
-#### severance88 - 1 pull request(s)
+#### devmuaz - 1 pull request(s)
 
-[2760](https://github.com/flutter/plugins/pull/2760) [local_auth]Fix lock out alert message iOS (cla: yes)
+[68870](https://github.com/flutter/flutter/pull/68870) ClipRRect borderRadius property replaced with the abstracted BorderRadiusGeometry class (cla: yes, framework)
 
 
-#### JonLatane - 1 pull request(s)
+#### devtronic - 1 pull request(s)
 
-[2612](https://github.com/flutter/plugins/pull/2612) [sensors] Make Android sensor events fire frequently enough for realtime UI usage (cla: yes)
+[2753](https://github.com/flutter/plugins/pull/2753) [camera] Update iOS platform target (cla: yes)
 
 
-#### Kavantix - 1 pull request(s)
+#### dirjud - 1 pull request(s)
 
-[17396](https://github.com/flutter/engine/pull/17396) [wip] Fixed flutter not rendering in inactive state (Work in progress (WIP), cla: yes)
+[2769](https://github.com/flutter/plugins/pull/2769) [camera] Added null pointer check to prevent camera plugin from crashing (cla: no)
 
 
-#### shpp-vsmaga - 1 pull request(s)
+#### don-k-jacob - 1 pull request(s)
 
-[2072](https://github.com/flutter/plugins/pull/2072) [image_picker] fix crash on Android when selecting photo from OneDrive (backlog, cla: yes)
+[67738](https://github.com/flutter/flutter/pull/67738) added git info in read me (cla: no)
 
 
-#### sianxz - 1 pull request(s)
+#### Thesmader - 1 pull request(s)
 
-[3105](https://github.com/flutter/plugins/pull/3105) [share] Present share sheet on the view controller currently visible (cla: yes)
+[69555](https://github.com/flutter/flutter/pull/69555) AdoptAWidget: SnackBar (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### KevinTheGray - 1 pull request(s)
+#### Arpit045-boop - 1 pull request(s)
 
-[2758](https://github.com/flutter/plugins/pull/2758) [video_player] Update texture on seekTo (cla: yes, p: video_player)
+[66996](https://github.com/flutter/flutter/pull/66996) Update README.md (cla: no, invalid)
 
 
-#### slightfoot - 1 pull request(s)
+#### eduardoflorence - 1 pull request(s)
 
-[2762](https://github.com/flutter/plugins/pull/2762) [webview_flutter] Addition of WebView Scrolling (cla: yes, webview)
+[68059](https://github.com/flutter/flutter/pull/68059) missing character @ before required (cla: yes, framework)
 
 
-#### smkhalsa - 1 pull request(s)
+#### egdaniel - 1 pull request(s)
 
-[2224](https://github.com/flutter/plugins/pull/2224) [video_player] Add onComplete callback (cla: yes)
+[21842](https://github.com/flutter/engine/pull/21842) Update flutter to pass Skia the VkImageUsageFlags and Samples (cla: yes)
 
 
-#### KiritoBeater - 1 pull request(s)
+#### eggfly - 1 pull request(s)
 
-[3382](https://github.com/flutter/plugins/pull/3382) [video_player] set AudioSessionCategory to PlayAndRecord (cla: yes, p: video_player)
+[23908](https://github.com/flutter/engine/pull/23908) Fix ImageReader may leak images when onDraw() not called (cla: yes, platform-android)
 
 
-#### softkot - 1 pull request(s)
+#### ekasetiawans - 1 pull request(s)
 
-[3343](https://github.com/flutter/plugins/pull/3343) [webview_flutter] WebView.bouncesEnabled property to controls iOS scrolling (cla: yes)
+[21068](https://github.com/flutter/engine/pull/21068) Flutter should not stop registering unregistered plugins in case of an error registering a plugin (cla: yes, platform-android)
 
 
-#### sososdk - 1 pull request(s)
+#### eldermao1 - 1 pull request(s)
 
-[2032](https://github.com/flutter/plugins/pull/2032) [url_launcher] Fix await launch (cla: yes, in review)
+[2812](https://github.com/flutter/plugins/pull/2812) [in_app_purchases] fixed typo (cla: no)
 
 
-#### speller - 1 pull request(s)
+#### TerrenceAddison - 1 pull request(s)
 
-[2973](https://github.com/flutter/plugins/pull/2973) [Connectivity] Read system proxy settings (Android only) (cla: yes)
+[65313](https://github.com/flutter/flutter/pull/65313) Bug fix where MouseScrollWheel zoom in flutter-web does not execute onInteraction functions (cla: yes, framework, waiting for tree to go green)
 
 
-#### sperochon - 1 pull request(s)
+#### emreuguryalcintr - 1 pull request(s)
 
-[2302](https://github.com/flutter/plugins/pull/2302) [google_maps_flutter] iOS: add a cache for defaultMarker(WithHue) and fromBytes icons... (cla: yes)
+[2892](https://github.com/flutter/plugins/pull/2892) pictureImageReader null check (cla: no)
 
 
-#### srawlins - 1 pull request(s)
+#### Sunbreak - 1 pull request(s)
 
-[74382](https://github.com/flutter/flutter/pull/74382) Remove unnecessary imports in dev/benchmarks (cla: yes, team)
+[2999](https://github.com/flutter/plugins/pull/2999) [webview_flutter] Add getCookies and setCookies functionality. (cla: no)
 
 
-#### KlausJokisuo - 1 pull request(s)
+#### 410063005 - 1 pull request(s)
 
-[1927](https://github.com/flutter/plugins/pull/1927) [google_maps] getCameraPosition (backlog, cla: yes)
+[60078](https://github.com/flutter/flutter/pull/60078) Add example code for CupertinoSliverRefreshControl (cla: yes, d: api docs, d: examples, documentation, f: cupertino, f: scrolling, framework)
 
 
-#### strigePC - 1 pull request(s)
+#### ewertonrp - 1 pull request(s)
 
-[3420](https://github.com/flutter/plugins/pull/3420) [google_maps_flutter] Ground Overlays support (cla: yes)
+[17505](https://github.com/flutter/engine/pull/17505) Update SystemNavigator.pop for iOS shell (cla: yes)
 
 
-#### tafelito - 1 pull request(s)
+#### Sukhjeet33 - 1 pull request(s)
 
-[2579](https://github.com/flutter/plugins/pull/2579) [video-player] fix iOS player to update frames while pause (cla: yes)
+[66956](https://github.com/flutter/flutter/pull/66956) Update ios-deploy (#65787) (a: internationalization, cla: no, d: examples, engine, f: material design, framework, team, tool)
 
 
-#### LDXu - 1 pull request(s)
+#### febryardiansyah - 1 pull request(s)
 
-[1356](https://github.com/flutter/plugins/pull/1356) [url_launcher]ios whose view is not in the window hierarchy! (cla: yes)
+[3271](https://github.com/flutter/plugins/pull/3271) [wifi_info_flutter] Edit sample wifi_info_flutter plugin (cla: yes)
 
 
-#### technolion - 1 pull request(s)
+#### Babiosik - 1 pull request(s)
 
-[3017](https://github.com/flutter/plugins/pull/3017) [path_provider] Removed pre-screening for platform when calling getDownloadsPath() (cla: yes)
+[2829](https://github.com/flutter/plugins/pull/2829) [battery] Add unknown status battery and not_charge in android (cla: no)
 
 
-#### theindianappguy - 1 pull request(s)
+#### 999eagle - 1 pull request(s)
 
-[2548](https://github.com/flutter/plugins/pull/2548) Added code snippet for adding keys to Info.plist (cla: yes)
+[2130](https://github.com/flutter/plugins/pull/2130) [video_player] Implement caching (cla: yes)
 
 
-#### theniceboy - 1 pull request(s)
+#### Boehrsi - 1 pull request(s)
 
-[74592](https://github.com/flutter/flutter/pull/74592) Allow long press delay duration for LongPressDraggable to be adjustable (cla: yes, framework)
+[74610](https://github.com/flutter/flutter/pull/74610) ChoiceChip's default "selected" style in dark mode theme is unreadabl… (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### thomas-stockx - 1 pull request(s)
+#### ShehanS - 1 pull request(s)
 
-[1469](https://github.com/flutter/plugins/pull/1469) [package_info] [firebase_remote_config] Allow reset of static variables in testing (backlog, cla: yes, feature, flutterfire)
+[73027](https://github.com/flutter/flutter/pull/73027) Merge branch 'stable' of https://github.com/flutter/flutter into stable (cla: no)
 
 
-#### timotaoh - 1 pull request(s)
+#### ShardulNalegave - 1 pull request(s)
 
-[72246](https://github.com/flutter/flutter/pull/72246) Update data_table.dart (cla: yes, f: material design, framework)
+[65250](https://github.com/flutter/flutter/pull/65250) Fixed Tooltip widget docs. (cla: yes, f: material design, framework, waiting for tree to go green)
 
 
-#### LHLL - 1 pull request(s)
+#### ftsui - 1 pull request(s)
 
-[2862](https://github.com/flutter/plugins/pull/2862) [in_app_purchase] Fix app exceptions caused by missing App Store receipt (cla: yes)
+[22887](https://github.com/flutter/engine/pull/22887) Allow the root layout to be overriden. (cla: yes, platform-android)
 
 
-#### tp - 1 pull request(s)
+#### gabber235 - 1 pull request(s)
 
-[2722](https://github.com/flutter/plugins/pull/2722) [url_launcher] Add note that `canLaunch` only works for some schemes (cla: yes)
+[68185](https://github.com/flutter/flutter/pull/68185) Draggable: onDragUpdate callback (cla: yes, framework, waiting for tree to go green)
 
 
-#### LeonardGreulich - 1 pull request(s)
+#### gayanpathirage - 1 pull request(s)
 
-[1111](https://github.com/flutter/plugins/pull/1111) [sensors] Specify sample rate for sensor events (cla: yes, feature)
+[69517](https://github.com/flutter/flutter/pull/69517) Fixed #69514 Android Studio 4.1 plugins in MacOS (a: tests, cla: yes, engine, f: cupertino, f: material design, framework, team, tool)
 
 
-#### ttpho - 1 pull request(s)
+#### gildaswise - 1 pull request(s)
 
-[67228](https://github.com/flutter/flutter/pull/67228) change the line endings of the horizontal line drawn below the selected tab. (cla: yes, f: material design, framework)
+[55209](https://github.com/flutter/flutter/pull/55209) Updated SearchDelegate to follow custom InputDecorationTheme (cla: yes, f: material design, framework)
 
 
-#### MadhavBajaj - 1 pull request(s)
+#### giriss - 1 pull request(s)
 
-[68441](https://github.com/flutter/flutter/pull/68441) Update prod_builders.json (cla: no, team)
+[62773](https://github.com/flutter/flutter/pull/62773) Added onTapUp to InkWell (cla: yes, f: material design, framework)
 
 
-#### tylerreece22 - 1 pull request(s)
+#### gnoliyil - 1 pull request(s)
 
-[2606](https://github.com/flutter/plugins/pull/2606) Updated README.md typo (cla: yes)
+[21495](https://github.com/flutter/engine/pull/21495) fuchsia: Remove display device availability check from Flutter (cla: yes)
 
 
-#### uc-apa - 1 pull request(s)
+#### grihlo - 1 pull request(s)
 
-[2830](https://github.com/flutter/plugins/pull/2830) [webview_flutter] local html and baseUrl support (cla: yes)
+[64323](https://github.com/flutter/flutter/pull/64323) Add separators builder for AnimatedList (a: animation, cla: yes, f: scrolling, framework)
 
 
-#### uepoch - 1 pull request(s)
+#### SergioEric - 1 pull request(s)
 
-[3041](https://github.com/flutter/plugins/pull/3041) [share] fix: properly share gif format on IOS platform (cla: yes)
+[69539](https://github.com/flutter/flutter/pull/69539)  AdoptAWidget: PreferredSizeWidget (cla: yes, framework)
 
 
-#### Alabhya268 - 1 pull request(s)
+#### haeseoklee - 1 pull request(s)
 
-[74388](https://github.com/flutter/flutter/pull/74388) Added dartpad demo for alert dialog (cla: yes, d: api docs, d: examples, documentation, f: material design, framework, waiting for tree to go green)
+[65164](https://github.com/flutter/flutter/pull/65164) Add dart-pad example code for CupertinoSliverRefreshControl (cla: yes, f: cupertino, framework, waiting for tree to go green)
 
 
-#### victorbucutea - 1 pull request(s)
+#### CaiJingLong - 1 pull request(s)
 
-[2064](https://github.com/flutter/plugins/pull/2064) [google_maps_flutter] add support for projection toScreenLocation() and fromScreenLocation() (cla: yes)
+[62765](https://github.com/flutter/flutter/pull/62765) Add width and height style params for SelectableText. (cla: yes, f: material design, framework)
 
 
-#### vimaxwell - 1 pull request(s)
+#### hardik302001 - 1 pull request(s)
 
-[3458](https://github.com/flutter/plugins/pull/3458) [camera] Clockwise rotation of focus point in android (cla: no, p: camera)
+[66990](https://github.com/flutter/flutter/pull/66990) improved Docs. Update README.md (cla: no, invalid)
 
 
-#### viralkachhadiya - 1 pull request(s)
+#### Sameerkash - 1 pull request(s)
 
-[74377](https://github.com/flutter/flutter/pull/74377) Adding Reset Date Functionality (cla: yes, f: material design, framework)
+[70379](https://github.com/flutter/flutter/pull/70379) Added Tabar Code samples (adopt a widget, cla: yes, d: api docs, d: examples, documentation, f: material design, framework, waiting for tree to go green)
 
 
-#### vishnuiiit - 1 pull request(s)
+#### heybereket - 1 pull request(s)
 
-[3445](https://github.com/flutter/plugins/pull/3445) [flutter_webview]Removed wrapped gesture detector from Android view (cla: yes)
+[67350](https://github.com/flutter/flutter/pull/67350) Updated README.md (cla: yes, invalid)
 
 
-#### wanglikun7342 - 1 pull request(s)
+#### hpoul - 1 pull request(s)
 
-[73394](https://github.com/flutter/flutter/pull/73394) fix(flutter tool): fix breakpoint mode crash for BuildableMacOSApp (cla: yes, tool, waiting for customer response)
+[64742](https://github.com/flutter/flutter/pull/64742) Remove FlutterApplication from app templates. (cla: yes, tool, waiting for tree to go green)
 
 
-#### warnyul - 1 pull request(s)
+#### hs2361 - 1 pull request(s)
 
-[2729](https://github.com/flutter/plugins/pull/2729) [share] Fix NPE when start chooserIntent and the activity is null (cla: yes)
+[3044](https://github.com/flutter/plugins/pull/3044) [image_picker] Updated README.md with new example (cla: yes)
 
 
-#### wasabeef - 1 pull request(s)
+#### bharat-1809 - 1 pull request(s)
 
-[2591](https://github.com/flutter/plugins/pull/2591)  [url_launcher] Fixed when there are line break (CRLF,LF) in the urlString (cla: yes)
+[72981](https://github.com/flutter/flutter/pull/72981) doc: add google-fonts method to pubspec templ (cla: yes, tool)
 
 
-#### wasabia - 1 pull request(s)
+#### hussainint - 1 pull request(s)
 
-[3358](https://github.com/flutter/plugins/pull/3358) [image_picker] fix file extension for android (cla: yes)
+[68465](https://github.com/flutter/flutter/pull/68465) added code snippet for [MergeSemantics]  widget (cla: yes, framework)
 
 
-#### wer-mathurin - 1 pull request(s)
+#### hyiso - 1 pull request(s)
 
-[3038](https://github.com/flutter/plugins/pull/3038) [plugin_platform_interface] Fix broken link for federated-plugin (cla: yes)
+[71829](https://github.com/flutter/flutter/pull/71829) Add --dart-define option support to build aar command (cla: yes, tool, waiting for customer response)
 
 
-#### willlockwood - 1 pull request(s)
+#### iNima - 1 pull request(s)
 
-[73391](https://github.com/flutter/flutter/pull/73391) Update ink feature splashFactory test coverage to not rely on the Theme's default value (cla: yes, f: material design, framework)
+[2524](https://github.com/flutter/plugins/pull/2524) [Camera] Support setting exposure compensation to back and front camera (Both Android and iOS) (cla: yes)
 
 
-#### wverdese - 1 pull request(s)
+#### Adlai-Holler - 1 pull request(s)
 
-[69573](https://github.com/flutter/flutter/pull/69573) ExpansionTile Allows Customizable Rotating Trailing (cla: yes, f: material design, framework)
+[21864](https://github.com/flutter/engine/pull/21864) Update more class names from GrContext to GrDirectContext (cla: yes, platform-ios)
 
 
-#### ManuLpz4 - 1 pull request(s)
+#### impure - 1 pull request(s)
 
-[62093](https://github.com/flutter/flutter/pull/62093) Changed CupertinoSlidingSegmentedControl width to fill the encompassing widget (cla: yes, f: cupertino, framework)
+[3287](https://github.com/flutter/plugins/pull/3287) [in_app_purchase] Added serviceTimeout code (cla: yes, waiting for tree to go green)
 
 
-#### xndcn - 1 pull request(s)
+#### inobelar - 1 pull request(s)
 
-[23797](https://github.com/flutter/engine/pull/23797) [web] Fix typo and add `sampler3DRect` in ShaderBuilder reserved words (cla: yes, platform-web)
+[19998](https://github.com/flutter/engine/pull/19998)  Added GLFW error-callback into FlutterEmbedderGLFW (cla: yes)
 
 
-#### xrkffgg - 1 pull request(s)
+#### integra-its - 1 pull request(s)
 
-[73481](https://github.com/flutter/flutter/pull/73481) ci: create issue labeled reply (cla: yes, team)
+[73695](https://github.com/flutter/flutter/pull/73695) Stable 1.22.5 cherrypicks - engine revert (#72079) (a: tests, cla: no, d: examples, engine, f: cupertino, f: material design, framework, team, tool)
 
 
-#### MichaelRFairhurst - 1 pull request(s)
+#### ishitatsuyuki - 1 pull request(s)
 
-[3069](https://github.com/flutter/plugins/pull/3069) Remove unnecessary dart:async import (cla: yes)
+[67041](https://github.com/flutter/flutter/pull/67041) Snap the image offset to pixel grid when no scaling is applied (cla: yes, framework)
 
 
-#### yamarkz - 1 pull request(s)
+#### it-sam - 1 pull request(s)
 
-[2788](https://github.com/flutter/plugins/pull/2788) [google_sign_in] Fix serverAuthCode getToken on iOS (cla: yes)
+[66512](https://github.com/flutter/flutter/pull/66512) Add hasBorderOnExpand property (cla: no, f: material design, framework)
+
+
+#### ivk1800 - 1 pull request(s)
+
+[1304](https://github.com/flutter/plugins/pull/1304) [camera] zoom feature  (backlog, cla: yes, feature)
+
+
+#### Renzo-Olivares - 1 pull request(s)
+
+[73300](https://github.com/flutter/flutter/pull/73300) Selecting spaces on SelectableText (mobile) (cla: yes, framework, waiting for tree to go green)
+
+
+#### j796160836 - 1 pull request(s)
+
+[2499](https://github.com/flutter/plugins/pull/2499) [webview_flutter] Implement onJSAlert, onJSConfirm, onJSPrompt interface (cla: no)
+
+
+#### jacek-marchwicki - 1 pull request(s)
+
+[68102](https://github.com/flutter/flutter/pull/68102) [Flutter] Use the correct place for the system navigation bar color adjustment (cla: yes, framework, waiting for tree to go green)
+
+
+#### jacobaraujo7 - 1 pull request(s)
+
+[72207](https://github.com/flutter/flutter/pull/72207) Fix navigator 2.0 in Flutter Web (cla: yes, framework, waiting for tree to go green)
+
+
+#### jamesblasco - 1 pull request(s)
+
+[66785](https://github.com/flutter/flutter/pull/66785) Add textSelectionControls to TextField etc. (cla: yes, f: cupertino, f: material design, framework)
+
+
+#### jascodes - 1 pull request(s)
+
+[73129](https://github.com/flutter/flutter/pull/73129) Purpose tween looping fix (cla: no, framework)
+
+
+#### jasonpanelli - 1 pull request(s)
+
+[2995](https://github.com/flutter/plugins/pull/2995) [file_selector_platform_interface] Add platform interface for new file_selector plugin (cla: yes)
+
+
+#### jaysephjw - 1 pull request(s)
+
+[2882](https://github.com/flutter/plugins/pull/2882) [video_player] Add cookie support for network resources (cla: yes)
+
+
+#### Ravin199822 - 1 pull request(s)
+
+[67033](https://github.com/flutter/flutter/pull/67033) Update README.md (cla: no, invalid)
+
+
+#### jerryzhoujw - 1 pull request(s)
+
+[2609](https://github.com/flutter/plugins/pull/2609) [video_player] avoid screen dim when video playing (cla: yes)
+
+
+#### jiangqingbo - 1 pull request(s)
+
+[3170](https://github.com/flutter/plugins/pull/3170) Unhandled Exception: MissingPluginException(No implementation found for method getAll on channel plugins.flutter.io/shared_preferences) (cla: no)
+
+
+#### jivthesh - 1 pull request(s)
+
+[2910](https://github.com/flutter/plugins/pull/2910) added  CODE_OF_CONDUCT ()
+
+
+#### Rashid-Khabeer - 1 pull request(s)
+
+[72642](https://github.com/flutter/flutter/pull/72642) Add onLongPress property to DataCell: #72609 (cla: yes, f: material design, framework)
+
+
+#### joaortk - 1 pull request(s)
+
+[2132](https://github.com/flutter/plugins/pull/2132) [connectivity] Periodically checking for a valid internet connection (cla: no)
+
+
+#### Rahiche - 1 pull request(s)
+
+[66014](https://github.com/flutter/flutter/pull/66014) add ScrollViewKeyboardDismissBehavior to CustomScrollView constructor (cla: yes, framework, waiting for tree to go green)
+
+
+#### joehzli - 1 pull request(s)
+
+[65808](https://github.com/flutter/flutter/pull/65808) Don't use flock on MacOS because it's not compatible (cla: yes, tool)
+
+
+#### josh-burton - 1 pull request(s)
+
+[2491](https://github.com/flutter/plugins/pull/2491) [camera] Adds autofocus support (backlog, cla: yes)
+
+
+#### Pragya007 - 1 pull request(s)
+
+[19905](https://github.com/flutter/engine/pull/19905) Updated ColorMatrix to ColorFilter (cla: yes)
+
+
+#### CaptainIRS - 1 pull request(s)
+
+[69521](https://github.com/flutter/flutter/pull/69521) AdoptAWidget: AbsorbPointer (adopt a widget, cla: yes, framework, waiting for tree to go green)
+
+
+#### jsh-me - 1 pull request(s)
+
+[64240](https://github.com/flutter/flutter/pull/64240) Add sample code to FadeTransition (cla: yes, d: api docs, d: examples, documentation, framework, waiting for tree to go green)
+
+
+#### jsroest - 1 pull request(s)
+
+[3444](https://github.com/flutter/plugins/pull/3444) [camera] Ensure that channel.invokeMethod runs on the main thread (cla: yes, p: camera, waiting for tree to go green)
+
+
+#### jumper423 - 1 pull request(s)
+
+[3003](https://github.com/flutter/plugins/pull/3003) [in_app_purchase] Added serviceTimeout code for google iab (test) (cla: yes)
+
+
+#### just-kip - 1 pull request(s)
+
+[1788](https://github.com/flutter/plugins/pull/1788) [webview_flutter] onPageStarted, onPageReceiveError callbacks. (backlog, cla: yes)
+
+
+#### kaisa695275735 - 1 pull request(s)
+
+[18733](https://github.com/flutter/engine/pull/18733) delete opengl texture  when it detatch from surfacetexture. (cla: yes, waiting for tree to go green)
+
+
+#### kangwang1988 - 1 pull request(s)
+
+[19579](https://github.com/flutter/engine/pull/19579) Expose options for developers to manage DartVM release time implicitly. (cla: yes)
+
+
+#### karamage - 1 pull request(s)
+
+[68421](https://github.com/flutter/flutter/pull/68421) Add current version to the upgrade message of the Flutter tool (cla: yes, tool)
+
+
+#### kasgaormeo - 1 pull request(s)
+
+[3256](https://github.com/flutter/plugins/pull/3256) Update Camera.java (cla: no)
+
+
+#### kdrag0n - 1 pull request(s)
+
+[68374](https://github.com/flutter/flutter/pull/68374) Fix links to GitHub bug template (a: internationalization, cla: yes, framework, waiting for tree to go green)
+
+
+#### kea2288 - 1 pull request(s)
+
+[67891](https://github.com/flutter/flutter/pull/67891) Turkmen language - issue #46710 (a: internationalization, cla: yes, f: cupertino, f: material design)
+
+
+#### keidaroo - 1 pull request(s)
+
+[48073](https://github.com/flutter/flutter/pull/48073) api documentation's font importation lacks of font-weight (a: accessibility, cla: yes, d: api docs, team)
+
+
+#### kennethj - 1 pull request(s)
+
+[2489](https://github.com/flutter/plugins/pull/2489) [local_auth] Allow device authentication (pin/pattern/passcode) (cla: yes)
+
+
+#### kenvandine - 1 pull request(s)
+
+[60534](https://github.com/flutter/flutter/pull/60534) Create desktop file entry for linux app, fixes #53229 (cla: yes, tool, waiting for customer response)
+
+
+#### kevaljuthani - 1 pull request(s)
+
+[58970](https://github.com/flutter/flutter/pull/58970) appBarTheme Override in Search Delegate (a: quality, cla: yes, f: material design, framework)
+
+
+#### kevinrodriguez-io - 1 pull request(s)
+
+[70150](https://github.com/flutter/flutter/pull/70150) AdoptAWidget: LongPressDraggable (cla: yes, framework)
+
+
+#### PoojaB26 - 1 pull request(s)
+
+[68967](https://github.com/flutter/flutter/pull/68967) Update missing documentation for pumpAndSettle (a: tests, cla: yes, framework)
+
+
+#### kgdev - 1 pull request(s)
+
+[19997](https://github.com/flutter/engine/pull/19997) "double get strokeMiterLimit" is incorrect. (cla: yes)
+
+
+#### kim-king-rong - 1 pull request(s)
+
+[72858](https://github.com/flutter/flutter/pull/72858) Merge pull request 2020-12-23 (cla: no)
+
+
+#### kinarobin - 1 pull request(s)
+
+[3001](https://github.com/flutter/plugins/pull/3001) [camera]fixed camera get error event type in iOS (cla: no)
+
+
+#### kinex - 1 pull request(s)
+
+[2911](https://github.com/flutter/plugins/pull/2911) [in_app_purchase] Removed maintaining own cache of transactions (cla: yes)
+
+
+#### kingctan - 1 pull request(s)
+
+[2290](https://github.com/flutter/plugins/pull/2290) merge webview (cla: no)
+
+
+#### kingiol - 1 pull request(s)
+
+[3331](https://github.com/flutter/plugins/pull/3331) Fix interrupt other app play music. (cla: no)
+
+
+#### klaes-ashford - 1 pull request(s)
+
+[2941](https://github.com/flutter/plugins/pull/2941) [google_maps_flutter] fix to properly place polyline at initial camera position in example app (cla: yes, waiting for tree to go green)
+
+
+#### Playhi - 1 pull request(s)
+
+[64222](https://github.com/flutter/flutter/pull/64222) Allow modification of ListTile's horizontalTitleGap, minVerticalPadding, minLeadingWidth (cla: yes, f: material design, framework)
+
+
+#### OgulcanCelik - 1 pull request(s)
+
+[2870](https://github.com/flutter/plugins/pull/2870) [camera] Support JPEG fallback for Android on ImageStream (cla: yes)
+
+
+#### krokyze - 1 pull request(s)
+
+[74214](https://github.com/flutter/flutter/pull/74214) iOS "Bold Text" more correct fontWeight handling (cla: yes, framework)
+
+
+#### l8023lxb - 1 pull request(s)
+
+[17311](https://github.com/flutter/engine/pull/17311) Fix FlutterEngine destroy and accessibility disable race (cla: yes)
+
+
+#### Niggelgame - 1 pull request(s)
+
+[2438](https://github.com/flutter/plugins/pull/2438) [webview_flutter] Added Support for the viewport meta width (cla: no)
+
+
+#### lamarrr - 1 pull request(s)
+
+[23102](https://github.com/flutter/engine/pull/23102) removed variable-sized array (cla: yes)
+
+
+#### NickCullen - 1 pull request(s)
+
+[1035](https://github.com/flutter/plugins/pull/1035) [camera]Nickcullen darkcamera fix (bugfix, cla: yes)
+
+
+#### ClaireDavis - 1 pull request(s)
+
+[73803](https://github.com/flutter/flutter/pull/73803) sorting plugins alphabetically when refreshed (cla: yes, tool)
+
+
+#### lfkdsk - 1 pull request(s)
+
+[18196](https://github.com/flutter/engine/pull/18196) feature: add dom canvas drawatlas. (cla: yes, platform-web)
+
+
+#### lhkbob - 1 pull request(s)
+
+[23649](https://github.com/flutter/engine/pull/23649) Use non-deprecated SkImageFilter factory functions (cla: yes)
+
+
+#### Cyp - 1 pull request(s)
+
+[68325](https://github.com/flutter/flutter/pull/68325) Correctly handle centerSlice with resoultion-aware assets. (cla: yes, framework, waiting for tree to go green)
+
+
+#### linxuebin1990 - 1 pull request(s)
+
+[16709](https://github.com/flutter/engine/pull/16709) fix underline lineThrough and overline display exception, in the case… (cla: yes)
+
+
+#### Nguyenducthien98ha - 1 pull request(s)
+
+[74128](https://github.com/flutter/flutter/pull/74128) Stable 1.22.5 cherrypicks - engine revert (#72079) (cla: no)
+
+
+#### llucax - 1 pull request(s)
+
+[2952](https://github.com/flutter/plugins/pull/2952) [video_player] Fix missing comma in VideoPlayerValue.toString() (cla: yes)
+
+
+#### lqs - 1 pull request(s)
+
+[21800](https://github.com/flutter/engine/pull/21800) Fix crash on image decoding error (cla: yes)
+
+
+#### lrhn - 1 pull request(s)
+
+[22793](https://github.com/flutter/engine/pull/22793) Stop using the List constructor. (cla: yes, waiting for tree to go green)
+
+
+#### lsmith130 - 1 pull request(s)
+
+[709](https://github.com/flutter/plugins/pull/709) [camera] Expose auto exposure and auto focus point of interest functionality (iOS only) (cla: yes, feature)
+
+
+#### Neha-alt - 1 pull request(s)
+
+[21517](https://github.com/flutter/engine/pull/21517) Improved theme , a modern theme (cla: no)
+
+
+#### NeKoFu - 1 pull request(s)
+
+[1969](https://github.com/flutter/plugins/pull/1969) [camera] Add support for Torch and Auto Exposure (#19845) (cla: yes, in review)
+
+
+#### lukepighetti - 1 pull request(s)
+
+[66659](https://github.com/flutter/flutter/pull/66659) Material spec for Checkbox width is 24px (cla: yes, f: material design, framework, waiting for customer response)
 
 
 #### MrWinbush - 1 pull request(s)
 
-[3372](https://github.com/flutter/plugins/pull/3372) [image_picker: iOS] Added AlertViewController to image_picker for iOS 9 (cla: yes)
+[3368](https://github.com/flutter/plugins/pull/3368) Added AlertViewController compatibility for iOS 9 (cla: no)
 
 
-#### yash261 - 1 pull request(s)
+#### maks - 1 pull request(s)
 
-[72072](https://github.com/flutter/flutter/pull/72072) Adding style into text field (cla: yes, d: examples, team)
-
-
-#### yelliver - 1 pull request(s)
-
-[2877](https://github.com/flutter/plugins/pull/2877) [google_sign_in] use transparent_image lib (cla: yes)
+[21004](https://github.com/flutter/engine/pull/21004) enable left & right arrow key handling on linux (cla: yes)
 
 
-#### yenole - 1 pull request(s)
+#### DEgITx - 1 pull request(s)
 
-[2608](https://github.com/flutter/plugins/pull/2608) [webview_flutter] support text selection popup and hide keyboard (cla: yes)
-
-
-#### yinsee - 1 pull request(s)
-
-[1977](https://github.com/flutter/plugins/pull/1977) [webview_flutter] add scrollViewBounces settings (cla: yes, in review)
+[73169](https://github.com/flutter/flutter/pull/73169) Cache for rendering objects in getTransformTo() (cla: yes, framework, team)
 
 
-#### yyoungg0318 - 1 pull request(s)
+#### zljj0818 - 1 pull request(s)
 
-[1480](https://github.com/flutter/plugins/pull/1480) [google_maps_flutter] Support marker clustering (cla: yes)
-
-
-#### zachary-russell - 1 pull request(s)
-
-[2229](https://github.com/flutter/plugins/pull/2229) Add example for how to use FlutterFramentActivity (cla: yes, documentation)
+[22819](https://github.com/flutter/engine/pull/22819) More rename from GPU thread to raster thread (cla: yes, platform-android, platform-ios, waiting for tree to go green)
 
 
-#### zeeshanhussain - 1 pull request(s)
+#### markusaksli-nc - 1 pull request(s)
 
-[2792](https://github.com/flutter/plugins/pull/2792) [google_sign_in] Fix Server Authorization code on android (cla: yes)
-
-
-#### zhongwuzw - 1 pull request(s)
-
-[22077](https://github.com/flutter/engine/pull/22077) Move Assets loading from UI thread to IO thread (cla: yes, waiting for customer response)
+[66639](https://github.com/flutter/flutter/pull/66639) Further explain parent constraints in SizedBox (cla: yes, d: api docs, documentation, framework, waiting for tree to go green)
 
 
-#### MuskanLudhiyani - 1 pull request(s)
+#### maschad - 1 pull request(s)
 
-[72975](https://github.com/flutter/flutter/pull/72975) Added hello world code in hindi (cla: yes, d: examples, team)
+[52297](https://github.com/flutter/flutter/pull/52297) [WIP] Allow for Custom Margin in  Vertical Stepper Widget (cla: yes, f: material design, framework)
 
 
-#### nekolab - 1 pull request(s)
+#### mateusfccp - 1 pull request(s)
 
-[1836](https://github.com/flutter/plugins/pull/1836) [webview_flutter]: add option to enable DOM storage in android webview (backlog, cla: yes)
+[68508](https://github.com/flutter/flutter/pull/68508) Remove references to CupertinoDialog (cla: yes, f: cupertino, framework, waiting for tree to go green)
+
+
+#### Adityapanther - 1 pull request(s)
+
+[3401](https://github.com/flutter/plugins/pull/3401) Androidx migration (cla: yes)
+
+
+#### matthewayne - 1 pull request(s)
+
+[20130](https://github.com/flutter/engine/pull/20130) [WIP] Migrate fuchsia_archive.gni to the GN SDK (cla: yes)
+
+
+#### meszarosdezso - 1 pull request(s)
+
+[73479](https://github.com/flutter/flutter/pull/73479) Adding the different handlers to TapGestureRecognizer constructor (cla: yes, framework)
+
+
+#### mhdzumair - 1 pull request(s)
+
+[73324](https://github.com/flutter/flutter/pull/73324) color_demo: fix deprecated syntax (cla: no, team)
+
+
+#### miguelpruivo - 1 pull request(s)
+
+[3172](https://github.com/flutter/plugins/pull/3172) [image_picker] Fixes an issue where videos could be wrongly picked with .jpg extension (cla: yes)
+
+
+#### AbhishekDoshi26 - 1 pull request(s)
+
+[3107](https://github.com/flutter/plugins/pull/3107) Update main.dart (cla: yes, invalid)
+
+
+#### Abdelrhman9623 - 1 pull request(s)
+
+[71804](https://github.com/flutter/flutter/pull/71804) Merge branch 'stable' of https://github.com/flutter/flutter into stable (a: accessibility, cla: no, d: examples, engine, f: cupertino, f: material design, framework, team, team: gallery)
+
+
+#### Miguelzz - 1 pull request(s)
+
+[74550](https://github.com/flutter/flutter/pull/74550) Merge branch 'beta' of https://github.com/flutter/flutter into beta (cla: no)
+
+
+#### mk12 - 1 pull request(s)
+
+[21496](https://github.com/flutter/engine/pull/21496) Try: Roll Fuchsia SDK to Cherry-pick version 0.20200928.3.1002 (cla: no)
+
+
+#### mkiisoft - 1 pull request(s)
+
+[72016](https://github.com/flutter/flutter/pull/72016) Flutter Logo for Dark Mode (cla: yes, team, waiting for tree to go green)
+
+
+#### mofneko - 1 pull request(s)
+
+[73773](https://github.com/flutter/flutter/pull/73773) Fix typo ' to ` in template (cla: yes, tool, waiting for tree to go green)
+
+
+#### monkeyswarm - 1 pull request(s)
+
+[67375](https://github.com/flutter/flutter/pull/67375) Add rootOverlay flag to [Draggable], to put feedback on root [Overlay] (cla: yes, framework)
+
+
+#### mrinaljain - 1 pull request(s)
+
+[3430](https://github.com/flutter/plugins/pull/3430) [connectivity]Update main.dart (cla: yes)
+
+
+#### mrmitew - 1 pull request(s)
+
+[871](https://github.com/flutter/plugins/pull/871) [camera]Fix: Camera preview would appear stretched  (cla: yes, documentation, submit queue)
+
+
+#### muhammednazil - 1 pull request(s)
+
+[3355](https://github.com/flutter/plugins/pull/3355) Int testing (cla: no)
+
+
+#### mukhtarfauzi - 1 pull request(s)
+
+[2957](https://github.com/flutter/plugins/pull/2957) add feature to enable streaming image with torch on (cla: yes)
+
+
+#### Dev-SK - 1 pull request(s)
+
+[72200](https://github.com/flutter/flutter/pull/72200) Fix issues in gradient.dart (cla: yes, framework)
+
+
+#### MichaelRFairhurst - 1 pull request(s)
+
+[65568](https://github.com/flutter/flutter/pull/65568) Remove unused 'dart:async' imports. (a: accessibility, a: internationalization, a: tests, cla: yes, f: cupertino, f: material design, framework, team, tool)
+
+
+#### mzegar - 1 pull request(s)
+
+[63423](https://github.com/flutter/flutter/pull/63423) Add optional border to CupertinoSwitch (cla: yes, f: cupertino, framework)
+
+
+#### MichaelMarner - 1 pull request(s)
+
+[70421](https://github.com/flutter/flutter/pull/70421) 70341 Correct dateHelpText for en_AU localization (a: internationalization, cla: yes, f: material design)
+
+
+#### naraekn - 1 pull request(s)
+
+[65274](https://github.com/flutter/flutter/pull/65274) Add sample code for CupertinoActionSheet (cla: yes, f: cupertino, framework)
+
+
+#### Dondake12 - 1 pull request(s)
+
+[74695](https://github.com/flutter/flutter/pull/74695) Stable 1.22.5 cherrypicks - engine revert (#72079) (a: tests, cla: no, d: examples, engine, f: cupertino, f: material design, framework, team, tool)
+
+
+#### nigeltao - 1 pull request(s)
+
+[22193](https://github.com/flutter/engine/pull/22193) Bump third_party/wuffs DEPS to 0.3.0-alpha.16 (cla: yes)
+
+
+#### nixava - 1 pull request(s)
+
+[3215](https://github.com/flutter/plugins/pull/3215) Update FLTVideoPlayerPlugin.m (cla: no)
+
+
+#### nohli - 1 pull request(s)
+
+[3307](https://github.com/flutter/plugins/pull/3307) [url_launcher] Fix PlatformException introduced in nnbd release (cla: yes)
+
+
+#### noushadkadav - 1 pull request(s)
+
+[66215](https://github.com/flutter/flutter/pull/66215) stable (a: internationalization, cla: no, d: examples, engine, f: material design, framework, team, tool)
+
+
+#### npm-ued - 1 pull request(s)
+
+[2874](https://github.com/flutter/plugins/pull/2874) Webview flutter (cla: no)
+
+
+#### nscobie - 1 pull request(s)
+
+[20330](https://github.com/flutter/engine/pull/20330) Minor documentation details/breadcrumbs (cla: yes, platform-android)
+
+
+#### nt4f04uNd - 1 pull request(s)
+
+[65057](https://github.com/flutter/flutter/pull/65057) SpringDescription parameter for the AnimationController fling method (a: animation, cla: yes, f: gestures, framework, waiting for tree to go green)
+
+
+#### MeneDev - 1 pull request(s)
+
+[62502](https://github.com/flutter/flutter/pull/62502) Fix typo subetting should be subsetting (a: error message, cla: yes, tool, waiting for tree to go green)
+
+
+#### MatejMecka - 1 pull request(s)
+
+[66177](https://github.com/flutter/flutter/pull/66177) Translate licensesPackageDetailTextZero in Macedonian (a: internationalization, cla: yes, f: material design)
+
+
+#### onatcipli - 1 pull request(s)
+
+[68468](https://github.com/flutter/flutter/pull/68468) ExpansionPanelList ExpandIcon color support (cla: yes, f: material design, framework)
+
+
+#### orestesgaolin - 1 pull request(s)
+
+[66023](https://github.com/flutter/flutter/pull/66023) Fix mistake in the docs of RouteInformationParser (cla: yes, framework, waiting for tree to go green)
+
+
+#### oroblesr - 1 pull request(s)
+
+[69717](https://github.com/flutter/flutter/pull/69717) AdoptAWidget - Update ActionListener with an example (adopt a widget, cla: yes, framework)
+
+
+#### osamaalatraqchy - 1 pull request(s)
+
+[20195](https://github.com/flutter/engine/pull/20195) Update lint.dart (cla: no)
+
+
+#### osamaasifoak - 1 pull request(s)
+
+[68567](https://github.com/flutter/flutter/pull/68567) Owesome validator (cla: no)
+
+
+#### Double-Are - 1 pull request(s)
+
+[2424](https://github.com/flutter/plugins/pull/2424) Update README.md (cla: no)
+
+
+#### panmari - 1 pull request(s)
+
+[2965](https://github.com/flutter/plugins/pull/2965) [camera] Adding check for null before creating capture session. (cla: yes)
+
+
+#### panudetjt - 1 pull request(s)
+
+[67517](https://github.com/flutter/flutter/pull/67517) Make "field" in FormState not a private member (cla: yes, framework)
+
+
+#### parzuko - 1 pull request(s)
+
+[69527](https://github.com/flutter/flutter/pull/69527) Update Draggable API Docs (cla: yes, framework, waiting for tree to go green)
+
+
+#### DoubleHub - 1 pull request(s)
+
+[1789](https://github.com/flutter/plugins/pull/1789) [camera] Fix crash on stopVideoRecording for Android 6 (backlog, bugfix, cla: yes)
+
+
+#### pepsin - 1 pull request(s)
+
+[23175](https://github.com/flutter/engine/pull/23175) Fix background crash when FlutterView going appear while app goes background (cla: yes, platform-ios, waiting for tree to go green)
+
+
+#### percula - 1 pull request(s)
+
+[72407](https://github.com/flutter/flutter/pull/72407) Expand clickable area of DropDownButtonFormField (cla: yes, f: material design, framework, waiting for customer response)
+
+
+#### pixiedevpraveen - 1 pull request(s)
+
+[66987](https://github.com/flutter/flutter/pull/66987) Update README.md (cla: no, invalid)
+
+
+#### polina-c - 1 pull request(s)
+
+[70043](https://github.com/flutter/flutter/pull/70043) Include error handling and reporting to template. (cla: yes, tool)
+
+
+#### LewisHobden - 1 pull request(s)
+
+[3073](https://github.com/flutter/plugins/pull/3073) [in_app_purchase] Update typo in example main.dart (cla: yes)
+
+
+#### pranitb10 - 1 pull request(s)
+
+[67290](https://github.com/flutter/flutter/pull/67290) Update documentation for borderWidth/renderBorder on ToggleButtons (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### pstromberg98 - 1 pull request(s)
+
+[73147](https://github.com/flutter/flutter/pull/73147) Exposed velocity on scroll position (cla: yes, framework)
+
+
+#### pythoneer - 1 pull request(s)
+
+[3340](https://github.com/flutter/plugins/pull/3340) No userinteraction (cla: no)
+
+
+#### qq326646683 - 1 pull request(s)
+
+[2581](https://github.com/flutter/plugins/pull/2581) [in_app_purchase]add func : get undeal purchase  (cla: no)
+
+
+#### quentinleguennec - 1 pull request(s)
+
+[1452](https://github.com/flutter/plugins/pull/1452) [camera] Added orientation metadata to iOS recorded videos. (bugfix, cla: yes, feature)
+
+
+#### ragnor-rs - 1 pull request(s)
+
+[3133](https://github.com/flutter/plugins/pull/3133) fixed setPlaybackSpeed for iOS (cla: no)
+
+
+#### LefixBlue - 1 pull request(s)
+
+[23613](https://github.com/flutter/engine/pull/23613) Merge pull request #1 from flutter/master (cla: no)
+
+
+#### rath - 1 pull request(s)
+
+[23823](https://github.com/flutter/engine/pull/23823) Fix typo in textureFrameAvailable on macOS (cla: yes)
+
+
+#### red42 - 1 pull request(s)
+
+[2601](https://github.com/flutter/plugins/pull/2601) [camera] Fix IllegalArgumentException on takePicture() on Android (cla: yes)
+
+
+#### redStarP2 - 1 pull request(s)
+
+[73005](https://github.com/flutter/flutter/pull/73005) Update bottom_navigation_bar_item.dart (cla: no, framework)
+
+
+#### redsolver - 1 pull request(s)
+
+[69588](https://github.com/flutter/flutter/pull/69588) AdoptAWidget: Table (#69488) (cla: yes, framework)
+
+
+#### rekire - 1 pull request(s)
+
+[21524](https://github.com/flutter/engine/pull/21524) [WIP] Avoid unexpected behavior if argument is not set (cla: yes)
+
+
+#### rh-id - 1 pull request(s)
+
+[3288](https://github.com/flutter/plugins/pull/3288) [android_alarm_manager] fix AndroidManifest.xml for android lint issue "XML tag has empty body" (cla: yes)
+
+
+#### rishabnayak - 1 pull request(s)
+
+[3456](https://github.com/flutter/plugins/pull/3456) Aseef17 master (cla: no, p: camera, p: google_sign_in)
+
+
+#### ritvij14 - 1 pull request(s)
+
+[72300](https://github.com/flutter/flutter/pull/72300) Fixed issue for SliverAppBar collapsedHeight (cla: yes, f: material design, f: scrolling, framework, waiting for tree to go green)
+
+
+#### rmistry - 1 pull request(s)
+
+[19314](https://github.com/flutter/engine/pull/19314) [Test] Testing patch ref in DEPS (cla: yes)
+
+
+#### rocboronat - 1 pull request(s)
+
+[68883](https://github.com/flutter/flutter/pull/68883) Fix a typo: "Its weight" instead of "It's weight" (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### rodydavis - 1 pull request(s)
+
+[2462](https://github.com/flutter/plugins/pull/2462) Custom Cursor for [mac] and [web] (cla: no)
+
+
+#### roechsli - 1 pull request(s)
+
+[68829](https://github.com/flutter/flutter/pull/68829) Update docs for required parameters (cla: yes, tool, waiting for customer response)
+
+
+#### rohitraj1104 - 1 pull request(s)
+
+[67224](https://github.com/flutter/flutter/pull/67224) Update CODEOWNERS (cla: no)
+
+
+#### roshanpaturkar - 1 pull request(s)
+
+[64945](https://github.com/flutter/flutter/pull/64945) *.properties added in .gitignore (cla: no, t: gradle, tool, waiting for customer response)
+
+
+#### KurdAppDev - 1 pull request(s)
+
+[3293](https://github.com/flutter/plugins/pull/3293) [video_player] android setConstantBitrateSeekingEnabled && iOS AVURLAsset (cla: no)
+
+
+#### s-sami - 1 pull request(s)
+
+[23429](https://github.com/flutter/engine/pull/23429) Use syslog for logging on Fuchsia (cla: yes, platform-fuchsia)
+
+
+#### Kiruel - 1 pull request(s)
+
+[1423](https://github.com/flutter/plugins/pull/1423) [share] add native file sharing feature (cla: no, feature)
+
+
+#### sallaben - 1 pull request(s)
+
+[2615](https://github.com/flutter/plugins/pull/2615) [url_launcher] typo in pubspec.yaml (cla: yes)
+
+
+#### EdSabino - 1 pull request(s)
+
+[2433](https://github.com/flutter/plugins/pull/2433) [google_maps_flutter] Crash of moveCamera on old android devices (cla: yes, in review)
+
+
+#### markfili - 1 pull request(s)
+
+[3396](https://github.com/flutter/plugins/pull/3396) [camera] set useAutoFocus to true by default (cla: yes)
+
+
+#### sanjoli63 - 1 pull request(s)
+
+[69650](https://github.com/flutter/flutter/pull/69650) Update ReorderableListView API docs (cla: yes, f: material design, framework)
+
+
+#### Eddiegooo - 1 pull request(s)
+
+[3357](https://github.com/flutter/plugins/pull/3357) fix url == nil creash (cla: no)
+
+
+#### KevinTheGray - 1 pull request(s)
+
+[2771](https://github.com/flutter/plugins/pull/2771) [connectivity] No Location Permission preprocessor flag (cla: yes)
+
+
+#### saurik - 1 pull request(s)
+
+[67899](https://github.com/flutter/flutter/pull/67899) Avoid skipping variable initialization using case. (cla: yes, tool, waiting for tree to go green)
+
+
+#### sfanxiang - 1 pull request(s)
+
+[860](https://github.com/flutter/plugins/pull/860) [video_player] Add speed adjustment support for Android (cla: yes, feature)
+
+
+#### shahriar-azad-evan-github-io - 1 pull request(s)
+
+[69277](https://github.com/flutter/flutter/pull/69277) Improved README.md (cla: no, invalid)
+
+
+#### shaqian - 1 pull request(s)
+
+[1247](https://github.com/flutter/plugins/pull/1247) [webview_flutter] Add loadAssetFile to load html file from local assets (cla: no, in review)
+
+
+#### shaynekellyii - 1 pull request(s)
+
+[3104](https://github.com/flutter/plugins/pull/3104) Bugfix/ios 14 crash (cla: yes)
+
+
+#### KalilDev - 1 pull request(s)
+
+[17388](https://github.com/flutter/engine/pull/17388) [web] Fix decodeImageFromPixels (cla: yes, platform-web)
+
+
+#### shiqizhenyes - 1 pull request(s)
+
+[69076](https://github.com/flutter/flutter/pull/69076) Fix mac android studio flutter plugin issues (cla: no, tool)
+
+
+#### shouichi - 1 pull request(s)
+
+[67287](https://github.com/flutter/flutter/pull/67287) Warn tapping of non-visible area when test (a: tests, cla: yes, framework)
+
+
+#### shubham030 - 1 pull request(s)
+
+[66974](https://github.com/flutter/flutter/pull/66974) localization for shona language (a: internationalization, cla: yes, f: cupertino, f: material design, framework)
+
+
+#### shubham8170 - 1 pull request(s)
+
+[68462](https://github.com/flutter/flutter/pull/68462) Create different_use_of_drawer (cla: no)
+
+
+#### EkilDeew - 1 pull request(s)
+
+[2247](https://github.com/flutter/plugins/pull/2247) [camera] fix video recording crash on iOS (cla: yes)
+
+
+#### singhmitesh - 1 pull request(s)
+
+[71174](https://github.com/flutter/flutter/pull/71174) AdoptAWidget: PageView (cla: yes, d: api docs, d: examples, documentation, framework)
+
+
+#### singhsuryanshu - 1 pull request(s)
+
+[69503](https://github.com/flutter/flutter/pull/69503) AdoptAWidget: FittedBox (adopt a widget, cla: yes, d: api docs, framework, waiting for tree to go green)
+
+
+#### sldsrg - 1 pull request(s)
+
+[65832](https://github.com/flutter/flutter/pull/65832) fix issue #55400 PopupMenuButton positions menu incorrectly with nest… (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### slightfoot - 1 pull request(s)
+
+[58673](https://github.com/flutter/flutter/pull/58673) [flutter] Fix for ScrollController async access exception in Scrollbar Widget. (cla: yes, customer: wednesday, f: cupertino, f: material design, framework)
+
+
+#### sm2017 - 1 pull request(s)
+
+[51919](https://github.com/flutter/flutter/pull/51919) Added keyboard_arrow_left and keyboard_arrow_right to kMirroredIcons (cla: yes, f: material design, framework, team)
+
+
+#### smm13344331 - 1 pull request(s)
+
+[719](https://github.com/flutter/plugins/pull/719) [video_player]added adaptive track selector for MPEG-dash format in android (cla: yes, feature)
+
+
+#### songfei - 1 pull request(s)
+
+[65605](https://github.com/flutter/flutter/pull/65605) fix the bug of DropdownButton popup widget position error (cla: yes, f: material design, framework)
+
+
+#### 25ma - 1 pull request(s)
+
+[67989](https://github.com/flutter/flutter/pull/67989) merge branch  (cla: no)
+
+
+#### Faiizii - 1 pull request(s)
+
+[63809](https://github.com/flutter/flutter/pull/63809) CircleAvatar with border issue#13566. (cla: yes, f: material design, framework)
+
+
+#### srburton - 1 pull request(s)
+
+[2546](https://github.com/flutter/plugins/pull/2546) [FIX] - Gradle (cla: no)
+
+
+#### sriram-an - 1 pull request(s)
+
+[70586](https://github.com/flutter/flutter/pull/70586) Flutter stable framework 1.20.3 cherrypicks (#64984) (a: tests, cla: no, d: examples, engine, f: cupertino, f: material design, framework, team, tool)
+
+
+#### srujzs - 1 pull request(s)
+
+[19852](https://github.com/flutter/engine/pull/19852) Remove suppression of null-related warnings (cla: yes)
+
+
+#### stefanrusek - 1 pull request(s)
+
+[55895](https://github.com/flutter/flutter/pull/55895) Enable custom selection toolbar actions. (cla: yes, f: cupertino, f: material design, framework)
+
+
+#### Jordanlelay - 1 pull request(s)
+
+[2738](https://github.com/flutter/plugins/pull/2738) [device_info] Add toString future (cla: yes)
+
+
+#### sumujain1995 - 1 pull request(s)
+
+[2946](https://github.com/flutter/plugins/pull/2946) [battery] low power mode feature for iOS devices (cla: yes)
+
+
+#### swiftrust - 1 pull request(s)
+
+[71287](https://github.com/flutter/flutter/pull/71287) Fix crash on mouse drag (cla: no, f: material design, framework, waiting for customer response)
+
+
+#### sysint64 - 1 pull request(s)
+
+[69668](https://github.com/flutter/flutter/pull/69668) fix #24469, #67354 (cla: yes, framework, waiting for tree to go green)
+
+
+#### tadaspetra - 1 pull request(s)
+
+[69530](https://github.com/flutter/flutter/pull/69530) AdoptAWidget: MaterialBanner (adopt a widget, cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### tamird - 1 pull request(s)
+
+[23082](https://github.com/flutter/engine/pull/23082) [fuchsia] Remove fuchsia.netstack.Netstack (cla: yes, waiting for tree to go green)
+
+
+#### techievbv - 1 pull request(s)
+
+[2931](https://github.com/flutter/plugins/pull/2931) [camera] Fixed captured image stretching issue on some low end android devices (cla: no)
+
+
+#### teeeya - 1 pull request(s)
+
+[68792](https://github.com/flutter/flutter/pull/68792) The ability to add a bottom to the search AppBar  (cla: no, f: material design, framework)
+
+
+#### Jesse-Bakker - 1 pull request(s)
+
+[66645](https://github.com/flutter/flutter/pull/66645) [flutter_tools] Use XDG_CONFIG_HOME dir by default for config files (cla: yes, tool)
+
+
+#### thaysg - 1 pull request(s)
+
+[71381](https://github.com/flutter/flutter/pull/71381) Venda (cla: no, engine, f: material design, framework, team, tool)
+
+
+#### thgoebel - 1 pull request(s)
+
+[21208](https://github.com/flutter/engine/pull/21208) Fix x-axis direction in Offset.direction doc (cla: yes)
+
+
+#### timotaoh - 1 pull request(s)
+
+[72225](https://github.com/flutter/flutter/pull/72225) Update data_table.dart (cla: yes)
+
+
+#### timtraversy - 1 pull request(s)
+
+[2085](https://github.com/flutter/plugins/pull/2085) [google_maps_flutter] [WIP] Create Overlay parent class (WIP, cla: yes)
+
+
+#### tiya-google - 1 pull request(s)
+
+[68794](https://github.com/flutter/flutter/pull/68794) Add bottom to search bar (cla: yes, f: material design, framework, team)
+
+
+#### tmarzeion - 1 pull request(s)
+
+[3379](https://github.com/flutter/plugins/pull/3379) Removed mobile platform plugins (cla: no)
+
+
+#### JarrodCColburn - 1 pull request(s)
+
+[2888](https://github.com/flutter/plugins/pull/2888) [plugin_platform_interface] typo in link (cla: no, waiting for test harness)
+
+
+#### topnax - 1 pull request(s)
+
+[2655](https://github.com/flutter/plugins/pull/2655) [camera] A fix for stopImageStream method which solves a stale images bug (cla: yes)
+
+
+#### truongsinh - 1 pull request(s)
+
+[1317](https://github.com/flutter/plugins/pull/1317) [camera] fix camera flutter build fails on android (bugfix, cla: yes)
+
+
+#### tsvillain - 1 pull request(s)
+
+[69518](https://github.com/flutter/flutter/pull/69518) AdoptAWidget: Tooltip (adopt a widget, cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### ttalviste - 1 pull request(s)
+
+[870](https://github.com/flutter/plugins/pull/870) [local_auth] Add null checking for getAvailableBiometrics method call (cla: yes)
+
+
+#### JONA-Cureambit - 1 pull request(s)
+
+[1400](https://github.com/flutter/plugins/pull/1400) [video_player] Implemented playback speed feature (backlog, cla: no, feature)
+
+
+#### tyfkda - 1 pull request(s)
+
+[1608](https://github.com/flutter/plugins/pull/1608) [location_background] Fix location authorization message in example (bugfix, cla: yes)
+
+
+#### JLFrick - 1 pull request(s)
+
+[73006](https://github.com/flutter/flutter/pull/73006) [flutter_releases] Flutter 1.25.0-8.1.pre framework cherrypicks (#72382) (cla: no, engine, framework)
+
+
+#### uday1921 - 1 pull request(s)
+
+[73412](https://github.com/flutter/flutter/pull/73412) song/img (cla: no)
+
+
+#### uppet - 1 pull request(s)
+
+[19355](https://github.com/flutter/engine/pull/19355) Both ui.image and ui.picture should have a GetAllocationSize interface (cla: yes)
+
+
+#### Gioxxy - 1 pull request(s)
+
+[2871](https://github.com/flutter/plugins/pull/2871) [camera] Fix 'getSurface() on a null object reference' Android crash (cla: yes)
+
+
+#### IsmailAbdirahman - 1 pull request(s)
+
+[69524](https://github.com/flutter/flutter/pull/69524) AdoptAWidget: NotificationListener (adopt a widget, cla: yes, framework)
+
+
+#### vikas886 - 1 pull request(s)
+
+[67013](https://github.com/flutter/flutter/pull/67013) Improving  README.md (cla: no, invalid)
+
+
+#### vimerzhao - 1 pull request(s)
+
+[71196](https://github.com/flutter/flutter/pull/71196) [flutter_tools]fix typo in printHowToConsumeAar,which case sync fail (cla: yes, tool, waiting for tree to go green)
+
+
+#### viralkachhadiya - 1 pull request(s)
+
+[73101](https://github.com/flutter/flutter/pull/73101) reset date in date_picker with one click button (cla: yes, f: material design, framework)
+
+
+#### vivaldi-ch - 1 pull request(s)
+
+[2810](https://github.com/flutter/plugins/pull/2810) Feature/vc/android camera recalibration (cla: no)
+
+
+#### voobel - 1 pull request(s)
+
+[71656](https://github.com/flutter/flutter/pull/71656) enableFlutterDriverExtension: optionally disable text entry emulation (a: tests, cla: yes, framework)
+
+
+#### wangbo4020 - 1 pull request(s)
+
+[3270](https://github.com/flutter/plugins/pull/3270) [webview_flutter] Allow config ignoreSslError on Android (cla: no)
+
+
+#### wanglikun7342 - 1 pull request(s)
+
+[73141](https://github.com/flutter/flutter/pull/73141) fix(flutter tool): fix breakpoint mode crash for BuildableMacOSApp (cla: yes, tool)
+
+
+#### wesleyzeng - 1 pull request(s)
+
+[22761](https://github.com/flutter/engine/pull/22761) Merge pull request #1 from flutter/master (cla: yes)
+
+
+#### Immortalin - 1 pull request(s)
+
+[1457](https://github.com/flutter/plugins/pull/1457) [webview_flutter] Added Geolocation support (cla: no)
+
+
+#### worldofsites - 1 pull request(s)
+
+[65617](https://github.com/flutter/flutter/pull/65617) Allow to change default height of banner widget (cla: yes, framework)
+
+
+#### xclud - 1 pull request(s)
+
+[69534](https://github.com/flutter/flutter/pull/69534) TextField's hintText should support TextDirection. (cla: yes, f: material design, framework)
+
+
+#### xkeyC - 1 pull request(s)
+
+[3378](https://github.com/flutter/plugins/pull/3378) [package_info] Added get packageInfo by package name  (cla: yes)
+
+
+#### GroovinChip - 1 pull request(s)
+
+[63584](https://github.com/flutter/flutter/pull/63584) Update Builder widget documentation (cla: yes, d: api docs, documentation, framework)
+
+
+#### xujim - 1 pull request(s)
+
+[14155](https://github.com/flutter/engine/pull/14155) Fix iOS accessibility bridge leak (affects: add-to-app, cla: yes)
+
+
+#### Guokai-Cheng - 1 pull request(s)
+
+[21204](https://github.com/flutter/engine/pull/21204) Fix PlatformViewIOS::UpdateSemantics null pointer crash problem (cla: yes, platform-android, platform-ios)
+
+
+#### ycherniavskyi - 1 pull request(s)
+
+[73571](https://github.com/flutter/flutter/pull/73571) Expose insetPadding and clipBehavior in SimpleDialog (cla: yes, f: material design, framework, waiting for tree to go green)
+
+
+#### ycv005 - 1 pull request(s)
+
+[67127](https://github.com/flutter/flutter/pull/67127) Updating Gradient.dart for fixiing syntax error (cla: yes, framework)
+
+
+#### younghwan - 1 pull request(s)
+
+[65182](https://github.com/flutter/flutter/pull/65182) Apply darkmode style (cla: yes, team, tool, waiting for tree to go green)
+
+
+#### Himanshuranjan30 - 1 pull request(s)
+
+[66648](https://github.com/flutter/flutter/pull/66648) removed unused dart:async (cla: yes, framework)
+
+
+#### yubenben - 1 pull request(s)
+
+[3160](https://github.com/flutter/plugins/pull/3160) Videoplay cache (cla: no)
+
+
+#### HeavenOSK - 1 pull request(s)
+
+[67860](https://github.com/flutter/flutter/pull/67860) [Improvement] Add prefix `Alignment.` for toString of Alignment (cla: yes, framework)
+
+
+#### huanghongxun - 1 pull request(s)
+
+[23950](https://github.com/flutter/engine/pull/23950) Hides symbols exported by statically linked libcxxabi (cla: no)
 
 
 

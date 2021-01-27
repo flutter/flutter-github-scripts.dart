@@ -1054,13 +1054,13 @@ class PullRequest {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
     }
-    if (node['reviewers']['edges'] != null &&
-        node['reviewers']['edges'].length != 0) {
+    if (node['reviews']['edges'] != null &&
+        node['reviews']['edges'].length != 0) {
       reviewers = List<Actor>();
-      for (var node in node['assignees']['edges']) {
-        reviewers.add(Actor.fromGraphQL(node));
+      for (var node in node['reviews']['edges']) {
+        if (node['node']['author'] != null)
+          reviewers.add(Actor.fromGraphQL(node['node']['author']));
       }
-      ;
     }
     return PullRequest(
         node['title'],
