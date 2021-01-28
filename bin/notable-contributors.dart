@@ -40,8 +40,9 @@ class Options {
           negatable: true,
           help: 'show all instead of community contributors')
       ..addFlag('authors',
-          defaultsTo: true, negatable: false, help: 'report for authors')
-      ..addFlag('reviewers', negatable: false, help: 'report for reviewers');
+          defaultsTo: false, negatable: false, help: 'report for authors')
+      ..addFlag('reviewers',
+          defaultsTo: false, negatable: false, help: 'report for reviewers');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -49,6 +50,10 @@ class Options {
           _results.rest.length != 2) throw ('need start and end dates!');
       if (_results['merged'] && _results['closed'])
         throw ('--merged and --closed are mutually exclusive!');
+      if (!_results['authors'] && !_results['reviewers'])
+        throw ('must pass one of --authors or --reviewers!');
+      if (_results['authors'] && _results['reviewers'])
+        throw ('must pass only one of --authors or --reviewers!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -139,31 +144,23 @@ void main(List<String> args) async {
     } else {
       wasUnpaid = true;
       if (opts.reviewers) {
-        for (var reviewer in pullRequest.reviewers) {
-          if (!paidContributors.contains(reviewer.login)) {
-            wasUnpaid = false;
-            break;
+        if (pullRequest.reviewers != null &&
+            pullRequest.reviewers.length != 0) {
+          for (var reviewer in pullRequest.reviewers) {
+            if (paidContributors.contains(reviewer.login)) {
+              wasUnpaid = false;
+              break;
+            }
           }
         }
       }
     }
-    if (pullRequest.author != null && wasUnpaid) {
+    if (wasUnpaid) {
       unpaidContributions.add(pullRequest);
       continue;
     } else {
       paidContributions.add(pullRequest);
       continue;
-    }
-    if (pullRequest.assignees != null) {
-      for (var assignee in pullRequest.assignees) {
-        if (!paidContributors.contains(assignee.login)) {
-          unpaidContributions.add(pullRequest);
-          break;
-        } else {
-          paidContributions.add(pullRequest);
-          break;
-        }
-      }
     }
   }
 
