@@ -1238,7 +1238,7 @@ class PullRequest {
   ''';
 }
 
-enum ClusterType { byLabel, byAuthor, byAssignee, byMilestone }
+enum ClusterType { byLabel, byAuthor, byAssignee, byReviewer, byMilestone }
 enum ClusterReportSort { byKey, byCount }
 
 class Cluster {
@@ -1321,6 +1321,30 @@ class Cluster {
     return Cluster._internal(ClusterType.byAssignee, result);
   }
 
+  static Cluster byReviewers(List<dynamic> issuesOrPullRequests) {
+    var result = SplayTreeMap<String, dynamic>();
+    result[_unassignedKey] = List<dynamic>();
+
+    for (var item in issuesOrPullRequests) {
+      if (!(item is PullRequest)) {
+        throw ('invalid type!');
+      }
+      var pr = item as PullRequest;
+      if (pr.reviewers == null || pr.reviewers.length == 0) {
+        result[_unassignedKey].add(item);
+      } else
+        for (var reviewer in pr.reviewers) {
+          var name = reviewer.login;
+          if (!result.containsKey(name)) {
+            result[name] = List<dynamic>();
+          }
+          result[name].add(item);
+        }
+    }
+
+    return Cluster._internal(ClusterType.byReviewer, result);
+  }
+
   static Cluster byMilestone(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
     result[_noMilestoneKey] = List<dynamic>();
@@ -1347,6 +1371,9 @@ class Cluster {
     switch (type) {
       case ClusterType.byAssignee:
         result = '${result} assignees';
+        break;
+      case ClusterType.byReviewer:
+        result = '{$result} reviewers.';
         break;
       case ClusterType.byAuthor:
         result = '${result} authors';
@@ -1433,6 +1460,7 @@ class Cluster {
             .toDouble();
         break;
       case ClusterType.byAssignee:
+      case ClusterType.byReviewer:
         l = (clusters.keys.contains(_unassignedKey)
                 ? clusters.keys.length - 1
                 : clusters.keys.length)
@@ -1467,6 +1495,7 @@ class Cluster {
             .toDouble();
         break;
       case ClusterType.byAssignee:
+      case ClusterType.byReviewer:
         l = (clusters.keys.contains(_unassignedKey)
                 ? clusters.keys.length - 1
                 : clusters.keys.length)

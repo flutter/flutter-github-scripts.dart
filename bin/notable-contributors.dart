@@ -10,6 +10,8 @@ class Options {
   bool get showClosed => _results['closed'];
   bool get showMerged => _results['merged'];
   bool get onlyNotable => !_results['all-contributors'];
+  bool get authors => _results['authors'];
+  bool get reviewers => _results['reviewers'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null
@@ -36,7 +38,10 @@ class Options {
           defaultsTo: false,
           abbr: 'a',
           negatable: true,
-          help: 'show all instead of community contributors');
+          help: 'show all instead of community contributors')
+      ..addFlag('authors',
+          defaultsTo: true, negatable: false, help: 'report for authors')
+      ..addFlag('reviewers', negatable: false, help: 'report for reviewers');
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -67,12 +72,12 @@ void main(List<String> args) async {
   final orgMembersContents =
       File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
-  var googleContributors = List<String>();
+  var paidContributors = List<String>();
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
             (row[3].toString().toUpperCase().contains('GOOGLE')) ||
         (row[3].toString().toUpperCase().contains('CANONICAL')))
-      googleContributors.add(row[0].toString());
+      paidContributors.add(row[0].toString());
   });
 
   final repos = ['flutter', 'engine', 'plugins'];
@@ -104,12 +109,15 @@ void main(List<String> args) async {
   if (opts.showMerged) reportType = 'merged';
   if (opts.showClosed) reportType = 'closed';
 
+  var kind = opts.authors ? 'contributed' : 'reviewed';
+  var people = opts.authors ? 'contributors' : 'reviewers';
+
   print(opts.showClosed || opts.showMerged
-      ? "# Non-Google contributors contributing ${reportType} PRs from " +
+      ? "# Non-Google contributors ${kind} ${reportType} PRs from " +
           opts.from.toIso8601String() +
           ' to ' +
           opts.to.toIso8601String()
-      : "# Non-Google contributors contributing ${reportType} PRs");
+      : "# Non-Google contributors ${kind} ${reportType} PRs");
 
   if (false) {
     print('## All issues\n');
@@ -119,40 +127,57 @@ void main(List<String> args) async {
 
   print('There were ${prs.length} pull requests.\n\n');
 
-  var nonGoogleContributions = List<PullRequest>();
-  var uninterestingContributors = List<PullRequest>();
+  var unpaidContributions = List<PullRequest>();
+  var paidContributions = List<PullRequest>();
   int processed = 0;
   for (var item in prs) {
     var pullRequest = item as PullRequest;
     processed++;
-    if (pullRequest.author != null &&
-        !googleContributors.contains(pullRequest.author.login)) {
-      nonGoogleContributions.add(pullRequest);
+    var wasUnpaid = false;
+    if (opts.authors && !paidContributors.contains(pullRequest.author.login)) {
+      wasUnpaid = true;
+    } else {
+      wasUnpaid = true;
+      if (opts.reviewers) {
+        for (var reviewer in pullRequest.reviewers) {
+          if (!paidContributors.contains(reviewer.login)) {
+            wasUnpaid = false;
+            break;
+          }
+        }
+      }
+    }
+    if (pullRequest.author != null && wasUnpaid) {
+      unpaidContributions.add(pullRequest);
       continue;
     } else {
-      uninterestingContributors.add(pullRequest);
+      paidContributions.add(pullRequest);
       continue;
     }
     if (pullRequest.assignees != null) {
       for (var assignee in pullRequest.assignees) {
-        if (!googleContributors.contains(assignee.login)) {
-          nonGoogleContributions.add(pullRequest);
+        if (!paidContributors.contains(assignee.login)) {
+          unpaidContributions.add(pullRequest);
           break;
         } else {
-          uninterestingContributors.add(pullRequest);
+          paidContributions.add(pullRequest);
           break;
         }
       }
     }
   }
 
-  var clustersInterestingOwned = Cluster.byAuthor(nonGoogleContributions);
-  var clustersGooglerOwned = Cluster.byAuthor(uninterestingContributors);
+  var clustersInterestingOwned = opts.authors
+      ? Cluster.byAuthor(unpaidContributions)
+      : Cluster.byReviewers(unpaidContributions);
+  var clustersGooglerOwned = opts.authors
+      ? Cluster.byAuthor(paidContributions)
+      : Cluster.byReviewers(paidContributions);
 
   print(
-      '${nonGoogleContributions.length} PRs were contributed by community members.\n\n');
+      '${unpaidContributions.length} PRs were ${kind} by community members.\n\n');
   print(
-      '\nThere were ${clustersInterestingOwned.keys.length} community contributors.\n\n');
+      '\nThere were ${clustersInterestingOwned.keys.length} unique --community ${people}.\n\n');
   var totalContributors =
       clustersGooglerOwned.keys.length + clustersInterestingOwned.keys.length;
   print('\nThere were ${totalContributors} total contributors.\n\n');

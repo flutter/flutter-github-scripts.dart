@@ -162,7 +162,7 @@ void main(List<String> args) async {
     if (opts.labels) clusters = Cluster.byLabel(items);
     if (opts.authors) clusters = Cluster.byAuthor(items);
     if (opts.assignees) clusters = Cluster.byAssignees(items);
-    //if (opts.reviewers) clusters = Cluster.byReviewers(items);
+    if (opts.reviewers) clusters = Cluster.byReviewers(items);
 
     for (var key in clusters.clusters.keys) keys.add(key);
 
