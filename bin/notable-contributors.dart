@@ -141,7 +141,7 @@ void main(List<String> args) async {
     var wasUnpaid = false;
     if (opts.authors && !paidContributors.contains(pullRequest.author.login)) {
       wasUnpaid = true;
-    } else {
+    } else if (opts.reviewers) {
       wasUnpaid = true;
       if (opts.reviewers) {
         if (pullRequest.reviewers != null &&
