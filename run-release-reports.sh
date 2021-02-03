@@ -1,10 +1,11 @@
 
 # flutter-1.22
 
-FROM="2020-09-10T18:17:00";
+FROM="2020-09-10T18:17:00-0800";
 TO=$1 
 
-[ -z "$TO" ] && TO=`date --iso-8601=seconds`
+# [ -z "$TO" ] && TO=`date --iso-8601=seconds`
+[ -z "$TO" ] && TO='2021-01-26T10:58:00-0800'
 
 echo "Running release reports from ${FROM} to ${TO}"
 
@@ -18,7 +19,7 @@ echo -n "Clusters..."
 dart bin/clusters.dart --merged --labels --prs $FROM $TO > prs_merged_by_label.md
 echo "done."
 echo -n "PRs merged..."
-dart bin/prs.dart --merged $FROM $TO > prs_merged.md
+dart bin/prs.dart --skipAutorollers --merged $FROM $TO > prs_merged.md
 echo "done."
 echo -n "Issues closed..."
 dart bin/issues.dart --closed $FROM $TO > issues_closed.md

@@ -114,15 +114,17 @@ void main(List<String> args) async {
   if (opts.showMerged) reportType = 'merged';
   if (opts.showClosed) reportType = 'closed';
 
-  var kind = opts.authors ? 'contributed' : 'reviewed';
+  var kind = opts.authors ? 'contributing' : 'reviewing';
+  var kindPastTense = opts.authors ? 'contributed' : 'reviewed';
   var people = opts.authors ? 'contributors' : 'reviewers';
+  var paidUnpaid = opts.onlyNotable ? 'unpaid' : 'all';
 
   print(opts.showClosed || opts.showMerged
-      ? "# Non-Google contributors ${kind} ${reportType} PRs from " +
+      ? "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs from " +
           opts.from.toIso8601String() +
           ' to ' +
           opts.to.toIso8601String()
-      : "# Non-Google contributors ${kind} ${reportType} PRs");
+      : "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs");
 
   if (false) {
     print('## All issues\n');
@@ -131,13 +133,19 @@ void main(List<String> args) async {
   }
 
   print('There were ${prs.length} pull requests.\n\n');
-
+  var allParticipants = Set<String>();
   var unpaidContributions = List<PullRequest>();
   var paidContributions = List<PullRequest>();
-  int processed = 0;
   for (var item in prs) {
     var pullRequest = item as PullRequest;
-    processed++;
+    if (opts.authors) {
+      allParticipants.add(pullRequest.author.login);
+    } else {
+      if (pullRequest.reviewers != null)
+        for (var reviewer in pullRequest.reviewers) {
+          allParticipants.add(reviewer.login);
+        }
+    }
     var wasUnpaid = false;
     if (opts.authors && !paidContributors.contains(pullRequest.author.login)) {
       wasUnpaid = true;
@@ -152,9 +160,12 @@ void main(List<String> args) async {
               break;
             }
           }
+        } else {
+          wasUnpaid = false;
         }
       }
     }
+
     if (wasUnpaid) {
       unpaidContributions.add(pullRequest);
       continue;
@@ -164,22 +175,23 @@ void main(List<String> args) async {
     }
   }
 
-  var clustersInterestingOwned = opts.authors
-      ? Cluster.byAuthor(unpaidContributions)
-      : Cluster.byReviewers(unpaidContributions);
-  var clustersGooglerOwned = opts.authors
-      ? Cluster.byAuthor(paidContributions)
-      : Cluster.byReviewers(paidContributions);
+  List<PullRequest> prsOfInterest = opts.onlyNotable
+      ? unpaidContributions
+      : new List.from(unpaidContributions)
+    ..addAll(paidContributions);
+
+  var clusters = opts.authors
+      ? Cluster.byAuthor(prsOfInterest)
+      : Cluster.byReviewers(prsOfInterest);
 
   print(
-      '${unpaidContributions.length} PRs were ${kind} by community members.\n\n');
+      '${clusters.clusters.length} PRs were ${kindPastTense} by ${paidUnpaid} members.\n\n');
   print(
-      '\nThere were ${clustersInterestingOwned.keys.length} unique --community ${people}.\n\n');
-  var totalContributors =
-      clustersGooglerOwned.keys.length + clustersInterestingOwned.keys.length;
-  print('\nThere were ${totalContributors} total contributors.\n\n');
+      '\nThere were ${clusters.keys.length} unique ${paidUnpaid} ${people}.\n\n');
 
-  print(clustersInterestingOwned.toMarkdown(
+  print('\nThere were ${allParticipants.length} total contributors.\n\n');
+
+  print(clusters.toMarkdown(
       sortType: ClusterReportSort.byCount,
       skipEmpty: true,
       showStatistics: false));
