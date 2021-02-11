@@ -101,6 +101,7 @@ class GitHub {
           if (_printQuery) print(query);
           final page = await _client.query(options);
           if (page.hasErrors) {
+            print(query);
             throw (page.errors.toString());
           }
           var edges = page.data['search']['nodes'];
