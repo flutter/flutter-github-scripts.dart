@@ -615,32 +615,85 @@ class Actor {
   ''';
 }
 
-/*
-class Organization {
-  List<Team> _teams;
-  get teams => _teams;
 
-  Organization(_teams);
+class Organization {
+  String _id;
+  get id => _id;
+  String _avatarUrl;
+  get avatarUrl => _avatarUrl;
+  DateTime _createdAt;
+  get createdAt => _createdAt;
+  String _description;
+  get description => _description;
+  String _email;
+  get email => _email;
+  String _login;
+  get login => _login;
+  String _name;
+  get name => _name;
+
+
+  Organization(this._id, this._avatarUrl, this._createdAt, 
+    this._description, this._email, this._login, 
+    this._name);
 
   static Organization fromGraphQL(dynamic node) {
-    print(node);
+    return Organization(
+      node['id'],
+      node['avatarUrl'],
+      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+      node['description'],
+      node['email'],
+      node['login'],
+      node['name']
+    );
+  }
+
+  static String request(String login, {String pendingMembersAfter = null, 
+    String repositoriesAfter = null, 
+    String teamsAfter = null} ) {
+    return Organization._childQuery
+          .replaceAll(r'${login}', login)
+          .replaceAll(r'${pendingMembersAfter}', pendingMembersAfter == null ? '' : ', after: ${pendingMembersAfter}')
+          .replaceAll(r'${repositoriesAfter}', repositoriesAfter == null ? '' : 'after: ${repositoriesAfter}')
+          .replaceAll(r'${teamsAfter}', teamsAfter == null ? '' : 'after: ${teamsAfter}');
   }
 
   @override
-  bool operator ==(Object other) {
-    if identical(this, other) return true;
-    if (this is Organization && runtimeType == other.runtimeType) {
-      for(var team in _teams) {
-        if (!other.teams.contains(team)) return false;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Team &&
+          runtimeType == other.runtimeType &&
+          _id == other._id;
+
+  @override
+  int get hashCode => _id.hashCode;
+
+  static String _childQuery = r'''
+  query {
+    organization(login:"${login}") {
+      id,
+      avatarUrl,
+      createdAt, 
+      description,
+      email,
+      login,
+      name,
+      pendingMembers(first: 100${pendingMembersAfter}) {
+        totalCount,
+      },
+      repositories(first: 100${repositoriesAfter}) {
+        totalCount, 
       }
-      return true;
-    } else return false;
+      teams(first: 100${teamsAfter}) {
+        totalCount,
+      }
+    }
   }
+  ''';
 
-  @override
-  int get hashCode => _teams.hashCode;
 }
-*/
+
 
 class Team {
   String _id;
@@ -749,19 +802,8 @@ class Team {
   @override
   int get hashCode => _id.hashCode;
 
-  static var graphQLResponse = '''
-  { 
-    name, 
-    id,
-    avatarUrl,
-    createdAt,
-    description,
-    updatedAt,
-  }
-  ''';
-
 // sample ID  MDQ6VGVhbTM3MzAzNzU
-  static var _childQuery = r'''
+  static String _childQuery = r'''
   query { 
       node(id:"${ownerId}") {
         ... on Team {
