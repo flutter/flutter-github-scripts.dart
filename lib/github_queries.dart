@@ -51,7 +51,7 @@ class GitHub {
       print(query);
       throw (page.errors.toString());
     }
-    return Organization.fromGraphQL(page.data['node']);
+    return Organization.fromGraphQL(page.data['organization']);
   }
 
   /// Search for issues and PRs matching criteria across a date range.
