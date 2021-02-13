@@ -118,6 +118,7 @@ void main(List<String> args) async {
   var kindPastTense = opts.authors ? 'contributed' : 'reviewed';
   var people = opts.authors ? 'contributors' : 'reviewers';
   var paidUnpaid = opts.onlyNotable ? 'unpaid' : 'all';
+  var paidUnPaidPeople = opts.onlyNotable ? 'unpaid ' : '';
 
   print(opts.showClosed || opts.showMerged
       ? "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs from " +
@@ -138,7 +139,9 @@ void main(List<String> args) async {
   var paidContributions = List<PullRequest>();
   for (var item in prs) {
     var pullRequest = item as PullRequest;
-    if (opts.authors) {
+    if (opts.authors &&
+        pullRequest.author != null &&
+        pullRequest.author.login != null) {
       allParticipants.add(pullRequest.author.login);
     } else {
       if (pullRequest.reviewers != null)
@@ -147,7 +150,9 @@ void main(List<String> args) async {
         }
     }
     var wasUnpaid = false;
-    if (opts.authors && !paidContributors.contains(pullRequest.author.login)) {
+    if (opts.authors &&
+        pullRequest.author != null &&
+        !paidContributors.contains(pullRequest.author.login)) {
       wasUnpaid = true;
     } else if (opts.reviewers) {
       wasUnpaid = true;
@@ -177,19 +182,18 @@ void main(List<String> args) async {
 
   List<PullRequest> prsOfInterest = opts.onlyNotable
       ? unpaidContributions
-      : new List.from(unpaidContributions)
-    ..addAll(paidContributions);
+      : (new List.from(unpaidContributions)..addAll(paidContributions));
 
   var clusters = opts.authors
       ? Cluster.byAuthor(prsOfInterest)
       : Cluster.byReviewers(prsOfInterest);
 
-  print(
-      '${clusters.clusters.length} PRs were ${kindPastTense} by ${paidUnpaid} members.\n\n');
-  print(
-      '\nThere were ${clusters.keys.length} unique ${paidUnpaid} ${people}.\n\n');
+  clusters.clusters.remove('__unassigned__');
 
-  print('\nThere were ${allParticipants.length} total contributors.\n\n');
+  print(
+      '${prsOfInterest.length} PRs were ${kindPastTense} by ${paidUnpaid} members.\n\n');
+  print(
+      'There were ${clusters.keys.length} unique ${paidUnPaidPeople}s${people}.\n\n');
 
   print(clusters.toMarkdown(
       sortType: ClusterReportSort.byCount,

@@ -28,6 +28,32 @@ class GitHub {
     _client = GraphQLClient(cache: InMemoryCache(), link: _link);
   }
 
+  /// Fetch a team by its Github id.
+  Future<Team> team(String id) async {
+    var query = Team.request(id);
+    final options = QueryOptions(document: query);
+    if (_printQuery) print(query);
+    final page = await _client.query(options);
+    if (page.hasErrors) {
+      print(query);
+      throw (page.errors.toString());
+    }
+    return Team.fromGraphQL(page.data['node']);
+  }
+
+  /// Fetch an organiation by its login.
+  Future<Organization> organization(String login) async {
+    var query = Organization.request(login);
+    final options = QueryOptions(document: query);
+    if (_printQuery) print(query);
+    final page = await _client.query(options);
+    if (page.hasErrors) {
+      print(query);
+      throw (page.errors.toString());
+    }
+    return Organization.fromGraphQL(page.data['organization']);
+  }
+
   /// Search for issues and PRs matching criteria across a date range.
   /// Note that search uses the GitHub GraphQL `search` function.
   /// Searching criteria occurs all on the server side.
@@ -101,6 +127,7 @@ class GitHub {
           if (_printQuery) print(query);
           final page = await _client.query(options);
           if (page.hasErrors) {
+            print(query);
             throw (page.errors.toString());
           }
           var edges = page.data['search']['nodes'];
