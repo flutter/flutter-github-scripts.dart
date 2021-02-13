@@ -632,6 +632,66 @@ class Organization {
   String _name;
   get name => _name;
 
+  get pendingMembersStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = Organization.request(id, pendingMembersAfter: after);
+      final options = QueryOptions(document: query);
+
+      final page = await _client.query(options);
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['organization']['pendingMembers']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Error {
+        return;
+      }
+      // Parse the responses into a buffer
+      var membersBuffer = List<Actor>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['organization']['pendingMembers']['edges']) {
+        membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
+      }
+
+      // Yield each item in our buffer
+      if (membersBuffer.length > 0)
+        do {
+          yield membersBuffer[bufferIndex++];
+        } while (bufferIndex < membersBuffer.length);
+    } while (hasNextPage);
+  }
+
+  get teamsStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = Organization.request(_login, teamsAfter: after);
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['organization']['teams']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Error {
+        return;
+      }
+      // Parse the responses into a buffer
+      var teamsBuffer = List<Team>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['organization']['teams']['edges']) {
+        teamsBuffer.add(Team.fromGraphQL(jsonSub['node']));
+      }
+
+      // Yield each item in our buffer
+      if (teamsBuffer.length > 0)
+        do {
+          yield teamsBuffer[bufferIndex++];
+        } while (bufferIndex < teamsBuffer.length);
+    } while (hasNextPage);
+  }
 
   Organization(this._id, this._avatarUrl, this._createdAt, 
     this._description, this._email, this._login, 
@@ -679,14 +739,43 @@ class Organization {
       email,
       login,
       name,
-      pendingMembers(first: 100${pendingMembersAfter}) {
+      pendingMembers(first: 10${pendingMembersAfter}) {
         totalCount,
+        pageInfo {
+          hasNextPage,
+          endCursor,
+        },
+        edges {
+          node {
+            login,
+            resourcePath,
+            url
+          }
+        }
       },
-      repositories(first: 100${repositoriesAfter}) {
+      repositories(first: 10${repositoriesAfter}) {
         totalCount, 
+          pageInfo {
+          hasNextPage,
+          endCursor,
+        },
       }
-      teams(first: 100${teamsAfter}) {
+      teams(first: 10${teamsAfter}) {
         totalCount,
+        pageInfo {
+          hasNextPage,
+          endCursor,
+        },
+        edges {
+          node {
+            id,
+            name,
+            description,
+            avatarUrl,
+            createdAt,
+            updatedAt,
+          }
+        }
       }
     }
   }
@@ -813,7 +902,7 @@ class Team {
         avatarUrl,
         createdAt,
         updatedAt,
-        members(first: 100${membersAfter}) {
+        members(first: 10${membersAfter}) {
           totalCount,
           pageInfo {
           	hasNextPage,
@@ -827,7 +916,7 @@ class Team {
             }
           }
         },
-        childTeams(first: 100${childTeamsAfter} ) {
+        childTeams(first: 10${childTeamsAfter} ) {
           totalCount,
           pageInfo {
             hasNextPage,

@@ -49,14 +49,11 @@ void main(List<String> args) async {
   print('login:\t${org.login}');
   print('description:\n-----');
   print('${org.description}');
-  print('-----\nmembers\n-----');
+  print('-----\tTeams\n-----');
 
-  /*
-  var members = '';
-  await for (var member in team.membersStream) {
-    members = '${members}${member.login}, ';
+  var teams = '';
+  await for (var team in org.teamsStream) {
+    teams = '${teams}${team.name}, ';
   }
-  print(members);
-  */
-
+  print(teams);
 }
