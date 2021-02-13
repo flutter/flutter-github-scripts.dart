@@ -615,6 +615,197 @@ class Actor {
   ''';
 }
 
+/*
+class Organization {
+  List<Team> _teams;
+  get teams => _teams;
+
+  Organization(_teams);
+
+  static Organization fromGraphQL(dynamic node) {
+    print(node);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if identical(this, other) return true;
+    if (this is Organization && runtimeType == other.runtimeType) {
+      for(var team in _teams) {
+        if (!other.teams.contains(team)) return false;
+      }
+      return true;
+    } else return false;
+  }
+
+  @override
+  int get hashCode => _teams.hashCode;
+}
+*/
+
+class Team {
+  String _id;
+  get id => _id;
+  String _avatarUrl;
+  get avatarUrl => _avatarUrl;
+  String _name;
+  get name => _name;
+  String _description;
+  get description => _description;
+  DateTime _createdAt;
+  get createdAt => _createdAt;
+  DateTime _updatedAt;
+  get updatedAt => _updatedAt;
+
+  get membersStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = Team.request(id, membersAfter: after);
+      final options = QueryOptions(document: query);
+
+      final page = await _client.query(options);
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['node']['members']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Error {
+        return;
+      }
+      // Parse the responses into a buffer
+      var membersBuffer = List<Actor>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['node']['members']['edges']) {
+        membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
+      }
+
+      // Yield each item in our buffer
+      if (membersBuffer.length > 0)
+        do {
+          yield membersBuffer[bufferIndex++];
+        } while (bufferIndex < membersBuffer.length);
+    } while (hasNextPage);
+  }
+
+  get childTeamsStream async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = Team.request(id, childTeamsAfter: after);
+      final options = QueryOptions(document: query);
+
+      final page = await _client.query(options);
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['node']['childTeams']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Error {
+        return;
+      }
+      // Parse the responses into a buffer
+      var teamBuffer = List<Team>();
+      var bufferIndex = 0;
+      for (var jsonSub in page.data['node']['childTeams']['edges']) {
+        teamBuffer.add(Team.fromGraphQL(jsonSub));
+      }
+
+      // Yield each item in our buffer
+      if (teamBuffer.length > 0)
+        do {
+          yield teamBuffer[bufferIndex++];
+        } while (bufferIndex < teamBuffer.length);
+    } while (hasNextPage);
+  }
+
+
+  Team(this._id, this._avatarUrl, this._createdAt, this._description, 
+       this._name, this._updatedAt);
+
+  static Team fromGraphQL(dynamic node) {
+    return Team(
+        node['id'],
+        node['avatarUrl'],
+        node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+        node['description'],
+        node['name'],
+        node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']));
+  }
+
+  static String request(String id, {String childTeamsAfter = null, String membersAfter = null} ) {
+    return Team._childQuery
+          .replaceAll(r'${ownerId}', id)
+          .replaceAll(r'${childTeamsAfter}', childTeamsAfter == null ? '' : ', after: ${childTeamsAfter}')
+          .replaceAll(r'${membersAfter}', membersAfter == null ? '' : 'after: ${membersAfter}');
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Team &&
+          runtimeType == other.runtimeType &&
+          _id == other._id;
+
+  @override
+  int get hashCode => _id.hashCode;
+
+  static var graphQLResponse = '''
+  { 
+    name, 
+    id,
+    avatarUrl,
+    createdAt,
+    description,
+    updatedAt,
+  }
+  ''';
+
+// sample ID  MDQ6VGVhbTM3MzAzNzU
+  static var _childQuery = r'''
+  query { 
+      node(id:"${ownerId}") {
+        ... on Team {
+        id,
+        name,
+        description,
+        avatarUrl,
+        createdAt,
+        updatedAt,
+        members(first: 100${membersAfter}) {
+          totalCount,
+          pageInfo {
+          	hasNextPage,
+          	endCursor,
+        	},
+        	edges {
+            node {
+              login,
+              resourcePath,
+              url
+            }
+          }
+        },
+        childTeams(first: 100${childTeamsAfter} ) {
+          totalCount,
+          pageInfo {
+            hasNextPage,
+            endCursor,
+          },
+          nodes {
+            avatarUrl,
+            createdAt,
+            description,
+            id,
+            name,
+            updatedAt
+          }
+        }
+      }
+    }
+  }
+  ''';
+}
+
 class Issue {
   String _title;
   get title => _title;
