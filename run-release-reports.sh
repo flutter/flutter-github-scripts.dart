@@ -9,11 +9,17 @@ TO=$1
 
 echo "Running release reports from ${FROM} to ${TO}"
 
-echo -n "Contributors..."
+echo -n "Unpaid ontributors..."
 echo -n "authors..."
 dart bin/notable-contributors.dart --authors --merged $FROM $TO > notable-contributors-committers.md
 echo -n "reviewers..."
 dart bin/notable-contributors.dart --reviewers --merged $FROM $TO > notable-contributors-reviewers.md
+echo "done."
+echo -n "All contributors..."
+echo -n "authors..."
+dart bin/notable-contributors.dart --authors --merged --all-contributors $FROM $TO > all-contributors-committers.md
+echo -n "reviewers..."
+dart bin/notable-contributors.dart --reviewers --merged  --all-contributors $FROM $TO > all-contributors-reviewers.md
 echo "done."
 echo -n "Clusters..."
 dart bin/clusters.dart --merged --labels --prs $FROM $TO > prs_merged_by_label.md
