@@ -31,7 +31,7 @@ class Options {
 
   void _printUsage() {
     print('Usage: pub run organization login');
-    print('\te.g., dart run bin/team.dart flutter=');
+    print('\te.g., dart run bin/organization.dart flutter');
     print(_parser.usage);
   }
 }
