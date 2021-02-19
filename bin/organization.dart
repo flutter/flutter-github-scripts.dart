@@ -1,5 +1,3 @@
-import 'package:graphql/client.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
@@ -30,7 +28,7 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run organization login');
+    print('Usage: dart bin/organization.dart login');
     print('\te.g., dart run bin/organization.dart flutter');
     print(_parser.usage);
   }
