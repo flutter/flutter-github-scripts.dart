@@ -54,6 +54,57 @@ class GitHub {
     return Organization.fromGraphQL(page.data['organization']);
   }
 
+  ///
+  /// Search by items or pull requests by query.
+  /// Responses limited to first 1,000 items found due to Github
+  /// `search` API limits.
+  /// Returns a string of PullRequest and Issue items.
+  dynamic searchIssuePRs(String queryString) async* {
+    var after = 'null';
+    bool hasNextPage;
+    do {
+      var query = _searchIssuesOrPRs
+          .replaceAll(r'${query}', queryString)
+          .replaceAll(r'${after}', after)
+          .replaceAll(r'${issueResponse}', Issue.graphQLResponse)
+          .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
+          .replaceAll(r'${pullRequestResponse}', PullRequest.graphQLResponse);
+      final options = QueryOptions(document: query);
+      if (_printQuery) print(query);
+      final page = await _client.query(options);
+      if (page.hasErrors) {
+        print(query);
+        print(page.errors);
+        print(page.data);
+        throw (page.errors.toString());
+      }
+      // Paginate information
+      try {
+        PageInfo pageInfo =
+            PageInfo.fromGraphQL(page.data['search']['pageInfo']);
+        hasNextPage = pageInfo.hasNextPage;
+        after = '"${pageInfo.endCursor}"';
+      } on Error {
+        return;
+      }
+
+      var buffer = List<dynamic>();
+      var bufferIndex = 0;
+      var edges = page.data['search']['nodes'];
+      edges.forEach((edge) {
+        dynamic item = edge['__typename'] == 'Issue'
+            ? Issue.fromGraphQL(edge)
+            : PullRequest.fromGraphQL(edge);
+        buffer.add(item);
+      });
+      if (buffer.length > 0) {
+        do {
+          yield buffer[bufferIndex++];
+        } while (bufferIndex < buffer.length);
+      }
+    } while (hasNextPage);
+  }
+
   /// Search for issues and PRs matching criteria across a date range.
   /// Note that search uses the GitHub GraphQL `search` function.
   /// Searching criteria occurs all on the server side.
@@ -112,7 +163,7 @@ class GitHub {
         var fetchAnotherPage = false;
         var after = 'null';
         do {
-          var query = _searchIssuesOrPRs
+          var query = _deprecated_searchIssuesOrPRs
               .replaceAll(r'${repositoryOwner}', owner)
               .replaceAll(r'${repositoryName}', name)
               .replaceAll(r'${after}', after)
@@ -391,6 +442,19 @@ class GitHub {
   ''';
 
   final _searchIssuesOrPRs = r'''
+  query { 
+    search(query:"${query}", type: ISSUE, first:20, after:${after}) {
+      issueCount,
+      pageInfo ${pageInfoResponse}
+      nodes {
+        ... on Issue ${issueResponse}
+        ... on PullRequest ${pullRequestResponse}
+      } 
+    }
+  }
+  ''';
+
+  final _deprecated_searchIssuesOrPRs = r'''
   query { 
     search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime} sort:created", type: ISSUE, first:20, after:${after}) {
       issueCount,
