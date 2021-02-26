@@ -45,7 +45,6 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  var teams = '';
   await for (var item in github.searchIssuePRs(opts.query)) {
     print(opts.tsv ? item.toTsv() : item.summary());
   }
