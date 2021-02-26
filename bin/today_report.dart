@@ -64,7 +64,7 @@ void main(List<String> args) async {
   final openedRange = DateRange(DateRangeType.range,
       start: opts.to.subtract(Duration(hours: 24 * 7)), end: opts.to);
 
-  var openIssues = await github.search(
+  var openIssues = await github.deprecated_search(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
@@ -72,7 +72,7 @@ void main(List<String> args) async {
     labels: ['P0'],
   );
 
-  var closedIssues = await github.search(
+  var closedIssues = await github.deprecated_search(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,

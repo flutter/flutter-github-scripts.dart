@@ -269,8 +269,11 @@ Creates the files notable-contributors, prs_merged_by_label, prs_merged,
 issues_closed in Markdown, DOCX, and HTML.
 
 ## enumerate_team_members.dart
-Usage: `bin/enumerate_team_members.dart [always-include-team] organization-login`
+Usage: `dart bin/enumerate_team_members.dart [always-include-team] organization-login`
 Dumps a TSV list of all teams in the indicated organization, with the members of each team.
 
+## search.dart
+Usage: `dart bin/search [--tsv] github query`
+Returns the first 1,000 results of the given github query in either TSV or markdown format.
 
 

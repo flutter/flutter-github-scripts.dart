@@ -615,7 +615,6 @@ class Actor {
   ''';
 }
 
-
 class Organization {
   String _id;
   get id => _id;
@@ -641,8 +640,8 @@ class Organization {
 
       final page = await _client.query(options);
       try {
-        PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['organization']['pendingMembers']['pageInfo']);
+        PageInfo pageInfo = PageInfo.fromGraphQL(
+            page.data['organization']['pendingMembers']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -651,7 +650,8 @@ class Organization {
       // Parse the responses into a buffer
       var membersBuffer = List<Actor>();
       var bufferIndex = 0;
-      for (var jsonSub in page.data['organization']['pendingMembers']['edges']) {
+      for (var jsonSub in page.data['organization']['pendingMembers']
+          ['edges']) {
         membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
       }
 
@@ -671,8 +671,8 @@ class Organization {
       final options = QueryOptions(document: query);
       final page = await _client.query(options);
       try {
-        PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['organization']['teams']['pageInfo']);
+        PageInfo pageInfo = PageInfo.fromGraphQL(
+            page.data['organization']['teams']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -693,38 +693,41 @@ class Organization {
     } while (hasNextPage);
   }
 
-  Organization(this._id, this._avatarUrl, this._createdAt, 
-    this._description, this._email, this._login, 
-    this._name);
+  Organization(this._id, this._avatarUrl, this._createdAt, this._description,
+      this._email, this._login, this._name);
 
   static Organization fromGraphQL(dynamic node) {
     return Organization(
-      node['id'],
-      node['avatarUrl'],
-      node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
-      node['description'],
-      node['email'],
-      node['login'],
-      node['name']
-    );
+        node['id'],
+        node['avatarUrl'],
+        node['createdAt'] == null ? null : DateTime.parse(node['createdAt']),
+        node['description'],
+        node['email'],
+        node['login'],
+        node['name']);
   }
 
-  static String request(String login, {String pendingMembersAfter = null, 
-    String repositoriesAfter = null, 
-    String teamsAfter = null} ) {
+  static String request(String login,
+      {String pendingMembersAfter = null,
+      String repositoriesAfter = null,
+      String teamsAfter = null}) {
     return Organization._childQuery
-          .replaceAll(r'${login}', login)
-          .replaceAll(r'${pendingMembersAfter}', pendingMembersAfter == null ? '' : ', after: ${pendingMembersAfter}')
-          .replaceAll(r'${repositoriesAfter}', repositoriesAfter == null ? '' : 'after: ${repositoriesAfter}')
-          .replaceAll(r'${teamsAfter}', teamsAfter == null ? '' : 'after: ${teamsAfter}');
+        .replaceAll(r'${login}', login)
+        .replaceAll(
+            r'${pendingMembersAfter}',
+            pendingMembersAfter == null
+                ? ''
+                : ', after: ${pendingMembersAfter}')
+        .replaceAll(r'${repositoriesAfter}',
+            repositoriesAfter == null ? '' : 'after: ${repositoriesAfter}')
+        .replaceAll(
+            r'${teamsAfter}', teamsAfter == null ? '' : 'after: ${teamsAfter}');
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Team &&
-          runtimeType == other.runtimeType &&
-          _id == other._id;
+      other is Team && runtimeType == other.runtimeType && _id == other._id;
 
   @override
   int get hashCode => _id.hashCode;
@@ -780,9 +783,7 @@ class Organization {
     }
   }
   ''';
-
 }
-
 
 class Team {
   String _id;
@@ -860,9 +861,8 @@ class Team {
     } while (hasNextPage);
   }
 
-
-  Team(this._id, this._avatarUrl, this._createdAt, this._description, 
-       this._name, this._updatedAt);
+  Team(this._id, this._avatarUrl, this._createdAt, this._description,
+      this._name, this._updatedAt);
 
   static Team fromGraphQL(dynamic node) {
     return Team(
@@ -874,19 +874,20 @@ class Team {
         node['updatedAt'] == null ? null : DateTime.parse(node['updatedAt']));
   }
 
-  static String request(String id, {String childTeamsAfter = null, String membersAfter = null} ) {
+  static String request(String id,
+      {String childTeamsAfter = null, String membersAfter = null}) {
     return Team._childQuery
-          .replaceAll(r'${ownerId}', id)
-          .replaceAll(r'${childTeamsAfter}', childTeamsAfter == null ? '' : ', after: ${childTeamsAfter}')
-          .replaceAll(r'${membersAfter}', membersAfter == null ? '' : 'after: ${membersAfter}');
+        .replaceAll(r'${ownerId}', id)
+        .replaceAll(r'${childTeamsAfter}',
+            childTeamsAfter == null ? '' : ', after: ${childTeamsAfter}')
+        .replaceAll(r'${membersAfter}',
+            membersAfter == null ? '' : 'after: ${membersAfter}');
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Team &&
-          runtimeType == other.runtimeType &&
-          _id == other._id;
+      other is Team && runtimeType == other.runtimeType && _id == other._id;
 
   @override
   int get hashCode => _id.hashCode;
@@ -1203,6 +1204,7 @@ class Issue {
 
   static final graphQLResponse = '''
   {
+    __typename,
     title,
     id,
     number,
@@ -1516,6 +1518,7 @@ class PullRequest {
 
   static final graphQLResponse = '''
   {
+    __typename,
     title,
     id,
     number,
