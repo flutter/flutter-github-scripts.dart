@@ -57,7 +57,7 @@ void main(List<String> args) async {
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
   // Now do the same for performance issues.
-  var openIssues = await github.search(
+  var openIssues = await github.deprecated_search(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,

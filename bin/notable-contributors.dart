@@ -101,7 +101,7 @@ void main(List<String> args) async {
 
   var prs = List<dynamic>();
   for (var repo in repos) {
-    prs.addAll(await github.search(
+    prs.addAll(await github.deprecated_search(
         owner: 'flutter',
         name: repo,
         type: GitHubIssueType.pullRequest,

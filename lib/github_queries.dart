@@ -60,7 +60,8 @@ class GitHub {
   /// Because search returns "relevant" results, it's
   /// possible that large queries may not return all elements,
   /// but only a count.
-  Future<List<dynamic>> search(
+  /// DEPRECATED
+  Future<List<dynamic>> deprecated_search(
       {String owner,
       String name,
       GitHubIssueType type = GitHubIssueType.issue,
