@@ -277,10 +277,12 @@ Usage: `dart bin/search [--tsv] github query`
 Returns the first 1,000 results of the given github query in either TSV or markdown format.
 
 ## priority_over_time.dart
-Usage `dart priority_over_time.dart [--queries] [--summarize] --from date --to date`
+Usage `dart priority_over_time.dart [--queries] [--customers] [--summarize] --from date --to date`
 
 Returns a summary of open and closed P0s, P1s, and P2s weekly over the given span.
-If --summaries is passed, reports in TSV; otherwise markdown.
-If --queries is past, shows each search term used for the open and closed queries.
+If `--summaries` is passed, reports in TSV; otherwise markdown.
+If `--queries` is passed, shows each search term used for the open and closed queries.
+if `--customers`is passed, shows only issues that also have at least one customer label.
+
 
 
