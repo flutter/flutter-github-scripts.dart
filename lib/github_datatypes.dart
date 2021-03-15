@@ -36,7 +36,7 @@ class PageInfo {
   }
 
   String toString() {
-    return 'start: ${startCursor}, end: ${endCursor}, more? ${hasNextPage}';
+    return 'startCursor: ${startCursor}, endCursor: ${endCursor}, hasNextPage: ${hasNextPage}';
   }
 
   @override

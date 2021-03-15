@@ -59,7 +59,7 @@ class GitHub {
   /// Responses limited to first 1,000 items found due to Github
   /// `search` API limits.
   /// Returns a string of PullRequest and Issue items.
-  dynamic searchIssuePRs(String queryString) async* {
+  Stream<dynamic> searchIssuePRs(String queryString) async* {
     var after = 'null';
     bool hasNextPage;
     do {
@@ -443,7 +443,7 @@ class GitHub {
 
   final _searchIssuesOrPRs = r'''
   query { 
-    search(query:"${query}", type: ISSUE, first:20, after:${after}) {
+    search(query:"${query}", type: ISSUE, first:5, after:${after}) {
       issueCount,
       pageInfo ${pageInfoResponse}
       nodes {
