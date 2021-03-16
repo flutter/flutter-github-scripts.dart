@@ -84,6 +84,7 @@ Duration meanDurationWithOrWithoutCustomers(List<dynamic> issues,
   bool hasCustomer = false;
   for (var item in issues) {
     var issue = item as Issue;
+    if (issue.closedAt == null) continue;
     if (onlyCustomers)
       for (var label in issue.labels.labels) {
         if (label.label.contains('customer:')) {
@@ -119,8 +120,10 @@ void main(List<String> args) async {
     print('${opts.from} to ${opts.to}.');
     if (opts.onlyCustomers)
       print('Only issues with at least one `customer` label are presented.');
-    print(
-        'Period ending\tCreated P0s\tCreated P1s\tCreated P2s\tClosed P0s\tClosed P1s\tClosed P2s\tMean hours to close P1\tMean hours to close P2\tMean hours to close P3');
+    print('Period ending\tCreated P0s\tCreated P1s\tCreated P2s\t' +
+        'Closed P0s\tClosed P1s\tClosed P2s\t' +
+        'Mean hours to close all P0\tMean hours to close all P1\tMean hours to close all P2\t' +
+        'Mean hours to close P0 opened this period\tMean hours to close P1 opened this period\tMean hours to close P2 opened this period');
   }
   while (current.isBefore(last)) {
     var next = current.add(Duration(days: 7));
@@ -162,7 +165,10 @@ void main(List<String> args) async {
     if (opts.summarize) {
       var openCount = HashMap<String, int>();
       var closeCount = HashMap<String, int>();
-      var mean = HashMap<String, Duration>();
+      // Mean time to close of issues closed this period (looks back)
+      var meanUntilClosed = HashMap<String, Duration>();
+      // Mean time to close of issues opened this period (looks forward)
+      var meanOpenClosed = HashMap<String, Duration>();
       interestingPriorities.forEach((p) {
         var highPrioritizedIssuesOpened = openCluster[p];
         var highPrioritizedIssuesClosed = closedCluster[p];
@@ -174,14 +180,20 @@ void main(List<String> args) async {
             ? 0
             : countWithOrWithoutCustomers(highPrioritizedIssuesClosed,
                 onlyCustomers: opts.onlyCustomers);
-        mean[p] = meanDurationWithOrWithoutCustomers(
+        meanUntilClosed[p] = meanDurationWithOrWithoutCustomers(
             highPrioritizedIssuesClosed,
+            onlyCustomers: opts.onlyCustomers);
+        meanOpenClosed[p] = meanDurationWithOrWithoutCustomers(
+            highPrioritizedIssuesOpened,
             onlyCustomers: opts.onlyCustomers);
       });
       var row = '${toStamp}';
       interestingPriorities.forEach((p) => row = '${row}\t${openCount[p]}');
       interestingPriorities.forEach((p) => row = '${row}\t${closeCount[p]}');
-      interestingPriorities.forEach((p) => row = '${row}\t${mean[p].inHours}');
+      interestingPriorities
+          .forEach((p) => row = '${row}\t${meanUntilClosed[p].inHours}');
+      interestingPriorities
+          .forEach((p) => row = '${row}\t${meanOpenClosed[p].inHours}');
       print(row);
     } else {
       print(
