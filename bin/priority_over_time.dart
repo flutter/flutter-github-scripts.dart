@@ -12,6 +12,8 @@ class Options {
   bool get summarize => _results['summarize'];
   bool get showQueries => _results['queries'];
   bool get onlyCustomers => _results['customers'];
+  int get deltaDays =>
+      int.parse(_results['delta'] == null ? '7' : _results['delta']);
   int get exitCode => _results == null
       ? -1
       : _results['help']
@@ -39,7 +41,9 @@ class Options {
       ..addFlag('customers',
           abbr: 'c',
           defaultsTo: false,
-          help: 'Only show issues with customer labels');
+          help: 'Only show issues with customer labels')
+      ..addOption('delta', abbr: 'd', help: 'delta between dates, default = 7');
+
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
@@ -76,33 +80,52 @@ int countWithOrWithoutCustomers(List<dynamic> issues, {bool onlyCustomers}) {
   return count;
 }
 
-Duration meanDurationWithOrWithoutCustomers(List<dynamic> issues,
-    {bool onlyCustomers}) {
-  double sum = 0.0;
-  var count = issues == null ? 0 : issues.length;
-  if (count == 0) return Duration(seconds: 0);
-  bool hasCustomer = false;
-  for (var item in issues) {
-    var issue = item as Issue;
-    if (issue.closedAt == null) continue;
-    if (onlyCustomers)
-      for (var label in issue.labels.labels) {
-        if (label.label.contains('customer:')) {
-          hasCustomer = true;
-          break;
-        }
-      }
-    if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
-      var delta = issue.closedAt.difference(issue.createdAt);
-      sum += delta.inSeconds;
-    }
+class MeanComputer {
+  // Running mean of all invocations
+  double _totalSumSeconds;
+  get totalSum => _totalSumSeconds;
+  double _totalCount;
+  get totalCount => _totalCount;
+  get meanDuration => _totalCount == 0
+      ? Duration(seconds: 0)
+      : Duration(seconds: _totalSumSeconds ~/ totalCount);
+
+  MeanComputer() {
+    _totalSumSeconds = 0.0;
+    _totalCount = 0.0;
   }
-  if (count == 0)
-    return Duration(seconds: 0);
-  else {
-    int sumAsInt = sum.toInt();
-    int mean = sumAsInt ~/ count;
-    return Duration(seconds: mean);
+
+  Duration meanDurationWithOrWithoutCustomers(List<dynamic> issues,
+      {bool onlyCustomers}) {
+    double sum = 0.0;
+    var count = issues == null ? 0 : issues.length;
+    if (count == 0) return Duration(seconds: 0);
+    bool hasCustomer = false;
+    for (var item in issues) {
+      var issue = item as Issue;
+      if (issue.closedAt == null) continue;
+      if (onlyCustomers)
+        for (var label in issue.labels.labels) {
+          if (label.label.contains('customer:')) {
+            hasCustomer = true;
+            break;
+          }
+        }
+      if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
+        var delta = issue.closedAt.difference(issue.createdAt);
+        sum += delta.inSeconds;
+      }
+    }
+    _totalCount += count;
+    _totalSumSeconds += sum;
+
+    if (count == 0)
+      return Duration(seconds: 0);
+    else {
+      int sumAsInt = sum.toInt();
+      int mean = sumAsInt ~/ count;
+      return Duration(seconds: mean);
+    }
   }
 }
 
@@ -123,10 +146,11 @@ void main(List<String> args) async {
     print('Period ending\tCreated P0s\tCreated P1s\tCreated P2s\t' +
         'Closed P0s\tClosed P1s\tClosed P2s\t' +
         'Mean hours to close all P0\tMean hours to close all P1\tMean hours to close all P2\t' +
-        'Mean hours to close P0 opened this period\tMean hours to close P1 opened this period\tMean hours to close P2 opened this period');
+        'Mean hours to close P0 opened this period\tMean hours to close P1 opened this period\tMean hours to close P2 opened this period\t' +
+        'Mean hours to close all P0-P2\tMean hours to close all P0-P2 opened this period');
   }
   while (current.isBefore(last)) {
-    var next = current.add(Duration(days: 7));
+    var next = current.add(Duration(days: opts.deltaDays));
     var fromStamp = current.toIso8601String().substring(0, 10);
     var toStamp = next.toIso8601String().substring(0, 10);
 
@@ -165,6 +189,8 @@ void main(List<String> args) async {
     if (opts.summarize) {
       var openCount = HashMap<String, int>();
       var closeCount = HashMap<String, int>();
+      var meanComputerUntilClosed = MeanComputer();
+      var meanComputerOpenClosed = MeanComputer();
       // Mean time to close of issues closed this period (looks back)
       var meanUntilClosed = HashMap<String, Duration>();
       // Mean time to close of issues opened this period (looks forward)
@@ -180,13 +206,15 @@ void main(List<String> args) async {
             ? 0
             : countWithOrWithoutCustomers(highPrioritizedIssuesClosed,
                 onlyCustomers: opts.onlyCustomers);
-        meanUntilClosed[p] = meanDurationWithOrWithoutCustomers(
-            highPrioritizedIssuesClosed,
-            onlyCustomers: opts.onlyCustomers);
-        meanOpenClosed[p] = meanDurationWithOrWithoutCustomers(
-            highPrioritizedIssuesOpened,
-            onlyCustomers: opts.onlyCustomers);
+        meanUntilClosed[p] = meanComputerUntilClosed
+            .meanDurationWithOrWithoutCustomers(highPrioritizedIssuesClosed,
+                onlyCustomers: opts.onlyCustomers);
+        meanOpenClosed[p] = meanComputerOpenClosed
+            .meanDurationWithOrWithoutCustomers(highPrioritizedIssuesOpened,
+                onlyCustomers: opts.onlyCustomers);
       });
+      // Compute mean over all priorities
+
       var row = '${toStamp}';
       interestingPriorities.forEach((p) => row = '${row}\t${openCount[p]}');
       interestingPriorities.forEach((p) => row = '${row}\t${closeCount[p]}');
@@ -194,6 +222,8 @@ void main(List<String> args) async {
           .forEach((p) => row = '${row}\t${meanUntilClosed[p].inHours}');
       interestingPriorities
           .forEach((p) => row = '${row}\t${meanOpenClosed[p].inHours}');
+      row = '${row}\t${meanComputerUntilClosed.meanDuration.inHours}';
+      row = '${row}\t${meanComputerOpenClosed.meanDuration.inHours}';
       print(row);
     } else {
       print(
@@ -228,6 +258,6 @@ void main(List<String> args) async {
     }
 
     // Skip to the next period
-    current = current.add(Duration(days: 7));
+    current = next;
   }
 }
