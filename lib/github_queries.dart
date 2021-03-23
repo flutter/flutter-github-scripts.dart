@@ -64,7 +64,7 @@ class GitHub {
     bool hasNextPage;
     do {
       var query = _searchIssuesOrPRs
-          .replaceAll(r'${query}', queryString)
+          .replaceAll(r'${query}', queryString.replaceAll('"', '\\"'))
           .replaceAll(r'${after}', after)
           .replaceAll(r'${issueResponse}', Issue.graphQLResponse)
           .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
