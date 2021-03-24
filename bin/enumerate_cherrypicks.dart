@@ -96,7 +96,7 @@ void main(List<String> args) async {
   if (opts.html) {
     print('<html>');
 
-    print('<h3>Issues to pick into ${release}');
+    print('<h3>Issues to pick into ${release}</h3>');
 
     print('<p>Flutter:</p>');
     for (var issue in flutterIssues) {
