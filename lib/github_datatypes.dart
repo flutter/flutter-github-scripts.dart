@@ -1194,6 +1194,12 @@ class Issue {
     return tsv;
   }
 
+  String html() {
+    var result = '';
+    result += '<a href="${_url}">#${_number}</a> ${_title}';
+    return result;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
