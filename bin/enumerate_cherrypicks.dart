@@ -8,8 +8,14 @@ class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   String get release => _results['release'];
-  bool get html => _results['formatted'] ?? true;
-  bool get summary => _results['summary'] ?? true;
+  bool get html =>
+      _results['formatted'] == false && _results['summary'] == false
+          ? true
+          : _results['formatted'];
+  bool get summary =>
+      _results['formatted'] == false && _results['summary'] == false
+          ? true
+          : _results['summary'];
   int get exitCode => _results == null
       ? -1
       : _results['help']
@@ -74,8 +80,18 @@ void main(List<String> args) async {
   var dartQuery = 'org:dart-lang is:issue is:open label:cherry-pick-review';
 
   // Now do the same for performance issues.
-  var flutterIssues = await github.searchIssuePRs(flutterQuery);
-  var dartIssues = await github.searchIssuePRs(dartQuery);
+  var flutterIssuesStream = await github.searchIssuePRs(flutterQuery);
+  var dartIssuesStream = await github.searchIssuePRs(dartQuery);
+
+  List<Issue> flutterIssues = [];
+  List<Issue> dartIssues = [];
+  await for (var issue in flutterIssuesStream) {
+    flutterIssues.add(issue);
+  }
+
+  await for (var issue in dartIssuesStream) {
+    dartIssues.add(issue);
+  }
 
   if (opts.html) {
     print('<html>');
@@ -83,13 +99,13 @@ void main(List<String> args) async {
     print('<h3>Issues to pick into ${release}');
 
     print('<p>Flutter:</p>');
-    await for (var issue in flutterIssues) {
+    for (var issue in flutterIssues) {
       print('<li>${issue.html()}</li>');
     }
 
     print('<p>Dart:</p>');
 
-    await for (var issue in dartIssues) {
+    for (var issue in dartIssues) {
       print(issue.html());
     }
 
@@ -99,11 +115,11 @@ void main(List<String> args) async {
 
   if (opts.summary) {
     // Flutter issues
-    await for (var issue in flutterIssues) {
+    for (var issue in flutterIssues) {
       print(hotfixSummary(issue, null));
     }
 
-    await for (var issue in dartIssues) {
+    for (var issue in dartIssues) {
       print(hotfixSummary(issue, 'dartlang/sdk'));
     }
   }
