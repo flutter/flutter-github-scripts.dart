@@ -330,7 +330,7 @@ class TimelineItem {
 
     if (type == 'CrossReferencedEvent') {
       result =
-          '${result} [${_number}](https://github.com/flutter/flutter/issues/${_number}) ${_title}';
+          '${result} [${_number}](https://github.com/dart-lang/site-www/issues/${_number}) ${_title}';
     } else if (_type == 'MilestonedEvent') {
       result = '${result} > ${title}';
     } else if (_type == 'DemilestonedEvent') {
@@ -1238,7 +1238,7 @@ class Issue {
 
   final _reactionQuery = r'''
   query {
-    repository(owner:"flutter", name:"flutter") {
+    repository(owner:"dart-lang", name:"site-www") {
       issue(number: ${issue}) {
             reactions(first: 100, after: ${after}) {
               totalCount,
