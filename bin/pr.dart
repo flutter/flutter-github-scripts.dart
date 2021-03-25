@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:flutter_github_scripts/github_queries.dart';
+import 'package:dartdev_github_scripts/github_datatypes.dart';
+import 'package:dartdev_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
 
@@ -38,8 +38,8 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   
-  var pr = await github.pullRequest(owner: 'flutter', 
-    name: 'flutter', 
+  var pr = await github.pullRequest(owner: 'dart-lang', 
+    name: 'site-www', 
     number: opts.number);
   
   var result = opts.tsv ? PullRequest.tsvHeader + '\n' + pr.toTsv() : pr.summary(linebreakAfter: true);

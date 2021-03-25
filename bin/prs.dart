@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:flutter_github_scripts/github_queries.dart';
+import 'package:dartdev_github_scripts/github_datatypes.dart';
+import 'package:dartdev_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
 
@@ -58,7 +58,7 @@ class Options {
   void _printUsage() {
     print(
         'Usage: pub run prs.dart [--tsv] [--label] [--closed fromDate toDate] [--merged fromDate toDate] [--closed fromDate toDate]');
-    print('Prints PRs in flutter/flutter, flutter/engine repositories.');
+    print('Prints PRs in dart-lang/site-www repo.');
     print('  --merged and --closed are mutually exclusive');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
@@ -69,11 +69,11 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  final repos = ['flutter', 'engine', 'plugins'];
+  final repos = ['site-www'];
 
-  final rollers = [
-    'engine-flutter-autoroll',
-    'skia-flutter-autoroll',
+  final rollers = [ // XXX: Do we need this?
+//    'engine-flutter-autoroll',
+//    'skia-flutter-autoroll',
   ];
 
   final token = Platform.environment['GITHUB_TOKEN'];
@@ -92,7 +92,7 @@ void main(List<String> args) async {
 
   for (var repo in repos) {
     var prs = await github.fetch(
-        owner: 'flutter',
+        owner: 'dart-lang',
         name: repo,
         type: GitHubIssueType.pullRequest,
         state: state,
@@ -103,7 +103,7 @@ void main(List<String> args) async {
     var type = 'Open';
     if (opts.showMerged) type = 'Merged';
     if (opts.showClosed) type = 'Closed';
-    print("${headerDelimiter}${type} PRs in `flutter/${repo}` from " +
+    print("${headerDelimiter}${type} PRs in `dart-lang/${repo}` from " +
         opts.from.toIso8601String() +
         ' to ' +
         opts.to.toIso8601String());

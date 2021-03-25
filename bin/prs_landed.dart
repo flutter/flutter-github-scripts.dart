@@ -32,7 +32,7 @@ class Options  {
   }
 }
 
-
+// XXX: Restrict query to site-www repo?
 String makeQuery(DateTime from, DateTime to) {
   final fromIso = from.toIso8601String().substring(0, 10);
   final toIso = to.toIso8601String().substring(0, 10);
@@ -40,7 +40,7 @@ String makeQuery(DateTime from, DateTime to) {
   return  
   """
 query { 
-  search(query:"org:flutter is:pr is:closed merged:${fromIso}..${toIso}", type: ISSUE, last:100) {
+  search(query:"org:dart-lang is:pr is:closed merged:${fromIso}..${toIso}", type: ISSUE, last:100) {
     issueCount,
     nodes {
       ... on PullRequest {

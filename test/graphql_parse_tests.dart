@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
+import 'package:dartdev_github_scripts/github_datatypes.dart';
 import 'dart:convert';
 
 void main() {
@@ -53,30 +53,6 @@ void main() {
       expect(l.summary() == '(TODAY, perf: speed)', true);
     });
 
-  });
-
-  group('Repository', () {
-    var json_Repository = '{ "nameWithOwner": "flutter/engine" }';
-
-    test('Constructor', () {
-      var r = Repository('flutter/engine');
-      expect(r.organization == 'flutter', true);
-      expect(r.repository == 'engine', true);
-    });
-    test('Equality', () {
-      var r1 = Repository('flutter/engine');
-      var r2 = Repository('flutter/engine');
-      var rOther = Repository('flutter/nothing');
-      expect(r1 == r1, true);
-      expect(r1 == r2, true);
-      expect(r1 == rOther, false);
-    });
-    test('Repository from GraphQL', () {
-      var node = json.decode(json_Repository);
-      var r = Repository.fromGraphQL(node);
-      expect(r.organization == 'flutter', true);
-      expect(r.repository == 'engine', true);
-    });
   });
 
   group('Actor', () {

@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:flutter_github_scripts/github_queries.dart';
+import 'package:dartdev_github_scripts/github_datatypes.dart';
+import 'package:dartdev_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
 
@@ -34,7 +34,7 @@ class Options  {
 
   void _printUsage() {
     print('Usage: pub run issues.dart [--tsv] [--label label] [--closed fromDate toDate]');
-    print('Prints issues in flutter/flutter, flutter/engine repositories.');
+    print('Prints issues in dart-lang/site-www repo.');
     print('  Dates are in ISO 8601 format');
     print(_parser.usage);
   }
@@ -44,7 +44,7 @@ void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
 
-  var repos = ['flutter'];
+  var repos = ['site-www'];
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -59,7 +59,7 @@ void main(List<String> args) async {
   }
 
   for(var repo in repos) {
-    var issues = await github.fetch(owner: 'flutter', 
+    var issues = await github.fetch(owner: 'dart-lang', 
       name: repo, 
       type: GitHubIssueType.issue,
       state: state,
@@ -69,8 +69,8 @@ void main(List<String> args) async {
       
     var headerDelimiter = opts.tsv ? '' : '## ';
     print( opts.showClosed ? 
-      "${headerDelimiter}Issues closed in flutter/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
-      "${headerDelimiter}Open issues in flutter/${repo}");
+      "${headerDelimiter}Issues closed in dart-lang/${repo} from " + opts.from.toIso8601String() + ' to ' + opts.to.toIso8601String() :
+      "${headerDelimiter}Open issues in dart-lang/${repo}");
     if (!opts.tsv) print('\n');
 
     print('There were ${issues.length} ' +
