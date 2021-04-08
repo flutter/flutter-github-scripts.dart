@@ -163,7 +163,7 @@ void main(List<String> args) async {
       print(openQuery);
       print(closedQuery);
     }
-    // Now do the same for performance issues.
+
     var openIssues = await github.searchIssuePRs(openQuery);
     var closedIssues = await github.searchIssuePRs(closedQuery);
 
