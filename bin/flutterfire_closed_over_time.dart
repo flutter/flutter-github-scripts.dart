@@ -35,7 +35,7 @@ class Options {
       ..addFlag('summarize',
           abbr: 's',
           defaultsTo: false,
-          help: 'Show only summary tables in markdown format.')
+          help: 'Show only summary tables in TSV format.')
       ..addFlag('queries',
           abbr: 'q', defaultsTo: false, help: 'Show queries used')
       ..addFlag('customers',
