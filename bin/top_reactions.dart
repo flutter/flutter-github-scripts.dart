@@ -34,7 +34,7 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run reactions.dart [-only-unprioritized]');
+    print('Usage: pub run reactions.dart [--only-unprioritized]');
     print('If only-unprioritize is passed, only show unprioritized issues.');
     print(_parser.usage);
   }

@@ -277,7 +277,7 @@ Usage: `dart bin/search [--tsv] github query`
 Returns the first 1,000 results of the given github query in either TSV or markdown format.
 
 ## priority_over_time.dart
-Usage `dart priority_over_time.dart [--queries] [--customers] [--summarize] [--delta <days> --from date --to date`
+Usage `dart bin/priority_over_time.dart [--queries] [--customers] [--summarize] [--delta <days> --from date --to date`
 
 Returns a summary of open and closed P0s, P1s, and P2s weekly over the given span.
 If `--summaries` is passed, reports in TSV; otherwise markdown.
@@ -285,5 +285,21 @@ If `--queries` is passed, shows each search term used for the open and closed qu
 if `--customers`is passed, shows only issues that also have at least one customer label.
 If `--delta` is provided with a numeric argument, reports the counts for the periods in delta days; otherwise 7 days is assumed.
 
+## enumerate_cherrypicks
+Usage: `dart bin/enumerate_cherrypicks [--summary] [--formatted] --release x.y`
 
+Lists pending cherrypicks in the Flutter and Dart repositories for the release _x.y_.
 
+If [--summary] is provided, shows the TSV summaries for input into the hotfix review sheet.
+If [--formatted] is provided, shows the list of hotfixes in HTML for import into a release plan.
+
+If neither is provided, both are shown.
+
+## flutterfire_closed_over_time.dart
+Usage `dart bin/flutterfire_closed_over_time.dart [--queries] [--customers] [--summarize] [--delta <days> --from date --to date`
+
+Returns a summary of open and closed high priority weekly over the given span for firebaseextended/flutterfire issues.
+If `--summaries` is passed, reports in TSV; otherwise markdown.
+If `--queries` is passed, shows each search term used for the open and closed queries.
+if `--customers`is passed, shows only issues that also have at least one customer label.
+If `--delta` is provided with a numeric argument, reports the counts for the periods in delta days; otherwise 7 days is assumed.

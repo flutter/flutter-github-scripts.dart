@@ -139,15 +139,15 @@ void main(List<String> args) async {
 
   if (opts.summarize) {
     print(
-        'This shows the number of new, open, and closed `P0`, `P1`, and `P2` issues over the period from');
+        'This shows the number of new, open, and closed high priority issues over the period from');
     print('${opts.from} to ${opts.to}.');
     if (opts.onlyCustomers)
       print('Only issues with at least one `customer` label are presented.');
-    print('Period ending\tCreated P0s\tCreated P1s\tCreated P2s\t' +
-        'Closed P0s\tClosed P1s\tClosed P2s\t' +
-        'Mean hours to close all P0\tMean hours to close all P1\tMean hours to close all P2\t' +
-        'Mean hours to close P0 opened this period\tMean hours to close P1 opened this period\tMean hours to close P2 opened this period\t' +
-        'Mean hours to close all P0-P2\tMean hours to close all P0-P2 opened this period');
+    print('Period ending\tCreated impact:critical\timpact:crowd\tCreated impact:customer\t' +
+        'Closed impact:critical\tClosed impact:crowd\tClosed impact:customer\t' +
+        'Mean hours to close all impact:critical\tMean hours to close all impact:crowd\tMean hours to close all impact:customer\t' +
+        'Mean hours to close impact:critical opened this period\tMean hours to close impact:crowd opened this period\tMean hours to close impact:customer opened this period\t' +
+        'Mean hours to close all high priority\tMean hours to close all high priority opened this period');
   }
   while (current.isBefore(last)) {
     var next = current.add(Duration(days: opts.deltaDays));
@@ -155,15 +155,15 @@ void main(List<String> args) async {
     var toStamp = next.toIso8601String().substring(0, 10);
 
     var openQuery =
-        'org:flutter is:issue sort:updated-desc created:${fromStamp}..${toStamp}';
+        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc created:${fromStamp}..${toStamp}';
 
     var closedQuery =
-        'org:flutter is:issue sort:updated-desc closed:${fromStamp}..${toStamp}';
+        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc closed:${fromStamp}..${toStamp}';
     if (opts.showQueries) {
       print(openQuery);
       print(closedQuery);
     }
-
+    // Now do the same for performance issues.
     var openIssues = await github.searchIssuePRs(openQuery);
     var closedIssues = await github.searchIssuePRs(closedQuery);
 
@@ -183,8 +183,12 @@ void main(List<String> args) async {
     // Cluster them to get our counts by priority
     var openCluster = Cluster.byLabel(openedThisPeriod);
     var closedCluster = Cluster.byLabel(closedThisPeriod);
-    final interestingPriorities = ['P0', 'P1', 'P2'];
-    interestingPriorities.sort();
+    final interestingLabels = [
+      'impact: critical',
+      'impact: crowd',
+      'impact: customer'
+    ];
+    interestingLabels.sort();
 
     if (opts.summarize) {
       var openCount = HashMap<String, int>();
@@ -195,7 +199,7 @@ void main(List<String> args) async {
       var meanUntilClosed = HashMap<String, Duration>();
       // Mean time to close of issues opened this period (looks forward)
       var meanOpenClosed = HashMap<String, Duration>();
-      interestingPriorities.forEach((p) {
+      interestingLabels.forEach((p) {
         var highPrioritizedIssuesOpened = openCluster[p];
         var highPrioritizedIssuesClosed = closedCluster[p];
         openCount[p] = highPrioritizedIssuesOpened == null
@@ -213,14 +217,14 @@ void main(List<String> args) async {
             .meanDurationWithOrWithoutCustomers(highPrioritizedIssuesOpened,
                 onlyCustomers: opts.onlyCustomers);
       });
-      // Compute mean over all priorities
 
+      // Compute mean over all priorities
       var row = '${toStamp}';
-      interestingPriorities.forEach((p) => row = '${row}\t${openCount[p]}');
-      interestingPriorities.forEach((p) => row = '${row}\t${closeCount[p]}');
-      interestingPriorities
+      interestingLabels.forEach((p) => row = '${row}\t${openCount[p]}');
+      interestingLabels.forEach((p) => row = '${row}\t${closeCount[p]}');
+      interestingLabels
           .forEach((p) => row = '${row}\t${meanUntilClosed[p].inHours}');
-      interestingPriorities
+      interestingLabels
           .forEach((p) => row = '${row}\t${meanOpenClosed[p].inHours}');
       row = '${row}\t${meanComputerUntilClosed.meanDuration.inHours}';
       row = '${row}\t${meanComputerOpenClosed.meanDuration.inHours}';
@@ -236,7 +240,7 @@ void main(List<String> args) async {
       print('| Priority | Opened | Closed | Total |');
       print('|----------|--------|--------|-------|');
       var totalOpen = 0, totalClosed = 0, total = 0;
-      interestingPriorities.forEach((p) {
+      interestingLabels.forEach((p) {
         var highPrioritizedIssuesOpened = openCluster[p];
         var highPrioritizedIssuesClosed = closedCluster[p];
 
