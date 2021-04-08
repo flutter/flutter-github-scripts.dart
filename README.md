@@ -303,3 +303,12 @@ If `--summaries` is passed, reports in TSV; otherwise markdown.
 If `--queries` is passed, shows each search term used for the open and closed queries.
 if `--customers`is passed, shows only issues that also have at least one customer label.
 If `--delta` is provided with a numeric argument, reports the counts for the periods in delta days; otherwise 7 days is assumed.
+
+## flutterfire_all_closed_over_time.dart
+Usage `dart bin/flutterfire_all_closed_over_time.dart [--queries] [--customers]  [--delta <days> --from date --to date`
+
+Returns a TSV summary of open and closed high priority weekly over the given span for firebaseextended/flutterfire issues.
+If `--summaries` is passed, reports in TSV; otherwise markdown.
+If `--queries` is passed, shows each search term used for the open and closed queries.
+if `--customers`is passed, shows only issues that also have at least one customer label.
+If `--delta` is provided with a numeric argument, reports the counts for the periods in delta days; otherwise 7 days is assumed.
