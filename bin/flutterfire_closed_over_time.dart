@@ -55,7 +55,7 @@ class Options {
 
   void _printUsage() {
     print(
-        'Usage: pub run priority_over_time.dart [--queries]  [--customers] [--summarize] --from date --to date');
+        'Usage: pub run bin/flutterfire_closed_over_time.dart [--queries]  [--customers] [--summarize] --from date --to date');
     print(_parser.usage);
   }
 }
