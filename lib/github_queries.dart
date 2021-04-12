@@ -432,7 +432,7 @@ class GitHub {
   final _queryIssuesOrPRs = r'''
   query {
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
-      ${type}(first: 20, after: ${after}, states: ${state}) {
+      ${type}(first: 15, after: ${after}, states: ${state}) {
         totalCount,
         pageInfo ${pageInfoResponse}
         nodes ${response}

@@ -1,7 +1,7 @@
 
 # flutter-1.22
 
-FROM="2020-09-10T18:17:00-0800";
+FROM="2021-01-26T10:58:00-0800";
 TO=$1 
 
 # [ -z "$TO" ] && TO=`date --iso-8601=seconds`
@@ -9,23 +9,23 @@ TO=$1
 
 echo "Running release reports from ${FROM} to ${TO}"
 
-echo -n "Unpaid ontributors..."
+echo -n "Unpaid contributors..."
 echo -n "authors..."
-dart bin/notable-contributors.dart --authors --merged $FROM $TO > notable-contributors-committers.md
+# dart bin/notable-contributors.dart --authors --merged $FROM $TO > notable-contributors-committers.md
 echo -n "reviewers..."
-dart bin/notable-contributors.dart --reviewers --merged $FROM $TO > notable-contributors-reviewers.md
+# dart bin/notable-contributors.dart --reviewers --merged $FROM $TO > notable-contributors-reviewers.md
 echo "done."
 echo -n "All contributors..."
 echo -n "authors..."
-dart bin/notable-contributors.dart --authors --merged --all-contributors $FROM $TO > all-contributors-committers.md
+# dart bin/notable-contributors.dart --authors --merged --all-contributors $FROM $TO > all-contributors-committers.md
 echo -n "reviewers..."
-dart bin/notable-contributors.dart --reviewers --merged  --all-contributors $FROM $TO > all-contributors-reviewers.md
+# dart bin/notable-contributors.dart --reviewers --merged  --all-contributors $FROM $TO > all-contributors-reviewers.md
 echo "done."
 echo -n "Clusters..."
-dart bin/clusters.dart --merged --labels --prs $FROM $TO > prs_merged_by_label.md
+# dart bin/clusters.dart --merged --labels --prs $FROM $TO > prs_merged_by_label.md
 echo "done."
 echo -n "PRs merged..."
-dart bin/prs.dart --skipAutorollers --merged $FROM $TO > prs_merged.md
+# dart bin/prs.dart --skip-autorollers --merged $FROM $TO > prs_merged.md
 echo "done."
 echo -n "Issues closed..."
 dart bin/issues.dart --closed $FROM $TO > issues_closed.md
@@ -36,6 +36,10 @@ pandoc -o notable-contributors-commiters.html notable-contributors-committers.md
 pandoc -o notable-contributors-commiters.docx notable-contributors-committers.md
 pandoc -o notable-contributors-reviewers.html notable-contributors-reviewers.md
 pandoc -o notable-contributors-reviewers.docx notable-contributors-reviewers.md
+pandoc -o all-contributors-commiters.html all-contributors-committers.md
+pandoc -o all-contributors-committers.docx all-contributors-committers.md
+pandoc -o all-contributors-reviewers.html all-contributors-reviewers.md
+pandoc -o all-contributors-reviewers.docx all-contributors-reviewers.md
 pandoc -o prs_merged_by_label.html prs_merged_by_label.md
 pandoc -o prs_merged_by_label.docx prs_merged_by_label.md
 pandoc -o prs_merged.html prs_merged.md
