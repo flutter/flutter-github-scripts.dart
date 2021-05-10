@@ -5,14 +5,10 @@ import 'package:quiver/core.dart' show hash2;
 import 'package:graphql/client.dart';
 
 final token = Platform.environment['GITHUB_TOKEN'];
-final _httpLink = HttpLink(
-  uri: 'https://api.github.com/graphql',
-);
-final _auth = AuthLink(
-  getToken: () async => 'Bearer ${token}',
-);
+final _httpLink = HttpLink('https://api.github.com/graphql');
+final _auth = AuthLink(getToken: () async => 'Bearer ${token}');
 final _link = _auth.concat(_httpLink);
-final _client = GraphQLClient(cache: InMemoryCache(), link: _link);
+final _client = GraphQLClient(cache: GraphQLCache(), link: _link);
 
 // TODO:
 // - Migrate json definitions into smaller object classes, the way
@@ -121,11 +117,11 @@ class Comment {
       var query = _reactionQuery
           .replaceAll(r'${id}', this._id)
           .replaceAll(r'${after}', after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       if (page.data == [] || page.data == null) {
-        print(page.errors);
+        print(page.exception);
         print(page.data);
         exit(-1);
       }
@@ -636,7 +632,7 @@ class Organization {
     bool hasNextPage;
     do {
       var query = Organization.request(id, pendingMembersAfter: after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       try {
@@ -668,7 +664,7 @@ class Organization {
     bool hasNextPage;
     do {
       var query = Organization.request(_login, teamsAfter: after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
       try {
         PageInfo pageInfo = PageInfo.fromGraphQL(
@@ -804,7 +800,7 @@ class Team {
     bool hasNextPage;
     do {
       var query = Team.request(id, membersAfter: after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       try {
@@ -835,7 +831,7 @@ class Team {
     bool hasNextPage;
     do {
       var query = Team.request(id, childTeamsAfter: after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       try {
@@ -978,7 +974,7 @@ class Issue {
       var query = _reactionQuery
           .replaceAll(r'${issue}', this.number.toString())
           .replaceAll(r'${after}', after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
 
       try {
@@ -1012,7 +1008,7 @@ class Issue {
       var query = _commentQuery
           .replaceAll(r'${ownerId}', _id)
           .replaceAll(r'${after}', after);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       try {

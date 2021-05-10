@@ -77,25 +77,21 @@ void main(List<String> args) async {
   if (opts.exitCode != null) exit(opts.exitCode);
 
   final token = Platform.environment['GITHUB_TOKEN'];
-  final httpLink = HttpLink(
-    uri: 'https://api.github.com/graphql',
-  );
-  final auth = AuthLink(
-    getToken: () async => 'Bearer $token',
-  );
+  final httpLink = HttpLink('https://api.github.com/graphql');
+  final auth = AuthLink(getToken: () async => 'Bearer $token');
   final link = auth.concat(httpLink);
-  final client = GraphQLClient(cache: InMemoryCache(), link: link);
+  final client = GraphQLClient(cache: GraphQLCache(), link: link);
 
   var start = opts.from;
   do {
     final until = start.add(Duration(hours: 24 * 7));
     final q = makeQuery(start, until);
-    final options = QueryOptions(document: q);
+    final options = QueryOptions(document: gql(q));
     final result = await client.query(options);
     final timeStampTo = until.toIso8601String().substring(0, 10);
 
-    if (result.hasErrors) {
-      print(result.errors.toString());
+    if (result.hasException) {
+      print(result.exception.toString());
       exit(-1);
     }
     print(timeStampTo +

@@ -17,25 +17,21 @@ class GitHub {
 
   /// Initialize the interface
   GitHub(String token) {
-    _httpLink = HttpLink(
-      uri: 'https://api.github.com/graphql',
-    );
-    _auth = AuthLink(
-      getToken: () async => 'Bearer ${token}',
-    );
+    _httpLink = HttpLink('https://api.github.com/graphql');
+    _auth = AuthLink(getToken: () async => 'Bearer ${token}');
     _link = _auth.concat(_httpLink);
-    _client = GraphQLClient(cache: InMemoryCache(), link: _link);
+    _client = GraphQLClient(cache: GraphQLCache(), link: _link);
   }
 
   /// Fetch a team by its Github id.
   Future<Team> team(String id) async {
     var query = Team.request(id);
-    final options = QueryOptions(document: query);
+    final options = QueryOptions(document: gql(query));
     if (_printQuery) print(query);
     final page = await _client.query(options);
-    if (page.hasErrors) {
+    if (page.hasException) {
       print(query);
-      throw (page.errors.toString());
+      throw page.exception;
     }
     return Team.fromGraphQL(page.data['node']);
   }
@@ -43,12 +39,12 @@ class GitHub {
   /// Fetch an organiation by its login.
   Future<Organization> organization(String login) async {
     var query = Organization.request(login);
-    final options = QueryOptions(document: query);
+    final options = QueryOptions(document: gql(query));
     if (_printQuery) print(query);
     final page = await _client.query(options);
-    if (page.hasErrors) {
+    if (page.hasException) {
       print(query);
-      throw (page.errors.toString());
+      throw page.exception;
     }
     return Organization.fromGraphQL(page.data['organization']);
   }
@@ -68,14 +64,14 @@ class GitHub {
           .replaceAll(r'${issueResponse}', Issue.graphQLResponse)
           .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
           .replaceAll(r'${pullRequestResponse}', PullRequest.graphQLResponse);
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
       if (_printQuery) print(query);
       final page = await _client.query(options);
-      if (page.hasErrors) {
+      if (page.hasException) {
         print(query);
-        print(page.errors);
+        print(page.exception);
         print(page.data);
-        throw (page.errors.toString());
+        throw page.exception;
       }
       // Paginate information
       try {
@@ -134,7 +130,8 @@ class GitHub {
     }
 
     if (dateQuery != GitHubDateQueryType.none && dateRange == null) {
-      throw ('With a dateQuery you must provide a non-null dateRange!');
+      throw ArgumentError(
+          'With a dateQuery you must provide a non-null dateRange!');
     }
     var dateString = DateRange.queryToString(dateQuery, dateRange);
 
@@ -174,12 +171,12 @@ class GitHub {
               .replaceAll(r'${pageInfoResponse}', PageInfo.graphQLResponse)
               .replaceAll(
                   r'${pullRequestResponse}', PullRequest.graphQLResponse);
-          final options = QueryOptions(document: query);
+          final options = QueryOptions(document: gql(query));
           if (_printQuery) print(query);
           final page = await _client.query(options);
-          if (page.hasErrors) {
+          if (page.hasException) {
             print(query);
-            throw (page.errors.toString());
+            throw page.exception;
           }
           var edges = page.data['search']['nodes'];
           edges.forEach((edge) {
@@ -302,13 +299,13 @@ class GitHub {
                   : PullRequest.graphQLResponse);
       if (_printQuery) print(query);
 
-      final options = QueryOptions(document: query);
+      final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
 
-      if (page.hasErrors) {
+      if (page.hasException) {
         print(query);
         print(page.source);
-        throw (page.errors.toString());
+        throw page.exception;
       }
 
       var edges = page.data['repository'][typeString]['nodes'];
@@ -399,10 +396,10 @@ class GitHub {
         .replaceAll(r'${number}', number.toString())
         .replaceAll(r'${issueResponse}', Issue.graphQLResponse);
     if (_printQuery) print(query);
-    final options = QueryOptions(document: query);
+    final options = QueryOptions(document: gql(query));
     final page = await _client.query(options);
-    if (page.hasErrors) {
-      throw (page.errors.toString());
+    if (page.hasException) {
+      throw page.exception;
     }
 
     return Issue.fromGraphQL(page.data['repository']['issue']);
@@ -417,10 +414,10 @@ class GitHub {
         .replaceAll(r'${number}', number.toString())
         .replaceAll(r'${pullRequestResponse}', PullRequest.graphQLResponse);
     if (_printQuery) print(query);
-    final options = QueryOptions(document: query);
+    final options = QueryOptions(document: gql(query));
     final page = await _client.query(options);
-    if (page.hasErrors) {
-      throw (page.errors.toString());
+    if (page.hasException) {
+      throw page.exception;
     }
 
     return PullRequest.fromGraphQL(page.data['repository']['pullRequest']);

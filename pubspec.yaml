@@ -9,16 +9,15 @@ environment:
 
 dependencies:
   args: ^1.5.0
-  csv:  ^4.0.0
-  quiver: '>=2.0.0 < 3.0.0'
-  glob: ^1.0.3
-  path:
-  lcov:
-  intl:
-  graphql: ^2.0.0
+  csv: ^5.0.0
+  quiver: ^3.0.1
+  glob: ^2.0.1
+  path: ^1.8.0
+  intl: ^0.17.0
+  graphql: ^5.0.0-nullsafety.4
   columnar_output:
     git: https://github.com/kf6gpe/columnar-output.dart.git
 
 dev_dependencies:
   test: ^1.0.0
-  pedantic:
+  pedantic: ^1.11.0
