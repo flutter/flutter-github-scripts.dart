@@ -52,7 +52,10 @@ String hotfixSummary(Issue issue, String repository) {
   var result = '';
   var formatter = DateFormat('MM/dd/yy');
   var created = formatter.format(issue.createdAt);
-  var fixed = formatter.format(issue.closedAt);
+  var fixed = 'pending';
+  if (issue.closedAt != null) {
+    fixed = formatter.format(issue.closedAt);
+  }
   // No easy way to determine code base from here if it's flutter
   var codebase = repository ?? '';
   result = '${result}\t${issue.url}';
@@ -106,7 +109,7 @@ void main(List<String> args) async {
     print('<p>Dart:</p>');
 
     for (var issue in dartIssues) {
-      print(issue.html());
+      print('<li>${issue.html()}</li>');
     }
 
     print('</html>');
