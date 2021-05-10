@@ -1059,10 +1059,10 @@ class Issue {
   // Passed a node containing an issue, return the issue
   static Issue fromGraphQL(dynamic node) {
     List<Actor> assignees = null;
-    if (node['assignees']['edges'] != null &&
-        node['assignees']['edges'].length != 0) {
+    var edges = (node['assignees'] ?? {})['edges'];
+    if (edges != null && edges.length != 0) {
       assignees = <Actor>[];
-      for (var node in node['assignees']['edges']) {
+      for (var node in edges) {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
     }

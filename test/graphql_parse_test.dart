@@ -282,7 +282,6 @@ void main() {
               'Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ',
           true);
       expect(i.timeline.length == 1, true);
-      print(i.timeline[0].type);
       expect(i.timeline[0].type == 'CrossReferencedEvent', true);
       expect(i.timeline[0].number == 17738, true);
       expect(i.timeline[0].title == 'Canvas regression', true);
