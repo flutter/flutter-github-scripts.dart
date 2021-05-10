@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
-  args: ^1.5.0
+  args: ^2.1.0
   csv: ^5.0.0
   quiver: ^3.0.1
   glob: ^2.0.1
@@ -16,8 +16,8 @@ dependencies:
   intl: ^0.17.0
   graphql: ^5.0.0-nullsafety.4
   columnar_output:
-    git: https://github.com/kf6gpe/columnar-output.dart.git
+    git: https://github.com/eseidel/columnar-output.dart.git
 
 dev_dependencies:
-  test: ^1.0.0
+  test: ^1.17.3
   pedantic: ^1.11.0
