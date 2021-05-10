@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
@@ -46,7 +45,6 @@ class Options {
 class MemberInfo {
   String _login;
   get login => _login;
-  bool _googler;
   DateTime firstContributed;
   dynamic firstContribution;
   DateTime lastContributed;
@@ -105,7 +103,7 @@ void main(List<String> args) async {
   var allMembers = Map<String, MemberInfo>();
   var membersByTeam = SplayTreeMap<String, List<String>>();
   await for (var team in org.teamsStream) {
-    var membersThisTeam = List<String>();
+    var membersThisTeam = <String>[];
     await for (var member in team.membersStream) {
       membersThisTeam.add(member.login);
       allMembers[member.login] = MemberInfo(member.login);

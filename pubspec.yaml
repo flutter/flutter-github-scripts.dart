@@ -1,5 +1,6 @@
 name: flutter_github_scripts
 description: Scripts to provide reports on Flutter's code health.
+publish_to: none
 version: 0.0.1
 author: Ray Rischpater, KF6GPE <rischpater@google.com>
 

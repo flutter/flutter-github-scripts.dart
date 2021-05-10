@@ -138,7 +138,7 @@ class Comment {
         return;
       }
       // Parse the responses into a buffer
-      var bufferReactions = List<Reaction>();
+      var bufferReactions = <Reaction>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['node']['reactions']['nodes']) {
         bufferReactions.add(Reaction.fromGraphQL(jsonSub));
@@ -377,7 +377,7 @@ class Timeline {
   }
 
   List<TimelineItem> get milestoneTimeline {
-    var result = List<TimelineItem>();
+    var result = <TimelineItem>[];
     _timeline.forEach((item) {
       if (item.type == 'MilestonedEvent' || item.type == 'DemilestonedEvent') {
         result.add(item);
@@ -412,7 +412,7 @@ class Timeline {
   Timeline(this._timeline);
   static Timeline fromGraphQL(dynamic node) {
     assert(node['pageInfo']['hasNextPage'] == false);
-    var result = Timeline(List<TimelineItem>());
+    var result = Timeline([]);
     for (dynamic n in node['nodes']) {
       if (n == null) continue;
       result.append(TimelineItem.fromGraphQL(n));
@@ -648,7 +648,7 @@ class Organization {
         return;
       }
       // Parse the responses into a buffer
-      var membersBuffer = List<Actor>();
+      var membersBuffer = <Actor>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['organization']['pendingMembers']
           ['edges']) {
@@ -679,7 +679,7 @@ class Organization {
         return;
       }
       // Parse the responses into a buffer
-      var teamsBuffer = List<Team>();
+      var teamsBuffer = <Team>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['organization']['teams']['edges']) {
         teamsBuffer.add(Team.fromGraphQL(jsonSub['node']));
@@ -816,7 +816,7 @@ class Team {
         return;
       }
       // Parse the responses into a buffer
-      var membersBuffer = List<Actor>();
+      var membersBuffer = <Actor>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['node']['members']['edges']) {
         membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
@@ -847,7 +847,7 @@ class Team {
         return;
       }
       // Parse the responses into a buffer
-      var teamBuffer = List<Team>();
+      var teamBuffer = <Team>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['node']['childTeams']['edges']) {
         teamBuffer.add(Team.fromGraphQL(jsonSub));
@@ -990,7 +990,7 @@ class Issue {
         return;
       }
       // Parse the responses into a buffer
-      var bufferReactions = List<Reaction>();
+      var bufferReactions = <Reaction>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['repository']['issue']['reactions']
           ['nodes']) {
@@ -1024,7 +1024,7 @@ class Issue {
         return;
       }
       // Parse the responses into a buffer
-      var commentBuffer = List<Comment>();
+      var commentBuffer = <Comment>[];
       var bufferIndex = 0;
       for (var jsonSub in page.data['node']['comments']['nodes']) {
         commentBuffer.add(Comment.fromGraphQL(jsonSub));
@@ -1061,7 +1061,7 @@ class Issue {
     List<Actor> assignees = null;
     if (node['assignees']['edges'] != null &&
         node['assignees']['edges'].length != 0) {
-      assignees = List<Actor>();
+      assignees = <Actor>[];
       for (var node in node['assignees']['edges']) {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
@@ -1379,14 +1379,14 @@ class PullRequest {
     List<Actor> reviewers = null;
     if (node['assignees']['edges'] != null &&
         node['assignees']['edges'].length != 0) {
-      assignees = List<Actor>();
+      assignees = <Actor>[];
       for (var node in node['assignees']['edges']) {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
     }
     if (node['reviews']['edges'] != null &&
         node['reviews']['edges'].length != 0) {
-      reviewers = List<Actor>();
+      reviewers = <Actor>[];
       for (var node in node['reviews']['edges']) {
         if (node['node']['author'] != null)
           reviewers.add(Actor.fromGraphQL(node['node']['author']));
@@ -1590,7 +1590,7 @@ class Cluster {
 
   static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
-    result[_unlabeledKey] = List<dynamic>();
+    result[_unlabeledKey] = [];
 
     for (var item in issuesOrPullRequests) {
       if (!(item is Issue) && !(item is PullRequest)) {
@@ -1600,7 +1600,7 @@ class Cluster {
         for (var label in item.labels.labels) {
           var name = label.label;
           if (!result.containsKey(name)) {
-            result[name] = List<dynamic>();
+            result[name] = [];
           }
           result[name].add(item);
         }
@@ -1621,7 +1621,7 @@ class Cluster {
       }
       var name = item.author != null ? item.author.login : '@@@ NO AUTHOR @@@';
       if (!result.containsKey(name)) {
-        result[name] = List<dynamic>();
+        result[name] = [];
       }
       result[name].add(item);
     }
@@ -1631,7 +1631,7 @@ class Cluster {
 
   static Cluster byAssignees(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
-    result[_unassignedKey] = List<dynamic>();
+    result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
       if (!(item is Issue) && !(item is PullRequest)) {
@@ -1643,7 +1643,7 @@ class Cluster {
         for (var assignee in item.assignees) {
           var name = assignee.login;
           if (!result.containsKey(name)) {
-            result[name] = List<dynamic>();
+            result[name] = [];
           }
           result[name].add(item);
         }
@@ -1654,7 +1654,7 @@ class Cluster {
 
   static Cluster byReviewers(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
-    result[_unassignedKey] = List<dynamic>();
+    result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
       if (!(item is PullRequest)) {
@@ -1667,7 +1667,7 @@ class Cluster {
         for (var reviewer in pr.reviewers) {
           var name = reviewer.login;
           if (!result.containsKey(name)) {
-            result[name] = List<dynamic>();
+            result[name] = [];
           }
           result[name].add(item);
         }
@@ -1678,7 +1678,7 @@ class Cluster {
 
   static Cluster byMilestone(List<dynamic> issuesOrPullRequests) {
     var result = SplayTreeMap<String, dynamic>();
-    result[_noMilestoneKey] = List<dynamic>();
+    result[_noMilestoneKey] = [];
 
     for (var item in issuesOrPullRequests) {
       if (!(item is Issue) && !(item is PullRequest)) {
@@ -1688,7 +1688,7 @@ class Cluster {
         result[_noMilestoneKey].add(item);
       } else {
         if (!result.containsKey(item.milestone.title)) {
-          result[item.milestone.title] = List<dynamic>();
+          result[item.milestone.title] = [];
         }
         result[item.milestone.title].add(item);
       }

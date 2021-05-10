@@ -10,7 +10,11 @@ class Options {
   ArgResults _results;
   bool get list => _results['list'];
   bool get markdown => _results['markdown'];
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
 
   Options(List<String> args) {
     _parser
@@ -54,7 +58,7 @@ final _noMilestone = Milestone('No milestone assigned', '', -1, '', null, null,
 
 Map<Milestone, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
   var result = Map<Milestone, List<dynamic>>();
-  result[_noMilestone] = List<dynamic>();
+  result[_noMilestone] = [];
 
   for (var item in issues) {
     if (!(item is Issue) && !(item is PullRequest)) {
@@ -64,7 +68,7 @@ Map<Milestone, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
       result[_noMilestone].add(item);
     } else {
       if (!result.containsKey(item.milestone)) {
-        result[item.milestone] = List<dynamic>();
+        result[item.milestone] = [];
       }
       result[item.milestone].add(item);
     }
@@ -133,7 +137,7 @@ void main(List<String> args) async {
   final orgMembersContents =
       File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
-  var teamMembers = List<String>();
+  var teamMembers = <String>[];
   orgMembers.forEach((row) {
     if (row[7].toString().toUpperCase().startsWith('Y'))
       teamMembers.add(row[0].toString());
@@ -198,7 +202,7 @@ void main(List<String> args) async {
       var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]);
 
       // First show the prioritized items, by each priority...
-      var shown = List<Issue>();
+      var shown = <Issue>[];
       for (var label in priorities) {
         if (issuesByLabel.clusters.keys.contains(label)) {
           if (opts.list) print('#### ${label}\n');

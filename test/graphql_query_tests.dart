@@ -1,10 +1,8 @@
 import 'package:test/test.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
-import 'dart:convert';
 
-  void main() {
+void main() {
   group('DateRange', () {
-
     test('at', () {
       var when = DateTime.now();
       var at = DateRange(DateRangeType.at, at: when);
@@ -26,64 +24,18 @@ import 'dart:convert';
     test('exceptions', () {
       var now = DateTime.now();
       var then = now.add(Duration(days: 2));
-      bool exception = false;
 
-      try {
-        var bad = DateRange(DateRangeType.at, start: now, end: then);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
-      try {
-        var bad = DateRange(DateRangeType.at, start: now, end: null);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
-      try {
-        var bad = DateRange(DateRangeType.at, start: null, end: then);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
-      try {
-        var bad = DateRange(DateRangeType.at);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
-      try {
-        var bad = DateRange(DateRangeType.range, at: now);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;      
-
-      try {
-        var bad = DateRange(DateRangeType.range, start: now, end: null);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
-      try {
-        var bad = DateRange(DateRangeType.at, start: null, end: then);
-      } catch(e) {
-        exception = true;
-      }
-      expect(exception, true);
-      exception = false;
-
+      expect(() => DateRange(DateRangeType.at, start: now, end: then),
+          throwsArgumentError);
+      expect(() => DateRange(DateRangeType.at, start: now, end: null),
+          throwsArgumentError);
+      expect(() => DateRange(DateRangeType.at, start: null, end: then),
+          throwsArgumentError);
+      expect(() => DateRange(DateRangeType.at), throwsArgumentError);
+      expect(
+          () => DateRange(DateRangeType.range, at: now), throwsArgumentError);
+      expect(() => DateRange(DateRangeType.range, at: now, end: null),
+          throwsArgumentError);
     });
   });
 }

@@ -52,7 +52,6 @@ void main() {
       l.append(Label('perf: speed'));
       expect(l.summary() == '(TODAY, perf: speed)', true);
     });
-
   });
 
   group('Repository', () {
@@ -164,8 +163,7 @@ void main() {
       }
     ''';
 
-    var json_Issue_TimelineNoLabels = 
-    '''
+    var json_Issue_TimelineNoLabels = '''
     {
       "number": 55193,
       "title": "Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ",
@@ -189,8 +187,7 @@ void main() {
     }
     ''';
 
-    var json_Issue_TimelineWithLabels = 
-    '''
+    var json_Issue_TimelineWithLabels = '''
     {
       "title": "[flutter_tools] roll_dev.dart",
       "id": "MDU6SXNzdWU1OTk4MjMyMDU=",
@@ -256,24 +253,34 @@ void main() {
       var i = Issue.fromGraphQL(node);
       expect(i.number == 54456, true);
       expect(i.id == 'MDU6SXNzdWU1OTc5NjA3NTI=', true);
-      expect(i.title == 'smoke_catalina_hot_mode_dev_cycle__benchmark hotReloadMillisecondsToFrame & hotReloadMillisecondsToFrame above baseline', true);
+      expect(
+          i.title ==
+              'smoke_catalina_hot_mode_dev_cycle__benchmark hotReloadMillisecondsToFrame & hotReloadMillisecondsToFrame above baseline',
+          true);
       expect(i.author == Actor('kf6gpe', 'https://github.com/kf6gpe'), true);
-      expect(i.body == 'After the fix to https://github.com/flutter/flutter/issues/54368 in https://github.com/flutter/flutter/pull/54374, these benchmarks remain slightly above the baseline. Should we re-baseline them?![Screen Shot 2020-04-10 at 8 56 11 AM](https://user-images.githubusercontent.com/1435716/79004222-27bf6c00-7b09-11ea-88ad-96c68f3be102.png) åcc @jonahwilliams ', true);
+      expect(
+          i.body ==
+              'After the fix to https://github.com/flutter/flutter/issues/54368 in https://github.com/flutter/flutter/pull/54374, these benchmarks remain slightly above the baseline. Should we re-baseline them?![Screen Shot 2020-04-10 at 8 56 11 AM](https://user-images.githubusercontent.com/1435716/79004222-27bf6c00-7b09-11ea-88ad-96c68f3be102.png) åcc @jonahwilliams ',
+          true);
       expect(i.labels.length == 6, true);
-      for(var l in labels) {
+      for (var l in labels) {
         expect(i.labels.containsString(l), true);
       }
       expect(i.url == 'https://github.com/flutter/flutter/issues/54456', true);
       expect(i.createdAt.toIso8601String() == '2020-04-10T15:55:57.000Z', true);
       expect(i.closedAt == null, true);
-      expect(i.lastEditAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
+      expect(
+          i.lastEditAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
       expect(i.updatedAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
     });
     test('Issue from GraphQL - Timeline & no labels', () {
       dynamic node = json.decode(json_Issue_TimelineNoLabels);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 55193, true);
-      expect(i.title == 'Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ', true);
+      expect(
+          i.title ==
+              'Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ',
+          true);
       expect(i.timeline.length == 1, true);
       print(i.timeline[0].type);
       expect(i.timeline[0].type == 'CrossReferencedEvent', true);
@@ -284,7 +291,11 @@ void main() {
       dynamic node = json.decode(json_Issue_TimelineWithLabels);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 54774, true);
-      expect(i.author == Actor('christopherfujino', 'https://github.com/christopherfujino'), true);
+      expect(
+          i.author ==
+              Actor(
+                  'christopherfujino', 'https://github.com/christopherfujino'),
+          true);
       expect(i.timeline.length == 1, true);
       expect(i.timeline[0].number == 54783, true);
       expect(i.labels.length == 2, true);
@@ -293,5 +304,4 @@ void main() {
       expect(i.labels.containsString('nope'), false);
     });
   });
-
 }
