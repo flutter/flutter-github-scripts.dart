@@ -8,7 +8,7 @@ class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
   String get login => _results.rest[0];
-  bool get alwaysIncludeTeam => _results['always-include-team'];
+  bool /*!*/ get alwaysIncludeTeam => _results['always-include-team'];
   int get exitCode => _results['help'] ? 0 : null;
   bool get tsv => _results['tsv'] /*!*/;
   Options(List<String> args) {
@@ -39,7 +39,7 @@ class Options {
 }
 
 class MemberInfo {
-  String _login;
+  final String /*!*/ _login;
   get login => _login;
   DateTime firstContributed;
   dynamic firstContribution;
@@ -51,7 +51,7 @@ class MemberInfo {
 
 enum When { first, last }
 
-findWhen(dynamic item, String login, When w) {
+DateTime /*!*/ findWhen(dynamic item, String login, When w) {
   DateTime result;
   switch (w) {
     case When.first:
@@ -96,10 +96,10 @@ void main(List<String> args) async {
 
   // Enumerate all of the teams and get all of the members of all of the teams.
   var org = await github.organization(opts.login);
-  var allMembers = Map<String, MemberInfo>();
+  Map<String /*!*/, MemberInfo> allMembers = Map<String /*!*/, MemberInfo>();
   var membersByTeam = SplayTreeMap<String, List<String>>();
   await for (var team in org.teamsStream) {
-    var membersThisTeam = <String>[];
+    List<String /*!*/ > membersThisTeam = <String /*!*/ >[];
     await for (var member in team.membersStream) {
       membersThisTeam.add(member.login);
       allMembers[member.login] = MemberInfo(member.login);
@@ -110,7 +110,7 @@ void main(List<String> args) async {
 
   // Now go back and find out when they contributed
   for (var login in allMembers.keys) {
-    var member = allMembers[login];
+    MemberInfo /*!*/ member = allMembers[login];
     var earliestQueryAuthor = 'org:flutter author:${login} sort:updated-asc';
     var earliestQueryCommenter =
         'org:flutter commenter:${login} sort:updated-asc';

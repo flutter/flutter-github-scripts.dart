@@ -6,20 +6,16 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  get dateRange => _results['date-range'];
-  get includeMilestones => _results['include-milestones'];
-  get tsvOutput => _results['tsv-output'];
-  get markdownOutput => !tsvOutput;
-  get onlyOpen => _results['only-open'];
-  get onlyClosed => _results['only-closed'];
-  DateTime _from, _to;
-  get from => _from;
-  get to => _to;
-  get exitCode => _results == null
-      ? -1
-      : _results['help']
-          ? 0
-          : null;
+  bool /*!*/ get dateRange => _results['date-range'];
+  bool /*!*/ get includeMilestones => _results['include-milestones'];
+  bool /*!*/ get tsvOutput => _results['tsv-output'];
+  bool /*!*/ get markdownOutput => !tsvOutput;
+  bool /*!*/ get onlyOpen => _results['only-open'];
+  bool /*!*/ get onlyClosed => _results['only-closed'];
+  /* late */ DateTime _from, _to;
+  DateTime get from => _from;
+  DateTime get to => _to;
+  int get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
