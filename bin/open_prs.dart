@@ -5,11 +5,7 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  int get exitCode => _results == null
-      ? -1
-      : _results['help']
-          ? 0
-          : null;
+  int get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser

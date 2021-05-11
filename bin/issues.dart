@@ -11,11 +11,7 @@ class Options {
   String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null
-      ? -1
-      : _results['help']
-          ? 0
-          : null;
+  int get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser

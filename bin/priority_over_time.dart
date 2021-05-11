@@ -14,11 +14,7 @@ class Options {
   bool get onlyCustomers => _results['customers'] /*!*/;
   int get deltaDays =>
       int.parse(_results['delta'] == null ? '7' : _results['delta']);
-  int get exitCode => _results == null
-      ? -1
-      : _results['help']
-          ? 0
-          : null;
+  int get exitCode => _results['help'] ? 0 : null;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
