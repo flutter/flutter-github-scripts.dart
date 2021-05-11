@@ -6,8 +6,8 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  bool get between => _results['between'];
-  bool get tsv => _results['tsv'];
+  bool get between => _results['between'] /*!*/;
+  bool get tsv => _results['tsv'] /*!*/;
   DateTime get from =>
       _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
   DateTime get to =>

@@ -8,7 +8,7 @@ class Options {
   /*late*/ ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
-  bool get showQueries => _results['queries'];
+  bool get showQueries => _results['queries'] /*!*/;
   int get deltaDays =>
       int.parse(_results['delta'] == null ? '7' : _results['delta']);
   int get exitCode => _results == null

@@ -6,9 +6,9 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get showMerged => _results['merged'];
-  bool get tsv => _results['tsv'];
+  bool get showClosed => _results['closed'] /*!*/;
+  bool get showMerged => _results['merged'] /*!*/;
+  bool get tsv => _results['tsv'] /*!*/;
   bool get skipAutorollers => _results['skip-autorollers'];
   String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);

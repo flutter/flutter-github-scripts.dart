@@ -8,8 +8,8 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  bool get list => _results['list'];
-  bool get markdown => _results['markdown'];
+  bool get list => _results['list'] /*!*/;
+  bool get markdown => _results['markdown'] /*!*/;
   int get exitCode => _results == null
       ? -1
       : _results['help']

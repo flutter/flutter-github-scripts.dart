@@ -14,7 +14,7 @@ class Options {
       : _results['help']
           ? 0
           : null;
-  bool get tsv => _results['tsv'];
+  bool get tsv => _results['tsv'] /*!*/;
   Options(List<String> args) {
     _parser
       ..addFlag('help',

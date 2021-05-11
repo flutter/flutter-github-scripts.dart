@@ -7,11 +7,11 @@ import 'dart:io';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get showMerged => _results['merged'];
+  bool get showClosed => _results['closed'] /*!*/;
+  bool get showMerged => _results['merged'] /*!*/;
   bool get onlyNotable => !_results['all-contributors'];
-  bool get authors => _results['authors'];
-  bool get reviewers => _results['reviewers'];
+  bool get authors => _results['authors'] /*!*/;
+  bool get reviewers => _results['reviewers'] /*!*/;
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
   int get exitCode => _results == null
