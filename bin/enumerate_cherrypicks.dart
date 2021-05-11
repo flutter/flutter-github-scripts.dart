@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
-  String get release => _results['release'];
+  String get release => _results['release'] /*!*/;
   bool get html =>
       _results['formatted'] == false && _results['summary'] == false
           ? true
@@ -28,13 +28,13 @@ class Options {
       ..addFlag('formatted', abbr: 'f', help: 'show html format')
       ..addFlag('summary', abbr: 's', help: 'show summary (TSV)')
       ..addOption('release',
-          abbr: 'r', help: 'release to scan for cherrypick requests');
+          mandatory: true,
+          abbr: 'r',
+          help: 'release to scan for cherrypick requests');
 
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results['release'] == null)
-        throw (ArgParserException('Need a version!'));
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
