@@ -4,8 +4,8 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  int get exitCode => _results['help'] ? 0 : null;
+  late ArgResults _results;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -17,6 +17,7 @@ class Options {
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -28,7 +29,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 

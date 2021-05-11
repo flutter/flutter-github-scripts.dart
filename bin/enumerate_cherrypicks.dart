@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  String get release => _results['release'] /*!*/;
-  bool /*!*/ get html =>
+  late ArgResults _results;
+  String get release => _results['release']!;
+  bool get html =>
       _results['formatted'] == false && _results['summary'] == false
           ? true
           : _results['formatted'];
@@ -16,7 +16,7 @@ class Options {
       _results['formatted'] == false && _results['summary'] == false
           ? true
           : _results['summary'];
-  int get exitCode => _results['help'] ? 0 : null;
+  int? get exitCode => _results['help'] ? 0 : null;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -34,6 +34,7 @@ class Options {
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -44,7 +45,7 @@ class Options {
   }
 }
 
-String hotfixSummary(Issue issue, String repository) {
+String hotfixSummary(Issue issue, String? repository) {
   var result = '';
   var formatter = DateFormat('MM/dd/yy');
   var created = formatter.format(issue.createdAt);
@@ -66,7 +67,7 @@ String hotfixSummary(Issue issue, String repository) {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   var release = opts.release;

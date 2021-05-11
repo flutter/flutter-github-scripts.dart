@@ -4,10 +4,10 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
+  late ArgResults _results;
   String get id => _results.rest[0];
-  int get exitCode => _results['help'] ? 0 : null;
-  bool get tsv => _results['tsv'] /*!*/;
+  int? get exitCode => _results['help'] ? 0 : null;
+  bool get tsv => _results['tsv']!;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -16,10 +16,11 @@ class Options {
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results.rest.length != 1) throw ('invalid id!');
+      if (_results.rest.length != 1) throw ArgParserException('invalid id!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -32,7 +33,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 

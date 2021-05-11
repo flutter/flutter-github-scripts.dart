@@ -5,15 +5,15 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  bool get showClosed => _results['closed'] /*!*/;
-  bool get showMerged => _results['merged'] /*!*/;
-  bool get tsv => _results['tsv'] /*!*/;
-  bool /*!*/ get skipAutorollers => _results['skip-autorollers'];
-  String get label => _results['label'];
+  late ArgResults _results;
+  bool get showClosed => _results['closed']!;
+  bool get showMerged => _results['merged']!;
+  bool get tsv => _results['tsv']!;
+  bool get skipAutorollers => _results['skip-autorollers'];
+  String? get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results['help'] ? 0 : null;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -45,12 +45,15 @@ class Options {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
       if ((_results['closed'] || _results['merged']) &&
-          _results.rest.length != 2) throw ('need start and end dates!');
+          _results.rest.length != 2)
+        throw ArgParserException('need start and end dates!');
       if (_results['merged'] && _results['closed'])
-        throw ('--merged and --closed are mutually exclusive!');
+        throw ArgParserException(
+            '--merged and --closed are mutually exclusive!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -66,7 +69,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final repos = ['flutter', 'engine', 'plugins'];
 
@@ -79,7 +82,7 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed || opts.showMerged) {
     state = opts.showClosed ? GitHubIssueState.closed : GitHubIssueState.merged;

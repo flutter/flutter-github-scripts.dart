@@ -5,10 +5,10 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
+  late ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results['help'] ? 0 : null;
+  int? get exitCode => _results['help'] ? 0 : null;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -28,6 +28,7 @@ class Options {
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -49,7 +50,7 @@ void printHeader(Options opts) {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
@@ -72,9 +73,9 @@ void main(List<String> args) async {
     labels: ['severe: regression'],
   );
 
-  var open = <Issue /*!*/ >[];
-  var openedThisPeriod = <Issue /*!*/ >[];
-  var closedThisPeriod = <Issue /*!*/ >[];
+  var open = <Issue>[];
+  var openedThisPeriod = <Issue>[];
+  var closedThisPeriod = <Issue>[];
 
   openIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);
@@ -118,12 +119,12 @@ void main(List<String> args) async {
   print('|----------|------|--------|-------|');
   var totalOpen = 0, totalClosed = 0, total = 0;
   interestingPriorities.forEach((p) {
-    var openCount =
+    int openCount =
         openCluster.clusters[p] == null ? 0 : openCluster.clusters[p].length;
-    var closedCount = closedCluster.clusters[p] == null
+    int closedCount = closedCluster.clusters[p] == null
         ? 0
         : closedCluster.clusters[p].length;
-    var totalRow = openCount + closedCount;
+    int totalRow = openCount + closedCount;
     totalOpen += openCount;
     totalClosed += closedCount;
     total += totalRow;

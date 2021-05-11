@@ -5,17 +5,17 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  bool /*!*/ get dateRange => _results['date-range'];
-  bool /*!*/ get includeMilestones => _results['include-milestones'];
-  bool /*!*/ get tsvOutput => _results['tsv-output'];
-  bool /*!*/ get markdownOutput => !tsvOutput;
-  bool /*!*/ get onlyOpen => _results['only-open'];
-  bool /*!*/ get onlyClosed => _results['only-closed'];
-  /* late */ DateTime _from, _to;
+  late ArgResults _results;
+  bool get dateRange => _results['date-range'];
+  bool get includeMilestones => _results['include-milestones'];
+  bool get tsvOutput => _results['tsv-output'];
+  bool get markdownOutput => !tsvOutput;
+  bool get onlyOpen => _results['only-open'];
+  bool get onlyClosed => _results['only-closed'];
+  late DateTime _from, _to;
   DateTime get from => _from;
   DateTime get to => _to;
-  int get exitCode => _results['help'] ? 0 : null;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -44,7 +44,7 @@ class Options {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
       if (_results['date-range'] && _results.rest.length != 2) {
-        throw ('need start and end dates!');
+        throw ArgParserException('need start and end dates!');
       } else if (_results['date-range']) {
         _from = DateTime.parse(_results.rest[0]);
         _to = DateTime.parse(_results.rest[1]);
@@ -55,6 +55,7 @@ class Options {
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -86,7 +87,7 @@ bool eventIsMilestoneInMonth(TimelineItem milestone) {
   if (milestone.type != 'MilestonedEvent' &&
       milestone.type == 'DemilestonedEvent') return false;
   for (var monthAbbreviation in monthAbbreviations) {
-    if (milestone.title != null && milestone.title.contains(monthAbbreviation))
+    if (milestone.title != null && milestone.title!.contains(monthAbbreviation))
       return true;
   }
   return false;
@@ -101,14 +102,14 @@ void main(List<String> args) async {
   };
 
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
   var issues = [];
 
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
 
   var state = GitHubIssueState.open;
@@ -150,11 +151,11 @@ void main(List<String> args) async {
   }
 
   // Lots o' debugging when this is enabled --- flip to true.
-  if (opts.markdownOutput && false) {
-    print('## All issues\n');
-    for (var issue in issues) print(issue.summary(linebreakAfter: true));
-    print('\n');
-  }
+  // if (opts.markdownOutput && false) {
+  //   print('## All issues\n');
+  //   for (var issue in issues) print(issue.summary(linebreakAfter: true));
+  //   print('\n');
+  // }
   // End debugging
 
   if (opts.includeMilestones && opts.markdownOutput) {

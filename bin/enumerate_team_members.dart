@@ -6,11 +6,11 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
+  late ArgResults _results;
   String get login => _results.rest[0];
-  bool /*!*/ get alwaysIncludeTeam => _results['always-include-team'];
-  int get exitCode => _results['help'] ? 0 : null;
-  bool get tsv => _results['tsv'] /*!*/;
+  bool get alwaysIncludeTeam => _results['always-include-team'];
+  int? get exitCode => _results['help'] ? 0 : null;
+  bool get tsv => _results['tsv']!;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -23,10 +23,12 @@ class Options {
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results.rest.length != 1) throw ('invalid organization!');
+      if (_results.rest.length != 1)
+        throw ArgParserException('invalid organization!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -39,11 +41,11 @@ class Options {
 }
 
 class MemberInfo {
-  final String /*!*/ _login;
+  final String _login;
   get login => _login;
-  DateTime firstContributed;
+  DateTime? firstContributed;
   dynamic firstContribution;
-  DateTime lastContributed;
+  DateTime? lastContributed;
   dynamic lastContribution;
 
   MemberInfo(this._login);
@@ -51,8 +53,8 @@ class MemberInfo {
 
 enum When { first, last }
 
-DateTime /*!*/ findWhen(dynamic item, String login, When w) {
-  DateTime result;
+DateTime findWhen(dynamic item, String login, When w) {
+  DateTime? result;
   switch (w) {
     case When.first:
       if (item.author?.login == login) {
@@ -85,21 +87,21 @@ DateTime /*!*/ findWhen(dynamic item, String login, When w) {
       if (result == null) result = item.createdAt;
       break;
   }
-  return result;
+  return result!;
 }
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
   // Enumerate all of the teams and get all of the members of all of the teams.
   var org = await github.organization(opts.login);
-  Map<String /*!*/, MemberInfo> allMembers = Map<String /*!*/, MemberInfo>();
-  var membersByTeam = SplayTreeMap<String, List<String>>();
+  Map<String, MemberInfo> allMembers = Map<String, MemberInfo>();
+  var membersByTeam = SplayTreeMap<String?, List<String>>();
   await for (var team in org.teamsStream) {
-    List<String /*!*/ > membersThisTeam = <String /*!*/ >[];
+    List<String> membersThisTeam = <String>[];
     await for (var member in team.membersStream) {
       membersThisTeam.add(member.login);
       allMembers[member.login] = MemberInfo(member.login);
@@ -110,7 +112,7 @@ void main(List<String> args) async {
 
   // Now go back and find out when they contributed
   for (var login in allMembers.keys) {
-    MemberInfo /*!*/ member = allMembers[login];
+    MemberInfo member = allMembers[login]!;
     var earliestQueryAuthor = 'org:flutter author:${login} sort:updated-asc';
     var earliestQueryCommenter =
         'org:flutter commenter:${login} sort:updated-asc';
@@ -182,9 +184,9 @@ void main(List<String> args) async {
       'Team\tGithub login\tFirst contributed\tEarliest contribution\tLast contributed\tLatest contribution');
   for (var team in membersByTeam.keys) {
     if (!opts.alwaysIncludeTeam) print('${team}');
-    for (var member in membersByTeam[team]) {
+    for (var member in membersByTeam[team]!) {
       var row = opts.alwaysIncludeTeam ? '${team}\t${member}' : '\t${member}';
-      var contributor = allMembers[member];
+      var contributor = allMembers[member]!;
       if (contributor.firstContribution == null) {
         row += '\t\t';
       } else {

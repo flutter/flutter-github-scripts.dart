@@ -5,13 +5,13 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  bool get showClosed => _results['closed'] /*!*/;
-  bool get tsv => _results['tsv'] /*!*/;
-  String get label => _results['label'];
+  late ArgResults _results;
+  bool get showClosed => _results['closed']!;
+  bool get tsv => _results['tsv']!;
+  String? get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results['help'] ? 0 : null;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -33,10 +33,11 @@ class Options {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
       if (_results['closed'] && _results.rest.length != 2)
-        throw ('need start and end dates!');
+        throw ArgParserException('need start and end dates!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -51,7 +52,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   var repos = ['flutter'];
 
@@ -59,7 +60,7 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed) {
     state = GitHubIssueState.closed;

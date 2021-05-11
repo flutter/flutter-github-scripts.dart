@@ -5,24 +5,24 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  bool get showClosed => _results['closed'] /*!*/;
-  bool get showMerged => _results['merged'] /*!*/;
-  DateTime /*?*/ get from =>
+  late ArgResults _results;
+  bool get showClosed => _results['closed']!;
+  bool get showMerged => _results['merged']!;
+  DateTime? get from =>
       _results.rest.length > 0 ? DateTime.parse(_results.rest[0]) : null;
-  DateTime /*?*/ get to =>
+  DateTime? get to =>
       _results.rest.length > 1 ? DateTime.parse(_results.rest[1]) : null;
-  bool get labels => _results['labels'] /*!*/;
-  bool get authors => _results['authors'] /*!*/;
-  bool get assignees => _results['assignees'] /*!*/;
-  bool get reviewers => _results['reviewers'] /*!*/;
-  bool get prs => _results['prs'] /*!*/;
-  bool get issues => _results['issues'] /*!*/;
-  bool get alphabetize => _results['alphabetize'] /*!*/;
-  bool get customers => _results['customers-only'] /*!*/;
-  bool get ranking => _results['ranking'] /*!*/;
-  bool get skipUninteresting => _results['skip-uninteresting-labels'] /*!*/;
-  int get exitCode => _results['help'] ? 0 : null;
+  bool get labels => _results['labels']!;
+  bool get authors => _results['authors']!;
+  bool get assignees => _results['assignees']!;
+  bool get reviewers => _results['reviewers']!;
+  bool get prs => _results['prs']!;
+  bool get issues => _results['issues']!;
+  bool get alphabetize => _results['alphabetize']!;
+  bool get customers => _results['customers-only']!;
+  bool get ranking => _results['ranking']!;
+  bool get skipUninteresting => _results['skip-uninteresting-labels']!;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -83,23 +83,24 @@ class Options {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
       if (_results['labels'] && _results['authors']) {
-        throw ('cannot cluster on both labels and authors');
+        throw ArgParserException('cannot cluster on both labels and authors');
       }
       if (!_results['labels'] &&
           !_results['authors'] &&
           !_results['assignees']) {
-        throw (ArgParserException('need to labels, authors, or assignees!'));
+        throw ArgParserException('need to labels, authors, or assignees!');
       }
       if (_results['prs'] && _results['issues']) {
-        throw (ArgParserException(
-            'cannot cluster both pull requests and issues at the same time!'));
+        throw ArgParserException(
+            'cannot cluster both pull requests and issues at the same time!');
       }
       if (!_results['prs'] && !_results['issues']) {
-        throw (ArgParserException(
-            'need to cluster either issues or pull requests!'));
+        throw ArgParserException(
+            'need to cluster either issues or pull requests!');
       }
       if (_results['merged'] && _results['closed']) {
-        throw ('--merged and --closed are mutually exclusive!');
+        throw ArgParserException(
+            '--merged and --closed are mutually exclusive!');
       }
     } on ArgParserException catch (e) {
       print(e.message);
@@ -120,8 +121,8 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
-  var keys = Set<String /*!*/ >();
+  if (opts.exitCode != null) exit(opts.exitCode!);
+  Set<String?> keys = Set<String>();
 
   final repos = opts.prs ? ['flutter', 'engine', 'plugins'] : ['flutter'];
   final labelsToSkip = ['cla: yes', 'waiting for tree to go green'];
@@ -129,12 +130,12 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  GitHubIssueType type;
+  GitHubIssueType? type;
   if (opts.issues) type = GitHubIssueType.issue;
   if (opts.prs) type = GitHubIssueType.pullRequest;
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed || opts.showMerged) {
     state = opts.showClosed ? GitHubIssueState.closed : GitHubIssueState.merged;
@@ -151,7 +152,7 @@ void main(List<String> args) async {
         dateQuery: rangeType,
         dateRange: when);
 
-    Cluster clusters;
+    late Cluster clusters;
     if (opts.labels) clusters = Cluster.byLabel(items);
     if (opts.authors) clusters = Cluster.byAuthor(items);
     if (opts.assignees) clusters = Cluster.byAssignees(items);
@@ -172,7 +173,7 @@ void main(List<String> args) async {
         ' by ${what}' +
         ' for `flutter/${repo}` ' +
         (opts.showClosed
-            ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}'
+            ? 'from ${opts.from!.toIso8601String()} to ${opts.to!.toIso8601String()}'
             : '') +
         '\n\n');
 
@@ -210,21 +211,18 @@ void main(List<String> args) async {
           (opts.issues ? 'issues' : 'PRs') +
           ' rank-ordered by label');
       for (var customer in clusters.clusters.keys) {
-        Map<String /*!*/, int> labelCountsByLabel = Map<String /*!*/, int>();
+        Map<String, int> labelCountsByLabel = Map<String, int>();
         for (var item in clusters.clusters[customer]) {
           for (var labelItem in item.labels.labels) {
             var label = labelItem as Label;
-            if (!labelCountsByLabel.containsKey(label.label)) {
-              labelCountsByLabel[label.label] = 1;
-            } else {
-              labelCountsByLabel[label.label]++;
-            }
+            int count = labelCountsByLabel[label.label] ?? 0;
+            labelCountsByLabel[label.label] = count + 1;
           }
         }
         var rankedLabelList = labelCountsByLabel.keys.toList();
         // REVERSE sort, not incremental sort
         rankedLabelList.sort(
-            (a, b) => labelCountsByLabel[b].compareTo(labelCountsByLabel[a]));
+            (a, b) => labelCountsByLabel[b]!.compareTo(labelCountsByLabel[a]!));
 
         print('#### ${customer}\n\n');
         for (var labelName in rankedLabelList) {

@@ -7,10 +7,10 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  /*late*/ ArgResults _results;
-  bool get list => _results['list'] /*!*/;
-  bool get markdown => _results['markdown'] /*!*/;
-  int get exitCode => _results['help'] ? 0 : null;
+  late ArgResults _results;
+  bool get list => _results['list']!;
+  bool get markdown => _results['markdown']!;
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -37,6 +37,7 @@ class Options {
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
+      exit(-1);
     }
   }
 
@@ -52,8 +53,8 @@ class Options {
 final _noMilestone = Milestone('No milestone assigned', '', -1, '', null, null,
     null, DateTime(2099, 12, 31));
 
-Map<Milestone /*!*/, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
-  var result = Map<Milestone /*!*/, List<dynamic>>();
+Map<Milestone, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
+  var result = Map<Milestone, List<dynamic>>();
   result[_noMilestone] = [];
 
   for (var item in issues) {
@@ -70,7 +71,7 @@ Map<Milestone /*!*/, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
 
 columnar.Paragraph summary(Issue issue, String style) {
   final priorities = {'P0', 'P1', 'P2', 'P3', 'P4 ', 'P5', 'P6'};
-  String priority;
+  String? priority;
   String resultText = '';
   priorities.forEach((label) {
     if (issue.labels.containsString(label)) priority = label;
@@ -124,7 +125,7 @@ var htmlHeader = '''
 void main(List<String> args) async {
   final priorities = {'P0', 'P1', 'P2', 'P3', 'P4 ', 'P5', 'P6'};
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   // Find the list of folks we're interested in
   final orgMembersContents =
       File('go_flutter_org_members.csv').readAsStringSync();
@@ -139,7 +140,7 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
 
   var report = new columnar.Document();
@@ -191,10 +192,10 @@ void main(List<String> args) async {
       report[column].append(
           columnar.Paragraph(text: milestone.title, styleClass: 'milestone'));
       // Now group by label, so we can filter on priority
-      var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]);
+      var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]!);
 
       // First show the prioritized items, by each priority...
-      var shown = <Issue /*!*/ >[];
+      var shown = <Issue>[];
       for (var label in priorities) {
         if (issuesByLabel.clusters.keys.contains(label)) {
           if (opts.list) print('#### ${label}\n');
@@ -213,7 +214,7 @@ void main(List<String> args) async {
       // And now show unprioritized items, if there are any.
       if (shown.length != issuesByMilestone[milestone]) {
         if (opts.list) print('#### Unprioritized\n');
-        for (var item in issuesByMilestone[milestone]) {
+        for (var item in issuesByMilestone[milestone]!) {
           var issue = item as Issue;
           if (!shown.contains(issue)) {
             if (opts.list)
