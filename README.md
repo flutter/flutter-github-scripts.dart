@@ -26,7 +26,7 @@ Friday).
 
 ## bin/today_report.dart
 
-Usage: `pub run bin/today_report.dart [-f from-date] [-t to-date]`'
+Usage: `pub run bin/today_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `P0` issues, `P0` issues opened in the period from
@@ -41,7 +41,7 @@ to the team when the Markdown is run through
 
 ## bin/performance_report.dart
 
-Usage: `pub run bin/performance_report.dart [-f from-date] [-t to-date]`'
+Usage: `pub run bin/performance_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `severe: performance` issues, `severe: performance` issues opened in the 
@@ -56,7 +56,7 @@ to the team when the Markdown is run through
 
 ## bin/regression_report.dart
 
-Usage: `pub run bin/regression_report.dart [-f from-date] [-t to-date]`'
+Usage: `pub run bin/regression_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `severe: regression` issues, `severe: regression` issues opened in the 
@@ -71,7 +71,7 @@ to the team when the Markdown is run through
 
 ## bin/open-issue-count-by-week.dart
 
-Usage: `pub run bin/open-issue-count-by-week.dart [-f from-date] [-t to-date]`'
+Usage: `pub run bin/open-issue-count-by-week.dart [-f from-date] [-t to-date]`
 
 Returns a TSV document consisting of the number of issues opened each  
 week from `from-date` until `to-date`.
@@ -82,19 +82,19 @@ If not specified, the report spans the previous week.
 
 ## bin/issue.dart
 
-Usage: `pub run bin/issue.dart [-tsv] issue-number`
+Usage: `pub run bin/issue.dart [--tsv] issue-number`
 
 Returns a summary of the issue in Markdown or TSV format.
 
 ## bin/pr.dart
 
-Usage: `pub run bin/pr.dart [-tsv] pr-number`
+Usage: `pub run bin/pr.dart [--tsv] pr-number`
 
 Returns a summary of the pull request in Markdown or TSV format.
 
 ## bin/prs.dart
 
-Usage: `pub run bin/prs.dart [-tsv] [--label label] [--merged from-date to-date] [--closed from-date to-date]`
+Usage: `pub run bin/prs.dart [--tsv] [--label label] [--merged from-date to-date] [--closed from-date to-date]`
 
 By default, returns a summary of the open pull requests in the Flutter repositories in Markdown format.
 When passed `--closed` and two dates in ISO 8601 format, shows the range
@@ -106,7 +106,7 @@ When passed `--skipAutorollers`, skips autoroller PRs.
 
 ## bin/issues.dart
 
-Usage: `pub run bin/issues.dart [-tsv] [--label label] [--closed from-date to-date]`
+Usage: `pub run bin/issues.dart [--tsv] [--label label] [--closed from-date to-date]`
 
 By default, returns a summary of the open issues in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
@@ -176,7 +176,7 @@ Shows all authors closing PRs between May 1 2020 and May 3 2020.
 
 ## bin/issues-milestones.dart
 
-Usage: `pub run bin/issues-milestones.dart'
+Usage: `pub run bin/issues-milestones.dart`
 
 Generates a list of unmilestoned owned issues, unowned milestoned issues, and
 some statistics about how many issues are owned by each contributor listed in the
@@ -253,7 +253,7 @@ and all comments.
 
 ## bin/top_reactions.dart
 
-Usage: `pub run bin/top_reactions.dart [-only-unprioritized]'
+Usage: `pub run bin/top_reactions.dart [-only-unprioritized]`
 
 Dumps all open issues and counts of positive, negative, and neutral reactions in
 TSV format. For import to analyze in Google Sheets.
