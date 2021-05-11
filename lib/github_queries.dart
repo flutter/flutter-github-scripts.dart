@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 
@@ -88,7 +87,7 @@ class GitHub {
         return;
       }
 
-      var buffer = List<dynamic>();
+      var buffer = [];
       var bufferIndex = 0;
       var edges = page.data['search']['nodes'];
       edges.forEach((edge) {
@@ -155,7 +154,7 @@ class GitHub {
     var fetchAnotherDay = false;
     var splitFetches = false;
     var totalIssueCount = null;
-    var result = List<dynamic>();
+    var result = [];
     var resultsFetched = Set<int>();
     // For each label, do the query.
     for (var labelFilter in labelFilters) {
@@ -285,10 +284,9 @@ class GitHub {
       throw ('With a dateQuery you must provide a non-null dateRange!');
     }
 
-    var result = List<dynamic>();
+    var result = [];
     var done = false;
     var after = 'null';
-    int count = 0;
     do {
       var query = _queryIssuesOrPRs
           .replaceAll(r'${repositoryOwner}', owner)
@@ -363,7 +361,6 @@ class GitHub {
 
         if (add) {
           result.add(item);
-          count++;
         }
       });
       PageInfo pageInfo =
@@ -371,15 +368,15 @@ class GitHub {
 
       done = done || !pageInfo.hasNextPage;
       if (!done) after = '"${pageInfo.endCursor}"';
-      if (false) {
-        var totalCount = page.data['repository'][typeString]['totalCount'];
-        print('${count} / ${totalCount}');
-      }
+      // if (false) {
+      //   var totalCount = page.data['repository'][typeString]['totalCount'];
+      //   print('${count} / ${totalCount}');
+      // }
     } while (!done);
 
     // Filter labels
     if (labels != null && labels.length > 0) {
-      var filtered = List<dynamic>();
+      var filtered = [];
       for (var item in result) {
         for (var label in labels) {
           if (item.labels.containsString(label)) {
@@ -561,7 +558,7 @@ class DateRange {
         end != null) {
       return DateRange._internal(type, null, null, start, end);
     } else {
-      throw ("Illegal arguments");
+      throw ArgumentError("Illegal arguments");
     }
   }
   DateRange._internal(this._type, this._at, this._when, this._start, this._end);

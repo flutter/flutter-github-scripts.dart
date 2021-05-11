@@ -9,7 +9,11 @@ class Options {
   ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
 
   Options(List<String> args) {
     _parser
@@ -53,10 +57,6 @@ void main(List<String> args) async {
   if (opts.exitCode != null) exit(opts.exitCode);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
-  final closedRange =
-      DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-  final openedRange = DateRange(DateRangeType.range,
-      start: opts.to.subtract(Duration(hours: 24 * 7)), end: opts.to);
 
   var openIssues = await github.fetch(
     owner: 'flutter',

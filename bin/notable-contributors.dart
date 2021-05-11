@@ -77,7 +77,7 @@ void main(List<String> args) async {
   final orgMembersContents =
       File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
-  var paidContributors = List<String>();
+  var paidContributors = <String>[];
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
             (row[3].toString().toUpperCase().contains('GOOGLE')) ||
@@ -99,7 +99,7 @@ void main(List<String> args) async {
     rangeType = GitHubDateQueryType.closed;
   }
 
-  var prs = List<dynamic>();
+  var prs = [];
   for (var repo in repos) {
     prs.addAll(await github.deprecated_search(
         owner: 'flutter',
@@ -127,16 +127,16 @@ void main(List<String> args) async {
           opts.to.toIso8601String()
       : "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs");
 
-  if (false) {
-    print('## All issues\n');
-    for (var pr in prs) print(pr.summary(linebreakAfter: true));
-    print('\n');
-  }
+  // if (false) {
+  //   print('## All issues\n');
+  //   for (var pr in prs) print(pr.summary(linebreakAfter: true));
+  //   print('\n');
+  // }
 
   print('There were ${prs.length} pull requests.\n\n');
   var allParticipants = Set<String>();
-  var unpaidContributions = List<PullRequest>();
-  var paidContributions = List<PullRequest>();
+  var unpaidContributions = <PullRequest>[];
+  var paidContributions = <PullRequest>[];
   for (var item in prs) {
     var pullRequest = item as PullRequest;
     if (opts.authors &&

@@ -9,7 +9,11 @@ class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults _results;
   int get number => int.parse(_results.rest[0]);
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
   bool get tsv => _results['tsv'];
 
   Options(List<String> args) {
@@ -37,24 +41,24 @@ class Options {
   }
 }
 
-final _reactionQuery = r'''
-query {
-  repository(owner:"flutter", name:"flutter") {
-		issue(number: ${issue}) {
-        	reactions(first: 100, after: ${after}) {
-          	totalCount,
-            pageInfo {
-              endCursor,
-              hasNextPage,
-            }
-          	nodes {
-            	content
-            },
-          },
-        },
-      },
-    }
-''';
+// final _reactionQuery = r'''
+// query {
+//   repository(owner:"flutter", name:"flutter") {
+// 		issue(number: ${issue}) {
+//         	reactions(first: 100, after: ${after}) {
+//           	totalCount,
+//             pageInfo {
+//               endCursor,
+//               hasNextPage,
+//             }
+//           	nodes {
+//             	content
+//             },
+//           },
+//         },
+//       },
+//     }
+// ''';
 
 void main(List<String> args) async {
   final opts = Options(args);
@@ -74,16 +78,17 @@ void main(List<String> args) async {
   //   2. A stream of reactions on each comment.
   var sanity = 0;
   var positive = 0, negative = 0, neutral = 0;
-  var postReactionStream = issue.reactionStream;
+  // var postReactionStream = issue.reactionStream;
   print('Reactions to main post:');
-  if (false)
-    await for (var reaction in postReactionStream) {
-      sanity++;
-      if (reaction.positive) positive++;
-      if (reaction.negative) negative++;
-      if (reaction.neutral) neutral++;
-      print('${reaction.comment}');
-    }
+  // if (false) {
+  //   await for (var reaction in postReactionStream) {
+  //     sanity++;
+  //     if (reaction.positive) positive++;
+  //     if (reaction.negative) negative++;
+  //     if (reaction.neutral) neutral++;
+  //     print('${reaction.comment}');
+  //   }
+  // }
   print('${sanity} reaction(s).');
 
   var totalReactions = sanity;

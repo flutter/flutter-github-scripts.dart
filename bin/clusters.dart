@@ -1,10 +1,7 @@
-import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
 import 'dart:io';
-
-import 'package:test/test.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);

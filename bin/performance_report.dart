@@ -1,4 +1,3 @@
-import 'package:graphql/client.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 import 'package:args/args.dart';
@@ -9,7 +8,11 @@ class Options {
   ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results == null ? -1 : _results['help'] ? 0 : null;
+  int get exitCode => _results == null
+      ? -1
+      : _results['help']
+          ? 0
+          : null;
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -80,9 +83,9 @@ void main(List<String> args) async {
     labels: ['severe: performance'],
   );
 
-  var open = List<Issue>();
-  var openedThisPeriod = List<Issue>();
-  var closedThisPeriod = List<Issue>();
+  var open = <Issue>[];
+  var openedThisPeriod = <Issue>[];
+  var closedThisPeriod = <Issue>[];
 
   openPerfIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);
