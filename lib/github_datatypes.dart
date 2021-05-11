@@ -19,11 +19,11 @@ final _client = GraphQLClient(cache: GraphQLCache(), link: _link);
 
 /// Represents a page of information from GitHub.
 class PageInfo {
-  String _startCursor;
+  final String _startCursor;
   get startCursor => _startCursor;
-  bool _hasNextPage;
+  final bool _hasNextPage;
   get hasNextPage => _hasNextPage;
-  String _endCursor;
+  final String _endCursor;
   get endCursor => _endCursor;
   PageInfo(this._startCursor, this._endCursor, this._hasNextPage);
   static PageInfo fromGraphQL(dynamic node) {
@@ -31,6 +31,7 @@ class PageInfo {
         node['startCursor'], node['endCursor'], node['hasNextPage']);
   }
 
+  @override
   String toString() {
     return 'startCursor: ${startCursor}, endCursor: ${endCursor}, hasNextPage: ${hasNextPage}';
   }
@@ -67,7 +68,7 @@ class Reaction {
     "THUMBS_UP"
   ];
 
-  String _content;
+  final String _content;
   get content => _content;
   bool get positive =>
       _content == "HEART" || _content == "HOORAY" || _content == "THUMBS_UP";
@@ -80,9 +81,8 @@ class Reaction {
     return Reaction(node['content']);
   }
 
-  String toString() {
-    return _content;
-  }
+  @override
+  String toString() => _content;
 
   @override
   bool operator ==(Object other) =>
@@ -102,13 +102,13 @@ class Reaction {
 }
 
 class Comment {
-  Actor _author;
+  final Actor _author;
   get author => _author;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
-  String _body;
+  final String _body;
   get body => _body;
-  String _id;
+  final String _id;
   get id => _id;
   get reactionStream async* {
     var after = 'null';
@@ -198,16 +198,15 @@ class Comment {
 }
 
 class Label {
-  String _label;
+  final String _label;
   get label => _label;
   Label(this._label);
   static Label fromGraphQL(dynamic node) {
     return Label(node['name']);
   }
 
-  String toString() {
-    return _label;
-  }
+  @override
+  String toString() => _label;
 
   @override
   bool operator ==(Object other) =>
@@ -227,7 +226,7 @@ class Label {
 }
 
 class Labels {
-  Set<Label> _labels;
+  final Set<Label> _labels;
   get labels => _labels;
   get length => _labels.length;
   void append(l) => _labels.add(l);
@@ -257,9 +256,8 @@ class Labels {
     return csv;
   }
 
-  String toString() {
-    return summary();
-  }
+  @override
+  String toString() => summary();
 
   String priority() {
     final priorities = {'P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'};
@@ -284,15 +282,15 @@ class Labels {
 }
 
 class TimelineItem {
-  String _type;
+  final String _type;
   String get type => _type;
-  String _title;
+  final String _title;
   String get title => _title;
-  int _number;
+  final int _number;
   int get number => _number;
-  Actor _actor;
+  final Actor _actor;
   Actor get actor => _actor;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   DateTime get createdAt => _createdAt;
 
   TimelineItem(
@@ -320,6 +318,7 @@ class TimelineItem {
         node['createdAt'] == null ? null : DateTime.parse(node['createdAt']));
   }
 
+  @override
   String toString() {
     var result = '${_type} (' + _createdAt.toIso8601String() + ')';
     result = '${result}' + (_actor != null ? ' by ${actor.login}' : '');
@@ -360,7 +359,7 @@ class TimelineItem {
 }
 
 class Timeline {
-  List<TimelineItem> _timeline;
+  final List<TimelineItem> _timeline;
   get timeline => _timeline;
   get length => _timeline.length;
   get originalMilestone {
@@ -393,9 +392,8 @@ class Timeline {
         : markdown;
   }
 
-  String toString() {
-    return summary();
-  }
+  @override
+  String toString() => summary();
 
   String toCsv() {
     String csv = '';
@@ -486,21 +484,21 @@ class Timeline {
 }
 
 class Milestone {
-  String _title;
+  final String _title;
   get title => _title;
-  String _id;
+  final String _id;
   get id => _id;
-  int _number;
+  final int _number;
   get number => _number;
-  String _url;
+  final String _url;
   get url => _url;
-  bool _closed;
+  final bool _closed;
   get closed => closed;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
-  DateTime _closedAt;
+  final DateTime _closedAt;
   get closedAt => _closedAt;
-  DateTime _dueOn;
+  final DateTime _dueOn;
   get dueOn => _dueOn;
 
   Milestone(this._title, this._id, this._number, this._url, this._closed,
@@ -518,13 +516,10 @@ class Milestone {
         node['dueOn'] == null ? null : DateTime.parse(node['dueOn']));
   }
 
-  String toString() {
-    return 'due on ${dueOn} (${title})';
-  }
+  @override
+  String toString() => 'due on ${dueOn} (${title})';
 
-  String toCsv() {
-    return '${title},${dueOn}';
-  }
+  String toCsv() => '${title},${dueOn}';
 
   @override
   bool operator ==(Object other) =>
@@ -552,15 +547,15 @@ class Milestone {
 }
 
 class Repository {
-  String _organization;
+  final String _organization;
   get organization => _organization;
-  String _repository;
+  final String _repository;
   get repository => _repository;
 
-  Repository(String slug) {
-    _organization = slug.split('/')[0];
-    _repository = slug.split('/')[1];
-  }
+  Repository(String slug)
+      : _organization = slug.split('/')[0],
+        _repository = slug.split('/')[1];
+
   static Repository fromGraphQL(dynamic node) {
     return Repository(node['nameWithOwner']);
   }
@@ -578,9 +573,9 @@ class Repository {
 }
 
 class Actor {
-  String _login;
+  final String _login;
   get login => _login;
-  String _url;
+  final String _url;
   get url => _url;
 
   Actor(this._login, this._url);
@@ -590,6 +585,7 @@ class Actor {
         : null;
   }
 
+  @override
   String toString() => this._login;
   String toCsv() => this._login;
 
@@ -612,19 +608,19 @@ class Actor {
 }
 
 class Organization {
-  String _id;
+  final String _id;
   get id => _id;
-  String _avatarUrl;
+  final String _avatarUrl;
   get avatarUrl => _avatarUrl;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
-  String _description;
+  final String _description;
   get description => _description;
-  String _email;
+  final String _email;
   get email => _email;
-  String _login;
+  final String _login;
   get login => _login;
-  String _name;
+  final String _name;
   get name => _name;
 
   get pendingMembersStream async* {
@@ -782,15 +778,15 @@ class Organization {
 }
 
 class Team {
-  String _id;
+  final String _id;
   get id => _id;
-  String _avatarUrl;
+  final String _avatarUrl;
   get avatarUrl => _avatarUrl;
-  String _name;
+  final String _name;
   get name => _name;
-  String _description;
+  final String _description;
   get description => _description;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
   DateTime _updatedAt;
   get updatedAt => _updatedAt;
@@ -935,37 +931,37 @@ class Team {
 }
 
 class Issue {
-  String _title;
+  final String _title;
   get title => _title;
-  String _id;
+  final String _id;
   get id => _id;
-  int _number;
+  final int _number;
   get number => _number;
-  String _state;
+  final String _state;
   get state => _state;
-  Actor _author;
+  final Actor _author;
   get author => _author;
-  List<Actor> _assignees;
+  final List<Actor> _assignees;
   get assignees => _assignees;
-  String _body;
+  final String _body;
   get body => _body;
-  Labels _labels;
+  final Labels _labels;
   get labels => _labels;
-  String _url;
+  final String _url;
   get url => _url;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
-  DateTime _closedAt;
+  final DateTime _closedAt;
   get closedAt => _closedAt;
-  DateTime _lastEditAt;
+  final DateTime _lastEditAt;
   get lastEditAt => _lastEditAt;
-  DateTime _updatedAt;
+  final DateTime _updatedAt;
   get updatedAt => _updatedAt;
-  Repository _repository;
+  final Repository _repository;
   get repository => _repository;
-  Milestone _milestone;
+  final Milestone _milestone;
   get milestone => _milestone;
-  Timeline _timeline;
+  final Timeline _timeline;
   get timeline => _timeline;
   get reactionStream async* {
     var after = 'null';
@@ -1309,43 +1305,43 @@ class Issue {
 }
 
 class PullRequest {
-  String _title;
+  final String _title;
   get title => _title;
-  String _id;
+  final String _id;
   get id => _id;
-  int _number;
+  final int _number;
   get number => _number;
-  String _state;
+  final String _state;
   get state => _state;
-  Actor _author;
+  final Actor _author;
   get author => _author;
-  List<Actor> _reviewers;
+  final List<Actor> _reviewers;
   get reviewers => _reviewers;
-  List<Actor> _assignees;
+  final List<Actor> _assignees;
   get assignees => _assignees;
-  String _body;
+  final String _body;
   get body => _body;
-  Milestone _milestone;
+  final Milestone _milestone;
   get milestone => _milestone;
-  Labels _labels;
+  final Labels _labels;
   get labels => _labels;
-  String _url;
+  final String _url;
   get url => _url;
-  bool _merged;
+  final bool _merged;
   get merged => _merged;
-  DateTime _createdAt;
+  final DateTime _createdAt;
   get createdAt => _createdAt;
-  DateTime _mergedAt;
+  final DateTime _mergedAt;
   get mergedAt => _mergedAt;
-  DateTime _lastEditAt;
+  final DateTime _lastEditAt;
   get lastEditAt => _lastEditAt;
-  DateTime _updatedAt;
+  final DateTime _updatedAt;
   get updatedAt => _updatedAt;
-  DateTime _closedAt;
+  final DateTime _closedAt;
   get closedAt => _closedAt;
-  Repository _repository;
+  final Repository _repository;
   get repository => _repository;
-  Timeline _timeline;
+  final Timeline _timeline;
   get timeline => _timeline;
 
   PullRequest(
@@ -1569,9 +1565,9 @@ enum ClusterType { byLabel, byAuthor, byAssignee, byReviewer, byMilestone }
 enum ClusterReportSort { byKey, byCount }
 
 class Cluster {
-  ClusterType _type;
+  final ClusterType _type;
   get type => _type;
-  SplayTreeMap<String, dynamic> _clusters;
+  final SplayTreeMap<String, dynamic> _clusters;
   get clusters => _clusters;
   get keys => _clusters.keys;
   dynamic operator [](String key) => _clusters[key];
@@ -1716,6 +1712,7 @@ class Cluster {
     return result;
   }
 
+  @override
   String toString() => summary();
 
   String toMarkdown(
