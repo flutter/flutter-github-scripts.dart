@@ -5,7 +5,7 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   int get number => int.parse(_results.rest[0]);
   int get exitCode => _results == null
       ? -1

@@ -5,7 +5,7 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   bool get showClosed => _results['closed'];
   bool get tsv => _results['tsv'];
   String get label => _results['label'];

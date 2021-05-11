@@ -5,23 +5,23 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get showMerged => _results['merged'];
-  DateTime get from =>
-      _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
-  DateTime get to =>
-      _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
-  bool get labels => _results['labels'];
-  bool get authors => _results['authors'];
-  bool get assignees => _results['assignees'];
-  bool get reviewers => _results['reviewers'];
-  bool get prs => _results['prs'];
-  bool get issues => _results['issues'];
-  bool get alphabetize => _results['alphabetize'];
-  bool get customers => _results['customers-only'];
-  bool get ranking => _results['ranking'];
-  bool get skipUninteresting => _results['skip-uninteresting-labels'];
+  /*late*/ ArgResults _results;
+  bool get showClosed => _results['closed'] /*!*/;
+  bool get showMerged => _results['merged'] /*!*/;
+  DateTime /*?*/ get from =>
+      _results.rest.isNotEmpty ? DateTime.parse(_results.rest[0]) : null;
+  DateTime /*?*/ get to =>
+      _results.rest.isNotEmpty ? DateTime.parse(_results.rest[1]) : null;
+  bool get labels => _results['labels'] /*!*/;
+  bool get authors => _results['authors'] /*!*/;
+  bool get assignees => _results['assignees'] /*!*/;
+  bool get reviewers => _results['reviewers'] /*!*/;
+  bool get prs => _results['prs'] /*!*/;
+  bool get issues => _results['issues'] /*!*/;
+  bool get alphabetize => _results['alphabetize'] /*!*/;
+  bool get customers => _results['customers-only'] /*!*/;
+  bool get ranking => _results['ranking'] /*!*/;
+  bool get skipUninteresting => _results['skip-uninteresting-labels'] /*!*/;
   int get exitCode => _results == null
       ? -1
       : _results['help']
@@ -125,7 +125,7 @@ class Options {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode);
-  var keys = Set<String>();
+  var keys = Set<String /*!*/ >();
 
   final repos = opts.prs ? ['flutter', 'engine', 'plugins'] : ['flutter'];
   final labelsToSkip = ['cla: yes', 'waiting for tree to go green'];
@@ -181,7 +181,7 @@ void main(List<String> args) async {
         '\n\n');
 
     if (opts.customers) {
-      Set<String> toRemove = Set<String>();
+      Set<String /*!*/ > toRemove = Set<String /*!*/ >();
       for (var label in clusters.clusters.keys) {
         if (label.indexOf('customer: ') != 0) toRemove.add(label);
       }
@@ -189,7 +189,7 @@ void main(List<String> args) async {
     }
 
     if (opts.labels && opts.skipUninteresting) {
-      Set<String> toRemove = Set<String>();
+      Set<String /*!*/ > toRemove = Set<String /*!*/ >();
       for (var label in clusters.clusters.keys) {
         if (labelsToSkip.contains(label)) toRemove.add(label);
       }
@@ -214,7 +214,7 @@ void main(List<String> args) async {
           (opts.issues ? 'issues' : 'PRs') +
           ' rank-ordered by label');
       for (var customer in clusters.clusters.keys) {
-        var labelCountsByLabel = Map<String, int>();
+        Map<String /*!*/, int> labelCountsByLabel = Map<String /*!*/, int>();
         for (var item in clusters.clusters[customer]) {
           for (var labelItem in item.labels.labels) {
             var label = labelItem as Label;

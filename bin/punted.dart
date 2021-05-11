@@ -5,7 +5,7 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   get dateRange => _results['date-range'];
   get includeMilestones => _results['include-milestones'];
   get tsvOutput => _results['tsv-output'];

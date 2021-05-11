@@ -5,7 +5,7 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   DateTime get from => DateTime.parse(_results['from']);
   DateTime get to => DateTime.parse(_results['to']);
   int get exitCode => _results == null

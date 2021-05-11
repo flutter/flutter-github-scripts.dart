@@ -7,7 +7,7 @@ import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   bool get onlyUnprioritized => _results['only-unprioritized'];
   int get exitCode => _results == null
       ? -1

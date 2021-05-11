@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
+  /*late*/ ArgResults _results;
   String get release => _results['release'];
   bool get html =>
       _results['formatted'] == false && _results['summary'] == false
