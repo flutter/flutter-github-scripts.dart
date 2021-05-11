@@ -43,7 +43,7 @@ class Options {
   }
 }
 
-DateTime nearestSaturday(DateTime when) {
+DateTime nearestSaturday(DateTime /*!*/ when) {
   var result = when;
   for (int delta = 0; delta < 7; delta++) {
     result = when.add(Duration(days: delta));

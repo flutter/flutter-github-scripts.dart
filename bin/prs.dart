@@ -9,7 +9,7 @@ class Options {
   bool get showClosed => _results['closed'] /*!*/;
   bool get showMerged => _results['merged'] /*!*/;
   bool get tsv => _results['tsv'] /*!*/;
-  bool get skipAutorollers => _results['skip-autorollers'];
+  bool /*!*/ get skipAutorollers => _results['skip-autorollers'];
   String get label => _results['label'];
   DateTime get from => DateTime.parse(_results.rest[0]);
   DateTime get to => DateTime.parse(_results.rest[1]);

@@ -9,9 +9,9 @@ class Options {
   bool get between => _results['between'] /*!*/;
   bool get tsv => _results['tsv'] /*!*/;
   DateTime get from =>
-      _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
+      _results.rest.length > 0 ? DateTime.parse(_results.rest[0]) : null;
   DateTime get to =>
-      _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
+      _results.rest.length > 1 ? DateTime.parse(_results.rest[1]) : null;
   int get exitCode => _results == null
       ? -1
       : _results['help']

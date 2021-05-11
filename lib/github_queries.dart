@@ -389,7 +389,7 @@ class GitHub {
   }
 
   /// Fetch a single issue.
-  Future<Issue> issue({String owner, String name, int number}) async {
+  Future<Issue /*!*/ > issue({String owner, String name, int number}) async {
     var query = _query_issue
         .replaceAll(r'${repositoryOwner}', owner)
         .replaceAll(r'${repositoryName}', name)

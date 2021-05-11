@@ -9,9 +9,9 @@ class Options {
   bool get showClosed => _results['closed'] /*!*/;
   bool get showMerged => _results['merged'] /*!*/;
   DateTime /*?*/ get from =>
-      _results.rest.isNotEmpty ? DateTime.parse(_results.rest[0]) : null;
+      _results.rest.length > 0 ? DateTime.parse(_results.rest[0]) : null;
   DateTime /*?*/ get to =>
-      _results.rest.isNotEmpty ? DateTime.parse(_results.rest[1]) : null;
+      _results.rest.length > 1 ? DateTime.parse(_results.rest[1]) : null;
   bool get labels => _results['labels'] /*!*/;
   bool get authors => _results['authors'] /*!*/;
   bool get assignees => _results['assignees'] /*!*/;

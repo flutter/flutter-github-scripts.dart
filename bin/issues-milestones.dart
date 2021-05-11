@@ -98,9 +98,9 @@ void main(List<String> args) async {
 
   print("There were ${issues.length} issues.\n");
 
-  var noMilestones = <Issue>[];
-  var noAssigneesYetMilestoned = <Issue>[];
-  var interestingOwnedIssues = <Issue>[];
+  var noMilestones = <Issue /*!*/ >[];
+  var noAssigneesYetMilestoned = <Issue /*!*/ >[];
+  var interestingOwnedIssues = <Issue /*!*/ >[];
   for (var item in issues) {
     var issue = item as Issue;
     if (issue.assignees != null && issue.assignees.length != 0) {

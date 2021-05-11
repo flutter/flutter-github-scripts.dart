@@ -134,7 +134,7 @@ void main(List<String> args) async {
   // }
 
   print('There were ${prs.length} pull requests.\n\n');
-  var allParticipants = Set<String>();
+  Set<String /*!*/ > allParticipants = Set<String>();
   var unpaidContributions = <PullRequest>[];
   var paidContributions = <PullRequest>[];
   for (var item in prs) {

@@ -61,7 +61,7 @@ query {
 }
 
 int extractUniqueUsers(dynamic response) {
-  var committers = Set<String>();
+  Set<String /*!*/ > committers = Set<String>();
   for (var pr in response['search']['nodes']) {
     committers.add(pr['author']['login']);
   }

@@ -8,11 +8,11 @@ class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   /*late*/ ArgResults _results;
   String get release => _results['release'] /*!*/;
-  bool get html =>
+  bool /*!*/ get html =>
       _results['formatted'] == false && _results['summary'] == false
           ? true
           : _results['formatted'];
-  bool get summary =>
+  bool /*!*/ get summary =>
       _results['formatted'] == false && _results['summary'] == false
           ? true
           : _results['summary'];
@@ -86,8 +86,8 @@ void main(List<String> args) async {
   var flutterIssuesStream = await github.searchIssuePRs(flutterQuery);
   var dartIssuesStream = await github.searchIssuePRs(dartQuery);
 
-  List<Issue> flutterIssues = [];
-  List<Issue> dartIssues = [];
+  List<Issue /*!*/ > flutterIssues = [];
+  List<Issue /*!*/ > dartIssues = [];
   await for (var issue in flutterIssuesStream) {
     flutterIssues.add(issue);
   }

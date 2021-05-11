@@ -82,18 +82,15 @@ int countWithOrWithoutCustomers(List<dynamic> issues, {bool onlyCustomers}) {
 
 class MeanComputer {
   // Running mean of all invocations
-  double _totalSumSeconds;
+  double _totalSumSeconds = 0.0;
   get totalSum => _totalSumSeconds;
-  double _totalCount;
+  double _totalCount = 0.0;
   get totalCount => _totalCount;
   get meanDuration => _totalCount == 0
       ? Duration(seconds: 0)
       : Duration(seconds: _totalSumSeconds ~/ totalCount);
 
-  MeanComputer() {
-    _totalSumSeconds = 0.0;
-    _totalCount = 0.0;
-  }
+  MeanComputer();
 
   Duration meanDurationWithOrWithoutCustomers(List<dynamic> issues,
       {bool onlyCustomers}) {
@@ -167,8 +164,8 @@ void main(List<String> args) async {
     var openIssues = await github.searchIssuePRs(openQuery);
     var closedIssues = await github.searchIssuePRs(closedQuery);
 
-    List<Issue> openedThisPeriod = [];
-    List<Issue> closedThisPeriod = [];
+    List<Issue /*!*/ > openedThisPeriod = [];
+    List<Issue /*!*/ > closedThisPeriod = [];
 
     await for (var issue in openIssues) {
       if (issue.createdAt.compareTo(opts.from) >= 0 &&

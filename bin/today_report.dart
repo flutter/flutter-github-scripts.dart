@@ -79,9 +79,9 @@ void main(List<String> args) async {
     labels: ['P0'],
   );
 
-  var open = <Issue>[];
-  var openedThisPeriod = <Issue>[];
-  var closedThisPeriod = <Issue>[];
+  var open = <Issue /*!*/ >[];
+  var openedThisPeriod = <Issue /*!*/ >[];
+  var closedThisPeriod = <Issue /*!*/ >[];
 
   openIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);

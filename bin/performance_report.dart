@@ -83,9 +83,9 @@ void main(List<String> args) async {
     labels: ['severe: performance'],
   );
 
-  var open = <Issue>[];
-  var openedThisPeriod = <Issue>[];
-  var closedThisPeriod = <Issue>[];
+  var open = <Issue /*!*/ >[];
+  var openedThisPeriod = <Issue /*!*/ >[];
+  var closedThisPeriod = <Issue /*!*/ >[];
 
   openPerfIssues.forEach((issue) {
     if (issue.state == "OPEN") open.add(issue);

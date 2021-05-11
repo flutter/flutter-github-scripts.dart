@@ -56,22 +56,18 @@ class Options {
 final _noMilestone = Milestone('No milestone assigned', '', -1, '', null, null,
     null, DateTime(2099, 12, 31));
 
-Map<Milestone, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
-  var result = Map<Milestone, List<dynamic>>();
+Map<Milestone /*!*/, List<dynamic>> clusterByMilestones(List<dynamic> issues) {
+  var result = Map<Milestone /*!*/, List<dynamic>>();
   result[_noMilestone] = [];
 
   for (var item in issues) {
     if (!(item is Issue) && !(item is PullRequest)) {
-      throw ('invalid type!');
+      throw ArgumentError('invalid type!');
     }
-    if (item.milestone == null) {
-      result[_noMilestone].add(item);
-    } else {
-      if (!result.containsKey(item.milestone)) {
-        result[item.milestone] = [];
-      }
-      result[item.milestone].add(item);
-    }
+    var milestone = item.milestone ?? _noMilestone;
+    var cluster = result[milestone] ?? [];
+    cluster.add(item);
+    result[milestone] = cluster;
   }
   return result;
 }
@@ -202,7 +198,7 @@ void main(List<String> args) async {
       var issuesByLabel = Cluster.byLabel(issuesByMilestone[milestone]);
 
       // First show the prioritized items, by each priority...
-      var shown = <Issue>[];
+      var shown = <Issue /*!*/ >[];
       for (var label in priorities) {
         if (issuesByLabel.clusters.keys.contains(label)) {
           if (opts.list) print('#### ${label}\n');
