@@ -45,7 +45,7 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub run who-is-doing-what.dart [--list] [--html]');
+    print('Usage: pub run who-is-doing-what.dart [--list] [--markdown]');
     print(
         'Prints people on the Flutter team and what they have signed up to do.');
     print('HTML output only works for the default, not for list output.');
