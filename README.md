@@ -174,17 +174,6 @@ pub run bin/clusters.dart --prs --authors --closed 2020-05-01 2020-05-03
 
 Shows all authors closing PRs between May 1 2020 and May 3 2020.
 
-## bin/issues-milestones.dart
-
-Usage: `pub run bin/issues-milestones.dart`
-
-Generates a list of unmilestoned owned issues, unowned milestoned issues, and
-some statistics about how many issues are owned by each contributor listed in the
-CSV `org-reports.csv`. The CSV is a file consisting of records with two
-comma-delineated fields, the first being GitHub account, the second
-being 'Y' if the contributor should be included in the statistics, or
-'N' otherwise.
-
 ## bin/notable-contributors.dart
 
 Usage: `pub run bin/notable-contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
