@@ -66,6 +66,17 @@ class GitHub {
     return Organization.fromGraphQL(page.data['organization']);
   }
 
+  Future<bool> userInOrganization(Actor user, String orgName) async {
+    bool isMember = false;
+    await for (var org in user.organizationsStream) {
+      if (org.name == orgName) {
+        isMember = true;
+        break;
+      }
+    }
+    return isMember;
+  }
+
   /// Fetch an organiation by its login.
   Future<Actor> user(String login) async {
     var query = Actor.request(login);
