@@ -68,7 +68,7 @@ void main(List<String> args) async {
     if (opts.onlyUnprioritized) {
       bool skip = false;
       for (var label in issue.labels.labels) {
-        if (skipLabels.contains(label.name)) {
+        if (skipLabels.contains(label.label)) {
           skip = true;
           break;
         }
