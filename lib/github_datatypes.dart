@@ -619,8 +619,8 @@ class Actor {
   static Actor fromGraphQL(dynamic node) {
     if (node == null || node['login'] == null) return null;
     List<String> orgIds = [];
-    if (node['organizations'].length != 0 &&
-        node['organizations']['edges'].length != 0) {
+    if (node['organizations'] != null &&
+        node['organizations']['edges'] != null) {
       for (var org in node['organizations']['edges']) {
         orgIds.add(org['node']['id']);
       }
@@ -655,6 +655,15 @@ class Actor {
     }
   }
   ''';
+
+  static var abbreviatedGraphQLResponse = '''
+  {
+    login,
+    resourcePath,
+    url,
+  }
+  ''';
+
   static var _childQuery = r'''
   query {
     user(login: "${login}") {
@@ -814,7 +823,7 @@ class Organization {
 
   static String _childQueryLogin = r'''
   query {
-    organization(id:"${id}") {
+    organization(login:"${login}") {
       ${data}
   }
   ''';
