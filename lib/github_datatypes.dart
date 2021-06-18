@@ -582,16 +582,50 @@ class Repository {
 }
 
 class Actor {
+  String _id;
+  get id => id;
   String _login;
   get login => _login;
   String _url;
   get url => _url;
+  List<String> _organizationIds;
+  get organizationIds => _organizationIds;
 
-  Actor(this._login, this._url);
+  get organizationsStream async* {
+    for (var id in _organizationIds) {
+      var query = Organization.requestId(id);
+      print(query);
+      final options = QueryOptions(document: query);
+      final page = await _client.query(options);
+      if (page.errors != null && page.errors != '') {
+        print(page.errors);
+        return;
+      }
+      yield Organization.fromGraphQL(page.data['node']);
+    }
+  }
+
+  static String request(String login,
+      {String organizationsAfter = null, String repositoriesAfter = null}) {
+    return _childQuery
+        .replaceAll(r'${login}', login)
+        .replaceAll(r'${organizationsAfter}',
+            organizationsAfter == null ? '' : ', after: ${organizationsAfter}')
+        .replaceAll(r'${repositoriesAfter}',
+            repositoriesAfter == null ? '' : 'after: ${repositoriesAfter}');
+  }
+
+  Actor(this._id, this._login, this._url, this._organizationIds);
   static Actor fromGraphQL(dynamic node) {
-    return node != null && node['login'] != null
-        ? Actor(node['login'], node['url'])
-        : null;
+    if (node == null || node['login'] == null) return null;
+    List<String> orgIds = [];
+    if (node['organizations'].length != 0 &&
+        node['organizations']['edges'].length != 0) {
+      for (var org in node['organizations']['edges']) {
+        orgIds.add(org['node']['id']);
+      }
+    }
+    return Actor(node['id'], node['login'], node['url'], orgIds);
   }
 
   String toString() => this._login;
@@ -600,17 +634,44 @@ class Actor {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Actor &&
-          runtimeType == other.runtimeType &&
-          _login == other._login;
+      other is Actor && runtimeType == other.runtimeType && _id == other._id;
 
   @override
-  int get hashCode => _login.hashCode;
+  int get hashCode => _id.hashCode;
   static var graphQLResponse = '''
   {
+    id,
     login,
     resourcePath,
-    url
+    url,
+    avatarUrl,
+    organizations {
+      edges {
+        node {
+          id, 
+          name,
+        }
+      }
+    }
+  }
+  ''';
+  static var _childQuery = r'''
+  query {
+    user(login: "${login}") {
+      id,
+      login,
+      resourcePath,
+      url,
+      avatarUrl,
+    	organizations(first:10${organizationsAfter}) {
+      	edges {
+          node {
+            id,
+            name
+          }
+        }
+    	}
+    }
   }
   ''';
 }
@@ -711,8 +772,27 @@ class Organization {
       {String pendingMembersAfter = null,
       String repositoriesAfter = null,
       String teamsAfter = null}) {
-    return Organization._childQuery
+    return Organization._childQueryLogin
+        .replaceAll(r'${data}', _queryData)
         .replaceAll(r'${login}', login)
+        .replaceAll(
+            r'${pendingMembersAfter}',
+            pendingMembersAfter == null
+                ? ''
+                : ', after: ${pendingMembersAfter}')
+        .replaceAll(r'${repositoriesAfter}',
+            repositoriesAfter == null ? '' : 'after: ${repositoriesAfter}')
+        .replaceAll(
+            r'${teamsAfter}', teamsAfter == null ? '' : 'after: ${teamsAfter}');
+  }
+
+  static String requestId(String id,
+      {String pendingMembersAfter = null,
+      String repositoriesAfter = null,
+      String teamsAfter = null}) {
+    return Organization._childQueryId
+        .replaceAll(r'${data}', _queryData)
+        .replaceAll(r'${id}', id)
         .replaceAll(
             r'${pendingMembersAfter}',
             pendingMembersAfter == null
@@ -732,9 +812,23 @@ class Organization {
   @override
   int get hashCode => _id.hashCode;
 
-  static String _childQuery = r'''
+  static String _childQueryLogin = r'''
   query {
-    organization(login:"${login}") {
+    organization(id:"${id}") {
+      ${data}
+  }
+  ''';
+
+  static String _childQueryId = r'''
+  query {
+    node(id:"${id}") {
+      ... on Organization {
+        ${data}
+      }
+    }
+  ''';
+
+  static String _queryData = r'''
       id,
       avatarUrl,
       createdAt, 
@@ -781,7 +875,6 @@ class Organization {
         }
       }
     }
-  }
   ''';
 }
 

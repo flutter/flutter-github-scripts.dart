@@ -53,6 +53,39 @@ class GitHub {
     return Organization.fromGraphQL(page.data['organization']);
   }
 
+  /// Fetch an organiation by its login.
+  Future<Organization> organizationById(String id) async {
+    var query = Organization.requestId(id);
+    final options = QueryOptions(document: query);
+    if (_printQuery) print(query);
+    final page = await _client.query(options);
+    if (page.hasErrors) {
+      print(query);
+      throw (page.errors.toString());
+    }
+    return Organization.fromGraphQL(page.data['organization']);
+  }
+
+  /// Fetch an organiation by its login.
+  Future<Actor> user(String login) async {
+    var query = Actor.request(login);
+
+    final options = QueryOptions(document: query);
+    if (_printQuery) print(query);
+    final page = await _client.query(options);
+    if (page.hasErrors) {
+      for (var error in page.errors) {
+        if (error
+            .toString()
+            .contains('Could not resolve to a User with the login'))
+          return null;
+      }
+      print(query);
+      throw (page.errors.toString());
+    }
+    return Actor.fromGraphQL(page.data['user']);
+  }
+
   ///
   /// Search by items or pull requests by query.
   /// Responses limited to first 1,000 items found due to Github
