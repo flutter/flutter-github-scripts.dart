@@ -1317,10 +1317,10 @@ class Issue {
     id,
     number,
     state,
-    author ${Actor.graphQLResponse},
+    author ${Actor.abbreviatedGraphQLResponse},
     assignees(after: null, last: 100) {
       edges {
-        node ${Actor.graphQLResponse}
+        node ${Actor.abbreviatedGraphQLResponse}
       }
     },
     body,
@@ -1631,10 +1631,10 @@ class PullRequest {
     id,
     number,
     state,
-    author ${Actor.graphQLResponse},
+    author ${Actor.abbreviatedGraphQLResponse},
     assignees(after: null, last: 100) {
       edges {
-        node ${Actor.graphQLResponse}
+        node ${Actor.abbreviatedGraphQLResponse}
       }
     },
     reviews(after:null, last:100) {
