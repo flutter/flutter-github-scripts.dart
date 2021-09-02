@@ -87,14 +87,14 @@ void main() {
       }
     ''';
     test('Constructor', () {
-      var a = Actor('kf6gpe', 'http://kf6gpe.org');
+      var a = Actor('id', 'kf6gpe', 'http://kf6gpe.org', ['org.id']);
       expect(a.login == 'kf6gpe', true);
       expect(a.url == 'http://kf6gpe.org', true);
     });
     test('Actor Equality', () {
-      var a1 = Actor('kf6gpe', 'http://kf6gpe.org');
-      var a2 = Actor('kf6gpe', 'http://kf6gpe.org');
-      var aOther = Actor('nobody', 'http://noplace.com');
+      var a1 = Actor('id', 'kf6gpe', 'http://kf6gpe.org', ['org.id']);
+      var a2 = Actor('id', 'kf6gpe', 'http://kf6gpe.org', ['org.id']);
+      var aOther = Actor('id', 'nobody', 'http://noplace.com', ['org.id']);
       expect(a1 == a1, true);
       expect(a1 == a2, true);
       expect(a1 == aOther, false);
@@ -257,7 +257,10 @@ void main() {
           i.title ==
               'smoke_catalina_hot_mode_dev_cycle__benchmark hotReloadMillisecondsToFrame & hotReloadMillisecondsToFrame above baseline',
           true);
-      expect(i.author == Actor('kf6gpe', 'https://github.com/kf6gpe'), true);
+      expect(
+          i.author ==
+              Actor('id', 'kf6gpe', 'https://github.com/kf6gpe', ['org.id']),
+          true);
       expect(
           i.body ==
               'After the fix to https://github.com/flutter/flutter/issues/54368 in https://github.com/flutter/flutter/pull/54374, these benchmarks remain slightly above the baseline. Should we re-baseline them?![Screen Shot 2020-04-10 at 8 56 11 AM](https://user-images.githubusercontent.com/1435716/79004222-27bf6c00-7b09-11ea-88ad-96c68f3be102.png) åcc @jonahwilliams ',
@@ -292,8 +295,8 @@ void main() {
       expect(i.number == 54774, true);
       expect(
           i.author ==
-              Actor(
-                  'christopherfujino', 'https://github.com/christopherfujino'),
+              Actor('id', 'christopherfujino',
+                  'https://github.com/christopherfujino', ['org.id']),
           true);
       expect(i.timeline.length == 1, true);
       expect(i.timeline[0].number == 54783, true);

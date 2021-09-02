@@ -1,24 +1,23 @@
 name: flutter_github_scripts
 description: Scripts to provide reports on Flutter's code health.
 publish_to: none
-version: 0.0.1
-author: Ray Rischpater, KF6GPE <rischpater@google.com>
+version: 0.0.2
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
-  args: ^1.5.0
-  csv:  ^4.0.0
-  quiver: '>=2.0.0 < 3.0.0'
-  glob: ^1.0.3
+  args: ^2.2.0
+  csv:  ^5.0.0
+  glob: ^2.0.1
+  graphql: ^5.0.0
+  quiver: ^3.0.1
   path:
   lcov:
   intl:
-  graphql: ^2.0.0
   columnar_output:
-    git: https://github.com/kf6gpe/columnar-output.dart.git
+    git: https://github.com/csells/columnar-output.dart.git
 
 dev_dependencies:
-  test: ^1.0.0
+  test: ^1.17.12
   pedantic:
