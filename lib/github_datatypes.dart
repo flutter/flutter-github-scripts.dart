@@ -583,7 +583,7 @@ class Repository {
 
 class Actor {
   String _id;
-  get id => id;
+  get id => _id;
   String _login;
   get login => _login;
   String _url;

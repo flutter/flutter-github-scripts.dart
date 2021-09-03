@@ -94,7 +94,7 @@ void main() {
     test('Actor Equality', () {
       var a1 = Actor('id', 'kf6gpe', 'http://kf6gpe.org', ['org.id']);
       var a2 = Actor('id', 'kf6gpe', 'http://kf6gpe.org', ['org.id']);
-      var aOther = Actor('id', 'nobody', 'http://noplace.com', ['org.id']);
+      var aOther = Actor('id2', 'nobody', 'http://noplace.com', ['org.id']);
       expect(a1 == a1, true);
       expect(a1 == a2, true);
       expect(a1 == aOther, false);
@@ -259,7 +259,7 @@ void main() {
           true);
       expect(
           i.author ==
-              Actor('id', 'kf6gpe', 'https://github.com/kf6gpe', ['org.id']),
+              Actor(null, 'kf6gpe', 'https://github.com/kf6gpe', ['org.id']),
           true);
       expect(
           i.body ==
@@ -295,7 +295,7 @@ void main() {
       expect(i.number == 54774, true);
       expect(
           i.author ==
-              Actor('id', 'christopherfujino',
+              Actor(null, 'christopherfujino',
                   'https://github.com/christopherfujino', ['org.id']),
           true);
       expect(i.timeline.length == 1, true);
