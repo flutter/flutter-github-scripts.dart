@@ -1,7 +1,8 @@
+import 'dart:io';
+
+import 'package:args/args.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
-import 'package:args/args.dart';
-import 'dart:io';
 import 'package:intl/intl.dart';
 
 class Options {

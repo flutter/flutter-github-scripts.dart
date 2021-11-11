@@ -1,9 +1,10 @@
+import 'dart:io';
+
+import 'package:args/args.dart';
+import 'package:columnar_output/columnar.dart' as columnar;
+import 'package:csv/csv.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
-import 'package:args/args.dart';
-import 'package:csv/csv.dart';
-import 'package:columnar_output/columnar.dart' as columnar;
-import 'dart:io';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);

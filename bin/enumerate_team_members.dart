@@ -1,8 +1,8 @@
 import 'dart:collection';
-
-import 'package:flutter_github_scripts/github_queries.dart';
-import 'package:args/args.dart';
 import 'dart:io';
+
+import 'package:args/args.dart';
+import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
