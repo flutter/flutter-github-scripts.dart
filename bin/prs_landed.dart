@@ -1,6 +1,7 @@
-import 'package:graphql/client.dart';
-import 'package:args/args.dart';
 import 'dart:io';
+
+import 'package:args/args.dart';
+import 'package:graphql/client.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);

@@ -1,6 +1,7 @@
-import 'package:test/test.dart';
-import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'dart:convert';
+
+import 'package:flutter_github_scripts/github_datatypes.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('Labels', () {

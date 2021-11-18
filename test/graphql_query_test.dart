@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('DateRange', () {
