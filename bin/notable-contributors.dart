@@ -106,7 +106,7 @@ void main(List<String> args) async {
 
   var prs = [];
   for (var repo in repos) {
-    prs.addAll(await github.deprecated_search(
+    prs.addAll(await github.deprecatedSearch(
         owner: 'flutter',
         name: repo,
         type: GitHubIssueType.pullRequest,
@@ -149,10 +149,11 @@ void main(List<String> args) async {
         pullRequest.author.login != null) {
       allParticipants.add(pullRequest.author.login);
     } else {
-      if (pullRequest.reviewers != null)
+      if (pullRequest.reviewers != null) {
         for (var reviewer in pullRequest.reviewers) {
           allParticipants.add(reviewer.login);
         }
+      }
     }
     var wasUnpaid = false;
     if (opts.authors &&

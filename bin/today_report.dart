@@ -66,7 +66,7 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  var openIssues = await github.deprecated_search(
+  var openIssues = await github.deprecatedSearch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
@@ -74,7 +74,7 @@ void main(List<String> args) async {
     labels: ['P0'],
   );
 
-  var closedIssues = await github.deprecated_search(
+  var closedIssues = await github.deprecatedSearch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,

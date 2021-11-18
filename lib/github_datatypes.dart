@@ -146,10 +146,11 @@ class Comment {
       }
 
       // Yield each item in our buffer
-      if (bufferReactions.isNotEmpty)
+      if (bufferReactions.isNotEmpty) {
         do {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
+      }
     } while (hasNextPage);
   }
 
@@ -729,10 +730,11 @@ class Organization {
       }
 
       // Yield each item in our buffer
-      if (membersBuffer.isNotEmpty)
+      if (membersBuffer.isNotEmpty) {
         do {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
+      }
     } while (hasNextPage);
   }
 
@@ -759,10 +761,11 @@ class Organization {
       }
 
       // Yield each item in our buffer
-      if (teamsBuffer.isNotEmpty)
+      if (teamsBuffer.isNotEmpty) {
         do {
           yield teamsBuffer[bufferIndex++];
         } while (bufferIndex < teamsBuffer.length);
+      }
     } while (hasNextPage);
   }
 
@@ -928,10 +931,11 @@ class Team {
       }
 
       // Yield each item in our buffer
-      if (membersBuffer.isNotEmpty)
+      if (membersBuffer.isNotEmpty) {
         do {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
+      }
     } while (hasNextPage);
   }
 
@@ -959,10 +963,11 @@ class Team {
       }
 
       // Yield each item in our buffer
-      if (teamBuffer.isNotEmpty)
+      if (teamBuffer.isNotEmpty) {
         do {
           yield teamBuffer[bufferIndex++];
         } while (bufferIndex < teamBuffer.length);
+      }
     } while (hasNextPage);
   }
 
@@ -1103,10 +1108,11 @@ class Issue {
       }
 
       // Yield each item in our buffer
-      if (bufferReactions.isNotEmpty)
+      if (bufferReactions.isNotEmpty) {
         do {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
+      }
     } while (hasNextPage);
   }
 
@@ -1136,10 +1142,11 @@ class Issue {
       }
 
       // Yield each item in our buffer
-      if (commentBuffer.isNotEmpty)
+      if (commentBuffer.isNotEmpty) {
         do {
           yield commentBuffer[bufferIndex++];
         } while (bufferIndex < commentBuffer.length);
+      }
     } while (hasNextPage);
   }
 
@@ -1755,7 +1762,7 @@ class Cluster {
       }
       if (item.assignees == null || item.assignees.length == 0) {
         result[_unassignedKey].add(item);
-      } else
+      } else {
         for (var assignee in item.assignees) {
           var name = assignee.login;
           if (!result.containsKey(name)) {
@@ -1763,6 +1770,7 @@ class Cluster {
           }
           result[name].add(item);
         }
+      }
     }
 
     return Cluster._internal(ClusterType.byAssignee, result);
@@ -1779,7 +1787,7 @@ class Cluster {
       var pr = item as PullRequest;
       if (pr.reviewers == null || pr.reviewers.length == 0) {
         result[_unassignedKey].add(item);
-      } else
+      } else {
         for (var reviewer in pr.reviewers) {
           var name = reviewer.login;
           if (!result.containsKey(name)) {
@@ -1787,6 +1795,7 @@ class Cluster {
           }
           result[name].add(item);
         }
+      }
     }
 
     return Cluster._internal(ClusterType.byReviewer, result);

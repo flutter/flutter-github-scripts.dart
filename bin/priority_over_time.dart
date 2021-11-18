@@ -105,13 +105,14 @@ class MeanComputer {
     for (var item in issues) {
       var issue = item as Issue;
       if (issue.closedAt == null) continue;
-      if (onlyCustomers)
+      if (onlyCustomers) {
         for (var label in issue.labels.labels) {
           if (label.label.contains('customer:')) {
             hasCustomer = true;
             break;
           }
         }
+      }
       if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
         var delta = issue.closedAt.difference(issue.createdAt);
         sum += delta.inSeconds;
