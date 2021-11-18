@@ -1,8 +1,9 @@
-import 'package:flutter_github_scripts/github_datatypes.dart';
-import 'package:flutter_github_scripts/github_queries.dart';
+import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:csv/csv.dart';
-import 'dart:io';
+import 'package:flutter_github_scripts/github_datatypes.dart';
+import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);

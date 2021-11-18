@@ -9,7 +9,6 @@ REST API.
 
 ## Setup
 
-
 You must have an environment variable `GITHUB_TOKEN` set with a valid GitHub token
 for any of these scripts to work.
 
@@ -62,7 +61,6 @@ If you're doing this as part of a real release, you should save these results. G
 The script generates output in DOCX, Markdown and HTML formats. You can immediately import the `.docx` files into Google Drive for easy viewing, copying, and pasting with formatting. 
 
 Some files, notably `prs_merged_by_label` and `prs_merged`, may require light editing to get them in the format required for the PR to the web site. See an existing release notes doc, like `website/src/docs/development/tools/sdk/release-notes/release-notes-2.2.0.md` for an example.
-
 
 ##### Notes
 

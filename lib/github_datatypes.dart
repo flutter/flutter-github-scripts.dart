@@ -1,8 +1,9 @@
 import 'dart:collection';
-import 'dart:math';
 import 'dart:io';
-import 'package:quiver/core.dart' show hash2;
+import 'dart:math';
+
 import 'package:graphql/client.dart';
+import 'package:quiver/core.dart' show hash2;
 
 final token = Platform.environment['GITHUB_TOKEN'];
 final _httpLink = HttpLink(
