@@ -33,8 +33,9 @@ class Options {
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results['between'] && _results.rest.length != 2)
+      if (_results['between'] && _results.rest.length != 2) {
         throw ('--between requires two dates in ISO format');
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -99,11 +100,12 @@ void main(List<String> args) async {
     for (var item in byLabel[label]) {
       var issue = item as Issue;
       if (!issue.labels.containsString(severeKeyword)) continue;
-      if (opts.tsv)
+      if (opts.tsv) {
         print(issue.toTsv());
-      else
+      } else {
         print(issue.summary(
             boldInteresting: true, linebreakAfter: true, includeLabels: true));
+      }
     }
   }
 }

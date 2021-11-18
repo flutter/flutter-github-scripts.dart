@@ -34,8 +34,9 @@ class Options {
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results['release'] == null)
+      if (_results['release'] == null) {
         throw (ArgParserException('Need a version!'));
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -84,8 +85,8 @@ void main(List<String> args) async {
   var dartQuery = 'org:dart-lang is:issue is:open label:cherry-pick-review';
 
   // Now do the same for performance issues.
-  var flutterIssuesStream = await github.searchIssuePRs(flutterQuery);
-  var dartIssuesStream = await github.searchIssuePRs(dartQuery);
+  var flutterIssuesStream = github.searchIssuePRs(flutterQuery);
+  var dartIssuesStream = github.searchIssuePRs(dartQuery);
 
   List<Issue> flutterIssues = [];
   List<Issue> dartIssues = [];

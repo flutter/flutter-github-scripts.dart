@@ -48,10 +48,12 @@ void printHeader(Options opts, String which) {
 
   print(
       '\n\nTo: flutter-performanceg@oogle.com, flutter-dart-tpm@google.com\n\n');
-  if (DateTime.now().weekday == DateTime.tuesday)
+  if (DateTime.now().weekday == DateTime.tuesday) {
     print('Subject: Flutter ${which} Tuesday report!\n');
-  if (DateTime.now().weekday == DateTime.thursday)
+  }
+  if (DateTime.now().weekday == DateTime.thursday) {
     print('Subject: Flutter ${which} Thursday report!\n');
+  }
   if (DateTime.now().weekday != DateTime.tuesday &&
       DateTime.now().weekday != DateTime.thursday) {
     print('Subject: ${which} issues from ${fromStamp} to ${toStamp}\n\n');

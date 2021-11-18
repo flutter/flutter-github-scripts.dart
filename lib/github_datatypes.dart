@@ -146,7 +146,7 @@ class Comment {
       }
 
       // Yield each item in our buffer
-      if (bufferReactions.length > 0)
+      if (bufferReactions.isNotEmpty)
         do {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
@@ -239,7 +239,9 @@ class Labels {
   bool contains(l) => _labels.contains(l);
   bool containsString(s) => labels.contains(Label(s));
   bool intersect(List<Label> list) {
-    for (var l in list) if (_labels.contains(l)) return true;
+    for (var l in list) {
+      if (_labels.contains(l)) return true;
+    }
     return false;
   }
 
@@ -727,7 +729,7 @@ class Organization {
       }
 
       // Yield each item in our buffer
-      if (membersBuffer.length > 0)
+      if (membersBuffer.isNotEmpty)
         do {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
@@ -757,7 +759,7 @@ class Organization {
       }
 
       // Yield each item in our buffer
-      if (teamsBuffer.length > 0)
+      if (teamsBuffer.isNotEmpty)
         do {
           yield teamsBuffer[bufferIndex++];
         } while (bufferIndex < teamsBuffer.length);
@@ -926,7 +928,7 @@ class Team {
       }
 
       // Yield each item in our buffer
-      if (membersBuffer.length > 0)
+      if (membersBuffer.isNotEmpty)
         do {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
@@ -957,7 +959,7 @@ class Team {
       }
 
       // Yield each item in our buffer
-      if (teamBuffer.length > 0)
+      if (teamBuffer.isNotEmpty)
         do {
           yield teamBuffer[bufferIndex++];
         } while (bufferIndex < teamBuffer.length);
@@ -1101,7 +1103,7 @@ class Issue {
       }
 
       // Yield each item in our buffer
-      if (bufferReactions.length > 0)
+      if (bufferReactions.isNotEmpty)
         do {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
@@ -1134,7 +1136,7 @@ class Issue {
       }
 
       // Yield each item in our buffer
-      if (commentBuffer.length > 0)
+      if (commentBuffer.isNotEmpty)
         do {
           yield commentBuffer[bufferIndex++];
         } while (bufferIndex < commentBuffer.length);
@@ -1215,8 +1217,9 @@ class Issue {
       markdown = '${markdown} ' +
           (_milestone == null ? '[no milestone]' : '[${_milestone.title}]');
     }
-    if (boldInteresting && _labels.intersect(_interesting))
+    if (boldInteresting && _labels.intersect(_interesting)) {
       markdown = '**' + markdown + '**';
+    }
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
   }
@@ -1224,22 +1227,24 @@ class Issue {
   String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
     var markdown = '[${this.number}](${this.url})';
-    if (_assignees == null || _assignees.length == 0)
+    if (_assignees == null || _assignees.isEmpty) {
       markdown = '${markdown} > UNASSIGNED';
-    else {
+    } else {
       markdown = '${markdown} > (';
       _assignees
           .forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
       markdown = markdown.substring(0, markdown.length - 2);
       markdown = '${markdown})';
     }
-    if (_milestone == null)
+    if (_milestone == null) {
       markdown = '${markdown} with no milestone';
-    else
+    } else {
       markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';
+    }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
-    if (boldInteresting && _labels.intersect(_interesting))
+    if (boldInteresting && _labels.intersect(_interesting)) {
       markdown = '**' + markdown + '**';
+    }
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
   }
@@ -1252,17 +1257,20 @@ class Issue {
   // record format.
   String toTsv() {
     String milestoneHistory = '';
-    if (timeline != null)
+    if (timeline != null) {
       timeline.milestoneTimeline.forEach((milestone) => milestoneHistory =
           milestone == null
               ? milestoneHistory
               : '${milestoneHistory},${milestone.title}');
-    if (milestoneHistory.length > 0)
+    }
+    if (milestoneHistory.isNotEmpty) {
       milestoneHistory = milestoneHistory.substring(1);
-    if (milestoneHistory.length == 0)
+    }
+    if (milestoneHistory.isEmpty) {
       milestoneHistory = _milestone != null ? _milestone.title : '';
+    }
 
-    var originalMilestone;
+    String originalMilestone;
     if (_timeline == null) {
       originalMilestone = '';
     } else {
@@ -1282,7 +1290,7 @@ class Issue {
     tsv = '${tsv}\t${_state}';
     tsv = '${tsv}\t' + (_author == null ? '' : _author.toCsv());
     tsv = '${tsv}\t${createdAt}';
-    if (_assignees != null && _assignees.length > 0) {
+    if (_assignees != null && _assignees.isNotEmpty) {
       tsv = '${tsv}\t';
       assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
       tsv = tsv.substring(0, tsv.length - 1);
@@ -1491,8 +1499,9 @@ class PullRequest {
         node['reviews']['edges'].length != 0) {
       reviewers = <Actor>[];
       for (var node in node['reviews']['edges']) {
-        if (node['node']['author'] != null)
+        if (node['node']['author'] != null) {
           reviewers.add(Actor.fromGraphQL(node['node']['author']));
+        }
       }
     }
     return PullRequest(
@@ -1539,19 +1548,20 @@ class PullRequest {
   String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
     var labelsSummary = _labels.summary();
     var markdown = '[${this.number}](${this.url})';
-    if (_assignees == null || _assignees.length == 0)
+    if (_assignees == null || _assignees.isEmpty) {
       markdown = '${markdown} > UNASSIGNED';
-    else {
+    } else {
       markdown = '${markdown} > (';
       _assignees
           .forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
       markdown = markdown.substring(0, markdown.length - 2);
       markdown = '${markdown})';
     }
-    if (_milestone == null)
+    if (_milestone == null) {
       markdown = '${markdown} with no milestone';
-    else
+    } else {
       markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';
+    }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';
     return markdown;
@@ -1565,14 +1575,17 @@ class PullRequest {
   // record format.
   String toTsv() {
     var milestoneHistory = '';
-    if (timeline != null)
+    if (timeline != null) {
       timeline.milestoneTimeline().forEach((milestone) =>
           milestoneHistory = '${milestoneHistory},${milestone.title}');
-    if (milestoneHistory.length > 0)
+    }
+    if (milestoneHistory.isNotEmpty) {
       milestoneHistory = milestoneHistory.substring(1);
-    if (milestoneHistory.length == 0)
+    }
+    if (milestoneHistory.isEmpty) {
       milestoneHistory = _milestone != null ? milestone.title : '';
-    var originalMilestone;
+    }
+    String originalMilestone;
     if (_timeline == null) {
       originalMilestone = '';
     } else {
@@ -1592,14 +1605,14 @@ class PullRequest {
     tsv = '${tsv}\t${_author.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
     tsv = '${tsv}\t' + (_merged ? 'Y' : 'N');
-    if (_assignees != null && _assignees.length > 0) {
+    if (_assignees != null && _assignees.isNotEmpty) {
       tsv = '${tsv}\t';
       _assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
       tsv = tsv.substring(0, tsv.length - 1);
     } else {
       tsv = '${tsv}\t';
     }
-    if (_reviewers != null && _reviewers.length > 0) {
+    if (_reviewers != null && _reviewers.isNotEmpty) {
       tsv = '${tsv}\t';
       _reviewers.forEach((reviewer) => tsv = '${tsv}${reviewer.login},');
       tsv = tsv.substring(0, tsv.length - 1);

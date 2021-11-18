@@ -5,8 +5,8 @@ import 'package:test/test.dart';
 
 void main() {
   group('Labels', () {
-    var json_Label = '{ "name": "t: hot reload" }';
-    var json_Labels = '''
+    var jsonLabel = '{ "name": "t: hot reload" }';
+    var jsonLabels = '''
     {
       "edges": [
         {
@@ -35,12 +35,12 @@ void main() {
       expect(l1 == lnot, false);
     });
     test('Label from GraphQL', () {
-      dynamic node = json.decode(json_Label);
+      dynamic node = json.decode(jsonLabel);
       var l = Label.fromGraphQL(node);
       expect(l.label, 't: hot reload');
     });
     test('Labels from GraphQL', () {
-      dynamic node = json.decode(json_Labels);
+      dynamic node = json.decode(jsonLabels);
       var ls = Labels.fromGraphQL(node);
       expect(ls.contains(Label('perf: speed')), true);
       expect(ls.contains(Label('TODAY')), false);
@@ -56,7 +56,7 @@ void main() {
   });
 
   group('Repository', () {
-    var json_Repository = '{ "nameWithOwner": "flutter/engine" }';
+    var jsonRepository = '{ "nameWithOwner": "flutter/engine" }';
 
     test('Constructor', () {
       var r = Repository('flutter/engine');
@@ -72,7 +72,7 @@ void main() {
       expect(r1 == rOther, false);
     });
     test('Repository from GraphQL', () {
-      var node = json.decode(json_Repository);
+      var node = json.decode(jsonRepository);
       var r = Repository.fromGraphQL(node);
       expect(r.organization == 'flutter', true);
       expect(r.repository == 'engine', true);
@@ -80,7 +80,7 @@ void main() {
   });
 
   group('Actor', () {
-    var json_Actor = '''
+    var jsonActor = '''
       {
         "login": "kf6gpe",
         "resourcePath": "/kf6gpe",
@@ -101,7 +101,7 @@ void main() {
       expect(a1 == aOther, false);
     });
     test('Actor from GraphQL', () {
-      var node = json.decode(json_Actor);
+      var node = json.decode(jsonActor);
       var a = Actor.fromGraphQL(node);
       expect(a.login == 'kf6gpe', true);
       expect(a.url == 'https://github.com/kf6gpe', true);
@@ -109,7 +109,7 @@ void main() {
   });
 
   group('Issue', () {
-    var json_IssueNoTimeline = '''
+    var jsonIssueNoTimeline = '''
       {
         "title": "smoke_catalina_hot_mode_dev_cycle__benchmark hotReloadMillisecondsToFrame & hotReloadMillisecondsToFrame above baseline",
         "id": "MDU6SXNzdWU1OTc5NjA3NTI=",
@@ -164,7 +164,7 @@ void main() {
       }
     ''';
 
-    var json_Issue_TimelineNoLabels = '''
+    var jsonIssueTimelineNoLabels = '''
     {
       "number": 55193,
       "title": "Cupertino widgets blurred on https://flutter.github.io/gallery/#/ ",
@@ -188,7 +188,7 @@ void main() {
     }
     ''';
 
-    var json_Issue_TimelineWithLabels = '''
+    var jsonIssueTimelineWithLabels = '''
     {
       "title": "[flutter_tools] roll_dev.dart",
       "id": "MDU6SXNzdWU1OTk4MjMyMDU=",
@@ -250,7 +250,7 @@ void main() {
       '⚠ TODAY'
     ];
     test('Issue fromGraphQL - no Timeline', () {
-      dynamic node = json.decode(json_IssueNoTimeline);
+      dynamic node = json.decode(jsonIssueNoTimeline);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 54456, true);
       expect(i.id == 'MDU6SXNzdWU1OTc5NjA3NTI=', true);
@@ -278,7 +278,7 @@ void main() {
       expect(i.updatedAt.toIso8601String() == '2020-04-10T15:56:27.000Z', true);
     });
     test('Issue from GraphQL - Timeline & no labels', () {
-      dynamic node = json.decode(json_Issue_TimelineNoLabels);
+      dynamic node = json.decode(jsonIssueTimelineNoLabels);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 55193, true);
       expect(
@@ -291,7 +291,7 @@ void main() {
       expect(i.timeline[0].title == 'Canvas regression', true);
     });
     test('Issue from GraphQL - Timeline with labels', () {
-      dynamic node = json.decode(json_Issue_TimelineWithLabels);
+      dynamic node = json.decode(jsonIssueTimelineWithLabels);
       var i = Issue.fromGraphQL(node);
       expect(i.number == 54774, true);
       expect(

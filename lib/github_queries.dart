@@ -137,7 +137,7 @@ class GitHub {
             : PullRequest.fromGraphQL(edge);
         buffer.add(item);
       });
-      if (buffer.length > 0) {
+      if (buffer.isNotEmpty) {
         do {
           yield buffer[bufferIndex++];
         } while (bufferIndex < buffer.length);
@@ -183,7 +183,7 @@ class GitHub {
     var endSearchAt = dateRange;
 
     var labelFilters = [];
-    if (labels != null && !labels.isEmpty) {
+    if (labels != null && labels.isNotEmpty) {
       for (var label in labels) {
         labelFilters.add('label:\\\"${label}\\\"');
       }
@@ -241,8 +241,9 @@ class GitHub {
           }
 
           // GitHub pagination
-          if (totalIssueCount == null)
+          if (totalIssueCount == null) {
             totalIssueCount = page.data['search']['issueCount'];
+          }
           var pageInfo = PageInfo.fromGraphQL(page.data['search']['pageInfo']);
           fetchAnotherPage = pageInfo.hasNextPage;
           if (fetchAnotherPage) after = '"${pageInfo.endCursor}"';
@@ -273,8 +274,9 @@ class GitHub {
                   end: newEnd);
               dateRange = newDateRange;
               dateString = DateRange.queryToString(dateQuery, dateRange);
-              if (dateRange.end.isBefore(endSearchAt.start))
+              if (dateRange.end.isBefore(endSearchAt.start)) {
                 fetchAnotherDay = false;
+              }
               break;
           }
         }
@@ -416,7 +418,7 @@ class GitHub {
     } while (!done);
 
     // Filter labels
-    if (labels != null && labels.length > 0) {
+    if (labels != null && labels.isNotEmpty) {
       var filtered = [];
       for (var item in result) {
         for (var label in labels) {
