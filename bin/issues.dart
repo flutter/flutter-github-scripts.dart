@@ -37,8 +37,9 @@ class Options {
     try {
       _results = _parser.parse(args);
       if (_results['help']) _printUsage();
-      if (_results['closed'] && _results.rest.length != 2)
+      if (_results['closed'] && _results.rest.length != 2) {
         throw ('need start and end dates!');
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -97,8 +98,9 @@ void main(List<String> args) async {
 
     if (opts.tsv) print(Issue.tsvHeader);
     for (var issue in issues) {
-      if (opts.label != null && !issue.labels.containsString(opts.label))
+      if (opts.label != null && !issue.labels.containsString(opts.label)) {
         continue;
+      }
       var issueString =
           opts.tsv ? issue.toTsv() : issue.summary(linebreakAfter: true);
       print(issueString);

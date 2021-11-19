@@ -105,13 +105,14 @@ class MeanComputer {
     for (var item in issues) {
       var issue = item as Issue;
       if (issue.closedAt == null) continue;
-      if (onlyCustomers)
+      if (onlyCustomers) {
         for (var label in issue.labels.labels) {
           if (label.label.contains('customer:')) {
             hasCustomer = true;
             break;
           }
         }
+      }
       if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
         var delta = issue.closedAt.difference(issue.createdAt);
         sum += delta.inSeconds;
@@ -120,9 +121,9 @@ class MeanComputer {
     _totalCount += count;
     _totalSumSeconds += sum;
 
-    if (count == 0)
+    if (count == 0) {
       return Duration(seconds: 0);
-    else {
+    } else {
       int sumAsInt = sum.toInt();
       int mean = sumAsInt ~/ count;
       return Duration(seconds: mean);
@@ -142,8 +143,9 @@ void main(List<String> args) async {
     print(
         'This shows the number of new, open, and closed high priority issues over the period from');
     print('${opts.from} to ${opts.to}.');
-    if (opts.onlyCustomers)
+    if (opts.onlyCustomers) {
       print('Only issues with at least one `customer` label are presented.');
+    }
     print('Period ending\tCreated impact:critical\timpact:crowd\tCreated impact:customer\t' +
         'Closed impact:critical\tClosed impact:crowd\tClosed impact:customer\t' +
         'Mean hours to close all impact:critical\tMean hours to close all impact:crowd\tMean hours to close all impact:customer\t' +
@@ -165,8 +167,8 @@ void main(List<String> args) async {
       print(closedQuery);
     }
     // Now do the same for performance issues.
-    var openIssues = await github.searchIssuePRs(openQuery);
-    var closedIssues = await github.searchIssuePRs(closedQuery);
+    var openIssues = github.searchIssuePRs(openQuery);
+    var closedIssues = github.searchIssuePRs(closedQuery);
 
     List<Issue> openedThisPeriod = [];
     List<Issue> closedThisPeriod = [];
@@ -234,8 +236,9 @@ void main(List<String> args) async {
       print(
           'This shows the number of new, open, and closed `P0`, `P1`, and `P2` issues over the period from');
       print('${fromStamp} to ${toStamp}.\n\n');
-      if (opts.onlyCustomers)
+      if (opts.onlyCustomers) {
         print('Only issues with at least one `customer` label are presented.');
+      }
 
       print('### Issues open/closed by priority\n');
       print('| Priority | Opened | Closed | Total |');

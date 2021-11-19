@@ -162,7 +162,9 @@ void main(List<String> args) async {
     if (opts.assignees) clusters = Cluster.byAssignees(items);
     if (opts.reviewers) clusters = Cluster.byReviewers(items);
 
-    for (var key in clusters.clusters.keys) keys.add(key);
+    for (var key in clusters.clusters.keys) {
+      keys.add(key);
+    }
 
     var what = '';
     if (opts.authors) what = 'authors';
@@ -186,7 +188,9 @@ void main(List<String> args) async {
       for (var label in clusters.clusters.keys) {
         if (label.indexOf('customer: ') != 0) toRemove.add(label);
       }
-      for (var label in toRemove) clusters.remove(label);
+      for (var label in toRemove) {
+        clusters.remove(label);
+      }
     }
 
     if (opts.labels && opts.skipUninteresting) {
@@ -194,7 +198,9 @@ void main(List<String> args) async {
       for (var label in clusters.clusters.keys) {
         if (labelsToSkip.contains(label)) toRemove.add(label);
       }
-      for (var label in toRemove) clusters.remove(label);
+      for (var label in toRemove) {
+        clusters.remove(label);
+      }
     }
 
     print(clusters.toMarkdown(

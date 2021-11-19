@@ -47,10 +47,12 @@ void printHeader(Options opts, String which) {
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
   print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@google.com\n\n');
-  if (DateTime.now().weekday == DateTime.tuesday)
+  if (DateTime.now().weekday == DateTime.tuesday) {
     print('Subject: Flutter ${which} Tuesday report!\n');
-  if (DateTime.now().weekday == DateTime.thursday)
+  }
+  if (DateTime.now().weekday == DateTime.thursday) {
     print('Subject: Flutter ${which} Thursday report!\n');
+  }
   if (DateTime.now().weekday != DateTime.tuesday &&
       DateTime.now().weekday != DateTime.thursday) {
     print('Subject: ${which} issues from ${fromStamp} to ${toStamp}\n\n');
@@ -64,7 +66,7 @@ void main(List<String> args) async {
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
-  var openIssues = await github.deprecated_search(
+  var openIssues = await github.deprecatedSearch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,
@@ -72,7 +74,7 @@ void main(List<String> args) async {
     labels: ['P0'],
   );
 
-  var closedIssues = await github.deprecated_search(
+  var closedIssues = await github.deprecatedSearch(
     owner: 'flutter',
     name: 'flutter',
     type: GitHubIssueType.issue,

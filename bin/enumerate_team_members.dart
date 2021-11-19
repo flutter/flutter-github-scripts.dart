@@ -63,7 +63,7 @@ findWhen(dynamic item, String login, When w) {
         result = item.createdAt;
       } else {
         // Maybe they're in the timeline?
-        if (item.timeline != null)
+        if (item.timeline != null) {
           for (var timelineItem in item.timeline.timeline) {
             if (timelineItem.actor != null &&
                 timelineItem.actor.login == login) {
@@ -71,6 +71,7 @@ findWhen(dynamic item, String login, When w) {
               break;
             }
           }
+        }
         // The timeline can be incomplete; if so, just use the creation date.
         if (result == null) result = item.createdAt;
       }
@@ -78,13 +79,14 @@ findWhen(dynamic item, String login, When w) {
 
     case When.last:
       // Timelines happen after creation.
-      if (item.timeline != null)
+      if (item.timeline != null) {
         for (var timelineItem in item.timeline.timeline) {
           if (timelineItem.actor != null && timelineItem.actor.login == login) {
             result = timelineItem.createdAt;
             break;
           }
         }
+      }
       // The timeline can be incomplete; if so, just use the creation date.
       if (result == null) result = item.createdAt;
       break;
@@ -119,12 +121,12 @@ void main(List<String> args) async {
     var earliestQueryCommenter =
         'org:flutter commenter:${login} sort:updated-asc';
 
-    var earliestAuthored;
+    dynamic earliestAuthored;
     try {
       earliestAuthored = await github.searchIssuePRs(earliestQueryAuthor).first;
     } catch (e) {}
 
-    var earliestCommented;
+    dynamic earliestCommented;
     try {
       earliestCommented =
           await github.searchIssuePRs(earliestQueryCommenter).first;
@@ -152,12 +154,12 @@ void main(List<String> args) async {
     var latestQueryCommenter =
         'org:flutter commenter:${login} sort:updated-asc';
 
-    var latestAuthored;
+    dynamic latestAuthored;
     try {
       latestAuthored = await github.searchIssuePRs(latestQueryAuthor).first;
     } catch (e) {}
 
-    var latestCommented;
+    dynamic latestCommented;
     try {
       latestCommented = await github.searchIssuePRs(latestQueryCommenter).first;
     } catch (e) {}

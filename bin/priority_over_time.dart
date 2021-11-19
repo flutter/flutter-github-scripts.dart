@@ -105,13 +105,14 @@ class MeanComputer {
     for (var item in issues) {
       var issue = item as Issue;
       if (issue.closedAt == null) continue;
-      if (onlyCustomers)
+      if (onlyCustomers) {
         for (var label in issue.labels.labels) {
           if (label.label.contains('customer:')) {
             hasCustomer = true;
             break;
           }
         }
+      }
       if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
         var delta = issue.closedAt.difference(issue.createdAt);
         sum += delta.inSeconds;
@@ -120,9 +121,9 @@ class MeanComputer {
     _totalCount += count;
     _totalSumSeconds += sum;
 
-    if (count == 0)
+    if (count == 0) {
       return Duration(seconds: 0);
-    else {
+    } else {
       int sumAsInt = sum.toInt();
       int mean = sumAsInt ~/ count;
       return Duration(seconds: mean);
@@ -142,8 +143,9 @@ void main(List<String> args) async {
     print(
         'This shows the number of new, open, and closed `P0`, `P1`, and `P2` issues over the period from');
     print('${opts.from} to ${opts.to}.');
-    if (opts.onlyCustomers)
+    if (opts.onlyCustomers) {
       print('Only issues with at least one `customer` label are presented.');
+    }
     print('Period ending\tCreated P0s\tCreated P1s\tCreated P2s\t' +
         'Closed P0s\tClosed P1s\tClosed P2s\t' +
         'Mean hours to close all P0\tMean hours to close all P1\tMean hours to close all P2\t' +
@@ -165,8 +167,8 @@ void main(List<String> args) async {
       print(closedQuery);
     }
 
-    var openIssues = await github.searchIssuePRs(openQuery);
-    var closedIssues = await github.searchIssuePRs(closedQuery);
+    var openIssues = github.searchIssuePRs(openQuery);
+    var closedIssues = github.searchIssuePRs(closedQuery);
 
     List<Issue> openedThisPeriod = [];
     List<Issue> closedThisPeriod = [];
@@ -230,8 +232,9 @@ void main(List<String> args) async {
       print(
           'This shows the number of new, open, and closed `P0`, `P1`, and `P2` issues over the period from');
       print('${fromStamp} to ${toStamp}.\n\n');
-      if (opts.onlyCustomers)
+      if (opts.onlyCustomers) {
         print('Only issues with at least one `customer` label are presented.');
+      }
 
       print('### Issues open/closed by priority\n');
       print('| Priority | Opened | Closed | Total |');

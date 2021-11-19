@@ -76,13 +76,14 @@ class MeanComputer {
     for (var item in issues) {
       var issue = item as Issue;
       if (issue.closedAt == null) continue;
-      if (onlyCustomers)
+      if (onlyCustomers) {
         for (var label in issue.labels.labels) {
           if (label.label.contains('customer:')) {
             hasCustomer = true;
             break;
           }
         }
+      }
       if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
         var delta = issue.closedAt.difference(issue.createdAt);
         sum += delta.inSeconds;
@@ -91,9 +92,9 @@ class MeanComputer {
     _totalCount += count;
     _totalSumSeconds += sum;
 
-    if (count == 0)
+    if (count == 0) {
       return Duration(seconds: 0);
-    else {
+    } else {
       int sumAsInt = sum.toInt();
       int mean = sumAsInt ~/ count;
       return Duration(seconds: mean);
@@ -130,8 +131,8 @@ void main(List<String> args) async {
       print(closedQuery);
     }
     // Now do the same for performance issues.
-    var openIssues = await github.searchIssuePRs(openQuery);
-    var closedIssues = await github.searchIssuePRs(closedQuery);
+    var openIssues = github.searchIssuePRs(openQuery);
+    var closedIssues = github.searchIssuePRs(closedQuery);
 
     List<Issue> openedThisPeriod = [];
     List<Issue> closedThisPeriod = [];

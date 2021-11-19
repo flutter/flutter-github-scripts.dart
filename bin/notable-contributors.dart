@@ -49,12 +49,15 @@ class Options {
       if (_results['help']) _printUsage();
       if ((_results['closed'] || _results['merged']) &&
           _results.rest.length != 2) throw ('need start and end dates!');
-      if (_results['merged'] && _results['closed'])
+      if (_results['merged'] && _results['closed']) {
         throw ('--merged and --closed are mutually exclusive!');
-      if (!_results['authors'] && !_results['reviewers'])
+      }
+      if (!_results['authors'] && !_results['reviewers']) {
         throw ('must pass one of --authors or --reviewers!');
-      if (_results['authors'] && _results['reviewers'])
+      }
+      if (_results['authors'] && _results['reviewers']) {
         throw ('must pass only one of --authors or --reviewers!');
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -82,8 +85,9 @@ void main(List<String> args) async {
   orgMembers.forEach((row) {
     if (opts.onlyNotable &&
             (row[3].toString().toUpperCase().contains('GOOGLE')) ||
-        (row[3].toString().toUpperCase().contains('CANONICAL')))
+        (row[3].toString().toUpperCase().contains('CANONICAL'))) {
       paidContributors.add(row[0].toString());
+    }
   });
 
   final repos = ['flutter', 'engine', 'plugins'];
@@ -102,7 +106,7 @@ void main(List<String> args) async {
 
   var prs = [];
   for (var repo in repos) {
-    prs.addAll(await github.deprecated_search(
+    prs.addAll(await github.deprecatedSearch(
         owner: 'flutter',
         name: repo,
         type: GitHubIssueType.pullRequest,
@@ -145,10 +149,11 @@ void main(List<String> args) async {
         pullRequest.author.login != null) {
       allParticipants.add(pullRequest.author.login);
     } else {
-      if (pullRequest.reviewers != null)
+      if (pullRequest.reviewers != null) {
         for (var reviewer in pullRequest.reviewers) {
           allParticipants.add(reviewer.login);
         }
+      }
     }
     var wasUnpaid = false;
     if (opts.authors &&

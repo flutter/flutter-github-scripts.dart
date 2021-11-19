@@ -137,7 +137,7 @@ class GitHub {
             : PullRequest.fromGraphQL(edge);
         buffer.add(item);
       });
-      if (buffer.length > 0) {
+      if (buffer.isNotEmpty) {
         do {
           yield buffer[bufferIndex++];
         } while (bufferIndex < buffer.length);
@@ -152,7 +152,7 @@ class GitHub {
   /// possible that large queries may not return all elements,
   /// but only a count.
   /// DEPRECATED
-  Future<List<dynamic>> deprecated_search(
+  Future<List<dynamic>> deprecatedSearch(
       {String owner,
       String name,
       GitHubIssueType type = GitHubIssueType.issue,
@@ -183,7 +183,7 @@ class GitHub {
     var endSearchAt = dateRange;
 
     var labelFilters = [];
-    if (labels != null && !labels.isEmpty) {
+    if (labels != null && labels.isNotEmpty) {
       for (var label in labels) {
         labelFilters.add('label:\\\"${label}\\\"');
       }
@@ -203,7 +203,7 @@ class GitHub {
         var fetchAnotherPage = false;
         var after = 'null';
         do {
-          var query = _deprecated_searchIssuesOrPRs
+          var query = _deprecatedSearchIssuesOrPRs
               .replaceAll(r'${repositoryOwner}', owner)
               .replaceAll(r'${repositoryName}', name)
               .replaceAll(r'${after}', after)
@@ -241,8 +241,9 @@ class GitHub {
           }
 
           // GitHub pagination
-          if (totalIssueCount == null)
+          if (totalIssueCount == null) {
             totalIssueCount = page.data['search']['issueCount'];
+          }
           var pageInfo = PageInfo.fromGraphQL(page.data['search']['pageInfo']);
           fetchAnotherPage = pageInfo.hasNextPage;
           if (fetchAnotherPage) after = '"${pageInfo.endCursor}"';
@@ -273,8 +274,9 @@ class GitHub {
                   end: newEnd);
               dateRange = newDateRange;
               dateString = DateRange.queryToString(dateQuery, dateRange);
-              if (dateRange.end.isBefore(endSearchAt.start))
+              if (dateRange.end.isBefore(endSearchAt.start)) {
                 fetchAnotherDay = false;
+              }
               break;
           }
         }
@@ -416,7 +418,7 @@ class GitHub {
     } while (!done);
 
     // Filter labels
-    if (labels != null && labels.length > 0) {
+    if (labels != null && labels.isNotEmpty) {
       var filtered = [];
       for (var item in result) {
         for (var label in labels) {
@@ -434,7 +436,7 @@ class GitHub {
 
   /// Fetch a single issue.
   Future<Issue> issue({String owner, String name, int number}) async {
-    var query = _query_issue
+    var query = _queryIssue
         .replaceAll(r'${repositoryOwner}', owner)
         .replaceAll(r'${repositoryName}', name)
         .replaceAll(r'${number}', number.toString())
@@ -452,7 +454,7 @@ class GitHub {
   /// Fetch a single PR.
   Future<PullRequest> pullRequest(
       {String owner, String name, int number}) async {
-    var query = _query_pullRequest
+    var query = _queryPullRequest
         .replaceAll(r'${repositoryOwner}', owner)
         .replaceAll(r'${repositoryName}', name)
         .replaceAll(r'${number}', number.toString())
@@ -492,7 +494,7 @@ class GitHub {
   }
   ''';
 
-  final _deprecated_searchIssuesOrPRs = r'''
+  final _deprecatedSearchIssuesOrPRs = r'''
   query { 
     search(query:"repo:${repositoryOwner}/${repositoryName} ${label} is:${state} is:${issueOrPr} ${dateTime} sort:created", type: ISSUE, first:20, after:${after}) {
       issueCount,
@@ -505,7 +507,7 @@ class GitHub {
   }
   ''';
 
-  final _query_issue = r'''
+  final _queryIssue = r'''
   query { 
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
       issue(
@@ -515,7 +517,7 @@ class GitHub {
   }
   ''';
 
-  final _query_pullRequest = r'''
+  final _queryPullRequest = r'''
   query { 
     repository(owner:"${repositoryOwner}", name:"${repositoryName}") {
       pullRequest(number:${number}) 

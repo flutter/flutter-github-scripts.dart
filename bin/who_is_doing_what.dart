@@ -140,8 +140,9 @@ void main(List<String> args) async {
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
   var teamMembers = <String>[];
   orgMembers.forEach((row) {
-    if (row[7].toString().toUpperCase().startsWith('Y'))
+    if (row[7].toString().toUpperCase().startsWith('Y')) {
       teamMembers.add(row[0].toString());
+    }
   });
 
   final token = Platform.environment['GITHUB_TOKEN'];
@@ -172,16 +173,18 @@ void main(List<String> args) async {
 
     if (byAssignee.clusters[teamMember] == null ||
         byAssignee.clusters[teamMember].length == 0) {
-      if (opts.list)
+      if (opts.list) {
         print('## ${teamMember} has not self-assigned any issues.\n');
+      }
       report[column].append(columnar.Paragraph(text: 'no issues'));
       continue;
     }
 
     // else
-    if (opts.list)
+    if (opts.list) {
       print(
           '## ${teamMember} working ${byAssignee.clusters[teamMember].length} issues\n');
+    }
 
     // Get the issues sorted into milestones, most recent first.
     var issuesByMilestone =
@@ -209,11 +212,12 @@ void main(List<String> args) async {
           if (opts.list) print('#### ${label}\n');
           for (var item in issuesByLabel.clusters[label]) {
             var issue = item as Issue;
-            if (opts.list)
+            if (opts.list) {
               print(issue.summary(
                   boldInteresting: false,
                   linebreakAfter: true,
                   includeLabels: false));
+            }
             report[column].append(summary(issue, label));
             shown.add(issue);
           }
@@ -225,11 +229,12 @@ void main(List<String> args) async {
         for (var item in issuesByMilestone[milestone]) {
           var issue = item as Issue;
           if (!shown.contains(issue)) {
-            if (opts.list)
+            if (opts.list) {
               print(issue.summary(
                   boldInteresting: false,
                   linebreakAfter: true,
                   includeLabels: false));
+            }
             report[column].append(summary(issue, 'unprioritized'));
           }
         }

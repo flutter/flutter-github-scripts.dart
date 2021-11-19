@@ -51,8 +51,9 @@ class Options {
       if (_results['help']) _printUsage();
       if ((_results['closed'] || _results['merged']) &&
           _results.rest.length != 2) throw ('need start and end dates!');
-      if (_results['merged'] && _results['closed'])
+      if (_results['merged'] && _results['closed']) {
         throw ('--merged and --closed are mutually exclusive!');
+      }
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
