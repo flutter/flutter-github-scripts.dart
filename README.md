@@ -30,7 +30,7 @@ You'll need to have `pandoc` installed. See [here](https://pandoc.org/installing
 
 Under the hood, these scripts ralso ely on the following Dart programs in this repository:
 
-*   `bin/notable-contributors.dart`
+*   `bin/notable_contributors.dart`
 *   `bin/clusters.dart`
 *   `bin/prs.dart`
 *   `bin/issues.dart`
@@ -232,9 +232,9 @@ pub run bin/clusters.dart --prs --authors --closed 2020-05-01 2020-05-03
 
 Shows all authors closing PRs between May 1 2020 and May 3 2020.
 
-### bin/notable-contributors.dart
+### bin/notable_contributors.dart
 
-Usage: `pub run bin/notable-contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
+Usage: `pub run bin/notable_contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
 
 Generates a list of non-Googler-submitted PRs (open/closed/merged) in the date range clustered by contributor.
 
