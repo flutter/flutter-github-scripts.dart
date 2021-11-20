@@ -72,7 +72,7 @@ The scripts occasionally time out when Github is being cranky, and you’ll see 
 
 ### bin/prs_landed_weekly.dart
 
-Usage: `pub run bin/prs_landed_weekly.dart [-f from-date] [-t to-date]`
+Usage: `dart bin/prs_landed_weekly.dart [-f from-date] [-t to-date]`
 
 Returns a CSV of the number of PRs merged to all repositories in
 the [Flutter](https://github.com/flutter) repository each week
@@ -84,7 +84,7 @@ Friday).
 
 ### bin/today_report.dart
 
-Usage: `pub run bin/today_report.dart [-f from-date] [-t to-date]`
+Usage: `dart bin/today_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `P0` issues, `P0` issues opened in the period from
@@ -99,7 +99,7 @@ to the team when the Markdown is run through
 
 ### bin/performance_report.dart
 
-Usage: `pub run bin/performance_report.dart [-f from-date] [-t to-date]`
+Usage: `dart bin/performance_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `severe: performance` issues, `severe: performance` issues opened in the 
@@ -114,7 +114,7 @@ to the team when the Markdown is run through
 
 ### bin/regression_report.dart
 
-Usage: `pub run bin/regression_report.dart [-f from-date] [-t to-date]`
+Usage: `dart bin/regression_report.dart [-f from-date] [-t to-date]`
 
 Returns a Markdown document consisting of the number of open
 `severe: regression` issues, `severe: regression` issues opened in the 
@@ -129,7 +129,7 @@ to the team when the Markdown is run through
 
 ### bin/open-issue-count-by-week.dart
 
-Usage: `pub run bin/open-issue-count-by-week.dart [-f from-date] [-t to-date]`
+Usage: `dart bin/open-issue-count-by-week.dart [-f from-date] [-t to-date]`
 
 Returns a TSV document consisting of the number of issues opened each  
 week from `from-date` until `to-date`.
@@ -140,19 +140,19 @@ If not specified, the report spans the previous week.
 
 ### bin/issue.dart
 
-Usage: `pub run bin/issue.dart [--tsv] issue-number`
+Usage: `dart bin/issue.dart [--tsv] issue-number`
 
 Returns a summary of the issue in Markdown or TSV format.
 
 ### bin/pr.dart
 
-Usage: `pub run bin/pr.dart [--tsv] pr-number`
+Usage: `dart bin/pr.dart [--tsv] pr-number`
 
 Returns a summary of the pull request in Markdown or TSV format.
 
 ### bin/prs.dart
 
-Usage: `pub run bin/prs.dart [--tsv] [--label label] [--merged from-date to-date] [--closed from-date to-date]`
+Usage: `dart bin/prs.dart [--tsv] [--label label] [--merged from-date to-date] [--closed from-date to-date]`
 
 By default, returns a summary of the open pull requests in the Flutter repositories in Markdown format.
 When passed `--closed` and two dates in ISO 8601 format, shows the range
@@ -164,7 +164,7 @@ When passed `--skipAutorollers`, skips autoroller PRs.
 
 ### bin/issues.dart
 
-Usage: `pub run bin/issues.dart [--tsv] [--label label] [--closed from-date to-date]`
+Usage: `dart bin/issues.dart [--tsv] [--label label] [--closed from-date to-date]`
 
 By default, returns a summary of the open issues in Markdown format.
 When passed --closed and two dates in ISO 8601 format, shows the range
@@ -172,7 +172,7 @@ of issues closed between those two dates inclusive.
 
 ### bin/clusters.dart
 
-Usage: `pub run bin/clusters.dart arguments`
+Usage: `dart bin/clusters.dart arguments`
 
 Returns Markdown containing clusters of issues or PRs by label, assignee, or author according to
 the arguments:
@@ -197,44 +197,44 @@ at the end of the report.
 Examples:
 
 ```
-pub run bin/clusters.dart --issues --labels --customers-only
+dart bin/clusters.dart --issues --labels --customers-only
 ```
 
 Shows all open issues with customer labels, sorted in decreasing order of cluster size.
 
 ```
-pub run bin/clusters.dart --issues --labels --customers-only --alphabetize
+dart bin/clusters.dart --issues --labels --customers-only --alphabetize
 ```
 
 Shows all open issues with customer labels, sorted by the customer label.
 
 ```
-pub run bin/clusters.dart --issues --labels --closed 2020-01-01 2020-05-01
+dart bin/clusters.dart --issues --labels --closed 2020-01-01 2020-05-01
 ```
 
 Shows all closed issues between January 1 2020 and May 1 2020.
 
 ```
-pub run bin/clusters.dart --prs --authors
+dart bin/clusters.dart --prs --authors
 ```
 
 Shows all open PRs by author, in decreasing order of number of open PRs per author.
 
 ```
-pub run bin/clusters.dart --prs --authors
+dart bin/clusters.dart --prs --authors
 ```
 
 Shows all open PRs by author, in alphabetical order.
 
 ```
-pub run bin/clusters.dart --prs --authors --closed 2020-05-01 2020-05-03
+dart bin/clusters.dart --prs --authors --closed 2020-05-01 2020-05-03
 ```
 
 Shows all authors closing PRs between May 1 2020 and May 3 2020.
 
 ### bin/notable_contributors.dart
 
-Usage: `pub run bin/notable_contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
+Usage: `dart bin/notable_contributors.dart [--all-contributors] [--merged from-date to-date] [--closed from-date to-date]`
 
 Generates a list of non-Googler-submitted PRs (open/closed/merged) in the date range clustered by contributor.
 
@@ -251,7 +251,7 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ### bin/who-is-doing-what.dart
 
-Usage: `pub run bin/who-is-doing-what.dart [--list --markdown]
+Usage: `dart bin/who-is-doing-what.dart [--list --markdown]
 
 Generates a list of pending issues owned by core Flutter team members organized by the milestone
 they fall in, and sorted by priority within that milestone.
@@ -275,7 +275,7 @@ Google employees may contact KF6GPE for a current snapshot of this list.
 
 ### bin/regressions.dart
 
-Usage: `pub run bin/regressions.dart [--tsv] [--between from-date to-date]`
+Usage: `dart bin/regressions.dart [--tsv] [--between from-date to-date]`
 
 Generates a list of regressions found in all releases (we started tracking after 1.11).
 
@@ -283,14 +283,14 @@ Dates are in ISO 8601 format.
 
 ### bin/reaction_count.dart
 
-Usage: `pub run bin/reaction_count.dart issue`
+Usage: `dart bin/reaction_count.dart issue`
 
 Indicates the total number of positive, negative, and neutral reactions across the issue
 and all comments.
 
 ### bin/top_reactions.dart
 
-Usage: `pub run bin/top_reactions.dart [-only-unprioritized]`
+Usage: `dart bin/top_reactions.dart [-only-unprioritized]`
 
 Dumps all open issues and counts of positive, negative, and neutral reactions in
 TSV format. For import to analyze in Google Sheets.
