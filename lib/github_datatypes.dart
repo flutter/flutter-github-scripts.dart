@@ -125,11 +125,12 @@ class Comment {
       final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
-      if (page.data == [] || page.data == null) {
+      if (page.data == null) {
         print(page.exception);
         print(page.data);
         exit(-1);
       }
+
       try {
         PageInfo pageInfo =
             PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
@@ -601,7 +602,7 @@ class Actor {
       print(query);
       final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
-      if (page.exception != null && page.exception != '') {
+      if (page.exception != null) {
         print(page.exception);
         return;
       }
