@@ -124,13 +124,17 @@ void main(List<String> args) async {
     dynamic earliestAuthored;
     try {
       earliestAuthored = await github.searchIssuePRs(earliestQueryAuthor).first;
-    } catch (e) {}
+    } catch (e) {
+      print('Unable to retrieve earliestQueryAuthor.');
+    }
 
     dynamic earliestCommented;
     try {
       earliestCommented =
           await github.searchIssuePRs(earliestQueryCommenter).first;
-    } catch (e) {}
+    } catch (e) {
+      print('Unable to retrieve earliestCommented.');
+    }
 
     if (earliestAuthored == null && earliestCommented == null) {
       member.firstContributed = null;
@@ -157,12 +161,16 @@ void main(List<String> args) async {
     dynamic latestAuthored;
     try {
       latestAuthored = await github.searchIssuePRs(latestQueryAuthor).first;
-    } catch (e) {}
+    } catch (e) {
+      print('Unable to retrieve latestAuthored.');
+    }
 
     dynamic latestCommented;
     try {
       latestCommented = await github.searchIssuePRs(latestQueryCommenter).first;
-    } catch (e) {}
+    } catch (e) {
+      print('Unable to retrieve latestCommented.');
+    }
 
     if (latestAuthored == null && latestCommented == null) {
       member.firstContributed = null;
