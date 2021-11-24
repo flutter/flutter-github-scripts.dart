@@ -1,14 +1,5 @@
 include: package:lints/core.yaml
 
-analyzer:
-  errors:
-    # TODO: address these issues
-    empty_catches: ignore
-    # TODO: address these issues
-    file_names: ignore
-    # TODO: Address these issues - these are almost certainly all bugs
-    unrelated_type_equality_checks: ignore
-
 linter:
   rules:
     - directives_ordering

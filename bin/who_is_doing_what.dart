@@ -223,8 +223,9 @@ void main(List<String> args) async {
           }
         }
       }
+
       // And now show unprioritized items, if there are any.
-      if (shown.length != issuesByMilestone[milestone]) {
+      if (shown.length != issuesByMilestone[milestone].length) {
         if (opts.list) print('#### Unprioritized\n');
         for (var item in issuesByMilestone[milestone]) {
           var issue = item as Issue;

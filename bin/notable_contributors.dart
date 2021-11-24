@@ -65,7 +65,7 @@ class Options {
   }
 
   void _printUsage() {
-    print('Usage: pub notable-contributors.dart [-closed fromDate toDate]');
+    print('Usage: pub notable_contributors.dart [-closed fromDate toDate]');
     print(
         'Prints non-Google contributors by contributor cluster in the specified date range');
     print('  Dates are in ISO 8601 format');
@@ -199,7 +199,7 @@ void main(List<String> args) async {
   print(
       '${prsOfInterest.length} PRs were ${kindPastTense} by ${paidUnpaid} members.\n\n');
   print(
-      'There were ${clusters.keys.length} unique ${paidUnPaidPeople}s${people}.\n\n');
+      'There were ${clusters.keys.length} unique ${paidUnPaidPeople}${people}.\n\n');
 
   print(clusters.toMarkdown(
       sortType: ClusterReportSort.byCount,

@@ -7,5 +7,4 @@ ADD bin/* /app/bin/
 RUN pub get --offline
 
 CMD []
-ENTRYPOINT ["/usr/bin/dart", "bin/widw-server.dart"]
-
+ENTRYPOINT ["/usr/bin/dart", "bin/widw_server.dart"]
