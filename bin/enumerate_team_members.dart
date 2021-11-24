@@ -124,7 +124,7 @@ void main(List<String> args) async {
     dynamic earliestAuthored;
     try {
       earliestAuthored = await github.searchIssuePRs(earliestQueryAuthor).first;
-    } catch (e) {
+    } catch (_) {
       print('Unable to retrieve earliestQueryAuthor.');
     }
 
@@ -132,7 +132,7 @@ void main(List<String> args) async {
     try {
       earliestCommented =
           await github.searchIssuePRs(earliestQueryCommenter).first;
-    } catch (e) {
+    } catch (_) {
       print('Unable to retrieve earliestCommented.');
     }
 
@@ -161,14 +161,14 @@ void main(List<String> args) async {
     dynamic latestAuthored;
     try {
       latestAuthored = await github.searchIssuePRs(latestQueryAuthor).first;
-    } catch (e) {
+    } catch (_) {
       print('Unable to retrieve latestAuthored.');
     }
 
     dynamic latestCommented;
     try {
       latestCommented = await github.searchIssuePRs(latestQueryCommenter).first;
-    } catch (e) {
+    } catch (_) {
       print('Unable to retrieve latestCommented.');
     }
 
