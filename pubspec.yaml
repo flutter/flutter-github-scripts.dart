@@ -8,8 +8,6 @@ environment:
 
 dependencies:
   args: ^2.2.0
-  columnar_output:
-    git: https://github.com/csells/columnar-output.dart.git
   csv:  ^5.0.0
   glob: ^2.0.1
   graphql: ^5.0.0

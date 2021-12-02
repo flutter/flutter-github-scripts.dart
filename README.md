@@ -249,30 +249,6 @@ GitHub Login,Discord username (if different),Name,Company,"When Added (original 
 
 Google employees may contact KF6GPE for a current snapshot of this list.
 
-### bin/who-is-doing-what.dart
-
-Usage: `dart bin/who-is-doing-what.dart [--list --markdown]
-
-Generates a list of pending issues owned by core Flutter team members organized by the milestone
-they fall in, and sorted by priority within that milestone.
-
-By default, the output is HTML and relies on the style sheet
-`who-is-doing-what.css` in the current directory. You can get
-ouput as Markdown by passing `--markdown`, or as a straight
-list by passing `--markdown --list` (HTML output of the list
-version is not presently supported.
-
-Relies on a file `go_flutter_org_members.csv` in the root directory consisting of a
-CSV of all organization members, with the following columns:
-
-```
-GitHub Login,Discord username (if different),Name,Company,"When Added (original data gave GitHub join date, not Flutter add date)",Reason for Adding,Additional notes,Include in reports
-```
-
-The report includes those logins for which the `Include in reports` field value is `Y`.
-
-Google employees may contact KF6GPE for a current snapshot of this list.
-
 ### bin/regressions.dart
 
 Usage: `dart bin/regressions.dart [--tsv] [--between from-date to-date]`
