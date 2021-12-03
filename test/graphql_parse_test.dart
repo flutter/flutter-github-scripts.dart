@@ -102,7 +102,7 @@ void main() {
     });
     test('Actor from GraphQL', () {
       var node = json.decode(jsonActor);
-      var a = Actor.fromGraphQL(node);
+      var a = Actor.fromGraphQL(node)!;
       expect(a.login == 'kf6gpe', true);
       expect(a.url == 'https://github.com/kf6gpe', true);
     });

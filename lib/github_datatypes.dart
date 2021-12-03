@@ -24,11 +24,11 @@ final _client = GraphQLClient(cache: GraphQLCache(), link: _link);
 
 /// Represents a page of information from GitHub.
 class PageInfo {
-  String _startCursor;
+  String? _startCursor;
   get startCursor => _startCursor;
-  bool _hasNextPage;
+  bool? _hasNextPage;
   get hasNextPage => _hasNextPage;
-  String _endCursor;
+  String? _endCursor;
   get endCursor => _endCursor;
   PageInfo(this._startCursor, this._endCursor, this._hasNextPage);
   static PageInfo fromGraphQL(dynamic node) {
@@ -72,7 +72,7 @@ class Reaction {
     "THUMBS_UP"
   ];
 
-  String _content;
+  String? _content;
   get content => _content;
   bool get positive =>
       _content == "HEART" || _content == "HOORAY" || _content == "THUMBS_UP";
@@ -86,7 +86,7 @@ class Reaction {
   }
 
   String toString() {
-    return _content;
+    return _content!;
   }
 
   @override
@@ -107,20 +107,20 @@ class Reaction {
 }
 
 class Comment {
-  Actor _author;
+  Actor? _author;
   get author => _author;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  String _body;
+  String? _body;
   get body => _body;
-  String _id;
+  String? _id;
   get id => _id;
   get reactionStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = _reactionQuery
-          .replaceAll(r'${id}', this._id)
+          .replaceAll(r'${id}', this._id!)
           .replaceAll(r'${after}', after);
       final options = QueryOptions(document: gql(query));
 
@@ -133,7 +133,7 @@ class Comment {
 
       try {
         PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['node']['reactions']['pageInfo']);
+            PageInfo.fromGraphQL(page.data!['node']['reactions']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -142,7 +142,7 @@ class Comment {
       // Parse the responses into a buffer
       var bufferReactions = <Reaction>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['node']['reactions']['nodes']) {
+      for (var jsonSub in page.data!['node']['reactions']['nodes']) {
         bufferReactions.add(Reaction.fromGraphQL(jsonSub));
       }
 
@@ -152,7 +152,7 @@ class Comment {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   Comment(this._author, this._id, this._createdAt, this._body);
@@ -205,7 +205,7 @@ class Comment {
 }
 
 class Label {
-  String _label;
+  String? _label;
   get label => _label;
   Label(this._label);
   static Label fromGraphQL(dynamic node) {
@@ -213,7 +213,7 @@ class Label {
   }
 
   String toString() {
-    return _label;
+    return _label!;
   }
 
   @override
@@ -239,7 +239,7 @@ class Labels {
   get length => _labels.length;
   void append(l) => _labels.add(l);
   bool contains(l) => _labels.contains(l);
-  bool containsString(s) => labels.contains(Label(s));
+  bool? containsString(s) => labels.contains(Label(s));
   bool intersect(List<Label> list) {
     for (var l in list) {
       if (_labels.contains(l)) return true;
@@ -274,7 +274,7 @@ class Labels {
     final priorities = {'P0', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'};
     String result = '';
     priorities.forEach((p) {
-      if (containsString(p)) {
+      if (containsString(p)!) {
         result = p;
         return;
       }
@@ -293,24 +293,24 @@ class Labels {
 }
 
 class TimelineItem {
-  String _type;
-  String get type => _type;
-  String _title;
-  String get title => _title;
-  int _number;
-  int get number => _number;
-  Actor _actor;
-  Actor get actor => _actor;
-  DateTime _createdAt;
-  DateTime get createdAt => _createdAt;
+  String? _type;
+  String? get type => _type;
+  String? _title;
+  String? get title => _title;
+  int? _number;
+  int? get number => _number;
+  Actor? _actor;
+  Actor? get actor => _actor;
+  DateTime? _createdAt;
+  DateTime? get createdAt => _createdAt;
 
   TimelineItem(
       this._type, this._title, this._number, this._actor, this._createdAt);
 
   static TimelineItem fromGraphQL(dynamic node) {
-    String title = null;
-    int number = null;
-    Actor actor = null;
+    String? title = null;
+    int? number = null;
+    Actor? actor = null;
 
     if (node['__typename'] == 'MilestonedEvent' ||
         node['__typename'] == 'DemilestonedEvent') {
@@ -330,8 +330,8 @@ class TimelineItem {
   }
 
   String toString() {
-    var result = '${_type} (' + _createdAt.toIso8601String() + ')';
-    result = '${result}' + (_actor != null ? ' by ${actor.login}' : '');
+    var result = '${_type} (' + _createdAt!.toIso8601String() + ')';
+    result = '${result}' + (_actor != null ? ' by ${actor!.login}' : '');
 
     if (type == 'CrossReferencedEvent') {
       result =
@@ -341,9 +341,9 @@ class TimelineItem {
     } else if (_type == 'DemilestonedEvent') {
       result = '${result} < ${title}';
     } else if (_type == 'AssignedEvent') {
-      result = '${result} > ${actor.login}';
+      result = '${result} > ${actor!.login}';
     } else if (_type == 'UnassignedEvent') {
-      result = '${result} < ${actor.login}';
+      result = '${result} < ${actor!.login}';
     }
 
     return result;
@@ -495,21 +495,21 @@ class Timeline {
 }
 
 class Milestone {
-  String _title;
+  String? _title;
   get title => _title;
-  String _id;
+  String? _id;
   get id => _id;
-  int _number;
+  int? _number;
   get number => _number;
-  String _url;
+  String? _url;
   get url => _url;
-  bool _closed;
+  bool? _closed;
   get closed => _closed;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  DateTime _closedAt;
+  DateTime? _closedAt;
   get closedAt => _closedAt;
-  DateTime _dueOn;
+  DateTime? _dueOn;
   get dueOn => _dueOn;
 
   Milestone(this._title, this._id, this._number, this._url, this._closed,
@@ -561,9 +561,9 @@ class Milestone {
 }
 
 class Repository {
-  String _organization;
+  String? _organization;
   get organization => _organization;
-  String _repository;
+  String? _repository;
   get repository => _repository;
 
   Repository(String slug) {
@@ -587,18 +587,18 @@ class Repository {
 }
 
 class Actor {
-  String _id;
+  String? _id;
   get id => _id;
-  String _login;
+  String? _login;
   get login => _login;
-  String _url;
+  String? _url;
   get url => _url;
-  List<String> _organizationIds;
+  List<String?> _organizationIds;
   get organizationIds => _organizationIds;
 
   get organizationsStream async* {
     for (var id in _organizationIds) {
-      var query = Organization.requestId(id);
+      var query = Organization.requestId(id!);
       print(query);
       final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
@@ -606,12 +606,12 @@ class Actor {
         print(page.exception);
         return;
       }
-      yield Organization.fromGraphQL(page.data['node']);
+      yield Organization.fromGraphQL(page.data!['node']);
     }
   }
 
   static String request(String login,
-      {String organizationsAfter = null, String repositoriesAfter = null}) {
+      {String? organizationsAfter = null, String? repositoriesAfter = null}) {
     return _childQuery
         .replaceAll(r'${login}', login)
         .replaceAll(r'${organizationsAfter}',
@@ -621,9 +621,9 @@ class Actor {
   }
 
   Actor(this._id, this._login, this._url, this._organizationIds);
-  static Actor fromGraphQL(dynamic node) {
+  static Actor? fromGraphQL(dynamic node) {
     if (node == null || node['login'] == null) return null;
-    List<String> orgIds = [];
+    List<String?> orgIds = [];
     if (node['organizations'] != null &&
         node['organizations']['edges'] != null) {
       for (var org in node['organizations']['edges']) {
@@ -633,8 +633,8 @@ class Actor {
     return Actor(node['id'], node['login'], node['url'], orgIds);
   }
 
-  String toString() => this._login;
-  String toCsv() => this._login;
+  String toString() => this._login!;
+  String? toCsv() => this._login;
 
   @override
   bool operator ==(Object other) =>
@@ -691,24 +691,24 @@ class Actor {
 }
 
 class Organization {
-  String _id;
+  String? _id;
   get id => _id;
-  String _avatarUrl;
+  String? _avatarUrl;
   get avatarUrl => _avatarUrl;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  String _description;
+  String? _description;
   get description => _description;
-  String _email;
+  String? _email;
   get email => _email;
-  String _login;
+  String? _login;
   get login => _login;
-  String _name;
+  String? _name;
   get name => _name;
 
   get pendingMembersStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = Organization.request(id, pendingMembersAfter: after);
       final options = QueryOptions(document: gql(query));
@@ -716,16 +716,16 @@ class Organization {
       final page = await _client.query(options);
       try {
         PageInfo pageInfo = PageInfo.fromGraphQL(
-            page.data['organization']['pendingMembers']['pageInfo']);
+            page.data!['organization']['pendingMembers']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
         return;
       }
       // Parse the responses into a buffer
-      var membersBuffer = <Actor>[];
+      var membersBuffer = <Actor?>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['organization']['pendingMembers']
+      for (var jsonSub in page.data!['organization']['pendingMembers']
           ['edges']) {
         membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
       }
@@ -736,19 +736,19 @@ class Organization {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   get teamsStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
-      var query = Organization.request(_login, teamsAfter: after);
+      var query = Organization.request(_login!, teamsAfter: after);
       final options = QueryOptions(document: gql(query));
       final page = await _client.query(options);
       try {
         PageInfo pageInfo = PageInfo.fromGraphQL(
-            page.data['organization']['teams']['pageInfo']);
+            page.data!['organization']['teams']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -757,7 +757,7 @@ class Organization {
       // Parse the responses into a buffer
       var teamsBuffer = <Team>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['organization']['teams']['edges']) {
+      for (var jsonSub in page.data!['organization']['teams']['edges']) {
         teamsBuffer.add(Team.fromGraphQL(jsonSub['node']));
       }
 
@@ -767,7 +767,7 @@ class Organization {
           yield teamsBuffer[bufferIndex++];
         } while (bufferIndex < teamsBuffer.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   Organization(this._id, this._avatarUrl, this._createdAt, this._description,
@@ -785,9 +785,9 @@ class Organization {
   }
 
   static String request(String login,
-      {String pendingMembersAfter = null,
-      String repositoriesAfter = null,
-      String teamsAfter = null}) {
+      {String? pendingMembersAfter = null,
+      String? repositoriesAfter = null,
+      String? teamsAfter = null}) {
     return Organization._childQueryLogin
         .replaceAll(r'${data}', _queryData)
         .replaceAll(r'${login}', login)
@@ -803,9 +803,9 @@ class Organization {
   }
 
   static String requestId(String id,
-      {String pendingMembersAfter = null,
-      String repositoriesAfter = null,
-      String teamsAfter = null}) {
+      {String? pendingMembersAfter = null,
+      String? repositoriesAfter = null,
+      String? teamsAfter = null}) {
     return Organization._childQueryId
         .replaceAll(r'${data}', _queryData)
         .replaceAll(r'${id}', id)
@@ -895,22 +895,22 @@ class Organization {
 }
 
 class Team {
-  String _id;
+  String? _id;
   get id => _id;
-  String _avatarUrl;
+  String? _avatarUrl;
   get avatarUrl => _avatarUrl;
-  String _name;
+  String? _name;
   get name => _name;
-  String _description;
+  String? _description;
   get description => _description;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  DateTime _updatedAt;
+  DateTime? _updatedAt;
   get updatedAt => _updatedAt;
 
   get membersStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = Team.request(id, membersAfter: after);
       final options = QueryOptions(document: gql(query));
@@ -918,16 +918,16 @@ class Team {
       final page = await _client.query(options);
       try {
         PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['node']['members']['pageInfo']);
+            PageInfo.fromGraphQL(page.data!['node']['members']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
         return;
       }
       // Parse the responses into a buffer
-      var membersBuffer = <Actor>[];
+      var membersBuffer = <Actor?>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['node']['members']['edges']) {
+      for (var jsonSub in page.data!['node']['members']['edges']) {
         membersBuffer.add(Actor.fromGraphQL(jsonSub['node']));
       }
 
@@ -937,12 +937,12 @@ class Team {
           yield membersBuffer[bufferIndex++];
         } while (bufferIndex < membersBuffer.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   get childTeamsStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = Team.request(id, childTeamsAfter: after);
       final options = QueryOptions(document: gql(query));
@@ -950,7 +950,7 @@ class Team {
       final page = await _client.query(options);
       try {
         PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['node']['childTeams']['pageInfo']);
+            PageInfo.fromGraphQL(page.data!['node']['childTeams']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -959,7 +959,7 @@ class Team {
       // Parse the responses into a buffer
       var teamBuffer = <Team>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['node']['childTeams']['edges']) {
+      for (var jsonSub in page.data!['node']['childTeams']['edges']) {
         teamBuffer.add(Team.fromGraphQL(jsonSub));
       }
 
@@ -969,7 +969,7 @@ class Team {
           yield teamBuffer[bufferIndex++];
         } while (bufferIndex < teamBuffer.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   Team(this._id, this._avatarUrl, this._createdAt, this._description,
@@ -986,7 +986,7 @@ class Team {
   }
 
   static String request(String id,
-      {String childTeamsAfter = null, String membersAfter = null}) {
+      {String? childTeamsAfter = null, String? membersAfter = null}) {
     return Team._childQuery
         .replaceAll(r'${ownerId}', id)
         .replaceAll(r'${childTeamsAfter}',
@@ -1050,41 +1050,41 @@ class Team {
 }
 
 class Issue {
-  String _title;
+  String? _title;
   get title => _title;
-  String _id;
+  String? _id;
   get id => _id;
-  int _number;
+  int? _number;
   get number => _number;
-  String _state;
+  String? _state;
   get state => _state;
-  Actor _author;
+  Actor? _author;
   get author => _author;
-  List<Actor> _assignees;
+  List<Actor?>? _assignees;
   get assignees => _assignees;
-  String _body;
+  String? _body;
   get body => _body;
-  Labels _labels;
+  Labels? _labels;
   get labels => _labels;
-  String _url;
+  String? _url;
   get url => _url;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  DateTime _closedAt;
+  DateTime? _closedAt;
   get closedAt => _closedAt;
-  DateTime _lastEditAt;
+  DateTime? _lastEditAt;
   get lastEditAt => _lastEditAt;
-  DateTime _updatedAt;
+  DateTime? _updatedAt;
   get updatedAt => _updatedAt;
-  Repository _repository;
+  Repository? _repository;
   get repository => _repository;
-  Milestone _milestone;
+  Milestone? _milestone;
   get milestone => _milestone;
-  Timeline _timeline;
+  Timeline? _timeline;
   get timeline => _timeline;
   get reactionStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = _reactionQuery
           .replaceAll(r'${issue}', this.number.toString())
@@ -1094,7 +1094,7 @@ class Issue {
 
       try {
         PageInfo pageInfo = PageInfo.fromGraphQL(
-            page.data['repository']['issue']['reactions']['pageInfo']);
+            page.data!['repository']['issue']['reactions']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -1103,7 +1103,7 @@ class Issue {
       // Parse the responses into a buffer
       var bufferReactions = <Reaction>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['repository']['issue']['reactions']
+      for (var jsonSub in page.data!['repository']['issue']['reactions']
           ['nodes']) {
         bufferReactions.add(Reaction.fromGraphQL(jsonSub));
       }
@@ -1114,22 +1114,22 @@ class Issue {
           yield bufferReactions[bufferIndex++];
         } while (bufferIndex < bufferReactions.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   get commentStream async* {
     var after = 'null';
-    bool hasNextPage;
+    bool? hasNextPage;
     do {
       var query = _commentQuery
-          .replaceAll(r'${ownerId}', _id)
+          .replaceAll(r'${ownerId}', _id!)
           .replaceAll(r'${after}', after);
       final options = QueryOptions(document: gql(query));
 
       final page = await _client.query(options);
       try {
         PageInfo pageInfo =
-            PageInfo.fromGraphQL(page.data['node']['comments']['pageInfo']);
+            PageInfo.fromGraphQL(page.data!['node']['comments']['pageInfo']);
         hasNextPage = pageInfo.hasNextPage;
         after = '"${pageInfo.endCursor}"';
       } on Error {
@@ -1138,7 +1138,7 @@ class Issue {
       // Parse the responses into a buffer
       var commentBuffer = <Comment>[];
       var bufferIndex = 0;
-      for (var jsonSub in page.data['node']['comments']['nodes']) {
+      for (var jsonSub in page.data!['node']['comments']['nodes']) {
         commentBuffer.add(Comment.fromGraphQL(jsonSub));
       }
 
@@ -1148,7 +1148,7 @@ class Issue {
           yield commentBuffer[bufferIndex++];
         } while (bufferIndex < commentBuffer.length);
       }
-    } while (hasNextPage);
+    } while (hasNextPage!);
   }
 
   Issue(
@@ -1171,10 +1171,10 @@ class Issue {
 
   // Passed a node containing an issue, return the issue
   static Issue fromGraphQL(dynamic node) {
-    List<Actor> assignees = null;
+    List<Actor?>? assignees = null;
     var edges = (node['assignees'] ?? {})['edges'];
     if (edges != null && edges.length != 0) {
-      assignees = <Actor>[];
+      assignees = <Actor?>[];
       for (var node in edges) {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
@@ -1218,14 +1218,14 @@ class Issue {
       showMilestone = false,
       bool linebreakAfter = false,
       includeLabels: true}) {
-    var labelsSummary = includeLabels ? _labels.summary() : '';
+    var labelsSummary = includeLabels ? _labels!.summary() : '';
     var markdown = '[${this.number}](${this.url})';
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (showMilestone) {
       markdown = '${markdown} ' +
-          (_milestone == null ? '[no milestone]' : '[${_milestone.title}]');
+          (_milestone == null ? '[no milestone]' : '[${_milestone!.title}]');
     }
-    if (boldInteresting && _labels.intersect(_interesting)) {
+    if (boldInteresting && _labels!.intersect(_interesting)) {
       markdown = '**' + markdown + '**';
     }
     if (linebreakAfter) markdown = markdown + '\n';
@@ -1233,24 +1233,24 @@ class Issue {
   }
 
   String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
-    var labelsSummary = _labels.summary();
+    var labelsSummary = _labels!.summary();
     var markdown = '[${this.number}](${this.url})';
-    if (_assignees == null || _assignees.isEmpty) {
+    if (_assignees == null || _assignees!.isEmpty) {
       markdown = '${markdown} > UNASSIGNED';
     } else {
       markdown = '${markdown} > (';
-      _assignees
-          .forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
+      _assignees!
+          .forEach((assignee) => markdown = '${markdown}${assignee!.login}, ');
       markdown = markdown.substring(0, markdown.length - 2);
       markdown = '${markdown})';
     }
     if (_milestone == null) {
       markdown = '${markdown} with no milestone';
     } else {
-      markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';
+      markdown = '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
     }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
-    if (boldInteresting && _labels.intersect(_interesting)) {
+    if (boldInteresting && _labels!.intersect(_interesting)) {
       markdown = '**' + markdown + '**';
     }
     if (linebreakAfter) markdown = markdown + '\n';
@@ -1264,41 +1264,41 @@ class Issue {
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
-    String milestoneHistory = '';
+    String? milestoneHistory = '';
     if (timeline != null) {
       timeline.milestoneTimeline.forEach((milestone) => milestoneHistory =
           milestone == null
               ? milestoneHistory
               : '${milestoneHistory},${milestone.title}');
     }
-    if (milestoneHistory.isNotEmpty) {
-      milestoneHistory = milestoneHistory.substring(1);
+    if (milestoneHistory!.isNotEmpty) {
+      milestoneHistory = milestoneHistory!.substring(1);
     }
-    if (milestoneHistory.isEmpty) {
-      milestoneHistory = _milestone != null ? _milestone.title : '';
+    if (milestoneHistory!.isEmpty) {
+      milestoneHistory = _milestone != null ? _milestone!.title : '';
     }
 
-    String originalMilestone;
+    String? originalMilestone;
     if (_timeline == null) {
       originalMilestone = '';
     } else {
-      if (_timeline.originalMilestone == null) {
+      if (_timeline!.originalMilestone == null) {
         originalMilestone = '';
       } else {
-        _timeline.originalMilestone.title;
+        _timeline!.originalMilestone.title;
       }
     }
-    var currentMilestone = _milestone == null ? '' : _milestone.title;
-    var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
+    var currentMilestone = _milestone == null ? '' : _milestone!.title;
+    var dueOn = _milestone == null ? '' : _milestone!.dueOn.toString();
 
     String tsv = '';
     tsv = '${tsv}=HYPERLINK("${_url}","${_number}")';
     tsv = '${tsv}\t${_title}';
-    tsv = '${tsv}\t${_labels.priority()}';
+    tsv = '${tsv}\t${_labels!.priority()}';
     tsv = '${tsv}\t${_state}';
-    tsv = '${tsv}\t' + (_author == null ? '' : _author.toCsv());
+    tsv = '${tsv}\t' + (_author == null ? '' : _author!.toCsv()!);
     tsv = '${tsv}\t${createdAt}';
-    if (_assignees != null && _assignees.isNotEmpty) {
+    if (_assignees != null && _assignees!.isNotEmpty) {
       tsv = '${tsv}\t';
       assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
       tsv = tsv.substring(0, tsv.length - 1);
@@ -1432,43 +1432,43 @@ class Issue {
 }
 
 class PullRequest {
-  String _title;
+  String? _title;
   get title => _title;
-  String _id;
+  String? _id;
   get id => _id;
-  int _number;
+  int? _number;
   get number => _number;
-  String _state;
+  String? _state;
   get state => _state;
-  Actor _author;
+  Actor? _author;
   get author => _author;
-  List<Actor> _reviewers;
+  List<Actor?>? _reviewers;
   get reviewers => _reviewers;
-  List<Actor> _assignees;
+  List<Actor?>? _assignees;
   get assignees => _assignees;
-  String _body;
+  String? _body;
   get body => _body;
-  Milestone _milestone;
+  Milestone? _milestone;
   get milestone => _milestone;
-  Labels _labels;
+  Labels? _labels;
   get labels => _labels;
-  String _url;
+  String? _url;
   get url => _url;
-  bool _merged;
+  bool? _merged;
   get merged => _merged;
-  DateTime _createdAt;
+  DateTime? _createdAt;
   get createdAt => _createdAt;
-  DateTime _mergedAt;
+  DateTime? _mergedAt;
   get mergedAt => _mergedAt;
-  DateTime _lastEditAt;
+  DateTime? _lastEditAt;
   get lastEditAt => _lastEditAt;
-  DateTime _updatedAt;
+  DateTime? _updatedAt;
   get updatedAt => _updatedAt;
-  DateTime _closedAt;
+  DateTime? _closedAt;
   get closedAt => _closedAt;
-  Repository _repository;
+  Repository? _repository;
   get repository => _repository;
-  Timeline _timeline;
+  Timeline? _timeline;
   get timeline => _timeline;
 
   PullRequest(
@@ -1494,18 +1494,18 @@ class PullRequest {
 
   // Passed a node containing an issue, return the issue
   static PullRequest fromGraphQL(dynamic node) {
-    List<Actor> assignees = null;
-    List<Actor> reviewers = null;
+    List<Actor?>? assignees = null;
+    List<Actor?>? reviewers = null;
     if (node['assignees']['edges'] != null &&
         node['assignees']['edges'].length != 0) {
-      assignees = <Actor>[];
+      assignees = <Actor?>[];
       for (var node in node['assignees']['edges']) {
         assignees.add(Actor.fromGraphQL(node['node']));
       }
     }
     if (node['reviews']['edges'] != null &&
         node['reviews']['edges'].length != 0) {
-      reviewers = <Actor>[];
+      reviewers = <Actor?>[];
       for (var node in node['reviews']['edges']) {
         if (node['node']['author'] != null) {
           reviewers.add(Actor.fromGraphQL(node['node']['author']));
@@ -1546,7 +1546,7 @@ class PullRequest {
       {bool linebreakAfter = false,
       bool boldInteresting = false,
       includeLabels: true}) {
-    var labelsSummary = includeLabels ? _labels.summary() : '';
+    var labelsSummary = includeLabels ? _labels!.summary() : '';
     var markdown =
         '[${this.number}](${this.url}) ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';
@@ -1554,21 +1554,21 @@ class PullRequest {
   }
 
   String verbose({bool boldInteresting = true, bool linebreakAfter = false}) {
-    var labelsSummary = _labels.summary();
+    var labelsSummary = _labels!.summary();
     var markdown = '[${this.number}](${this.url})';
-    if (_assignees == null || _assignees.isEmpty) {
+    if (_assignees == null || _assignees!.isEmpty) {
       markdown = '${markdown} > UNASSIGNED';
     } else {
       markdown = '${markdown} > (';
-      _assignees
-          .forEach((assignee) => markdown = '${markdown}${assignee.login}, ');
+      _assignees!
+          .forEach((assignee) => markdown = '${markdown}${assignee!.login}, ');
       markdown = markdown.substring(0, markdown.length - 2);
       markdown = '${markdown})';
     }
     if (_milestone == null) {
       markdown = '${markdown} with no milestone';
     } else {
-      markdown = '${markdown} due on ${_milestone.dueOn} (${_milestone.title})';
+      markdown = '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
     }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';
@@ -1582,47 +1582,47 @@ class PullRequest {
   // and Google Sheets only takes mixed CSV/TSV records with TSV being the containing
   // record format.
   String toTsv() {
-    var milestoneHistory = '';
+    String? milestoneHistory = '';
     if (timeline != null) {
       timeline.milestoneTimeline().forEach((milestone) =>
           milestoneHistory = '${milestoneHistory},${milestone.title}');
     }
-    if (milestoneHistory.isNotEmpty) {
-      milestoneHistory = milestoneHistory.substring(1);
+    if (milestoneHistory!.isNotEmpty) {
+      milestoneHistory = milestoneHistory!.substring(1);
     }
-    if (milestoneHistory.isEmpty) {
+    if (milestoneHistory!.isEmpty) {
       milestoneHistory = _milestone != null ? milestone.title : '';
     }
-    String originalMilestone;
+    String? originalMilestone;
     if (_timeline == null) {
       originalMilestone = '';
     } else {
-      if (_timeline.originalMilestone == null) {
+      if (_timeline!.originalMilestone == null) {
         originalMilestone = '';
       } else {
-        _timeline.originalMilestone.title;
+        _timeline!.originalMilestone.title;
       }
     }
-    var currentMilestone = _milestone == null ? '' : _milestone.title;
-    var dueOn = _milestone == null ? '' : _milestone.dueOn.toString();
+    var currentMilestone = _milestone == null ? '' : _milestone!.title;
+    var dueOn = _milestone == null ? '' : _milestone!.dueOn.toString();
 
     String tsv = '';
     tsv = '${tsv}=HYPERLINK("${_url}","${_number}")';
     tsv = '${tsv}\t${_title}';
-    tsv = '${tsv}\t${_labels.priority()}';
-    tsv = '${tsv}\t${_author.toCsv()}';
+    tsv = '${tsv}\t${_labels!.priority()}';
+    tsv = '${tsv}\t${_author!.toCsv()}';
     tsv = '${tsv}\t${createdAt}';
-    tsv = '${tsv}\t' + (_merged ? 'Y' : 'N');
-    if (_assignees != null && _assignees.isNotEmpty) {
+    tsv = '${tsv}\t' + (_merged! ? 'Y' : 'N');
+    if (_assignees != null && _assignees!.isNotEmpty) {
       tsv = '${tsv}\t';
-      _assignees.forEach((assignee) => tsv = '${tsv}${assignee.login},');
+      _assignees!.forEach((assignee) => tsv = '${tsv}${assignee!.login},');
       tsv = tsv.substring(0, tsv.length - 1);
     } else {
       tsv = '${tsv}\t';
     }
-    if (_reviewers != null && _reviewers.isNotEmpty) {
+    if (_reviewers != null && _reviewers!.isNotEmpty) {
       tsv = '${tsv}\t';
-      _reviewers.forEach((reviewer) => tsv = '${tsv}${reviewer.login},');
+      _reviewers!.forEach((reviewer) => tsv = '${tsv}${reviewer!.login},');
       tsv = tsv.substring(0, tsv.length - 1);
     } else {
       tsv = '${tsv}\t';
@@ -1699,12 +1699,12 @@ enum ClusterReportSort { byKey, byCount }
 class Cluster {
   ClusterType _type;
   get type => _type;
-  SplayTreeMap<String, dynamic> _clusters;
+  SplayTreeMap<String?, dynamic> _clusters;
   get clusters => _clusters;
   get keys => _clusters.keys;
   dynamic operator [](String key) => _clusters[key];
 
-  void remove(String key) {
+  void remove(String? key) {
     if (_clusters.containsKey(key)) _clusters.remove(key);
   }
 
@@ -1713,7 +1713,7 @@ class Cluster {
   static final _noMilestoneKey = '__no milestone__';
 
   static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String, dynamic>();
+    var result = SplayTreeMap<String?, dynamic>();
     result[_unlabeledKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1737,7 +1737,7 @@ class Cluster {
   }
 
   static Cluster byAuthor(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String, dynamic>();
+    var result = SplayTreeMap<String?, dynamic>();
 
     for (var item in issuesOrPullRequests) {
       if (!(item is Issue) && !(item is PullRequest)) {
@@ -1754,7 +1754,7 @@ class Cluster {
   }
 
   static Cluster byAssignees(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String, dynamic>();
+    var result = SplayTreeMap<String?, dynamic>();
     result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1778,14 +1778,14 @@ class Cluster {
   }
 
   static Cluster byReviewers(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String, dynamic>();
+    var result = SplayTreeMap<String?, dynamic>();
     result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
       if (!(item is PullRequest)) {
         throw ('invalid type!');
       }
-      var pr = item as PullRequest;
+      var pr = item;
       if (pr.reviewers == null || pr.reviewers.length == 0) {
         result[_unassignedKey].add(item);
       } else {
@@ -1803,7 +1803,7 @@ class Cluster {
   }
 
   static Cluster byMilestone(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String, dynamic>();
+    var result = SplayTreeMap<String?, dynamic>();
     result[_noMilestoneKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1849,7 +1849,7 @@ class Cluster {
   String toString() => summary();
 
   String toMarkdown(
-      {ClusterReportSort sortType,
+      {ClusterReportSort? sortType,
       bool skipEmpty = true,
       showStatistics = false}) {
     var result = '';
@@ -1908,7 +1908,7 @@ class Cluster {
 
   double mean() {
     double sum = 0.0;
-    double l = 0.0;
+    double? l = 0.0;
     switch (type) {
       case ClusterType.byAuthor:
         l = (clusters.keys.contains(_unassignedKey)
@@ -1937,13 +1937,13 @@ class Cluster {
         break;
     }
     clusters.keys.forEach((key) => sum += clusters[key].length);
-    return sum / l;
+    return sum / l!;
   }
 
   double stdev() {
     double m = mean();
     double sum = 0.0;
-    double l = 0.0;
+    double? l = 0.0;
     switch (type) {
       case ClusterType.byAuthor:
         l = (clusters.keys.contains(_unassignedKey)
@@ -1974,7 +1974,7 @@ class Cluster {
     clusters.keys.forEach((key) =>
         sum += ((clusters[key].length - m) * (clusters[key].length - m)));
 
-    double deviation = sum / l;
+    double deviation = sum / l!;
 
     return sqrt(deviation);
   }

@@ -6,17 +6,17 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get showMerged => _results['merged'];
-  bool get tsv => _results['tsv'];
-  bool get skipAutorollers => _results['skip-autorollers'];
-  String get label => _results['label'];
-  DateTime get from => DateTime.parse(_results.rest[0]);
-  DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  bool? get showClosed => _results!['closed'];
+  bool? get showMerged => _results!['merged'];
+  bool? get tsv => _results!['tsv'];
+  bool? get skipAutorollers => _results!['skip-autorollers'];
+  String? get label => _results!['label'];
+  DateTime get from => DateTime.parse(_results!.rest[0]);
+  DateTime get to => DateTime.parse(_results!.rest[1]);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -48,10 +48,10 @@ class Options {
           defaultsTo: null, abbr: 'l', help: 'only issues with this label');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if ((_results['closed'] || _results['merged']) &&
-          _results.rest.length != 2) throw ('need start and end dates!');
-      if (_results['merged'] && _results['closed']) {
+      if (_results!['help']) _printUsage();
+      if ((_results!['closed'] || _results!['merged']) &&
+          _results!.rest.length != 2) throw ('need start and end dates!');
+      if (_results!['merged'] && _results!['closed']) {
         throw ('--merged and --closed are mutually exclusive!');
       }
     } on ArgParserException catch (e) {
@@ -72,7 +72,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final repos = ['flutter', 'engine', 'plugins'];
 
@@ -85,12 +85,12 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed || opts.showMerged) {
-    state = opts.showClosed ? GitHubIssueState.closed : GitHubIssueState.merged;
+  if (opts.showClosed! || opts.showMerged!) {
+    state = opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
-    rangeType = opts.showClosed
+    rangeType = opts.showClosed!
         ? GitHubDateQueryType.closed
         : GitHubDateQueryType.merged;
   }
@@ -104,25 +104,25 @@ void main(List<String> args) async {
         dateQuery: rangeType,
         dateRange: when);
 
-    var headerDelimiter = opts.tsv ? '' : '### ';
+    var headerDelimiter = opts.tsv! ? '' : '### ';
     var type = 'Open';
-    if (opts.showMerged) type = 'Merged';
-    if (opts.showClosed) type = 'Closed';
+    if (opts.showMerged!) type = 'Merged';
+    if (opts.showClosed!) type = 'Closed';
     print("${headerDelimiter}${type} PRs in `flutter/${repo}` from " +
         opts.from.toIso8601String() +
         ' to ' +
         opts.to.toIso8601String());
     print("There were ${prs.length} pull requests.\n");
 
-    if (opts.tsv) print(PullRequest.tsvHeader);
+    if (opts.tsv!) print(PullRequest.tsvHeader);
     for (var pr in prs) {
       if (opts.label != null && !pr.labels.containsString(opts.label)) continue;
       var pullRequestString =
-          opts.tsv ? pr.toTsv() : pr.summary(linebreakAfter: true);
+          opts.tsv! ? pr.toTsv() : pr.summary(linebreakAfter: true);
       var printIt = true;
       for (var roller in rollers) {
         if ((pr as PullRequest).author.toString() == roller) {
-          printIt = false || !opts.skipAutorollers;
+          printIt = false || !opts.skipAutorollers!;
           break;
         }
       }

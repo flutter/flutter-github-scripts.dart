@@ -7,19 +7,19 @@ import 'package:intl/intl.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  String get release => _results['release'];
-  bool get html =>
-      _results['formatted'] == false && _results['summary'] == false
+  ArgResults? _results;
+  String? get release => _results!['release'];
+  bool? get html =>
+      _results!['formatted'] == false && _results!['summary'] == false
           ? true
-          : _results['formatted'];
-  bool get summary =>
-      _results['formatted'] == false && _results['summary'] == false
+          : _results!['formatted'];
+  bool? get summary =>
+      _results!['formatted'] == false && _results!['summary'] == false
           ? true
-          : _results['summary'];
-  int get exitCode => _results == null
+          : _results!['summary'];
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
   Options(List<String> args) {
@@ -33,8 +33,8 @@ class Options {
 
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if (_results['release'] == null) {
+      if (_results!['help']) _printUsage();
+      if (_results!['release'] == null) {
         throw (ArgParserException('Need a version!'));
       }
     } on ArgParserException catch (e) {
@@ -50,7 +50,7 @@ class Options {
   }
 }
 
-String hotfixSummary(Issue issue, String repository) {
+String hotfixSummary(Issue issue, String? repository) {
   var result = '';
   var formatter = DateFormat('MM/dd/yy');
   var created = formatter.format(issue.createdAt);
@@ -72,7 +72,7 @@ String hotfixSummary(Issue issue, String repository) {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   var release = opts.release;
@@ -88,8 +88,8 @@ void main(List<String> args) async {
   var flutterIssuesStream = github.searchIssuePRs(flutterQuery);
   var dartIssuesStream = github.searchIssuePRs(dartQuery);
 
-  List<Issue> flutterIssues = [];
-  List<Issue> dartIssues = [];
+  List<Issue?> flutterIssues = [];
+  List<Issue?> dartIssues = [];
   await for (var issue in flutterIssuesStream) {
     flutterIssues.add(issue);
   }
@@ -98,34 +98,34 @@ void main(List<String> args) async {
     dartIssues.add(issue);
   }
 
-  if (opts.html) {
+  if (opts.html!) {
     print('<html>');
 
     print('<h3>Issues to pick into ${release}</h3>');
 
     print('<p>Flutter:</p>');
     for (var issue in flutterIssues) {
-      print('<li>${issue.html()}</li>');
+      print('<li>${issue!.html()}</li>');
     }
 
     print('<p>Dart:</p>');
 
     for (var issue in dartIssues) {
-      print('<li>${issue.html()}</li>');
+      print('<li>${issue!.html()}</li>');
     }
 
     print('</html>');
   }
   print('');
 
-  if (opts.summary) {
+  if (opts.summary!) {
     // Flutter issues
     for (var issue in flutterIssues) {
-      print(hotfixSummary(issue, null));
+      print(hotfixSummary(issue!, null));
     }
 
     for (var issue in dartIssues) {
-      print(hotfixSummary(issue, 'dartlang/sdk'));
+      print(hotfixSummary(issue!, 'dartlang/sdk'));
     }
   }
 }

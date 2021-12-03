@@ -7,12 +7,12 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  DateTime get from => DateTime.parse(_results['from']);
-  DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  DateTime get from => DateTime.parse(_results!['from']);
+  DateTime get to => DateTime.parse(_results!['to']);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -31,7 +31,7 @@ class Options {
           help: 'to date, ISO format yyyy-mm-dd');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
+      if (_results!['help']) _printUsage();
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -44,10 +44,10 @@ class Options {
   }
 }
 
-DateTime nearestSaturday(DateTime when) {
+DateTime? nearestSaturday(DateTime? when) {
   var result = when;
   for (int delta = 0; delta < 7; delta++) {
-    result = when.add(Duration(days: delta));
+    result = when!.add(Duration(days: delta));
     if (result.weekday == DateTime.saturday) return result;
   }
   return null;
@@ -55,7 +55,7 @@ DateTime nearestSaturday(DateTime when) {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
@@ -80,7 +80,7 @@ void main(List<String> args) async {
         issue.createdAt.compareTo(opts.to) <= 0) {
       String key = nearestSaturday(issue.createdAt).toString().substring(0, 10);
       if (!counts.containsKey(key)) counts[key] = 0;
-      counts[key] = counts[key] + 1;
+      counts[key] = counts[key]! + 1;
     }
   });
 
@@ -90,7 +90,7 @@ void main(List<String> args) async {
         issue.createdAt.compareTo(opts.to) <= 0) {
       String key = nearestSaturday(issue.createdAt).toString().substring(0, 10);
       if (!counts.containsKey(key)) counts[key] = 0;
-      counts[key] = counts[key] + 1;
+      counts[key] = counts[key]! + 1;
     }
   });
 

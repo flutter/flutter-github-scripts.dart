@@ -6,15 +6,15 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get tsv => _results['tsv'];
-  String get label => _results['label'];
-  DateTime get from => DateTime.parse(_results.rest[0]);
-  DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  bool? get showClosed => _results!['closed'];
+  bool? get tsv => _results!['tsv'];
+  String? get label => _results!['label'];
+  DateTime get from => DateTime.parse(_results!.rest[0]);
+  DateTime get to => DateTime.parse(_results!.rest[1]);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -36,8 +36,8 @@ class Options {
           defaultsTo: null, abbr: 'l', help: 'only issues with this label');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if (_results['closed'] && _results.rest.length != 2) {
+      if (_results!['help']) _printUsage();
+      if (_results!['closed'] && _results!.rest.length != 2) {
         throw ('need start and end dates!');
       }
     } on ArgParserException catch (e) {
@@ -57,7 +57,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   var repos = ['flutter'];
 
@@ -65,9 +65,9 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed) {
+  if (opts.showClosed!) {
     state = GitHubIssueState.closed;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
@@ -82,27 +82,27 @@ void main(List<String> args) async {
         dateQuery: rangeType,
         dateRange: when);
 
-    var headerDelimiter = opts.tsv ? '' : '## ';
-    print(opts.showClosed
+    var headerDelimiter = opts.tsv! ? '' : '## ';
+    print(opts.showClosed!
         ? "${headerDelimiter}Issues closed in flutter/${repo} from " +
             opts.from.toIso8601String() +
             ' to ' +
             opts.to.toIso8601String()
         : "${headerDelimiter}Open issues in flutter/${repo}");
-    if (!opts.tsv) print('\n');
+    if (!opts.tsv!) print('\n');
 
     print('There were ${issues.length} ' +
-        (opts.showClosed ? 'closed ' : ' open') +
+        (opts.showClosed! ? 'closed ' : ' open') +
         'issues');
-    if (!opts.tsv) print('\n');
+    if (!opts.tsv!) print('\n');
 
-    if (opts.tsv) print(Issue.tsvHeader);
+    if (opts.tsv!) print(Issue.tsvHeader);
     for (var issue in issues) {
       if (opts.label != null && !issue.labels.containsString(opts.label)) {
         continue;
       }
       var issueString =
-          opts.tsv ? issue.toTsv() : issue.summary(linebreakAfter: true);
+          opts.tsv! ? issue.toTsv() : issue.summary(linebreakAfter: true);
       print(issueString);
     }
   }

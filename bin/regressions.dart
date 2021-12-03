@@ -6,16 +6,16 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get between => _results['between'];
-  bool get tsv => _results['tsv'];
+  ArgResults? _results;
+  bool? get between => _results!['between'];
+  bool? get tsv => _results!['tsv'];
   DateTime get from =>
-      _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
+      _results!.rest != null ? DateTime.parse(_results!.rest[0]) : null;
   DateTime get to =>
-      _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
-  int get exitCode => _results == null
+      _results!.rest != null ? DateTime.parse(_results!.rest[1]) : null;
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -32,8 +32,8 @@ class Options {
           defaultsTo: false, abbr: 't', negatable: true, help: 'output TSV');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if (_results['between'] && _results.rest.length != 2) {
+      if (_results!['help']) _printUsage();
+      if (_results!['between'] && _results!.rest.length != 2) {
         throw ('--between requires two dates in ISO format');
       }
     } on ArgParserException catch (e) {
@@ -54,7 +54,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -84,9 +84,9 @@ void main(List<String> args) async {
     if (!label.startsWith(foundInKeyword)) byLabel.remove(label);
   }
 
-  var sectionHeader = opts.tsv ? '' : '# ';
-  var subsectionHeader = opts.tsv ? '' : '## ';
-  var trailing = opts.tsv ? '' : '\n';
+  var sectionHeader = opts.tsv! ? '' : '# ';
+  var subsectionHeader = opts.tsv! ? '' : '## ';
+  var trailing = opts.tsv! ? '' : '\n';
   print(
       '${sectionHeader}Open and closed regressions in flutter/flutter by release${trailing}');
 
@@ -96,11 +96,11 @@ void main(List<String> args) async {
   releaseLabels.sort((a, b) => a.compareTo(b));
   for (var label in releaseLabels) {
     print('${subsectionHeader}${label}${trailing}');
-    if (opts.tsv) print(Issue.tsvHeader);
+    if (opts.tsv!) print(Issue.tsvHeader);
     for (var item in byLabel[label]) {
       var issue = item as Issue;
       if (!issue.labels.containsString(severeKeyword)) continue;
-      if (opts.tsv) {
+      if (opts.tsv!) {
         print(issue.toTsv());
       } else {
         print(issue.summary(

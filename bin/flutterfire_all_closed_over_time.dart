@@ -6,15 +6,15 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  DateTime get from => DateTime.parse(_results['from']);
-  DateTime get to => DateTime.parse(_results['to']);
-  bool get showQueries => _results['queries'];
+  ArgResults? _results;
+  DateTime get from => DateTime.parse(_results!['from']);
+  DateTime get to => DateTime.parse(_results!['to']);
+  bool? get showQueries => _results!['queries'];
   int get deltaDays =>
-      int.parse(_results['delta'] == null ? '7' : _results['delta']);
-  int get exitCode => _results == null
+      int.parse(_results!['delta'] == null ? '7' : _results!['delta']);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
   Options(List<String> args) {
@@ -36,7 +36,7 @@ class Options {
 
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
+      if (_results!['help']) _printUsage();
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -52,13 +52,13 @@ class Options {
 
 class MeanComputer {
   // Running mean of all invocations
-  double _totalSumSeconds;
+  double? _totalSumSeconds;
   get totalSum => _totalSumSeconds;
-  double _totalCount;
+  double? _totalCount;
   get totalCount => _totalCount;
   get meanDuration => _totalCount == 0
       ? Duration(seconds: 0)
-      : Duration(seconds: _totalSumSeconds ~/ totalCount);
+      : Duration(seconds: _totalSumSeconds! ~/ totalCount);
 
   MeanComputer() {
     _totalSumSeconds = 0.0;
@@ -104,7 +104,7 @@ class MeanComputer {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 
@@ -126,7 +126,7 @@ void main(List<String> args) async {
 
     var closedQuery =
         'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc closed:${fromStamp}..${toStamp}';
-    if (opts.showQueries) {
+    if (opts.showQueries!) {
       print(openQuery);
       print(closedQuery);
     }
@@ -134,8 +134,8 @@ void main(List<String> args) async {
     var openIssues = github.searchIssuePRs(openQuery);
     var closedIssues = github.searchIssuePRs(closedQuery);
 
-    List<Issue> openedThisPeriod = [];
-    List<Issue> closedThisPeriod = [];
+    List<Issue?> openedThisPeriod = [];
+    List<Issue?> closedThisPeriod = [];
 
     await for (var issue in openIssues) {
       if (issue.createdAt.compareTo(opts.from) >= 0 &&

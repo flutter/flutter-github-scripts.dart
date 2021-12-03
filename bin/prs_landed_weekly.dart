@@ -5,12 +5,12 @@ import 'package:graphql/client.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  DateTime get from => DateTime.parse(_results['from']);
-  DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  DateTime get from => DateTime.parse(_results!['from']);
+  DateTime get to => DateTime.parse(_results!['to']);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -28,7 +28,7 @@ class Options {
           help: 'to date, ISO format yyyy-mm-dd');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
+      if (_results!['help']) _printUsage();
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -62,20 +62,20 @@ query {
 }
 
 int extractUniqueUsers(dynamic response) {
-  var committers = Set<String>();
+  var committers = Set<String?>();
   for (var pr in response['search']['nodes']) {
     committers.add(pr['author']['login']);
   }
   return committers.length;
 }
 
-int extractPullRequestCountResponse(dynamic response) {
+int? extractPullRequestCountResponse(dynamic response) {
   return response['search']['issueCount'];
 }
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final httpLink = HttpLink(
