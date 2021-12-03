@@ -121,13 +121,16 @@ void main(List<String> args) async {
   print('### Issues open/closed by priority\n');
   print('| Priority | Open | Closed | Total |');
   print('|----------|------|--------|-------|');
-  var totalOpen = 0, totalClosed = 0, total = 0;
+  var totalOpen = 0;
+  var totalClosed = 0;
+  var total = 0;
   interestingPriorities.forEach((p) {
-    var openCount =
-        openCluster.clusters[p] == null ? 0 : openCluster.clusters[p].length;
+    var openCount = openCluster.clusters[p] == null
+        ? 0
+        : (openCluster.clusters[p] as List).length;
     var closedCount = closedCluster.clusters[p] == null
         ? 0
-        : closedCluster.clusters[p].length;
+        : (closedCluster.clusters[p] as List).length;
     var totalRow = openCount + closedCount;
     totalOpen += openCount;
     totalClosed += closedCount;

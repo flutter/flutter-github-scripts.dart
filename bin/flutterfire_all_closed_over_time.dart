@@ -52,25 +52,25 @@ class Options {
 
 class MeanComputer {
   // Running mean of all invocations
-  double? _totalSumSeconds;
+  late double _totalSumSeconds;
   get totalSum => _totalSumSeconds;
-  double? _totalCount;
+
+  late double _totalCount;
+
   get totalCount => _totalCount;
   get meanDuration => _totalCount == 0
       ? Duration(seconds: 0)
-      : Duration(seconds: _totalSumSeconds! ~/ totalCount);
+      : Duration(seconds: _totalSumSeconds ~/ totalCount);
 
   MeanComputer() {
     _totalSumSeconds = 0.0;
     _totalCount = 0.0;
   }
 
-  Duration computeMean(
-    List<dynamic> issues,
-  ) {
+  Duration computeMean(List<dynamic> issues) {
     bool onlyCustomers = false;
     double sum = 0.0;
-    var count = issues == null ? 0 : issues.length;
+    var count = issues.length;
     if (count == 0) return Duration(seconds: 0);
     bool hasCustomer = false;
     for (var item in issues) {

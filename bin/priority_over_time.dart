@@ -61,7 +61,10 @@ class Options {
   }
 }
 
-int countWithOrWithoutCustomers(List<dynamic> issues, {required bool onlyCustomers}) {
+int countWithOrWithoutCustomers(
+  List<dynamic> issues, {
+  required bool onlyCustomers,
+}) {
   var count = issues.length;
   if (onlyCustomers) {
     bool hasCustomer = false;
@@ -83,13 +86,13 @@ int countWithOrWithoutCustomers(List<dynamic> issues, {required bool onlyCustome
 
 class MeanComputer {
   // Running mean of all invocations
-  double? _totalSumSeconds;
+  late double _totalSumSeconds;
   get totalSum => _totalSumSeconds;
-  double? _totalCount;
+  late double _totalCount;
   get totalCount => _totalCount;
   get meanDuration => _totalCount == 0
       ? Duration(seconds: 0)
-      : Duration(seconds: _totalSumSeconds! ~/ totalCount);
+      : Duration(seconds: _totalSumSeconds ~/ totalCount);
 
   MeanComputer() {
     _totalSumSeconds = 0.0;

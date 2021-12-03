@@ -262,18 +262,18 @@ class GitHub {
               final dayDelta = 4;
               var newEnd = startSearchFrom!.end;
               startSearchFrom = DateRange(DateRangeType.range,
-                  start: newEnd.subtract(Duration(days: 2 * dayDelta)),
+                  start: newEnd!.subtract(Duration(days: 2 * dayDelta)),
                   end: newEnd.subtract(Duration(days: dayDelta)));
               var newDateRange = DateRange(DateRangeType.range,
                   start: newEnd
                           .subtract(Duration(days: dayDelta))
-                          .isBefore(endSearchAt!.start)
+                          .isBefore(endSearchAt!.start!)
                       ? endSearchAt.start
                       : newEnd.subtract(Duration(days: dayDelta)),
                   end: newEnd);
               dateRange = newDateRange;
               dateString = DateRange.queryToString(dateQuery, dateRange);
-              if (dateRange.end.isBefore(endSearchAt.start)) {
+              if (dateRange.end!.isBefore(endSearchAt.start!)) {
                 fetchAnotherDay = false;
               }
               break;
@@ -532,13 +532,16 @@ enum DateRangeWhen { onDate, onOrBefore, onOrAfter }
 
 class DateRange {
   DateRangeType _type;
-  get type => _type;
+  DateRangeType get type => _type;
+
   DateRangeWhen? _when;
-  get when => _when;
+  DateRangeWhen? get when => _when;
+
   DateTime? _at, _start, _end;
-  get at => _at;
-  get start => _start;
-  get end => _end;
+
+  DateTime? get at => _at;
+  DateTime? get start => _start;
+  DateTime? get end => _end;
 
   String toString() {
     if (_type == DateRangeType.at) {
@@ -552,6 +555,9 @@ class DateRange {
           break;
         case DateRangeWhen.onOrAfter:
           comparison = '>=';
+          break;
+        case null:
+          comparison = '';
           break;
       }
       return comparison + _at!.toIso8601String();
@@ -583,11 +589,13 @@ class DateRange {
     return dateString;
   }
 
-  factory DateRange(type,
-      {DateTime? at,
-      DateRangeWhen when = DateRangeWhen.onDate,
-      DateTime? start,
-      DateTime? end}) {
+  factory DateRange(
+    type, {
+    DateTime? at,
+    DateRangeWhen? when = DateRangeWhen.onDate,
+    DateTime? start,
+    DateTime? end,
+  }) {
     if (type == DateRangeType.at &&
         when != null &&
         at != null &&

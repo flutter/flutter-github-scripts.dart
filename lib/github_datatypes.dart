@@ -1247,7 +1247,8 @@ class Issue {
     if (_milestone == null) {
       markdown = '${markdown} with no milestone';
     } else {
-      markdown = '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
+      markdown =
+          '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
     }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (boldInteresting && _labels!.intersect(_interesting)) {
@@ -1568,7 +1569,8 @@ class PullRequest {
     if (_milestone == null) {
       markdown = '${markdown} with no milestone';
     } else {
-      markdown = '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
+      markdown =
+          '${markdown} due on ${_milestone!.dueOn} (${_milestone!.title})';
     }
     markdown = '${markdown} ${this.title} ${labelsSummary}';
     if (linebreakAfter) markdown = markdown + '\n';
@@ -1698,10 +1700,12 @@ enum ClusterReportSort { byKey, byCount }
 
 class Cluster {
   ClusterType _type;
-  get type => _type;
-  SplayTreeMap<String?, dynamic> _clusters;
-  get clusters => _clusters;
-  get keys => _clusters.keys;
+  ClusterType get type => _type;
+
+  SplayTreeMap<String, dynamic> _clusters;
+  SplayTreeMap<String, dynamic> get clusters => _clusters;
+
+  Iterable<String?> get keys => _clusters.keys;
   dynamic operator [](String key) => _clusters[key];
 
   void remove(String? key) {
@@ -1713,7 +1717,7 @@ class Cluster {
   static final _noMilestoneKey = '__no milestone__';
 
   static Cluster byLabel(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String?, dynamic>();
+    var result = SplayTreeMap<String, dynamic>();
     result[_unlabeledKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1737,7 +1741,7 @@ class Cluster {
   }
 
   static Cluster byAuthor(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String?, dynamic>();
+    var result = SplayTreeMap<String, dynamic>();
 
     for (var item in issuesOrPullRequests) {
       if (!(item is Issue) && !(item is PullRequest)) {
@@ -1754,7 +1758,7 @@ class Cluster {
   }
 
   static Cluster byAssignees(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String?, dynamic>();
+    var result = SplayTreeMap<String, dynamic>();
     result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1778,7 +1782,7 @@ class Cluster {
   }
 
   static Cluster byReviewers(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String?, dynamic>();
+    var result = SplayTreeMap<String, dynamic>();
     result[_unassignedKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1803,7 +1807,7 @@ class Cluster {
   }
 
   static Cluster byMilestone(List<dynamic> issuesOrPullRequests) {
-    var result = SplayTreeMap<String?, dynamic>();
+    var result = SplayTreeMap<String, dynamic>();
     result[_noMilestoneKey] = [];
 
     for (var item in issuesOrPullRequests) {
@@ -1855,7 +1859,7 @@ class Cluster {
     var result = '';
     var m = mean(), s = stdev();
 
-    if (clusters.keys.length == 0) {
+    if (clusters.keys.isEmpty) {
       result = 'no items\n\n';
     } else {
       var kind = '';
@@ -1908,7 +1912,7 @@ class Cluster {
 
   double mean() {
     double sum = 0.0;
-    double? l = 0.0;
+    double l = 0.0;
     switch (type) {
       case ClusterType.byAuthor:
         l = (clusters.keys.contains(_unassignedKey)
@@ -1937,13 +1941,13 @@ class Cluster {
         break;
     }
     clusters.keys.forEach((key) => sum += clusters[key].length);
-    return sum / l!;
+    return sum / l;
   }
 
   double stdev() {
     double m = mean();
     double sum = 0.0;
-    double? l = 0.0;
+    double l = 0.0;
     switch (type) {
       case ClusterType.byAuthor:
         l = (clusters.keys.contains(_unassignedKey)
@@ -1974,7 +1978,7 @@ class Cluster {
     clusters.keys.forEach((key) =>
         sum += ((clusters[key].length - m) * (clusters[key].length - m)));
 
-    double deviation = sum / l!;
+    double deviation = sum / l;
 
     return sqrt(deviation);
   }

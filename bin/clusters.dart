@@ -5,29 +5,25 @@ import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
-  final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults? _results;
-  bool? get showClosed => _results!['closed'];
-  bool? get showMerged => _results!['merged'];
-  DateTime get from =>
-      _results!.rest != null ? DateTime.parse(_results!.rest[0]) : null;
-  DateTime get to =>
-      _results!.rest != null ? DateTime.parse(_results!.rest[1]) : null;
-  bool? get labels => _results!['labels'];
-  bool? get authors => _results!['authors'];
-  bool? get assignees => _results!['assignees'];
-  bool? get reviewers => _results!['reviewers'];
-  bool? get prs => _results!['prs'];
-  bool? get issues => _results!['issues'];
-  bool? get alphabetize => _results!['alphabetize'];
-  bool? get customers => _results!['customers-only'];
-  bool? get ranking => _results!['ranking'];
-  bool? get skipUninteresting => _results!['skip-uninteresting-labels'];
-  int? get exitCode => _results == null
-      ? -1
-      : _results!['help']
-          ? 0
-          : null;
+  final ArgParser _parser = ArgParser(allowTrailingOptions: false);
+  late ArgResults _results;
+  bool? get showClosed => _results['closed'];
+  bool? get showMerged => _results['merged'];
+  DateTime? get from =>
+      _results.rest.isNotEmpty ? DateTime.parse(_results.rest[0]) : null;
+  DateTime? get to =>
+      _results.rest.length >= 2 ? DateTime.parse(_results.rest[1]) : null;
+  bool? get labels => _results['labels'];
+  bool? get authors => _results['authors'];
+  bool? get assignees => _results['assignees'];
+  bool? get reviewers => _results['reviewers'];
+  bool? get prs => _results['prs'];
+  bool? get issues => _results['issues'];
+  bool? get alphabetize => _results['alphabetize'];
+  bool? get customers => _results['customers-only'];
+  bool? get ranking => _results['ranking'];
+  bool? get skipUninteresting => _results['skip-uninteresting-labels'];
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -86,24 +82,24 @@ class Options {
           defaultsTo: false, negatable: true, help: 'cluster by reviewer');
     try {
       _results = _parser.parse(args);
-      if (_results!['help']) _printUsage();
-      if (_results!['labels'] && _results!['authors']) {
+      if (_results['help']) _printUsage();
+      if (_results['labels'] && _results['authors']) {
         throw ('cannot cluster on both labels and authors');
       }
-      if (!_results!['labels'] &&
-          !_results!['authors'] &&
-          !_results!['assignees']) {
+      if (!_results['labels'] &&
+          !_results['authors'] &&
+          !_results['assignees']) {
         throw (ArgParserException('need to labels, authors, or assignees!'));
       }
-      if (_results!['prs'] && _results!['issues']) {
+      if (_results['prs'] && _results['issues']) {
         throw (ArgParserException(
             'cannot cluster both pull requests and issues at the same time!'));
       }
-      if (!_results!['prs'] && !_results!['issues']) {
+      if (!_results['prs'] && !_results['issues']) {
         throw (ArgParserException(
             'need to cluster either issues or pull requests!'));
       }
-      if (_results!['merged'] && _results!['closed']) {
+      if (_results['merged'] && _results['closed']) {
         throw ('--merged and --closed are mutually exclusive!');
       }
     } on ArgParserException catch (e) {
@@ -142,7 +138,8 @@ void main(List<String> args) async {
   DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed! || opts.showMerged!) {
-    state = opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
+    state =
+        opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
   }
@@ -179,7 +176,7 @@ void main(List<String> args) async {
         ' by ${what}' +
         ' for `flutter/${repo}` ' +
         (opts.showClosed!
-            ? 'from ${opts.from.toIso8601String()} to ${opts.to.toIso8601String()}'
+            ? 'from ${opts.from!.toIso8601String()} to ${opts.to!.toIso8601String()}'
             : '') +
         '\n\n');
 
@@ -228,7 +225,8 @@ void main(List<String> args) async {
             if (!labelCountsByLabel.containsKey(label.label)) {
               labelCountsByLabel[label.label] = 1;
             } else {
-              labelCountsByLabel[label.label]++;
+              labelCountsByLabel[label.label] =
+                  labelCountsByLabel[label.label]! + 1;
             }
           }
         }

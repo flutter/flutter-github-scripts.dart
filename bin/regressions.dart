@@ -6,18 +6,13 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults? _results;
-  bool? get between => _results!['between'];
-  bool? get tsv => _results!['tsv'];
-  DateTime get from =>
-      _results!.rest != null ? DateTime.parse(_results!.rest[0]) : null;
-  DateTime get to =>
-      _results!.rest != null ? DateTime.parse(_results!.rest[1]) : null;
-  int? get exitCode => _results == null
-      ? -1
-      : _results!['help']
-          ? 0
-          : null;
+  late ArgResults _results;
+
+  bool? get between => _results['between'];
+  bool? get tsv => _results['tsv'];
+  DateTime? get from => DateTime.parse(_results.rest[0]);
+  DateTime? get to => DateTime.parse(_results.rest[1]);
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -32,8 +27,8 @@ class Options {
           defaultsTo: false, abbr: 't', negatable: true, help: 'output TSV');
     try {
       _results = _parser.parse(args);
-      if (_results!['help']) _printUsage();
-      if (_results!['between'] && _results!.rest.length != 2) {
+      if (_results['help']) _printUsage();
+      if (_results['between'] && _results.rest.length != 2) {
         throw ('--between requires two dates in ISO format');
       }
     } on ArgParserException catch (e) {
