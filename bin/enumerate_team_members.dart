@@ -103,7 +103,8 @@ void main(List<String> args) async {
   // Enumerate all of the teams and get all of the members of all of the teams.
   var org = await github.organization(opts.login);
   var allMembers = Map<String?, MemberInfo>();
-  SplayTreeMap<String?, List<String?>> membersByTeam = SplayTreeMap<String?, List<String>>();
+  SplayTreeMap<String?, List<String?>> membersByTeam =
+      SplayTreeMap<String?, List<String>>();
   await for (var team in org.teamsStream) {
     var membersThisTeam = <String?>[];
     await for (var member in team.membersStream) {

@@ -88,7 +88,8 @@ void main(List<String> args) async {
   DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed! || opts.showMerged!) {
-    state = opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
+    state =
+        opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = opts.showClosed!
         ? GitHubDateQueryType.closed
