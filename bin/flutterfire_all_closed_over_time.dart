@@ -68,6 +68,8 @@ class MeanComputer {
   }
 
   Duration computeMean(List<dynamic> issues) {
+    // TODO: note that onlyCustomers is only ever false, and creates dead code
+    // below.
     bool onlyCustomers = false;
     double sum = 0.0;
     var count = issues.length;
@@ -76,6 +78,7 @@ class MeanComputer {
     for (var item in issues) {
       var issue = item as Issue;
       if (issue.closedAt == null) continue;
+      // ignore: dead_code
       if (onlyCustomers) {
         for (var label in issue.labels.labels) {
           if (label.label.contains('customer:')) {
@@ -84,6 +87,7 @@ class MeanComputer {
           }
         }
       }
+      // ignore: dead_code
       if (!onlyCustomers || (onlyCustomers && hasCustomer)) {
         var delta = issue.closedAt.difference(issue.createdAt);
         sum += delta.inSeconds;
