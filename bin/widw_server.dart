@@ -5,7 +5,7 @@ import 'dart:isolate';
 File targetFile = File('widw.html');
 
 Future main() async {
-  Stream<HttpRequest> server;
+  late Stream<HttpRequest> server;
 
   await Isolate.spawn(_updateContent, null);
 

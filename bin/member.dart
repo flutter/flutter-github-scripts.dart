@@ -6,11 +6,11 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  String get member => _results.rest[0];
-  int get exitCode => _results == null
+  ArgResults? _results;
+  String get member => _results!.rest[0];
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -20,8 +20,8 @@ class Options {
           defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if (_results.rest.length != 1) throw ('no member name!');
+      if (_results!['help']) _printUsage();
+      if (_results!.rest.length != 1) throw ('no member name!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -36,11 +36,11 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   var isMember = false;
-  Actor user = await github.user(opts.member);
+  Actor? user = await github.user(opts.member);
   if (user == null) {
     print('${opts.member} is not a Github user.');
     return;

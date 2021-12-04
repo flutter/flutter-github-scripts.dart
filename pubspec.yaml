@@ -4,16 +4,16 @@ publish_to: none
 version: 0.0.2
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   args: ^2.2.0
   csv:  ^5.0.0
   glob: ^2.0.1
   graphql: ^5.0.0
-  intl: any
-  lcov: any
-  path: any
+  intl: ^0.17.0
+  lcov: ^6.0.0
+  path: ^1.8.0
   quiver: ^3.0.1
 
 dev_dependencies:

@@ -6,12 +6,12 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  DateTime get from => DateTime.parse(_results['from']);
-  DateTime get to => DateTime.parse(_results['to']);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  DateTime get from => DateTime.parse(_results!['from']);
+  DateTime get to => DateTime.parse(_results!['to']);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
   Options(List<String> args) {
@@ -29,7 +29,7 @@ class Options {
           help: 'to date, ISO format yyyy-mm-dd');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
+      if (_results!['help']) _printUsage();
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -54,7 +54,7 @@ void printHeader(Options opts) {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
@@ -121,13 +121,16 @@ void main(List<String> args) async {
   print('### Issues open/closed by priority\n');
   print('| Priority | Open | Closed | Total |');
   print('|----------|------|--------|-------|');
-  var totalOpen = 0, totalClosed = 0, total = 0;
+  var totalOpen = 0;
+  var totalClosed = 0;
+  var total = 0;
   interestingPriorities.forEach((p) {
-    var openCount =
-        openCluster.clusters[p] == null ? 0 : openCluster.clusters[p].length;
+    var openCount = openCluster.clusters[p] == null
+        ? 0
+        : (openCluster.clusters[p] as List).length;
     var closedCount = closedCluster.clusters[p] == null
         ? 0
-        : closedCluster.clusters[p].length;
+        : (closedCluster.clusters[p] as List).length;
     var totalRow = openCount + closedCount;
     totalOpen += openCount;
     totalClosed += closedCount;

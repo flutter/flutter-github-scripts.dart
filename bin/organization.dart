@@ -5,14 +5,14 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  String get login => _results.rest[0];
-  int get exitCode => _results == null
+  ArgResults? _results;
+  String get login => _results!.rest[0];
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
-  bool get tsv => _results['tsv'];
+  bool? get tsv => _results!['tsv'];
   Options(List<String> args) {
     _parser
       ..addFlag('help',
@@ -20,8 +20,8 @@ class Options {
     //..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if (_results.rest.length != 1) throw ('invalid organization!');
+      if (_results!['help']) _printUsage();
+      if (_results!.rest.length != 1) throw ('invalid organization!');
     } on ArgParserException catch (e) {
       print(e.message);
       _printUsage();
@@ -37,7 +37,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
 

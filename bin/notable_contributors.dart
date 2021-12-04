@@ -7,17 +7,17 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get showClosed => _results['closed'];
-  bool get showMerged => _results['merged'];
-  bool get onlyNotable => !_results['all-contributors'];
-  bool get authors => _results['authors'];
-  bool get reviewers => _results['reviewers'];
-  DateTime get from => DateTime.parse(_results.rest[0]);
-  DateTime get to => DateTime.parse(_results.rest[1]);
-  int get exitCode => _results == null
+  ArgResults? _results;
+  bool? get showClosed => _results!['closed'];
+  bool? get showMerged => _results!['merged'];
+  bool get onlyNotable => !_results!['all-contributors'];
+  bool? get authors => _results!['authors'];
+  bool? get reviewers => _results!['reviewers'];
+  DateTime get from => DateTime.parse(_results!.rest[0]);
+  DateTime get to => DateTime.parse(_results!.rest[1]);
+  int? get exitCode => _results == null
       ? -1
-      : _results['help']
+      : _results!['help']
           ? 0
           : null;
 
@@ -46,16 +46,16 @@ class Options {
           defaultsTo: false, negatable: false, help: 'report for reviewers');
     try {
       _results = _parser.parse(args);
-      if (_results['help']) _printUsage();
-      if ((_results['closed'] || _results['merged']) &&
-          _results.rest.length != 2) throw ('need start and end dates!');
-      if (_results['merged'] && _results['closed']) {
+      if (_results!['help']) _printUsage();
+      if ((_results!['closed'] || _results!['merged']) &&
+          _results!.rest.length != 2) throw ('need start and end dates!');
+      if (_results!['merged'] && _results!['closed']) {
         throw ('--merged and --closed are mutually exclusive!');
       }
-      if (!_results['authors'] && !_results['reviewers']) {
+      if (!_results!['authors'] && !_results!['reviewers']) {
         throw ('must pass one of --authors or --reviewers!');
       }
-      if (_results['authors'] && _results['reviewers']) {
+      if (_results!['authors'] && _results!['reviewers']) {
         throw ('must pass only one of --authors or --reviewers!');
       }
     } on ArgParserException catch (e) {
@@ -75,7 +75,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   // Find the list of folks we're interested in
   final orgMembersContents =
@@ -96,10 +96,11 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange when = null;
+  DateRange? when = null;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed || opts.showMerged) {
-    state = opts.showClosed ? GitHubIssueState.closed : GitHubIssueState.merged;
+  if (opts.showClosed! || opts.showMerged!) {
+    state =
+        opts.showClosed! ? GitHubIssueState.closed : GitHubIssueState.merged;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
   }
@@ -116,16 +117,16 @@ void main(List<String> args) async {
   }
 
   var reportType = 'open';
-  if (opts.showMerged) reportType = 'merged';
-  if (opts.showClosed) reportType = 'closed';
+  if (opts.showMerged!) reportType = 'merged';
+  if (opts.showClosed!) reportType = 'closed';
 
-  var kind = opts.authors ? 'contributing' : 'reviewing';
-  var kindPastTense = opts.authors ? 'contributed' : 'reviewed';
-  var people = opts.authors ? 'contributors' : 'reviewers';
+  var kind = opts.authors! ? 'contributing' : 'reviewing';
+  var kindPastTense = opts.authors! ? 'contributed' : 'reviewed';
+  var people = opts.authors! ? 'contributors' : 'reviewers';
   var paidUnpaid = opts.onlyNotable ? 'unpaid' : 'all';
   var paidUnPaidPeople = opts.onlyNotable ? 'unpaid ' : '';
 
-  print(opts.showClosed || opts.showMerged
+  print(opts.showClosed! || opts.showMerged!
       ? "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs from " +
           opts.from.toIso8601String() +
           ' to ' +
@@ -139,12 +140,12 @@ void main(List<String> args) async {
   // }
 
   print('There were ${prs.length} pull requests.\n\n');
-  var allParticipants = Set<String>();
+  var allParticipants = Set<String?>();
   var unpaidContributions = <PullRequest>[];
   var paidContributions = <PullRequest>[];
   for (var item in prs) {
     var pullRequest = item as PullRequest;
-    if (opts.authors &&
+    if (opts.authors! &&
         pullRequest.author != null &&
         pullRequest.author.login != null) {
       allParticipants.add(pullRequest.author.login);
@@ -156,13 +157,13 @@ void main(List<String> args) async {
       }
     }
     var wasUnpaid = false;
-    if (opts.authors &&
+    if (opts.authors! &&
         pullRequest.author != null &&
         !paidContributors.contains(pullRequest.author.login)) {
       wasUnpaid = true;
-    } else if (opts.reviewers) {
+    } else if (opts.reviewers!) {
       wasUnpaid = true;
-      if (opts.reviewers) {
+      if (opts.reviewers!) {
         if (pullRequest.reviewers != null &&
             pullRequest.reviewers.length != 0) {
           for (var reviewer in pullRequest.reviewers) {
@@ -190,7 +191,7 @@ void main(List<String> args) async {
       ? unpaidContributions
       : (new List.from(unpaidContributions)..addAll(paidContributions));
 
-  var clusters = opts.authors
+  var clusters = opts.authors!
       ? Cluster.byAuthor(prsOfInterest)
       : Cluster.byReviewers(prsOfInterest);
 

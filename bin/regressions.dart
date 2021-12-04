@@ -6,18 +6,13 @@ import 'package:flutter_github_scripts/github_queries.dart';
 
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
-  ArgResults _results;
-  bool get between => _results['between'];
-  bool get tsv => _results['tsv'];
-  DateTime get from =>
-      _results.rest != null ? DateTime.parse(_results.rest[0]) : null;
-  DateTime get to =>
-      _results.rest != null ? DateTime.parse(_results.rest[1]) : null;
-  int get exitCode => _results == null
-      ? -1
-      : _results['help']
-          ? 0
-          : null;
+  late ArgResults _results;
+
+  bool? get between => _results['between'];
+  bool? get tsv => _results['tsv'];
+  DateTime? get from => DateTime.parse(_results.rest[0]);
+  DateTime? get to => DateTime.parse(_results.rest[1]);
+  int? get exitCode => _results['help'] ? 0 : null;
 
   Options(List<String> args) {
     _parser
@@ -54,7 +49,7 @@ class Options {
 
 void main(List<String> args) async {
   final opts = Options(args);
-  if (opts.exitCode != null) exit(opts.exitCode);
+  if (opts.exitCode != null) exit(opts.exitCode!);
 
   final token = Platform.environment['GITHUB_TOKEN'];
   final github = GitHub(token);
@@ -84,9 +79,9 @@ void main(List<String> args) async {
     if (!label.startsWith(foundInKeyword)) byLabel.remove(label);
   }
 
-  var sectionHeader = opts.tsv ? '' : '# ';
-  var subsectionHeader = opts.tsv ? '' : '## ';
-  var trailing = opts.tsv ? '' : '\n';
+  var sectionHeader = opts.tsv! ? '' : '# ';
+  var subsectionHeader = opts.tsv! ? '' : '## ';
+  var trailing = opts.tsv! ? '' : '\n';
   print(
       '${sectionHeader}Open and closed regressions in flutter/flutter by release${trailing}');
 
@@ -96,11 +91,11 @@ void main(List<String> args) async {
   releaseLabels.sort((a, b) => a.compareTo(b));
   for (var label in releaseLabels) {
     print('${subsectionHeader}${label}${trailing}');
-    if (opts.tsv) print(Issue.tsvHeader);
+    if (opts.tsv!) print(Issue.tsvHeader);
     for (var item in byLabel[label]) {
       var issue = item as Issue;
       if (!issue.labels.containsString(severeKeyword)) continue;
-      if (opts.tsv) {
+      if (opts.tsv!) {
         print(issue.toTsv());
       } else {
         print(issue.summary(
