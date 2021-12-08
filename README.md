@@ -66,9 +66,13 @@ Some files, notably `prs_merged_by_label` and `prs_merged`, may require light ed
 
 As of Dart 2.14, there’s an issue with a dependency of a dependency (the package `uuid`) that has yet to be properly migrated. KF6GPE hasn’t had time to fix this, and has instead chosen to pin the Dart version in `pubspec.yaml` to Dart 2.13.4. This is the version of Dart shipping with Flutter 2.2, so for the next stable release, you should be able to use that version of Dart. This and the dependency scripts may not work for you after that unless you pin the Dart version.
 
-
 The scripts occasionally time out when Github is being cranky, and you’ll see errors. Don’t panic; just go for a walk and re-run the script.
 
+## bin/report.dart
+
+This tool is a combination of sub-tools to query for github info.
+
+- `weekly`: run `dart bin/report.dart weekly` to see a report of last week's github open and closed issues
 
 ### bin/prs_landed_weekly.dart
 
@@ -128,6 +132,8 @@ to the team when the Markdown is run through
 [pandoc](https://pandoc.org/).
 
 ### bin/open_issue_count_by_week.dart
+
+Note: see also the `dart bin/report.dart weekly` command.
 
 Usage: `dart bin/open_issue_count_by_week.dart [-f from-date] [-t to-date]`
 
