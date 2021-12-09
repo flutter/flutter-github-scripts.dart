@@ -50,7 +50,7 @@ class WeeklyCommand extends ReportCommand {
     final int currentDay = now.weekday;
     final DateTime thisWeek = now.subtract(Duration(days: currentDay - 1));
     final DateTime lastWeek = thisWeek.subtract(Duration(days: 7));
-    final DateTime lastDay = lastWeek.add(Duration(days: 6));
+    final DateTime lastReportingDay = lastWeek.add(Duration(days: 6));
 
     const List<String> repos = [
       'dart-lang/sdk',
@@ -62,7 +62,7 @@ class WeeklyCommand extends ReportCommand {
 
     print(
       'Reporting from ${iso8601String(lastWeek)} '
-      'to ${iso8601String(lastDay)}:',
+      'to ${iso8601String(lastReportingDay)}:',
     );
 
     List<RepoInfo> infos = await Future.wait(repos.map((String repo) async {
@@ -71,12 +71,12 @@ class WeeklyCommand extends ReportCommand {
         issuesOpened: await queryIssuesOpened(
           repo: repo,
           from: lastWeek,
-          to: lastDay,
+          to: lastReportingDay,
         ),
         issuesClosed: await queryIssuesClosed(
           repo: repo,
           from: lastWeek,
-          to: lastDay,
+          to: lastReportingDay,
         ),
       );
     }));
