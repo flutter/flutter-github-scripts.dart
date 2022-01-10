@@ -1,14 +1,12 @@
 # note: to get the TO, use the following command w/ the last commit hash:
 # git show --format="%cd" <commit-hash>
 # e.g.
-# git show --format="%cd" 33e261c0a2eb1f02b94c8fdfef092350c65b4d5c
+# git show --format="%cd" 95e555344dc746ad46ada9de9cc475042c63ec55
 
-# flutter-2.8
-# commit right after 2.5 stable: cabf35ad1d91d46d63f44c3b13e0f90f6872e464.
-# commit right before 2.8 b3 branch: 33e261c0a2eb1f02b94c8fdfef092350c65b4d5c
-FROM="2021-08-04T18:59:01-0400"
-TO="2021-11-01T12:43:02-0700"
-OUT="output/f28"
+# last commit of 2.10: 33e261c0a2eb1f02b94c8fdfef092350c65b4d5c
+FROM="2021-11-01T12:43:03-0700"
+TO="2021-12-29T11:29:19-0800"
+OUT="output/f210"
 
 echo "Running release reports from ${FROM} to ${TO}"
 mkdir -p ${OUT}
