@@ -25,12 +25,14 @@ final _client = GraphQLClient(cache: GraphQLCache(), link: _link);
 /// Represents a page of information from GitHub.
 class PageInfo {
   String? _startCursor;
-  get startCursor => _startCursor;
+  String? get startCursor => _startCursor;
   bool? _hasNextPage;
-  get hasNextPage => _hasNextPage;
+  bool? get hasNextPage => _hasNextPage;
   String? _endCursor;
-  get endCursor => _endCursor;
+  String? get endCursor => _endCursor;
+
   PageInfo(this._startCursor, this._endCursor, this._hasNextPage);
+
   static PageInfo fromGraphQL(dynamic node) {
     return PageInfo(
         node['startCursor'], node['endCursor'], node['hasNextPage']);
@@ -1213,11 +1215,12 @@ class Issue {
     Label('severe: performance'),
   ];
 
-  String summary(
-      {bool boldInteresting = true,
-      showMilestone = false,
-      bool linebreakAfter = false,
-      includeLabels: true}) {
+  String summary({
+    bool boldInteresting = true,
+    bool showMilestone = false,
+    bool linebreakAfter = false,
+    bool includeLabels = true,
+  }) {
     var labelsSummary = includeLabels ? _labels!.summary() : '';
     var markdown = '[${this.number}](${this.url})';
     markdown = '${markdown} ${this.title} ${labelsSummary}';
