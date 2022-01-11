@@ -7,7 +7,7 @@ import 'package:flutter_github_scripts/github_queries.dart';
 class Options {
   final _parser = ArgParser(allowTrailingOptions: false);
   ArgResults? _results;
-  bool? get showClosed => _results!['closed'];
+  bool get showClosed => _results!['closed']!;
   bool? get tsv => _results!['tsv'];
   String? get label => _results!['label'];
   DateTime get from => DateTime.parse(_results!.rest[0]);
@@ -65,9 +65,9 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange? when = null;
+  DateRange? when;
   var rangeType = GitHubDateQueryType.none;
-  if (opts.showClosed!) {
+  if (opts.showClosed) {
     state = GitHubIssueState.closed;
     when = DateRange(DateRangeType.range, start: opts.from, end: opts.to);
     rangeType = GitHubDateQueryType.closed;
@@ -75,15 +75,16 @@ void main(List<String> args) async {
 
   for (var repo in repos) {
     var issues = await github.fetch(
-        owner: 'flutter',
-        name: repo,
-        type: GitHubIssueType.issue,
-        state: state,
-        dateQuery: rangeType,
-        dateRange: when);
+      owner: 'flutter',
+      name: repo,
+      type: GitHubIssueType.issue,
+      state: state,
+      dateQuery: rangeType,
+      dateRange: when,
+    );
 
     var headerDelimiter = opts.tsv! ? '' : '## ';
-    print(opts.showClosed!
+    print(opts.showClosed
         ? "${headerDelimiter}Issues closed in flutter/${repo} from " +
             opts.from.toIso8601String() +
             ' to ' +
@@ -92,7 +93,7 @@ void main(List<String> args) async {
     if (!opts.tsv!) print('\n');
 
     print('There were ${issues.length} ' +
-        (opts.showClosed! ? 'closed ' : ' open') +
+        (opts.showClosed ? 'closed ' : ' open') +
         'issues');
     if (!opts.tsv!) print('\n');
 

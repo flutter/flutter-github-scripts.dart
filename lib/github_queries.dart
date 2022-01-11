@@ -300,14 +300,15 @@ class GitHub {
   /// filters. This is much slower than `search`, which should
   /// be used when the number of returned values is expected to be
   /// low.
-  Future<List<dynamic>> fetch(
-      {String? owner,
-      String? name,
-      GitHubIssueType? type = GitHubIssueType.issue,
-      GitHubIssueState state = GitHubIssueState.open,
-      List<String>? labels = null,
-      GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
-      DateRange? dateRange = null}) async {
+  Future<List<dynamic>> fetch({
+    String? owner,
+    String? name,
+    GitHubIssueType? type = GitHubIssueType.issue,
+    GitHubIssueState state = GitHubIssueState.open,
+    List<String>? labels,
+    GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
+    DateRange? dateRange,
+  }) async {
     var typeString = type == GitHubIssueType.issue ? 'issues' : 'pullRequests';
     var stateString = '';
     switch (state) {
@@ -408,7 +409,7 @@ class GitHub {
       PageInfo pageInfo = PageInfo.fromGraphQL(
           page.data!['repository'][typeString]['pageInfo']);
 
-      done = done || !pageInfo.hasNextPage;
+      done = done || !pageInfo.hasNextPage!;
       if (!done) after = '"${pageInfo.endCursor}"';
       // if (false) {
       //   var totalCount = page.data['repository'][typeString]['totalCount'];
