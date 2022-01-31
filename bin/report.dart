@@ -46,16 +46,64 @@ class WeeklyCommand extends ReportCommand {
       : super(
           'weekly',
           'Run a week-based report on issues opened and closed.',
-        );
+        ) {
+    argParser.addFlag(
+      'dart-core',
+      negatable: false,
+      help: 'Query the Dart Ecosystem core packages.',
+    );
+    argParser.addFlag(
+      'dart-tools',
+      negatable: false,
+      help: 'Query the Dart Ecosystem tools packages.',
+    );
+    argParser.addOption(
+      'date',
+      valueHelp: '2022-01-26',
+      help:
+          'Specify the date to pull data from (defaults to the last full week).',
+    );
+    argParser.addFlag(
+      'month',
+      negatable: false,
+      help: 'Return stats based on calendar months (instead of weeks).',
+    );
+  }
 
   Future<int> run() async {
-    final DateTime now = DateTime.now();
-    final int currentDay = now.weekday;
-    final DateTime thisWeek = now.subtract(Duration(days: currentDay - 1));
-    final DateTime lastWeek = thisWeek.subtract(Duration(days: 7));
-    final DateTime lastReportingDay = lastWeek.add(Duration(days: 6));
+    final args = argResults!;
+    final bool byMonth = args['month'];
 
-    const List<String> repos = [
+    late final DateTime firstReportingDay;
+    late final DateTime lastReportingDay;
+
+    if (byMonth) {
+      if (args.wasParsed('date')) {
+        final DateTime day = DateTime.parse(args['date']);
+        firstReportingDay = new DateTime(day.year, day.month, 1);
+      } else {
+        final DateTime now = DateTime.now();
+        firstReportingDay = new DateTime(now.year, now.month - 1, 1);
+      }
+
+      lastReportingDay =
+          new DateTime(firstReportingDay.year, firstReportingDay.month + 1, 1);
+    } else {
+      // by week
+      if (args.wasParsed('date')) {
+        final DateTime day = DateTime.parse(args['date']);
+        firstReportingDay = day.subtract(Duration(days: day.weekday - 1));
+      } else {
+        final DateTime now = DateTime.now();
+        final int currentDay = now.weekday;
+        final DateTime thisWeek = now.subtract(Duration(days: currentDay - 1));
+        firstReportingDay = thisWeek.subtract(Duration(days: 7));
+      }
+
+      lastReportingDay = firstReportingDay.add(Duration(days: 6));
+    }
+
+    List<String> repos = [
       'dart-lang/sdk',
       'flutter/flutter',
       'flutter/website',
@@ -63,8 +111,14 @@ class WeeklyCommand extends ReportCommand {
       'googleads/googleads-mobile-flutter',
     ];
 
+    if (args['dart-core']) {
+      repos = dartCoreRepos;
+    } else if (args['dart-tools']) {
+      repos = dartToolRepos;
+    }
+
     print(
-      'Reporting from ${iso8601String(lastWeek)} '
+      'Reporting from ${iso8601String(firstReportingDay)} '
       'to ${iso8601String(lastReportingDay)}...',
     );
 
@@ -73,24 +127,34 @@ class WeeklyCommand extends ReportCommand {
         repo,
         issuesOpened: await queryIssuesOpened(
           repo: repo,
-          from: lastWeek,
+          from: firstReportingDay,
           to: lastReportingDay,
         ),
         issuesClosed: await queryIssuesClosed(
           repo: repo,
-          from: lastWeek,
+          from: firstReportingDay,
           to: lastReportingDay,
         ),
       );
     }));
 
+    final padding = 22;
+
     for (RepoInfo info in infos) {
       print(
-        '  ${info.repo}: '
+        '  ${info.repo.padRight(padding)}: '
         '${info.issuesOpened} opened, '
         '${info.issuesClosed} closed',
       );
     }
+
+    print('  ---');
+
+    print(
+      '  ${'all'.padRight(padding)}: '
+      '${infos.fold(0, (int count, info) => count + info.issuesOpened)} opened, '
+      '${infos.fold(0, (int count, info) => count + info.issuesClosed)} closed',
+    );
 
     return 0;
   }
@@ -181,17 +245,19 @@ class ReleaseCommand extends ReportCommand {
   }
 
   Future<int> run() async {
+    final args = argResults!;
+
     // validate the args
-    if (!argResults!.wasParsed('start')) {
+    if (!args.wasParsed('start')) {
       usageException("The option '--start' is required.");
     }
-    if (!argResults!.wasParsed('end')) {
+    if (!args.wasParsed('end')) {
       usageException("The option '--end' is required.");
     }
 
-    final DateTime startDate = DateTime.parse(argResults!['start']);
-    final DateTime endDate = DateTime.parse(argResults!['end']);
-    final String outDir = argResults!['out'];
+    final DateTime startDate = DateTime.parse(args['start']);
+    final DateTime endDate = DateTime.parse(args['end']);
+    final String outDir = args['out'];
 
     const List<String> repos = [
       'flutter/flutter',
@@ -389,3 +455,92 @@ class RepoInfo {
     required this.issuesClosed,
   });
 }
+
+final dartCoreRepos = [
+  'dart-lang/args',
+  'dart-lang/async',
+  'dart-lang/build',
+  'dart-lang/characters',
+  'dart-lang/collection',
+  'dart-lang/convert',
+  'dart-lang/crypto',
+  'dart-lang/fake_async',
+  'dart-lang/ffi',
+  'dart-lang/fixnum',
+  'dart-lang/http',
+  'dart-lang/http2',
+  'dart-lang/http_parser',
+  'dart-lang/intl',
+  'dart-lang/intl_translation',
+  'dart-lang/logging',
+  'dart-lang/matcher',
+  'dart-lang/mockito',
+  'dart-lang/os_detect',
+  'dart-lang/path',
+  'dart-lang/js',
+  'dart-lang/meta',
+  'dart-lang/test',
+  'dart-lang/typed_data',
+  'grpc/grpc-dart',
+];
+
+final dartToolRepos = [
+  'dart-lang/bazel_worker',
+  'dart-lang/benchmark_harness',
+  'dart-lang/boolean_selector',
+  'dart-lang/browser_launcher',
+  'dart-lang/build',
+  'dart-lang/cli_util',
+  'dart-lang/clock',
+  'dart-lang/code_builder',
+  'dart-lang/coverage',
+  'dart-lang/csslib',
+  'dart-lang/dart_style',
+  'dart-lang/dartdoc',
+  'dart-lang/ffigen',
+  'dart-lang/glob',
+  'dart-lang/graphs',
+  'dart-lang/html',
+  'dart-lang/http_multi_server',
+  'dart-lang/http_retry',
+  'dart-lang/io',
+  'dart-lang/json_rpc_2',
+  'dart-lang/linter',
+  'dart-lang/lints',
+  'dart-lang/markdown',
+  'dart-lang/mime',
+  'dart-lang/oauth2',
+  'dart-lang/package_config',
+  'dart-lang/pana',
+  'dart-lang/pool',
+  'dart-lang/pub_semver',
+  'dart-lang/pubspec_parse',
+  //'dart-lang/sdk',
+  'dart-lang/shelf',
+  'dart-lang/shelf_packages_handler',
+  'dart-lang/shelf_proxy',
+  'dart-lang/shelf_static',
+  'dart-lang/shelf_test_handler',
+  'dart-lang/shelf_web_socket',
+  'dart-lang/source_gen',
+  'dart-lang/source_map_stack_trace',
+  'dart-lang/source_maps',
+  'dart-lang/source_span',
+  'dart-lang/sse',
+  'dart-lang/stack_trace',
+  'dart-lang/stream_channel',
+  'dart-lang/stream_transform',
+  'dart-lang/string_scanner',
+  'dart-lang/term_glyph',
+  'dart-lang/test',
+  'dart-lang/test_descriptor',
+  'dart-lang/test_process',
+  'dart-lang/test_reflective_loader',
+  'dart-lang/timing',
+  'dart-lang/usage',
+  'dart-lang/watcher',
+  'dart-lang/web_socket_channel',
+  'dart-lang/webdev',
+  'dart-lang/yaml',
+  'dart-lang/yaml_edit',
+];
