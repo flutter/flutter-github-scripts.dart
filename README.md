@@ -72,11 +72,10 @@ The scripts occasionally time out when Github is being cranky, and you’ll see 
 
 This tool is a combination of sub-tools to query for github info.
 
-- `weekly`: run `dart bin/report.dart weekly` to see a report of last week's
-  github open and closed issues
-- `release`: run `dart bin/report.dart release` to generate an 'issues_closed.md'
-  file for an upcoming stable release (see the tool's help for a description of
-  the CLI options)
+- `commit-activity`: Report on the average weekly commit counts for many Dart
+   repos.
+- `release`: Generate changelog files for a stable release.
+- `weekly`: Run a week-based report on issues opened and closed.
 
 ### bin/prs_landed_weekly.dart
 
