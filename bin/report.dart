@@ -18,6 +18,7 @@ class ReportCommandRunner<int> extends CommandRunner {
         ) {
     addCommand(ReleaseCommand());
     addCommand(WeeklyCommand());
+    addCommand(CommitActivityCommand());
   }
 
   late GraphQLClient _client = _initGraphQLClient();
@@ -218,6 +219,97 @@ class WeeklyCommand extends ReportCommand {
 
     return result.data!['search']['issueCount']!;
   }
+}
+
+class CommitActivityCommand extends ReportCommand {
+  CommitActivityCommand()
+      : super(
+          'commit-activity',
+          'Report on the average weekly commit counts for many Dart repos.',
+        ) {
+    argParser.addOption(
+      'date',
+      valueHelp: '2022-01-26',
+      help:
+          'Specify the date to pull data from (defaults to the last 26 weeks).',
+    );
+  }
+
+  Future<int> run() async {
+    final args = argResults!;
+    late DateTime firstReportingDay;
+
+    if (args.wasParsed('date')) {
+      firstReportingDay = DateTime.parse(args['date']);
+    } else {
+      // Report on the last 26 weeks.
+      final DateTime now = DateTime.now();
+      firstReportingDay = now.subtract(Duration(days: 26 * 7));
+      firstReportingDay = new DateTime(firstReportingDay.year,
+          firstReportingDay.month, firstReportingDay.day);
+    }
+
+    List<String> repos = sdkDepsRepos;
+
+    print('Reporting since ${iso8601String(firstReportingDay)}...');
+
+    List<CommitInfo> infos = [];
+
+    await Future.forEach(repos, (String repo) async {
+      final commitCount =
+          await queryCommitsSince(repo: repo, since: firstReportingDay);
+      infos.add(CommitInfo(repo, commitCount));
+    });
+
+    print('');
+    print('Repo, Weekly average, 26 week commit count');
+    for (CommitInfo info in infos) {
+      final average = info.commitCount / 26.0;
+      print(
+        '${info.repo}, '
+        '${average.toStringAsFixed(1)}, '
+        '${info.commitCount}',
+      );
+    }
+
+    return 0;
+  }
+
+  Future<int> queryCommitsSince({
+    required String repo,
+    required DateTime since,
+  }) async {
+    List<String> segments = repo.split('/');
+    final queryString = '''{
+      repository(owner: "${segments[0]}", name: "${segments[1]}") {
+        object(expression: "master") {
+          ... on Commit {
+            history(since: "${since.toIso8601String()}") {
+              totalCount
+            }
+          }
+        }
+      }
+    }''';
+
+    final result = await query(QueryOptions(document: gql(queryString)));
+    if (result.hasException) {
+      throw result.exception!;
+    }
+    var object = result.data!['repository']['object'];
+    if (object == null) {
+      print('no repo history available for $repo');
+      return 0;
+    }
+    return object['history']['totalCount'];
+  }
+}
+
+class CommitInfo {
+  final String repo;
+  final int commitCount;
+
+  CommitInfo(this.repo, this.commitCount);
 }
 
 class ReleaseCommand extends ReportCommand {
@@ -543,4 +635,83 @@ final dartToolRepos = [
   'dart-lang/webdev',
   'dart-lang/yaml',
   'dart-lang/yaml_edit',
+];
+
+final sdkDepsRepos = [
+  'dart-lang/sdk',
+
+  //
+  'dart-lang/args',
+  'dart-lang/async',
+  'dart-lang/bazel_worker',
+  'dart-lang/benchmark_harness',
+  'dart-lang/boolean_selector',
+  'dart-lang/browser_launcher',
+  'dart-lang/characters',
+  'dart-lang/charcode',
+  'dart-lang/cli_util',
+  'dart-lang/clock',
+  'dart-lang/collection',
+  'dart-lang/convert',
+  'dart-lang/crypto',
+  'dart-lang/csslib',
+  'dart-lang/dart_style',
+  'dart-lang/dartdoc',
+  'dart-lang/ffi',
+  'dart-lang/fixnum',
+  'dart-lang/glob',
+  'dart-lang/html',
+  'dart-lang/http_io',
+  'dart-lang/http_multi_server',
+  'dart-lang/http_parser',
+  'dart-lang/http',
+  'dart-lang/intl',
+  'dart-lang/json_rpc_2',
+  'dart-lang/linter',
+  'dart-lang/lints',
+  'dart-lang/logging',
+  'dart-lang/markdown',
+  'dart-lang/matcher',
+  'dart-lang/mime',
+  'dart-lang/mockito',
+  'dart-lang/oauth2',
+  'dart-lang/package_config',
+  'dart-lang/path',
+  'dart-lang/pedantic',
+  'dart-lang/pool',
+  'dart-lang/protobuf',
+  'dart-lang/pub_semver',
+  'dart-lang/pub',
+  'dart-lang/shelf_packages_handler',
+  'dart-lang/shelf_proxy',
+  'dart-lang/shelf_static',
+  'dart-lang/shelf_web_socket',
+  'dart-lang/shelf',
+  'dart-lang/source_map_stack_trace',
+  'dart-lang/source_maps',
+  'dart-lang/source_span',
+  'dart-lang/sse',
+  'dart-lang/stack_trace',
+  'dart-lang/stream_channel',
+  'dart-lang/string_scanner',
+  'dart-lang/sync_http',
+  'dart-lang/term_glyph',
+  'dart-lang/test_descriptor',
+  'dart-lang/test_process',
+  'dart-lang/test_reflective_loader',
+  'dart-lang/test',
+  'dart-lang/typed_data',
+  'dart-lang/usage',
+  'dart-lang/watcher',
+  'dart-lang/web_socket_channel',
+  'dart-lang/web-components',
+  'dart-lang/webdev',
+  'dart-lang/yaml_edit',
+  'dart-lang/yaml',
+  'google/file.dart',
+  'google/platform.dart',
+  'google/process.dart',
+  'google/vector_math.dart',
+  'google/webdriver.dart',
+  'google/webkit_inspection_protocol.dart',
 ];
