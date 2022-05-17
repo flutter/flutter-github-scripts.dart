@@ -48,7 +48,7 @@ void main() {
       expect(ls.containsString('TODAY'), false);
     });
     test('Labels summary', () {
-      Labels l = Labels(Set<Label>());
+      Labels l = Labels(<Label>{});
       l.append(Label('TODAY'));
       l.append(Label('perf: speed'));
       expect(l.summary() == '(TODAY, perf: speed)', true);

@@ -43,7 +43,7 @@ class Options {
 }
 
 class MemberInfo {
-  String? _login;
+  final String? _login;
   get login => _login;
   DateTime? firstContributed;
   dynamic firstContribution;
@@ -73,7 +73,7 @@ findWhen(dynamic item, String? login, When w) {
           }
         }
         // The timeline can be incomplete; if so, just use the creation date.
-        if (result == null) result = item.createdAt;
+        result ??= item.createdAt;
       }
       break;
 
@@ -88,7 +88,7 @@ findWhen(dynamic item, String? login, When w) {
         }
       }
       // The timeline can be incomplete; if so, just use the creation date.
-      if (result == null) result = item.createdAt;
+      result ??= item.createdAt;
       break;
   }
   return result;
@@ -102,7 +102,7 @@ void main(List<String> args) async {
 
   // Enumerate all of the teams and get all of the members of all of the teams.
   var org = await github.organization(opts.login);
-  var allMembers = Map<String?, MemberInfo>();
+  var allMembers = <String?, MemberInfo>{};
   SplayTreeMap<String?, List<String?>> membersByTeam =
       SplayTreeMap<String?, List<String>>();
   await for (var team in org.teamsStream) {
@@ -118,9 +118,9 @@ void main(List<String> args) async {
   // Now go back and find out when they contributed
   for (var login in allMembers.keys) {
     var member = allMembers[login];
-    var earliestQueryAuthor = 'org:flutter author:${login} sort:updated-asc';
+    var earliestQueryAuthor = 'org:flutter author:$login sort:updated-asc';
     var earliestQueryCommenter =
-        'org:flutter commenter:${login} sort:updated-asc';
+        'org:flutter commenter:$login sort:updated-asc';
 
     dynamic earliestAuthored;
     try {
@@ -155,9 +155,8 @@ void main(List<String> args) async {
       member.firstContribution = earliestAuthored;
     }
 
-    var latestQueryAuthor = 'org:flutter author:${login} ';
-    var latestQueryCommenter =
-        'org:flutter commenter:${login} sort:updated-asc';
+    var latestQueryAuthor = 'org:flutter author:$login ';
+    var latestQueryCommenter = 'org:flutter commenter:$login sort:updated-asc';
 
     dynamic latestAuthored;
     try {
@@ -196,9 +195,9 @@ void main(List<String> args) async {
   print(
       'Team\tGithub login\tFirst contributed\tEarliest contribution\tLast contributed\tLatest contribution');
   for (var team in membersByTeam.keys) {
-    if (!opts.alwaysIncludeTeam!) print('${team}');
+    if (!opts.alwaysIncludeTeam!) print('$team');
     for (var member in membersByTeam[team]!) {
-      var row = opts.alwaysIncludeTeam! ? '${team}\t${member}' : '\t${member}';
+      var row = opts.alwaysIncludeTeam! ? '$team\t$member' : '\t$member';
       var contributor = allMembers[member]!;
       if (contributor.firstContribution == null) {
         row += '\t\t';

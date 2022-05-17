@@ -85,16 +85,16 @@ void main(List<String> args) async {
 
     var headerDelimiter = opts.tsv! ? '' : '## ';
     print(opts.showClosed
-        ? "${headerDelimiter}Issues closed in flutter/${repo} from " +
+        // ignore: prefer_interpolation_to_compose_strings
+        ? "${headerDelimiter}Issues closed in flutter/$repo from " +
             opts.from.toIso8601String() +
             ' to ' +
             opts.to.toIso8601String()
-        : "${headerDelimiter}Open issues in flutter/${repo}");
+        : "${headerDelimiter}Open issues in flutter/$repo");
     if (!opts.tsv!) print('\n');
 
-    print('There were ${issues.length} ' +
-        (opts.showClosed ? 'closed ' : ' open') +
-        'issues');
+    print(
+        'There were ${issues.length} ${opts.showClosed ? 'closed ' : ' open'}issues');
     if (!opts.tsv!) print('\n');
 
     if (opts.tsv!) print(Issue.tsvHeader);

@@ -60,12 +60,12 @@ String hotfixSummary(Issue issue, String? repository) {
   }
   // No easy way to determine code base from here if it's flutter
   var codebase = repository ?? '';
-  result = '${result}\t${issue.url}';
-  result = '${result}\t=HYPERLINK("${issue.url}",${issue.number})';
-  result = '${result}\t${created}';
-  result = '${result}\t${issue.title}';
-  result = '${result}\t${codebase}';
-  result = '${result}\t${fixed}';
+  result = '$result\t${issue.url}';
+  result = '$result\t=HYPERLINK("${issue.url}",${issue.number})';
+  result = '$result\t$created';
+  result = '$result\t${issue.title}';
+  result = '$result\t$codebase';
+  result = '$result\t$fixed';
 
   return result;
 }
@@ -77,10 +77,10 @@ void main(List<String> args) async {
   final github = GitHub(token);
   var release = opts.release;
   var flutterCherryPickLabel =
-      'label:"cp: ${release}" -label:"cp: ${release} completed"';
+      'label:"cp: $release" -label:"cp: $release completed"';
 
   // Flutter issues are either open or closed, with the appropriate release cherrypick label.
-  var flutterQuery = 'org:flutter is:issue ${flutterCherryPickLabel}';
+  var flutterQuery = 'org:flutter is:issue $flutterCherryPickLabel';
   // Dart issues are closed, with the label `cherry-pick-review'
   var dartQuery = 'org:dart-lang is:issue is:open label:cherry-pick-review';
 
@@ -101,7 +101,7 @@ void main(List<String> args) async {
   if (opts.html!) {
     print('<html>');
 
-    print('<h3>Issues to pick into ${release}</h3>');
+    print('<h3>Issues to pick into $release</h3>');
 
     print('<p>Flutter:</p>');
     for (var issue in flutterIssues) {

@@ -100,6 +100,6 @@ void main(List<String> args) async {
       }
     }
     var total = positive + negative + neutral;
-    print('${resultTsv}\t${positive}\t${negative}\t${neutral}\t${total}');
+    print('$resultTsv\t$positive\t$negative\t$neutral\t$total');
   }
 }

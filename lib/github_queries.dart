@@ -2,7 +2,9 @@ import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:graphql/client.dart';
 
 enum GitHubIssueType { issue, pullRequest }
+
 enum GitHubIssueState { open, closed, merged }
+
 enum GitHubDateQueryType { created, updated, closed, merged, none }
 
 /// Used to perform queries against GitHub.
@@ -12,8 +14,8 @@ class GitHub {
   late Link _link;
   late GraphQLClient _client;
 
-  var _maxSearchResponse = 1000;
-  var _printQuery = false;
+  final _maxSearchResponse = 1000;
+  final _printQuery = false;
 
   /// Initialize the interface
   GitHub(String? token) {
@@ -21,7 +23,7 @@ class GitHub {
       'https://api.github.com/graphql',
     );
     _auth = AuthLink(
-      getToken: () async => 'Bearer ${token}',
+      getToken: () async => 'Bearer $token',
     );
     _link = _auth.concat(_httpLink);
     _client = GraphQLClient(cache: GraphQLCache(), link: _link);
@@ -157,9 +159,9 @@ class GitHub {
       String? name,
       GitHubIssueType type = GitHubIssueType.issue,
       GitHubIssueState state = GitHubIssueState.open,
-      List<String>? labels = null,
+      List<String>? labels,
       GitHubDateQueryType dateQuery = GitHubDateQueryType.none,
-      DateRange? dateRange = null}) async {
+      DateRange? dateRange}) async {
     var typeString = type == GitHubIssueType.issue ? 'issue' : 'pr';
     var stateString = '';
     switch (state) {
@@ -185,7 +187,7 @@ class GitHub {
     var labelFilters = [];
     if (labels != null && labels.isNotEmpty) {
       for (var label in labels) {
-        labelFilters.add('label:\\\"${label}\\\"');
+        labelFilters.add('label:\\"$label\\"');
       }
     } else {
       // We'll do just one query, with no filter
@@ -194,9 +196,9 @@ class GitHub {
 
     var fetchAnotherDay = false;
     var splitFetches = false;
-    dynamic totalIssueCount = null;
+    dynamic totalIssueCount;
     var result = [];
-    var resultsFetched = Set<int?>();
+    var resultsFetched = <int?>{};
     // For each label, do the query.
     for (var labelFilter in labelFilters) {
       do {
@@ -241,9 +243,7 @@ class GitHub {
           }
 
           // GitHub pagination
-          if (totalIssueCount == null) {
-            totalIssueCount = page.data!['search']['issueCount'];
-          }
+          totalIssueCount ??= page.data!['search']['issueCount'];
           var pageInfo = PageInfo.fromGraphQL(page.data!['search']['pageInfo']);
           fetchAnotherPage = pageInfo.hasNextPage;
           if (fetchAnotherPage!) after = '"${pageInfo.endCursor}"';
@@ -285,7 +285,7 @@ class GitHub {
     // There's still a chance we missed some. If it looks like that's the case,
     // fail with an exception.
     if (result.length != totalIssueCount) {
-      throw ('We expected ${totalIssueCount} issues or PRs, and only got ${result.length}');
+      throw ('We expected $totalIssueCount issues or PRs, and only got ${result.length}');
     }
 
     result.sort((a, b) => a.number.compareTo(b.number));
@@ -385,7 +385,7 @@ class GitHub {
                   : false;
               break;
             case GitHubDateQueryType.merged:
-              if (!(item is PullRequest)) {
+              if (item is! PullRequest) {
                 add = false;
               } else {
                 add = (item.merged &&
@@ -529,6 +529,7 @@ class GitHub {
 }
 
 enum DateRangeType { at, range }
+
 enum DateRangeWhen { onDate, onOrBefore, onOrAfter }
 
 class DateRange {
@@ -544,6 +545,7 @@ class DateRange {
   DateTime? get start => _start;
   DateTime? get end => _end;
 
+  @override
   String toString() {
     if (_type == DateRangeType.at) {
       String comparison = '';
@@ -563,9 +565,7 @@ class DateRange {
       }
       return comparison + _at!.toIso8601String();
     } else {
-      return _start!.toIso8601String().replaceAll('.000', '') +
-          '..' +
-          _end!.toIso8601String().replaceAll('.000', '');
+      return '${_start!.toIso8601String().replaceAll('.000', '')}..${_end!.toIso8601String().replaceAll('.000', '')}';
     }
   }
 
@@ -573,16 +573,16 @@ class DateRange {
     var dateString = '';
     switch (dateQuery) {
       case GitHubDateQueryType.created:
-        dateString = 'created:' + range.toString();
+        dateString = 'created:$range';
         break;
       case GitHubDateQueryType.updated:
-        dateString = 'updated:' + range.toString();
+        dateString = 'updated:$range';
         break;
       case GitHubDateQueryType.closed:
-        dateString = 'closed:' + range.toString();
+        dateString = 'closed:$range';
         break;
       case GitHubDateQueryType.merged:
-        dateString = 'merged:' + range.toString();
+        dateString = 'merged:$range';
         break;
       case GitHubDateQueryType.none:
         break;

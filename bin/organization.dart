@@ -14,9 +14,8 @@ class Options {
           : null;
   bool? get tsv => _results!['tsv'];
   Options(List<String> args) {
-    _parser
-      ..addFlag('help',
-          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+    _parser.addFlag('help',
+        defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
     //..addFlag('tsv', defaultsTo: false, abbr: 't', negatable: true, help: 'show results as TSV');
     try {
       _results = _parser.parse(args);
@@ -55,7 +54,7 @@ void main(List<String> args) async {
 
   var teams = '';
   await for (var team in org.teamsStream) {
-    teams = '${teams}${team.name}, ';
+    teams = '$teams${team.name}, ';
   }
   print(teams);
 }

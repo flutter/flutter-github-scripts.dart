@@ -90,14 +90,14 @@ void main(List<String> args) async {
   //     print('${reaction.comment}');
   //   }
   // }
-  print('${sanity} reaction(s).');
+  print('$sanity reaction(s).');
 
   var totalReactions = sanity;
   var commentCount = 0;
   var commentStream = issue.commentStream;
   await for (var comment in commentStream) {
     commentCount++;
-    print('Comment: ${commentCount}');
+    print('Comment: $commentCount');
     var reactionStream = comment.reactionStream;
     await for (var reaction in reactionStream) {
       totalReactions++;
@@ -107,9 +107,9 @@ void main(List<String> args) async {
       print('\t${reaction.content}');
     }
   }
-  print('${commentCount} comment(s).');
-  print('${totalReactions} reactions in total.');
-  print('\t${positive} positive comments.');
-  print('\t${negative} negative comments.');
-  print('\t${neutral} neutral comments.');
+  print('$commentCount comment(s).');
+  print('$totalReactions reactions in total.');
+  print('\t$positive positive comments.');
+  print('\t$negative negative comments.');
+  print('\t$neutral neutral comments.');
 }

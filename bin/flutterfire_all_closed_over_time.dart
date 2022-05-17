@@ -10,8 +10,7 @@ class Options {
   DateTime get from => DateTime.parse(_results!['from']);
   DateTime get to => DateTime.parse(_results!['to']);
   bool? get showQueries => _results!['queries'];
-  int get deltaDays =>
-      int.parse(_results!['delta'] == null ? '7' : _results!['delta']);
+  int get deltaDays => int.parse(_results!['delta'] ?? '7');
   int? get exitCode => _results == null
       ? -1
       : _results!['help']
@@ -117,7 +116,7 @@ void main(List<String> args) async {
   print(
       'This shows the number of new, open, and closed high priority issues over the period from');
   print('${opts.from} to ${opts.to}.');
-  print('Period ending\t' +
+  print('Period ending\t'
       'Mean hours to close all issues closed in this period\tMean hours to close issues opened this period');
 
   while (current.isBefore(last)) {
@@ -126,10 +125,10 @@ void main(List<String> args) async {
     var toStamp = next.toIso8601String().substring(0, 10);
 
     var openQuery =
-        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc created:${fromStamp}..${toStamp}';
+        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc created:$fromStamp..$toStamp';
 
     var closedQuery =
-        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc closed:${fromStamp}..${toStamp}';
+        'repo:FirebaseExtended/flutterfire is:issue sort:updated-desc closed:$fromStamp..$toStamp';
     if (opts.showQueries!) {
       print(openQuery);
       print(closedQuery);
@@ -157,10 +156,9 @@ void main(List<String> args) async {
     meanComputerOpenClosed.computeMean(closedThisPeriod);
 
     // Compute mean over all priorities
-    var row = '${toStamp}';
-    ;
-    row = '${row}\t${meanComputerUntilClosed.meanDuration.inHours}';
-    row = '${row}\t${meanComputerOpenClosed.meanDuration.inHours}';
+    var row = toStamp;
+    row = '$row\t${meanComputerUntilClosed.meanDuration.inHours}';
+    row = '$row\t${meanComputerOpenClosed.meanDuration.inHours}';
     print(row);
 
     // Skip to the next period

@@ -15,9 +15,8 @@ class Options {
           : null;
 
   Options(List<String> args) {
-    _parser
-      ..addFlag('help',
-          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+    _parser.addFlag('help',
+        defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
     try {
       _results = _parser.parse(args);
       if (_results!['help']) _printUsage();
@@ -53,5 +52,5 @@ void main(List<String> args) async {
     }
   }
   String isIsNot = isMember ? 'is' : 'is not';
-  print('${opts.member} ${isIsNot} a Flutter org member');
+  print('${opts.member} $isIsNot a Flutter org member');
 }
