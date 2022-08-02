@@ -36,9 +36,9 @@ Future main() async {
 
 void _updateContent(dynamic argument) {
   int counter = 0;
-  Timer.periodic(new Duration(seconds: 1), (t) {
+  Timer.periodic(Duration(seconds: 1), (t) {
     counter++;
-    String msg = 'Ticks: ${counter}\n';
+    String msg = 'Ticks: $counter\n';
     if (!targetFile.existsSync()) {
       targetFile.createSync();
     }

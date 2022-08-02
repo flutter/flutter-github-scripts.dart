@@ -21,7 +21,7 @@ class ReportCommandRunner<int> extends CommandRunner {
     addCommand(CommitActivityCommand());
   }
 
-  late GraphQLClient _client = _initGraphQLClient();
+  late final GraphQLClient _client = _initGraphQLClient();
 
   Future<QueryResult> query(QueryOptions options) {
     return _client.query(options);
@@ -71,6 +71,7 @@ class WeeklyCommand extends ReportCommand {
     );
   }
 
+  @override
   Future<int> run() async {
     final args = argResults!;
     final bool byMonth = args['month'];
@@ -81,14 +82,14 @@ class WeeklyCommand extends ReportCommand {
     if (byMonth) {
       if (args.wasParsed('date')) {
         final DateTime day = DateTime.parse(args['date']);
-        firstReportingDay = new DateTime(day.year, day.month, 1);
+        firstReportingDay = DateTime(day.year, day.month, 1);
       } else {
         final DateTime now = DateTime.now();
-        firstReportingDay = new DateTime(now.year, now.month - 1, 1);
+        firstReportingDay = DateTime(now.year, now.month - 1, 1);
       }
 
       lastReportingDay =
-          new DateTime(firstReportingDay.year, firstReportingDay.month + 1, 1);
+          DateTime(firstReportingDay.year, firstReportingDay.month + 1, 1);
     } else {
       // by week
       if (args.wasParsed('date')) {
@@ -235,6 +236,7 @@ class CommitActivityCommand extends ReportCommand {
     );
   }
 
+  @override
   Future<int> run() async {
     final args = argResults!;
     late DateTime firstReportingDay;
@@ -245,7 +247,7 @@ class CommitActivityCommand extends ReportCommand {
       // Report on the last 26 weeks.
       final DateTime now = DateTime.now();
       firstReportingDay = now.subtract(Duration(days: 26 * 7));
-      firstReportingDay = new DateTime(firstReportingDay.year,
+      firstReportingDay = DateTime(firstReportingDay.year,
           firstReportingDay.month, firstReportingDay.day);
     }
 
@@ -336,6 +338,7 @@ class ReleaseCommand extends ReportCommand {
     );
   }
 
+  @override
   Future<int> run() async {
     final args = argResults!;
 
@@ -509,20 +512,23 @@ class GitHubIssue {
 
   String markdown() {
     // [5792](https://github.com/flut...) enable only_throw_erro... (team, framework, ...)
-    List<String> _labels = labels;
+    List<String> labelsCopy = labels;
 
-    String str = '[$number]($url) $title (${_labels.join(', ')})';
-    if (interestingLabels.intersection(_labels.toSet()).isNotEmpty) {
+    String str = '[$number]($url) $title (${labelsCopy.join(', ')})';
+    if (interestingLabels.intersection(labelsCopy.toSet()).isNotEmpty) {
       str = '**$str**';
     }
     return str;
   }
 
+  @override
   String toString() => markdown();
 }
 
 abstract class ReportCommand<int> extends Command {
+  @override
   final String name;
+  @override
   final String description;
 
   ReportCommand(this.name, this.description);

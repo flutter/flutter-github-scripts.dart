@@ -47,7 +47,7 @@ String makeQuery(DateTime from, DateTime to) {
 
   return """
 query { 
-  search(query:"org:flutter is:pr is:closed merged:${fromIso}..${toIso}", type: ISSUE, last:100) {
+  search(query:"org:flutter is:pr is:closed merged:$fromIso..$toIso", type: ISSUE, last:100) {
     issueCount,
     nodes {
       ... on PullRequest {
@@ -62,7 +62,7 @@ query {
 }
 
 int extractUniqueUsers(dynamic response) {
-  var committers = Set<String?>();
+  var committers = <String?>{};
   for (var pr in response['search']['nodes']) {
     committers.add(pr['author']['login']);
   }
@@ -99,11 +99,8 @@ void main(List<String> args) async {
       print(result.exception.toString());
       exit(-1);
     }
-    print(timeStampTo +
-        ',' +
-        extractPullRequestCountResponse(result.data).toString() +
-        ',' +
-        extractUniqueUsers(result.data).toString());
+    print(
+        '$timeStampTo,${extractPullRequestCountResponse(result.data)},${extractUniqueUsers(result.data)}');
     start = until;
   } while (start.compareTo(opts.to) < 0);
 }

@@ -74,7 +74,7 @@ void main(List<String> args) async {
   );
 
   var counts = SplayTreeMap<String, int>();
-  openIssues.forEach((item) {
+  for (var item in openIssues) {
     var issue = item as Issue;
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) {
@@ -82,9 +82,9 @@ void main(List<String> args) async {
       if (!counts.containsKey(key)) counts[key] = 0;
       counts[key] = counts[key]! + 1;
     }
-  });
+  }
 
-  closedIssues.forEach((item) {
+  for (var item in closedIssues) {
     var issue = item as Issue;
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) {
@@ -92,15 +92,15 @@ void main(List<String> args) async {
       if (!counts.containsKey(key)) counts[key] = 0;
       counts[key] = counts[key]! + 1;
     }
-  });
+  }
 
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
   var toStamp = opts.to.toIso8601String().substring(0, 10);
 
-  print('Open issues per week from ${fromStamp} to ${toStamp}');
+  print('Open issues per week from $fromStamp to $toStamp');
   print('Week ending\tCount');
 
   for (var key in counts.keys) {
-    print('${key}\t${counts[key]}');
+    print('$key\t${counts[key]}');
   }
 }

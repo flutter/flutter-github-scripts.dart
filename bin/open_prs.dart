@@ -13,9 +13,8 @@ class Options {
           : null;
 
   Options(List<String> args) {
-    _parser
-      ..addFlag('help',
-          defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
+    _parser.addFlag('help',
+        defaultsTo: false, abbr: 'h', negatable: false, help: 'get usage');
     try {
       _results = _parser.parse(args);
       if (_results!['help']) _printUsage();

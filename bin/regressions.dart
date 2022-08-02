@@ -74,7 +74,7 @@ void main(List<String> args) async {
   final severeKeyword = 'severe: regression';
 
   // Strip all but the found-in labels.
-  var allLabels = []..addAll(byLabel.keys);
+  var allLabels = <String>[...byLabel.keys];
   for (var label in allLabels) {
     if (!label.startsWith(foundInKeyword)) byLabel.remove(label);
   }
@@ -83,14 +83,14 @@ void main(List<String> args) async {
   var subsectionHeader = opts.tsv! ? '' : '## ';
   var trailing = opts.tsv! ? '' : '\n';
   print(
-      '${sectionHeader}Open and closed regressions in flutter/flutter by release${trailing}');
+      '${sectionHeader}Open and closed regressions in flutter/flutter by release$trailing');
 
   // For each label in sorted order, print only those that are
   // marked with the 'severe: regression' label.
-  var releaseLabels = []..addAll(byLabel.keys);
+  var releaseLabels = [...byLabel.keys];
   releaseLabels.sort((a, b) => a.compareTo(b));
   for (var label in releaseLabels) {
-    print('${subsectionHeader}${label}${trailing}');
+    print('$subsectionHeader$label$trailing');
     if (opts.tsv!) print(Issue.tsvHeader);
     for (var item in byLabel[label]) {
       var issue = item as Issue;

@@ -122,7 +122,7 @@ class Options {
 void main(List<String> args) async {
   final opts = Options(args);
   if (opts.exitCode != null) exit(opts.exitCode!);
-  var keys = Set<String?>();
+  var keys = <String?>{};
 
   final repos = opts.prs! ? ['flutter', 'engine', 'plugins'] : ['flutter'];
   final labelsToSkip = ['cla: yes', 'waiting for tree to go green'];
@@ -135,7 +135,7 @@ void main(List<String> args) async {
   if (opts.prs!) type = GitHubIssueType.pullRequest;
 
   var state = GitHubIssueState.open;
-  DateRange? when = null;
+  DateRange? when;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed! || opts.showMerged!) {
     state =
@@ -171,17 +171,11 @@ void main(List<String> args) async {
     var reportType = 'Open';
     if (opts.showMerged!) reportType = 'Merged';
     if (opts.showClosed!) reportType = 'Closed';
-    print('### ${reportType} ' +
-        (opts.issues! ? 'issues' : 'PRs') +
-        ' by ${what}' +
-        ' for `flutter/${repo}` ' +
-        (opts.showClosed!
-            ? 'from ${opts.from!.toIso8601String()} to ${opts.to!.toIso8601String()}'
-            : '') +
-        '\n\n');
+    print(
+        '### $reportType ${opts.issues! ? 'issues' : 'PRs'} by $what for `flutter/$repo` ${opts.showClosed! ? 'from ${opts.from!.toIso8601String()} to ${opts.to!.toIso8601String()}' : ''}\n\n');
 
     if (opts.customers!) {
-      Set<String?> toRemove = Set<String?>();
+      Set<String?> toRemove = <String?>{};
       for (var label in clusters.clusters.keys) {
         if (label.indexOf('customer: ') != 0) toRemove.add(label);
       }
@@ -191,7 +185,7 @@ void main(List<String> args) async {
     }
 
     if (opts.labels! && opts.skipUninteresting!) {
-      Set<String?> toRemove = Set<String?>();
+      Set<String?> toRemove = <String?>{};
       for (var label in clusters.clusters.keys) {
         if (labelsToSkip.contains(label)) toRemove.add(label);
       }
@@ -208,17 +202,15 @@ void main(List<String> args) async {
         showStatistics: false));
 
     if (opts.authors!) {
-      print('${clusters.clusters.keys.length} unique ' +
-          (opts.labels! ? 'labels.' : 'users') +
-          ' across this repository.\n\n');
+      print(
+          '${clusters.clusters.keys.length} unique ${opts.labels! ? 'labels.' : 'users'} across this repository.\n\n');
     }
 
     if (opts.ranking!) {
-      print('### Customer ' +
-          (opts.issues! ? 'issues' : 'PRs') +
-          ' rank-ordered by label');
+      print(
+          '### Customer ${opts.issues! ? 'issues' : 'PRs'} rank-ordered by label');
       for (var customer in clusters.clusters.keys) {
-        var labelCountsByLabel = Map<String?, int>();
+        var labelCountsByLabel = <String?, int>{};
         for (var item in clusters.clusters[customer]) {
           for (var labelItem in item.labels.labels) {
             var label = labelItem as Label;
@@ -235,17 +227,16 @@ void main(List<String> args) async {
         rankedLabelList.sort(
             (a, b) => labelCountsByLabel[b]!.compareTo(labelCountsByLabel[a]!));
 
-        print('#### ${customer}\n\n');
+        print('#### $customer\n\n');
         for (var labelName in rankedLabelList) {
-          print('  * ${labelName}: ${labelCountsByLabel[labelName]}\n');
+          print('  * $labelName: ${labelCountsByLabel[labelName]}\n');
         }
       }
     }
   }
 
   if (opts.authors!) {
-    print('A total of ${keys.length} unique ' +
-        (opts.labels! ? 'labels' : 'users') +
-        ' across all repositories.\n\n');
+    print(
+        'A total of ${keys.length} unique ${opts.labels! ? 'labels' : 'users'} across all repositories.\n\n');
   }
 }

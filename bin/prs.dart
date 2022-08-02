@@ -85,7 +85,7 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange? when = null;
+  DateRange? when;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed! || opts.showMerged!) {
     state =
@@ -109,7 +109,8 @@ void main(List<String> args) async {
     var type = 'Open';
     if (opts.showMerged!) type = 'Merged';
     if (opts.showClosed!) type = 'Closed';
-    print("${headerDelimiter}${type} PRs in `flutter/${repo}` from " +
+    // ignore: prefer_interpolation_to_compose_strings
+    print("$headerDelimiter$type PRs in `flutter/$repo` from " +
         opts.from.toIso8601String() +
         ' to ' +
         opts.to.toIso8601String());

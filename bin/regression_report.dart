@@ -48,7 +48,7 @@ void printHeader(Options opts) {
 
   print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@google.com\n\n');
   print(
-      'Subject: severe:regression issues report from ${fromStamp} to ${toStamp}\n\n');
+      'Subject: severe:regression issues report from $fromStamp to $toStamp\n\n');
   print('\n\n---\n\n');
 }
 
@@ -81,19 +81,19 @@ void main(List<String> args) async {
   var openedThisPeriod = <Issue>[];
   var closedThisPeriod = <Issue>[];
 
-  openIssues.forEach((issue) {
+  for (var issue in openIssues) {
     if (issue.state == "OPEN") open.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
+  }
 
-  closedIssues.forEach((issue) {
+  for (var issue in closedIssues) {
     if (issue.state == "CLOSED" &&
         issue.closedAt.compareTo(opts.from) >= 0 &&
         issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
+  }
 
   // Cluster them to get our counts by priority
   var openCluster = Cluster.byLabel(openIssues);
@@ -104,19 +104,21 @@ void main(List<String> args) async {
 
   print(
       'This shows the number of new, open, and closed `severe: regression` issues over the period from');
-  print('${fromStamp} to ${toStamp}.\n\n');
+  print('$fromStamp to $toStamp.\n\n');
 
   print('### ${open.length} open `severe: regression` issue(s) in total\n');
 
   print(
-      '### ${openedThisPeriod.length} `severe: regression` issue(s) opened between ${fromStamp} and ${toStamp}');
-  openedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+      '### ${openedThisPeriod.length} `severe: regression` issue(s) opened between $fromStamp and $toStamp');
+  for (var issue in openedThisPeriod) {
+    print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  }
 
   print(
-      '### ${closedThisPeriod.length} `severe: regression` issue(s) closed between ${fromStamp} and ${toStamp}');
-  closedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+      '### ${closedThisPeriod.length} `severe: regression` issue(s) closed between $fromStamp and $toStamp');
+  for (var issue in closedThisPeriod) {
+    print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  }
 
   print('### Issues open/closed by priority\n');
   print('| Priority | Open | Closed | Total |');
@@ -124,7 +126,7 @@ void main(List<String> args) async {
   var totalOpen = 0;
   var totalClosed = 0;
   var total = 0;
-  interestingPriorities.forEach((p) {
+  for (var p in interestingPriorities) {
     var openCount = openCluster.clusters[p] == null
         ? 0
         : (openCluster.clusters[p] as List).length;
@@ -135,7 +137,7 @@ void main(List<String> args) async {
     totalOpen += openCount;
     totalClosed += closedCount;
     total += totalRow;
-    print('|${p}|${openCount}|${closedCount}|${totalRow}|');
-  });
-  print('|TOTAL|${totalOpen}|${totalClosed}|${total}|\n');
+    print('|$p|$openCount|$closedCount|$totalRow|');
+  }
+  print('|TOTAL|$totalOpen|$totalClosed|$total|\n');
 }

@@ -48,14 +48,14 @@ void printHeader(Options opts, String which) {
 
   print('\n\nTo: flutter-team@google.com, flutter-dart-tpm@google.com\n\n');
   if (DateTime.now().weekday == DateTime.tuesday) {
-    print('Subject: Flutter ${which} Tuesday report!\n');
+    print('Subject: Flutter $which Tuesday report!\n');
   }
   if (DateTime.now().weekday == DateTime.thursday) {
-    print('Subject: Flutter ${which} Thursday report!\n');
+    print('Subject: Flutter $which Thursday report!\n');
   }
   if (DateTime.now().weekday != DateTime.tuesday &&
       DateTime.now().weekday != DateTime.thursday) {
-    print('Subject: ${which} issues from ${fromStamp} to ${toStamp}\n\n');
+    print('Subject: $which issues from $fromStamp to $toStamp\n\n');
   }
   print('\n\n---\n\n');
 }
@@ -86,19 +86,19 @@ void main(List<String> args) async {
   var openedThisPeriod = <Issue>[];
   var closedThisPeriod = <Issue>[];
 
-  openIssues.forEach((issue) {
+  for (var issue in openIssues) {
     if (issue.state == "OPEN") open.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
+  }
 
-  closedIssues.forEach((issue) {
+  for (var issue in closedIssues) {
     if (issue.state == "CLOSED" &&
         issue.closedAt.compareTo(opts.from) >= 0 &&
         issue.closedAt.compareTo(opts.to) <= 0) closedThisPeriod.add(issue);
     if (issue.createdAt.compareTo(opts.from) >= 0 &&
         issue.createdAt.compareTo(opts.to) <= 0) openedThisPeriod.add(issue);
-  });
+  }
 
   var fromStamp = opts.from.toIso8601String().substring(0, 10);
   var toStamp = opts.to.toIso8601String().substring(0, 10);
@@ -107,19 +107,22 @@ void main(List<String> args) async {
 
   print(
       'This shows the number of new, open, and closed `P0` issues over the period from');
-  print('${fromStamp} to ${toStamp}.\n\n');
+  print('$fromStamp to $toStamp.\n\n');
 
   print('### ${open.length} open `P0` issue(s)');
-  open.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+  for (var issue in open) {
+    print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  }
 
   print(
-      '### ${openedThisPeriod.length} `P0` issue(s) opened between ${fromStamp} and ${toStamp}');
-  openedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+      '### ${openedThisPeriod.length} `P0` issue(s) opened between $fromStamp and $toStamp');
+  for (var issue in openedThisPeriod) {
+    print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  }
 
   print(
-      '### ${closedThisPeriod.length} `P0` issue(s) closed between ${fromStamp} and ${toStamp}');
-  closedThisPeriod.forEach((issue) =>
-      print(issue.summary(boldInteresting: false, linebreakAfter: true)));
+      '### ${closedThisPeriod.length} `P0` issue(s) closed between $fromStamp and $toStamp');
+  for (var issue in closedThisPeriod) {
+    print(issue.summary(boldInteresting: false, linebreakAfter: true));
+  }
 }

@@ -82,13 +82,13 @@ void main(List<String> args) async {
       File('go_flutter_org_members.csv').readAsStringSync();
   final orgMembers = const CsvToListConverter().convert(orgMembersContents);
   var paidContributors = <String>[];
-  orgMembers.forEach((row) {
+  for (var row in orgMembers) {
     if (opts.onlyNotable &&
             (row[3].toString().toUpperCase().contains('GOOGLE')) ||
         (row[3].toString().toUpperCase().contains('CANONICAL'))) {
       paidContributors.add(row[0].toString());
     }
-  });
+  }
 
   final repos = ['flutter', 'engine', 'plugins'];
 
@@ -96,7 +96,7 @@ void main(List<String> args) async {
   final github = GitHub(token);
 
   var state = GitHubIssueState.open;
-  DateRange? when = null;
+  DateRange? when;
   var rangeType = GitHubDateQueryType.none;
   if (opts.showClosed! || opts.showMerged!) {
     state =
@@ -127,11 +127,12 @@ void main(List<String> args) async {
   var paidUnPaidPeople = opts.onlyNotable ? 'unpaid ' : '';
 
   print(opts.showClosed! || opts.showMerged!
-      ? "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs from " +
+      // ignore: prefer_interpolation_to_compose_strings
+      ? "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors $kind $reportType PRs from " +
           opts.from.toIso8601String() +
           ' to ' +
           opts.to.toIso8601String()
-      : "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors ${kind} ${reportType} PRs");
+      : "# ${paidUnpaid[0].toUpperCase()}${paidUnpaid.substring(1)} contributors $kind $reportType PRs");
 
   // if (false) {
   //   print('## All issues\n');
@@ -140,7 +141,7 @@ void main(List<String> args) async {
   // }
 
   print('There were ${prs.length} pull requests.\n\n');
-  var allParticipants = Set<String?>();
+  var allParticipants = <String?>{};
   var unpaidContributions = <PullRequest>[];
   var paidContributions = <PullRequest>[];
   for (var item in prs) {
@@ -189,7 +190,7 @@ void main(List<String> args) async {
 
   List<PullRequest> prsOfInterest = opts.onlyNotable
       ? unpaidContributions
-      : (new List.from(unpaidContributions)..addAll(paidContributions));
+      : (List.from(unpaidContributions)..addAll(paidContributions));
 
   var clusters = opts.authors!
       ? Cluster.byAuthor(prsOfInterest)
@@ -198,9 +199,9 @@ void main(List<String> args) async {
   clusters.clusters.remove('__unassigned__');
 
   print(
-      '${prsOfInterest.length} PRs were ${kindPastTense} by ${paidUnpaid} members.\n\n');
+      '${prsOfInterest.length} PRs were $kindPastTense by $paidUnpaid members.\n\n');
   print(
-      'There were ${clusters.keys.length} unique ${paidUnPaidPeople}${people}.\n\n');
+      'There were ${clusters.keys.length} unique $paidUnPaidPeople$people.\n\n');
 
   print(clusters.toMarkdown(
       sortType: ClusterReportSort.byCount,
