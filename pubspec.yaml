@@ -11,6 +11,7 @@ dependencies:
   csv:  ^5.0.0
   glob: ^2.0.1
   graphql: ^5.0.0
+  http: ^0.13.5
   intl: ^0.17.0
   lcov: ^6.0.0
   path: ^1.8.0

@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:flutter_github_scripts/github_datatypes.dart';
 import 'package:graphql/client.dart';
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+
+String? get githubToken => Platform.environment['GITHUB_TOKEN'];
 
 void main(List<String> args) async {
   final ReportCommandRunner runner = ReportCommandRunner();
@@ -16,9 +20,10 @@ class ReportCommandRunner<int> extends CommandRunner {
           'report',
           'Run various reports on the Flutter related GitHub repositories.',
         ) {
+    addCommand(CommitActivityCommand());
+    addCommand(DefaultBranchCommand());
     addCommand(ReleaseCommand());
     addCommand(WeeklyCommand());
-    addCommand(CommitActivityCommand());
   }
 
   late final GraphQLClient _client = _initGraphQLClient();
@@ -28,7 +33,7 @@ class ReportCommandRunner<int> extends CommandRunner {
   }
 
   GraphQLClient _initGraphQLClient() {
-    final token = Platform.environment['GITHUB_TOKEN'];
+    final token = githubToken;
     if (token == null) {
       throw 'This tool expects a github access token in the GITHUB_TOKEN '
           'environment variable.';
@@ -39,6 +44,65 @@ class ReportCommandRunner<int> extends CommandRunner {
       cache: GraphQLCache(),
       link: auth.concat(HttpLink('https://api.github.com/graphql')),
     );
+  }
+}
+
+class DefaultBranchCommand extends ReportCommand {
+  http.Client? _httpClient;
+
+  DefaultBranchCommand()
+      : super(
+          'default-branch',
+          'Show the default branch names of the Dart and Flutter repos.',
+        );
+
+  http.Client get httpClient => (_httpClient ??= http.Client());
+
+  @override
+  Future<int> run() async {
+    print('Repository, Default branch, Stars');
+
+    for (var org in ['dart-lang', 'flutter']) {
+      int? page = 1;
+
+      while (page != null) {
+        var json = await callRestApi(Uri.parse(
+          'https://api.github.com/orgs/$org/repos?sort=full_name&page=$page',
+        ));
+
+        var repos = (jsonDecode(json!) as List).cast<Map>();
+
+        for (var repo in repos) {
+          int stars = repo['stargazers_count'];
+          String defaultBranch = repo['default_branch'];
+
+          print('$org/${repo['name']}, $defaultBranch, $stars');
+        }
+
+        if (repos.isEmpty) {
+          page = null;
+        } else {
+          page++;
+        }
+      }
+    }
+
+    close();
+
+    return 0;
+  }
+
+  void close() {
+    _httpClient?.close();
+  }
+
+  Future<String?> callRestApi(Uri uri) async {
+    return httpClient.get(uri, headers: {
+      'Authorization': 'token ${githubToken!}',
+      'Accept': 'application/vnd.github+json',
+    }).then((response) {
+      return response.statusCode == 404 ? null : response.body;
+    });
   }
 }
 
