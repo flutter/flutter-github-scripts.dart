@@ -11,12 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      - uses: dart-lang/setup-dart@b77f714ba35594641a83a71d243c7de39d820474
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
         run: dart pub get
