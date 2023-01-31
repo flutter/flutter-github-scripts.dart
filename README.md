@@ -1,11 +1,19 @@
-This repository contains scripts written in Dart to report on various
-aspects of code health within the
+# Update - archived
+
+This repo has been archived as the Flutter team was no longer using or
+maintaining the content. If you have quesitons about these scripts, please file
+an issue at https://github.com/flutter/flutter or otherwise get ahold of the
+Flutter team. Thanks!
+
+## What's this?
+
+This repository contains scripts written in Dart to report on various aspects of
+code health within the
 [Flutter](https://flutter.dev) [repository](https://github.com/flutter).
 
-They're probably not terribly useful if you're not a Flutter
-contributor, but you might find some snippets here that
-show you how to access Github using either GraphQL or the
-REST API.
+They're probably not terribly useful if you're not a Flutter contributor, but
+you might find some snippets here that show you how to access Github using
+either GraphQL or the REST API.
 
 ## Setup
 
